@@ -1,0 +1,19 @@
+name: okletsdoit
+services:
+  postgres:
+    image: postgres:17.4
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./persist/postgres:/var/lib/postgresql/data
+    env_file:
+      - ./okletsdoit/.env
+
+  # redis:
+  #   image: docker.io/redis:7
+  #   container_name: redis
+  #   ports:
+  #     - "6379:6379"
+  #   volumes:
+  #     - ./persist/redis:/data
+
