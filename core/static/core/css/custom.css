@@ -1,0 +1,17 @@
+.theme-icon-active {
+    font-size: 1.25rem;
+    width: 16px;
+    height: 16px;
+    color: inherit;
+    fill: currentColor;
+}
+
+.dropdown-item svg.bi {
+    width: 16px;
+    height: 16px;
+}
+
+.dropdown-item svg {
+    color: inherit;
+    fill: currentColor;
+}

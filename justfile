@@ -18,10 +18,8 @@ rebuild:
     @echo "Rebuilding the Docker containers..."
     docker compose up --watch rebuild
 
-# view rendered mkdocs
 mkdocs:
     uv run mkdocs serve -a localhost:8001
-
 
 lint:
     @echo "Running Ruff linter"
