@@ -1,118 +1,51 @@
-<svg xmlns="http://www.w3.org/2000/svg" class="d-none">
-    <symbol id="check2" viewBox="0 0 16 16">
-    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
-    </path>
-    </symbol>
-    <symbol id="circle-half" viewBox="0 0 16 16">
-    <path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z"></path>
-    </symbol>
-    <symbol id="clipboard" viewBox="0 0 16 16">
-    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z">
-    </path>
-    <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z">
-    </path>
-    </symbol>
-    <symbol id="moon-stars-fill" viewBox="0 0 16 16">
-    <path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z">
-    </path>
-    <path d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z">
-    </path>
-    </symbol>
-    <symbol id="sun-fill" viewBox="0 0 16 16">
-    <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z">
-    </path>
-    </symbol>
-</svg>
-<nav class="navbar navbar-expand-lg">
-    <div class="container-fluid">
-        <a class="navbar-brand p-0 me-0 me-lg-2" href="#">{{ site_title }}</a>
-        <button class="navbar-toggler"
-                type="button"
-                data-bs-toggle="offcanvas"
-                data-bs-target="#offcanvasNavbar"
-                aria-controls="offcanvasNavbar"
-                aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="offcanvas offcanvas-end flex-grow-1"
-             tabindex="-1"
-             id="offcanvasNavbar"
-             aria-labelledby="offcanvasNavbarLabel">
-            <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
-                <button type="button"
-                        class="btn-close"
-                        data-bs-dismiss="offcanvas"
-                        aria-label="Close"></button>
+{% load static i18n %}
+
+{% get_current_language as LANGUAGE_CODE %}
+<div class="navbar bg-neutral shadow-lg">
+    <div class="navbar-start">
+        <!-- Brand -->
+        <a class="btn btn-ghost text-lg" href="{% url 'home' %}">
+            <svg fill="currentColor" height="24" width="24" viewBox="0 0 921 800">
+                <path d="M280.9,800.4c56,0,109.5-16.3,155.1-46.6c-6.2-5.4-12.2-11.1-18.1-17.1c-13.3-13.601-25.2-28.301-35.7-43.801 c-29.8,17.5-64.4,27.5-101.4,27.5C170.1,720.4,80,630.3,80,519.6c0-85.2,53.4-158.2,128.4-187.3l-57.9-61.6 c-24.9,13-47.9,29.9-68.3,50.3C29.2,374,0,444.5,0,519.5S29.2,665,82.2,718C135.3,771.201,205.9,800.4,280.9,800.4z" />
+                <path d="M537.2,347.4c30.2-18.1,65.4-28.6,103.1-28.6c110.7,0,200.801,90.1,200.801,200.8S751,720.4,640.3,720.4 c-50.6,0-100.699-19.899-137.6-54.6c-39.9-37.6-63.2-91.4-63.2-146.2c0-17.5,2.3-34.6,6.5-50.8c-4.399-14.4-10.7-28.1-18.7-41 c-9.6-15.2-21.399-28.8-35-40.3c-21.399,40.2-32.8,85.2-32.8,132c0,80.899,36.101,159.899,97.5,212.7 c48.601,41.899,111.9,66.3,176,68c2.4,0.1,4.8,0.1,7.3,0.1c75,0,145.5-29.2,198.5-82.2S921,594.6,921,519.6 s-29.2-145.5-82.2-198.5s-123.5-82.2-198.5-82.2c-56.699,0-110.8,16.7-156.8,47.8C503.9,304.3,522,324.8,537.2,347.4z" />
+                <path d="M449.3,295.1c-12-9.1-24.8-17.3-38.3-24.3l-57.7,61.5c1.7,0.7,3.5,1.4,5.2,2.1c42.3,17.8,78,50.2,99.601,90.7 c23.199,43.5,29.6,95.4,17.699,143.2l6.301,15.5c10.399,25.5,27,48.2,47.8,66c16.6-31.6,26.899-66.1,30.5-102.1 c0.899-9.301,1.399-18.7,1.399-28C561.7,431.9,518.5,347.7,449.3,295.1z" />
+                <path d="M262.6,349c4.9,5.2,11.6,7.9,18.2,7.9c6.601,0,13.301-2.6,18.2-7.9l24.2-25.7l100.5-106.8c7.8-8.3,9-20.9,2.9-30.5 l-34.2-53.8c-4.601-7.2-12.5-11.6-21.101-11.6H190.5c-8.5,0-16.5,4.4-21.1,11.6L135.2,186c-6.1,9.6-5,22.2,2.9,30.5L262.6,349z" />
+            </svg>
+            About Dayum Time
+        </a>
+    </div>
+    <!-- Desktop menu -->
+    <div class="navbar-center hidden lg:flex">
+        <ul class="menu menu-horizontal px-1">
+            {% for item in nav_links %}
+                <li>
+                    <a href="{% url item.view_name %}">
+                        <i class="inline-block w-5 h-5 mr-2 fa {{ item.icon }}"></i>
+                        {{ item.text }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="navbar-end">
+        <!-- Mobile menu dropdown -->
+        <div class="dropdown dropdown-end lg:hidden">
+            <div tabindex="0" role="button" class="btn btn-ghost">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16"></path>
+                </svg>
             </div>
-            <div class="offcanvas-body">
-                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                    {% for link in nav_links %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url link.view_name %}">{{ link.text }}</a>
-                        </li>
-                    {% endfor %}
-                    <li class="nav-item dropdown">
-                        <button class="btn btn-link nav-link px-0 px-lg-2 py-2 dropdown-toggle d-flex align-items-center"
-                                id="bd-theme"
-                                type="button"
-                                aria-expanded="false"
-                                data-bs-toggle="dropdown"
-                                data-bs-display="static"
-                                aria-label="Toggle theme (auto)">
-                            <svg class="bi my-1 text-body theme-icon-active" aria-hidden="true">
-                                <use href="#circle-half"></use>
-                            </svg>
-                            <span class="d-lg-none ms-2" id="bd-theme-text">Toggle theme</span>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end"
-                            aria-labelledby="bd-theme-text">
-                            <li>
-                                <button type="button"
-                                        class="dropdown-item d-flex align-items-center"
-                                        data-bs-theme-value="light"
-                                        aria-pressed="false">
-                                    <svg class="bi me-2 opacity-50 text-body" aria-hidden="true">
-                                        <use href="#sun-fill"></use>
-                                    </svg>
-                                    Light
-                                    <svg class="bi ms-auto d-none text-body" aria-hidden="true">
-                                        <use href="#check2"></use>
-                                    </svg>
-                                </button>
-                            </li>
-                            <li>
-                                <button type="button"
-                                        class="dropdown-item d-flex align-items-center"
-                                        data-bs-theme-value="dark"
-                                        aria-pressed="false">
-                                    <svg class="bi me-2 opacity-50 text-body" aria-hidden="true">
-                                        <use href="#moon-stars-fill"></use>
-                                    </svg>
-                                    Dark
-                                    <svg class="bi ms-auto d-none text-body" aria-hidden="true">
-                                        <use href="#check2"></use>
-                                    </svg>
-                                </button>
-                            </li>
-                            <li>
-                                <button type="button"
-                                        class="dropdown-item d-flex align-items-center active"
-                                        data-bs-theme-value="auto"
-                                        aria-pressed="true">
-                                    <svg class="bi me-2 opacity-50 text-body" aria-hidden="true">
-                                        <use href="#circle-half"></use>
-                                    </svg>
-                                    Auto
-                                    <svg class="bi ms-auto d-none text-body" aria-hidden="true">
-                                        <use href="#check2"></use>
-                                    </svg>
-                                </button>
-                            </li>
-                        </ul>
+            <ul tabindex="0"
+                class="menu menu-sm dropdown-content bg-neutral text-neutral rounded-box z-[1] mt-3 w-52 p-2 shadow">
+                {% for item in nav_links %}
+                    <li>
+                        <a href="{% url item.view_name %}">
+                            <i class="inline-block w-5 h-5 mr-2 fa {{ item.icon }}"></i>
+                            {{ item.text }}
+                        </a>
                     </li>
-                </ul>
-            </div>
+                {% endfor %}
+            </ul>
         </div>
     </div>
-</nav>
+</div>

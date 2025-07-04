@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+@plugin "daisyui" {
+    themes: dark --default --prefersdark;
+    logs: true;
+}
+
+@plugin "daisyui/theme" {
+    name: "dark";
+    prefersdark: true;
+    color-scheme: dark;
+
+    /* Fall wedding color palette using semantic names */
+    --color-base-100: #303a2b;
+    /* Dark sage green for main background */
+    --color-base-200: #61303e;
+    /* Deep burgundy for elevated surfaces */
+    --color-base-300: #67260b;
+    /* Dark russet for deeper elevations */
+    --color-base-content: #f5f5dc;
+    /* Warm cream text on base colors */
+
+    --color-primary: #e0960b;
+    /* Warm amber for primary actions */
+    --color-primary-content: #303a2b;
+    /* Dark sage text on primary */
+
+    --color-secondary: #819d76;
+    /* Sage green for secondary elements */
+    --color-secondary-content: #303a2b;
+    /* Dark sage text on secondary */
+
+    --color-accent: #8c4417;
+    /* Burnt orange for accent elements */
+    --color-accent-content: #f5f5dc;
+    /* Warm cream text on accent */
+
+    --color-neutral: #67260b;
+    /* Dark russet for neutral elements */
+    --color-neutral-content: #f5f5dc;
+    /* Warm cream text on neutral */
+
+    /* Status colors adapted to fall theme */
+    --color-info: #819d76;
+    /* Sage green for info */
+    --color-info-content: #303a2b;
+    /* Dark text on info */
+
+    --color-success: #819d76;
+    /* Sage green for success */
+    --color-success-content: #303a2b;
+    /* Dark text on success */
+
+    --color-warning: #e0960b;
+    /* Warm amber for warnings */
+    --color-warning-content: #303a2b;
+    /* Dark text on warning */
+
+    --color-error: #61303e;
+    /* Deep burgundy for errors */
+    --color-error-content: #f5f5dc;
+    /* Light text on error */
+
+    /* Component styling */
+    --rounded-box: 0.75rem;
+    /* border radius of boxes (card, modal, alert) */
+    --rounded-btn: 0.375rem;
+    /* border radius of buttons */
+    --rounded-badge: 0.5rem;
+    /* border radius of badges */
+
+    --animation-btn: 0.25s;
+    /* duration of animation when you click on button */
+    --animation-input: 0.2s;
+    /* duration of animation for inputs like checkbox, toggle, radio, etc */
+
+    --btn-focus-scale: 0.95;
+    /* scale transform of button when you focus on it */
+    --border-btn: 1px;
+    /* border width of buttons */
+    --tab-border: 1px;
+    /* border width of tabs */
+    --tab-radius: 0.5rem;
+    /* border radius of tabs */
+}

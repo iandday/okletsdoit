@@ -1,3 +1,103 @@
 {% extends "components/base.html" %}
+
 {% block title %}Home{% endblock %}
-{% block content %}HOME{% endblock %}
+{% block content %}
+    <!-- Hero Section -->
+    <div class="hero min-h-screen">
+        <div class="hero-content flex-col">
+            <div class="md:flex-row flex flex-col items-center gap-8">
+                <img src="https://img.daisyui.com/images/stock/photo-1635805737707-575885ab0820.webp"
+                     alt="us"
+                     height="200"
+                     width="200"
+                     class="max-w-sm rounded-lg shadow-2xl justify-self-center " />
+                <div class="text-center lg:text-left">
+                    <h1 class="text-5xl font-bold">{{ site_title }}</h1>
+                    <p class="py-6">
+                        Join us as we celebrate our special day. We can't wait to share this moment with our friends and family!
+                    </p>
+                </div>
+            </div>
+            <div class="card shadow-xl bg-base-200 rounded-2xl p-4 shadow-lg font-mono text-4xl font-bold">
+                <div class="card-body">
+                    <h2 class="card-title justify-center">Countdown to Our Big Day</h2>
+                    <div class="grid grid-cols-3 gap-4 text-center">
+                        <!-- Days -->
+                        <div class="flex flex-col">
+                            <div class="bg-accent text-accent-content rounded-lg p-4 shadow-lg">
+                                <span id="days" class="font-mono text-4xl font-bold">0</span>
+                            </div>
+                            <span class="text-sm mt-2 font-medium">days</span>
+                        </div>
+                        <!-- Hours -->
+                        <div class="flex flex-col">
+                            <div class="bg-accent text-accent-content rounded-lg p-4 shadow-lg">
+                                <span id="hours" class="font-mono text-4xl font-bold">0</span>
+                            </div>
+                            <span class="text-sm mt-2 font-medium">hours</span>
+                        </div>
+                        <!-- Minutes -->
+                        <div class="flex flex-col">
+                            <div class="bg-accent text-accent-content rounded-lg p-4 shadow-lg">
+                                <span id="minutes" class="font-mono text-4xl font-bold">0</span>
+                            </div>
+                            <span class="text-sm mt-2 font-medium">minutes</span>
+                        </div>
+                    </div>
+                    <div class="card-actions justify-center mt-6">
+                        <button class="btn btn-primary">RSVP Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+{% block extra_script %}
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Set countdown date from Django context
+        const countDownDate = new Date("{{ wedding_data.date }}T{{ wedding_data.time }}").getTime();
+
+        console.log('Wedding date:', "{{ wedding_data.date }}T{{ wedding_data.time }}");
+        console.log('Countdown timestamp:', countDownDate);
+
+        const updateCountdown = () => {
+          const now = new Date().getTime();
+          const distance = countDownDate - now;
+
+          const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+
+          // Update countdown display using textContent
+          const daysEl = document.getElementById('days');
+          const hoursEl = document.getElementById('hours');
+          const minutesEl = document.getElementById('minutes');
+
+          if (daysEl) {
+            daysEl.textContent = days;
+            daysEl.setAttribute('aria-label', `${days} days`);
+          }
+          if (hoursEl) {
+            hoursEl.textContent = hours.toString().padStart(2, '0');
+            hoursEl.setAttribute('aria-label', `${hours} hours`);
+          }
+          if (minutesEl) {
+            minutesEl.textContent = minutes.toString().padStart(2, '0');
+            minutesEl.setAttribute('aria-label', `${minutes} minutes`);
+          }
+
+          if (distance < 0) {
+            clearInterval(x);
+            if (daysEl) daysEl.textContent = '0';
+            if (hoursEl) hoursEl.textContent = '00';
+            if (minutesEl) minutesEl.textContent = '00';
+          }
+        };
+
+        // Update countdown every second
+        const x = setInterval(updateCountdown, 1000);
+        updateCountdown(); // Initial call
+      });
+    </script>
+{% endblock %}

@@ -2,39 +2,42 @@
 set shell := ["bash", "-c"]
 
 
-css:
-    @echo "Watching and rebuilding CSS"
-    ./tailwindcss-extra -i box_buddy/static/css/input.css -o box_buddy/static/css/output.css --watch
+# setup
+setup:
+    @echo "Installing npm dependencies"
+    npm install
+    @echo "Installing python depdencies"
+    uv sync
 
+# Build CSS with daisyUI 5
+css:
+    @echo "Building CSS with Tailwind and daisyUI 5"
+    npm run build-css
+
+# Build CSS for production
+css-prod:
+    @echo "Building production CSS"
+    npm run build-css-prod
+
+# Standard development server
 dev:
     @echo "Starting django server"
-    uv run manage.py runserver_plus
+    uv run --group dev manage.py runserver_plus
 
-up:
-    @echo "Starting docker containers"
-    docker compose up --watch
 
-rebuild:
-    @echo "Rebuilding the Docker containers..."
-    docker compose up --watch rebuild
 
-mkdocs:
-    uv run mkdocs serve -a localhost:8001
-
+# Run linting
 lint:
-    @echo "Running Ruff linter"
-    uv run ruff check .
+    uv run --group dev ruff check .
+    uv run --group dev mypy .
 
+# Run tests
+test:
+    uv run --group dev pytest
 
-format:
-    @echo "Formatting code with Ruff"
-    uv run ruff format
-
-
-
+# Run pre-commit hooks
 pre-commit:
-    @echo "Running pre-commit hooks..."
-    uv run pre-commit run --all-files
+    uv run --group dev pre-commit run --all-files
 
 # Make migrations
 makemigrations:
@@ -53,11 +56,6 @@ collectstatic:
 #------
 
 
-
-# Run tests using pytest
-test:
-    @echo "Running tests..."
-    pytest
 
 # Build the Docker image
 docker-build:
