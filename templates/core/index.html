@@ -20,30 +20,30 @@
                     </p>
                 </div>
             </div>
-            <div class="card shadow-xl bg-base-200 rounded-2xl p-4 shadow-lg font-mono text-4xl font-bold">
+            <div class="card bg-base-200 shadow-xl">
                 <div class="card-body">
                     <h2 class="card-title justify-center">Countdown to Our Big Day</h2>
-                    <div class="grid grid-cols-3 gap-4 text-center">
+                    <div class="stats stats-horizontal shadow bg-base-200 gap-4">
                         <!-- Days -->
-                        <div class="flex flex-col">
-                            <div class="bg-accent text-accent-content rounded-lg p-4 shadow-lg">
-                                <span id="days" class="font-mono text-4xl font-bold">0</span>
+                        <div class="stat bg-accent text-accent-content rounded-lg">
+                            <div class="stat-value text-center">
+                                <span id="days" class="font-mono">0</span>
                             </div>
-                            <span class="text-sm mt-2 font-medium">days</span>
+                            <div class="stat-title text-center text-accent-content">days</div>
                         </div>
                         <!-- Hours -->
-                        <div class="flex flex-col">
-                            <div class="bg-accent text-accent-content rounded-lg p-4 shadow-lg">
-                                <span id="hours" class="font-mono text-4xl font-bold">0</span>
+                        <div class="stat bg-accent text-accent-content rounded-lg">
+                            <div class="stat-value text-center">
+                                <span id="hours" class="font-mono">0</span>
                             </div>
-                            <span class="text-sm mt-2 font-medium">hours</span>
+                            <div class="stat-title text-center text-accent-content">hours</div>
                         </div>
                         <!-- Minutes -->
-                        <div class="flex flex-col">
-                            <div class="bg-accent text-accent-content rounded-lg p-4 shadow-lg">
-                                <span id="minutes" class="font-mono text-4xl font-bold">0</span>
+                        <div class="stat bg-accent text-accent-content rounded-lg">
+                            <div class="stat-value text-center">
+                                <span id="minutes" class="font-mono">0</span>
                             </div>
-                            <span class="text-sm mt-2 font-medium">minutes</span>
+                            <div class="stat-title text-center text-accent-content">minutes</div>
                         </div>
                     </div>
                     <div class="card-actions justify-center mt-6">
@@ -55,7 +55,7 @@
     </div>
 {% endblock content %}
 {% block extra_script %}
-    <script>
+    <script nonce="{{request.csp_nonce}}">
       document.addEventListener('DOMContentLoaded', function() {
 
         const countDownDate = new Date("{{ wedding_data.date }}T{{ wedding_data.time }}").getTime();
