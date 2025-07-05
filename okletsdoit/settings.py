@@ -14,23 +14,26 @@ import os
 from pathlib import Path
 
 import environ
-
+from csp.constants import NONE
+from csp.constants import SELF
+from csp.constants import NONCE
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 env = environ.Env(
     # set casting, default value
     DEBUG=(bool, False),
-    STATIC_ROOT=(Path, "/static"),
-    MEDIA_ROOT=(Path, "/media"),
+    STATIC_ROOT=(Path, "/app/static"),
+    MEDIA_ROOT=(Path, "/app/media"),
     TIME_ZONE=(str, "UTC"),
+    ALLOWED_HOSTS=(list, []),
 )
-env.read_env(BASE_DIR / ".env")
+env.read_env(BASE_DIR / ".env", overwrite=True)
 
 SECRET_KEY = env("SECRET_KEY")
 DEBUG = env("DEBUG")
 
-ALLOWED_HOSTS = env.list("ALLOWED_HOSTS") if env("ALLOWED_HOSTS") else []
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -48,6 +51,7 @@ INSTALLED_APPS = [
     #'health_check.contrib.celery',
     #'health_check.contrib.celery_ping',
     #'health_check.contrib.redis',
+    "csp",
     "core",
 ]
 
@@ -123,3 +127,32 @@ MEDIA_URL = "/media/"
 STATIC_ROOT = env.path("STATIC_ROOT")
 MEDIA_ROOT = env.path("MEDIA_ROOT")
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+CONTENT_SECURITY_POLICY = {
+    "EXCLUDE_URL_PREFIXES": ["/excluded-path/"],
+    "DIRECTIVES": {
+        "default-src": [SELF],
+        "script-src": [SELF, NONCE],
+        "style-src": [
+            SELF,
+            NONCE,
+            "cdnjs.cloudflare.com",
+            "'unsafe-inline'",  # Required for daisyUI 5 theme switching
+        ],
+        "font-src": [
+            SELF,
+            "data:",
+            "cdnjs.cloudflare.com",
+        ],
+        "img-src": [SELF, "data:", "https:"],
+        "connect-src": [SELF],
+        "frame-src": [NONE],
+        "object-src": [NONE],
+        "base-uri": [SELF],
+        "frame-ancestors": [SELF],
+        "form-action": [SELF],
+        # "report-uri": "/csp-report/",
+        "upgrade-insecure-requests": True,
+        "include-nonce": True,
+    },
+}
