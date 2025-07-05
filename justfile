@@ -11,6 +11,10 @@ setup:
 
 
 #----Development commands----#
+up:
+    @echo "Starting the development environment"
+    docker compose -f docker/docker-compose.yml up
+
 css:
     @echo "Building CSS with Tailwind and daisyUI 5"
     npm run build-css
@@ -57,3 +61,22 @@ superuser:
 
 
 
+#----Production commands----#
+build:
+    @echo "Building production Docker image (multi-stage)"
+    DOCKER_BUILDKIT=1 docker build \
+        --file docker/Dockerfile \
+        --target runtime \
+        --build-arg BUILDKIT_INLINE_CACHE=1 \
+        -t okletsdoit:latest .
+
+# Check image size
+image-size:
+    @echo "Checking image sizes..."
+    docker images okletsdoit:latest
+
+# Scan for vulnerabilities
+scan-image:
+    @echo "Scanning image for vulnerabilities..."
+    docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+        aquasec/trivy image okletsdoit:latest

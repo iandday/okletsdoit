@@ -1,0 +1,13 @@
+name: okletsdoit
+services:
+  postgres:
+    image: postgres:17.4
+    ports:
+      - "5432:5432"
+    volumes:
+      - ../_persist/postgres:/var/lib/postgresql/data
+    env_file:
+      - ../.env
+
+
+

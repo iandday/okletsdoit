@@ -1,0 +1,19 @@
+name: okletsdoit
+services:
+  postgres:
+    image: postgres:17.4
+    volumes:
+      - ../_persist/postgres:/var/lib/postgresql/data
+    env_file:
+      - ../.env
+  app:
+    image: docker.io/library/okletsdoit:latest
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+    env_file:
+      - ../.env.prod
+    volumes:
+      - ../_persist/prod_static:/app/static
+      - ../_persist/prod_media:/app/media
