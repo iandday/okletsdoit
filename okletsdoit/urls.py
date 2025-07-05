@@ -7,13 +7,15 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", core.home, name="home"),
-    path("venue/", core.venue, name="venue"),
-    path("our-story/", core.our_story, name="our_story"),
-    path("photos/", core.photos, name="photos"),
-    path("rsvp/", core.rsvp, name="rsvp"),
+    path("accounts/", include("allauth.urls")),
     path("health/", include("health_check.urls")),
+    path("", include("core.urls")),
 ]
+
+if "debug_toolbar" in settings.INSTALLED_APPS:
+    from debug_toolbar.toolbar import debug_toolbar_urls
+
+    urlpatterns += debug_toolbar_urls()
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
