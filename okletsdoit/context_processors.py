@@ -12,8 +12,8 @@ def site_vars(request):
         "nav_links": [
             {"view_name": "our_story", "icon": "fa-heart", "text": "Our Story"},
             {"view_name": "venue", "icon": "fa-hotel", "text": "Venue"},
-            {"view_name": "home", "icon": "fa-camera", "text": "Upload Photos"},
-            {"view_name": "home", "icon": "fa-pen-to-square", "text": "RSVP"},
+            {"view_name": "photos", "icon": "fa-camera", "text": "Upload Photos"},
+            {"view_name": "rsvp", "icon": "fa-pen-to-square", "text": "RSVP"},
         ],
         "sidebar_app_links": [
             {"view_name": "settings", "icon": "fa-gear", "text": "Settings"},

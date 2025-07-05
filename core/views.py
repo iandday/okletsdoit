@@ -22,3 +22,17 @@ def our_story(request):
     Render the 'Our Story' page of the application.
     """
     return render(request, "core/our_story.html")
+
+
+def rsvp(request):
+    """
+    Render the 'RSVP' page of the application.
+    """
+    return render(request, "core/rsvp.html")
+
+
+def photos(request):
+    """
+    Render the 'Photos' page of the application.
+    """
+    return render(request, "core/photos.html")

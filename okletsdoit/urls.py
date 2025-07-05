@@ -10,6 +10,8 @@ urlpatterns = [
     path("", core.home, name="home"),
     path("venue/", core.venue, name="venue"),
     path("our-story/", core.our_story, name="our_story"),
+    path("photos/", core.photos, name="photos"),
+    path("rsvp/", core.rsvp, name="rsvp"),
     path("health/", include("health_check.urls")),
 ]
 
