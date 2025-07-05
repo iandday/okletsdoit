@@ -1,15 +1,12 @@
-<!DOCTYPE html>
-
 {% load static i18n %}
 
+<!DOCTYPE html>
 {% get_current_language as LANGUAGE_CODE %}
 <html lang="{{ LANGUAGE_CODE|default:'en_us' }}" data-theme="dark">
     <head>
-        <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport"
               content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <!-- Page title -->
         <title>
             {% block title %}
                 OK Let's Do It
@@ -32,8 +29,10 @@
 
                 {% include "components/navbar.html" %}
 
-                {% block content %}
-                {% endblock content %}
+                <div class="pt-4">
+                    {% block content %}
+                    {% endblock content %}
+                </div>
             </div>
         </div>
         {% block extra_script %}

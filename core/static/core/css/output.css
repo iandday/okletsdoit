@@ -6042,6 +6042,9 @@
       font-size: 1.375rem;
     }
   }
+  .pt-4 {
+    padding-top: calc(var(--spacing) * 4);
+  }
   .pt-10 {
     padding-top: calc(var(--spacing) * 10);
   }

@@ -1,6 +1,8 @@
 {% extends "components/base.html" %}
 
-{% block title %}Home{% endblock %}
+{% block title %}
+    Home
+{% endblock title %}
 {% block content %}
     <!-- Hero Section -->
     <div class="hero min-h-screen">
@@ -55,11 +57,8 @@
 {% block extra_script %}
     <script>
       document.addEventListener('DOMContentLoaded', function() {
-        // Set countdown date from Django context
-        const countDownDate = new Date("{{ wedding_data.date }}T{{ wedding_data.time }}").getTime();
 
-        console.log('Wedding date:', "{{ wedding_data.date }}T{{ wedding_data.time }}");
-        console.log('Countdown timestamp:', countDownDate);
+        const countDownDate = new Date("{{ wedding_data.date }}T{{ wedding_data.time }}").getTime();
 
         const updateCountdown = () => {
           const now = new Date().getTime();
@@ -69,7 +68,6 @@
           const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
           const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
 
-          // Update countdown display using textContent
           const daysEl = document.getElementById('days');
           const hoursEl = document.getElementById('hours');
           const minutesEl = document.getElementById('minutes');
@@ -97,7 +95,7 @@
 
         // Update countdown every second
         const x = setInterval(updateCountdown, 1000);
-        updateCountdown(); // Initial call
+        updateCountdown();
       });
     </script>
-{% endblock %}
+{% endblock extra_script %}
