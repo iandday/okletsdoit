@@ -1,0 +1,25 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Environment variables
+**/.env
+
+# Django specific
+*.log
+db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/
+
+# container files
+persist
+
+node_modules/

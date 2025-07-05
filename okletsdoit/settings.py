@@ -34,14 +34,24 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_extensions",
+    "health_check",
+    "health_check.db",
+    "health_check.storage",
+    "health_check.contrib.migrations",
+    #'health_check.cache',
+    #'health_check.contrib.celery',
+    #'health_check.contrib.celery_ping',
+    #'health_check.contrib.redis',
     "core",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
+    "csp.middleware.CSPMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
@@ -98,13 +108,12 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = os.getenv("TIMEZONE", "UTC")
-USE_I18N = True
+USE_I18N = False
 USE_TZ = True
 
 
-STATIC_URL = "static/"
-
-STATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_URL = "/static/"
 MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
+STATIC_ROOT = Path(os.getenv("STATIC_ROOT", "/static"))
+MEDIA_ROOT = Path(os.getenv("MEDIA_ROOT", "/media"))
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

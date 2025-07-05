@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
 
 from core import views as core
 from django.conf import settings
@@ -10,4 +10,9 @@ urlpatterns = [
     path("", core.home, name="home"),
     path("venue/", core.venue, name="venue"),
     path("our-story/", core.our_story, name="our_story"),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    path("health/", include("health_check.urls")),
+]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -3,5 +3,8 @@
         {
             "file": "./.vscode/daisyui.md"
         }
+    ],
+    "conventionalCommits.scopes": [
+        "Core"
     ]
 }
