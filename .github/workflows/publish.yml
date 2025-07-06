@@ -94,8 +94,18 @@ jobs:
     #       subject-digest: ${{ steps.build.outputs.digest }}
     #       push-to-registry: true
 
+      - name: Check if tag already exists
+        id: check_tag
+        run: |
+            TAG="v${{ steps.version.outputs.version }}"
+            if git ls-remote --tags origin | grep -q "refs/tags/$TAG$"; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+            else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            fi
+
       - name: Create GitHub Release
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push' && steps.check_tag.outputs.exists == 'false'
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
