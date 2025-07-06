@@ -67,7 +67,7 @@ EXPOSE 8000
 
 # Health check using django-health-check endpoint
 HEALTHCHECK --interval=30s --timeout=30s --start-period=60s --retries=3 \
-    CMD curl -f http://localhost:8000/health/ || exit 1
+    CMD /app/.venv/bin/python manage.py  health_check
 
 ENTRYPOINT ["./docker-entrypoint.sh"]
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "3", "--timeout", "60", "okletsdoit.wsgi:application"]
