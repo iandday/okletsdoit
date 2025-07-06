@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 import os
 from pathlib import Path
+import socket
 
 import environ
 from csp.constants import NONE
@@ -51,9 +52,26 @@ INSTALLED_APPS = [
     #'health_check.contrib.celery',
     #'health_check.contrib.celery_ping',
     #'health_check.contrib.redis',
+    "widget_tweaks",
+    "slippers",
+    "allauth_ui",
+    "allauth",
+    "allauth.account",
+    "allauth.mfa",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.google",
+    "allauth.socialaccount.providers.openid_connect",
+    "import_export",  # https://django-import-export.readthedocs.io/en/latest/
+    "simple_history",  # https://django-simple-history.readthedocs.io/en/latest/quick_start.html#install
     "csp",
     "core",
+    "users",
 ]
+
+if DEBUG:
+    INSTALLED_APPS += [
+        "debug_toolbar",  # https://django-debug-toolbar.readthedocs.io/en/latest/
+    ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -65,6 +83,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = "okletsdoit.urls"
@@ -104,16 +124,56 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
-    {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-    },
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
+
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
+AUTH_USER_MODEL = "users.User"
+LOGIN_REDIRECT_URL = "/"
+LOGIN_URL = "account_login"
+
+# django-allauth
+# https://docs.allauth.org/en/latest/account/configuration.html
+ACCOUNT_ALLOW_REGISTRATION = env.bool("DJANGO_ACCOUNT_ALLOW_REGISTRATION", True)  # type: ignore[arg-type]
+ACCOUNT_ALLOW_SOCIAL_REGISTRATION = env.bool(
+    "DJANGO_ACCOUNT_ALLOW_SOCIAL_REGISTRATION",
+    True,  # type: ignore[arg-type]
+)
+ACCOUNT_LOGIN_METHODS = {"email"}
+ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*", "password2*"]
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_FORMS = {"signup": "users.forms.UserSignupForm"}
+ACCOUNT_ADAPTER = "users.adapters.AccountAdapter"
+SOCIALACCOUNT_ADAPTER = "users.adapters.SocialAccountAdapter"
+SOCIALACCOUNT_FORMS = {"signup": "users.forms.UserSocialSignupForm"}
+SOCIAL_PROVIDERS = "allauth.socialaccount.providers.openid_connect"
+SOCIALACCOUNT_PROVIDERS = {
+    "openid_connect": {
+        "APPS": [
+            {
+                "provider_id": "authentik",
+                "name": "Authentik",
+                "client_id": env.str("AUTHENTIK_CLIENT_ID"),
+                "secret": env.str("AUTHENTIK_CLIENT_SECRET"),
+                "settings": {
+                    "server_url": env.str("AUTHENTIK_URL"),
+                },
+            },
+        ],
+    },
+}
+# ADMIN
+ADMIN_URL = "admin/"
+# https://cookiecutter-django.readthedocs.io/en/latest/settings.html#other-environment-settings
+# Force the `admin` sign in process to go through the `django-allauth` workflow
+DJANGO_ADMIN_FORCE_ALLAUTH = env.bool("DJANGO_ADMIN_FORCE_ALLAUTH", default=False)  # type: ignore[arg-type]
 
 
 LANGUAGE_CODE = "en-us"
@@ -127,6 +187,14 @@ MEDIA_URL = "/media/"
 STATIC_ROOT = env.path("STATIC_ROOT")
 MEDIA_ROOT = env.path("MEDIA_ROOT")
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# HTTPS redirect
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+CSRF_TRUSTED_ORIGINS = env.list("DJANGO_CSRF_TRUSTED_ORIGINS")
 
 CONTENT_SECURITY_POLICY = {
     "EXCLUDE_URL_PREFIXES": ["/excluded-path/"],
@@ -155,4 +223,19 @@ CONTENT_SECURITY_POLICY = {
         "upgrade-insecure-requests": True,
         "include-nonce": True,
     },
+}
+
+# django debug toolbar
+INTERNAL_IPS = ["127.0.0.1", "10.0.2.2", "host.docker.internal", "localhost", "dev.internal"]
+hostname, _, ips = socket.gethostbyname_ex(socket.gethostbyname(""))
+INTERNAL_IPS += [".".join(ip.split(".")[:-1] + ["1"]) for ip in ips]
+DEBUG_TOOLBAR_CONFIG = {
+    "SHOW_TOOLBAR_CALLBACK": lambda request: env.bool("DJANGO_DEBUG", False),  # type: ignore[arg-type]
+    "DISABLE_PANELS": [
+        "debug_toolbar.panels.redirects.RedirectsPanel",
+        # Disable profiling panel due to an issue with Python 3.12:
+        # https://github.com/jazzband/django-debug-toolbar/issues/1875
+        "debug_toolbar.panels.profiling.ProfilingPanel",
+    ],
+    "SHOW_TEMPLATE_CONTEXT": True,
 }
