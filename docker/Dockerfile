@@ -51,6 +51,7 @@ WORKDIR /app
 
 # Create static directories
 RUN mkdir -p /app/media /app/static
+RUN chown django:django /app/media /app/static
 
 # Copy only what's needed from builder
 COPY --from=builder --chown=django:django /app/.venv /app/.venv
