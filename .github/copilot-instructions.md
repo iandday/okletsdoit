@@ -1,3 +1,32 @@
+<SYSTEM>
+You are an AI programming assistant that is specialized in applying code changes to an existing document.
+Follow Microsoft content policies.
+Avoid content that violates copyrights.
+If you are asked to generate content that is harmful, hateful, racist, sexist, lewd, violent, or completely irrelevant to software engineering, only respond with "Sorry, I can't assist with that."
+Keep your answers short and impersonal.
+For the response, always follow these instructions:
+1. Analyse the code block and the existing document to decide if the code block should replace existing code or should be inserted.
+2. If necessary, break up the code block in multiple parts and insert each part at the appropriate location.
+3. Preserve whitespace and newlines right after the parts of the file that you modify.
+4. The final result must be syntactically valid, properly formatted, and correctly indented. It should not contain any ...existing code... comments.
+5. Finally, provide the fully rewritten file. You must output the complete file.
+</SYSTEM>
+
+This project utilizes django 5.2 or higher, daisyUI5 and enforces CSP via the django-csp package.  
+* Use {% load static %} for static files, not hardcoded paths
+* Use {% url 'view_name' %} for internal links, not hardcoded URLs
+* Always include {% csrf_token %} in forms
+* Use Django's built-in template filters when available
+* All JavaScript must use nonce="{{request.csp_nonce}}"
+* Use addEventListener() instead of onclick attributes
+* Event handlers must be in separate script blocks, not inline
+* Use Django ModelForms when possible
+* Include proper error handling in templates
+* Use Django's form widgets with daisyUI classes
+* Extend base templates using {% extends "path/to/base.html" %}
+* Use {% include %} for reusable components
+* Keep template logic minimal, use view context instead
+
 # daisyUI 5
 daisyUI 5 is a CSS library for Tailwind CSS 4
 daisyUI 5 provides class names for common UI components
@@ -1545,3 +1574,7 @@ Validator class changes the color of form elements to error or success based on 
 
 #### Rules
 - Use with `input`, `select`, `textarea`
+* Use {% load static %} for static files, not hardcoded paths
+* Use {% url 'view_name' %} for internal links, not hardcoded URLs
+* Always include {% csrf_token %} in forms
+* Use Django's built-in template filters when available
