@@ -1,5 +1,6 @@
 import logging
 import uuid
+import json
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Q
@@ -10,10 +11,12 @@ import polars as pl
 import io
 from datetime import datetime
 from django.http import HttpRequest
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 
 
-from core.forms import TaskImportForm, TaskListForm, TaskForm
-from core.models import TaskList, Task
+from core.forms import IdeaForm, TaskImportForm, TaskListForm, TaskForm
+from core.models import Idea, TaskList, Task
 from users.models import User
 
 logger = logging.getLogger(__name__)
@@ -476,3 +479,46 @@ def download_template(request: HttpRequest):
     response["Content-Disposition"] = 'attachment; filename="task_import_template.xlsx"'
 
     return response
+
+
+def idea_list(request: HttpRequest):
+    """
+    Render the 'Idea List' page of the application.
+    """
+    ideas = Idea.objects.filter(is_deleted=False).select_related("created_by", "updated_by").order_by("created_at")
+    add_idea_form = IdeaForm()
+    return render(request, "core/idea_list.html", {"ideas": ideas, "add_idea_form": add_idea_form})
+
+
+def idea_create(request: HttpRequest):
+    """
+    Create a new idea.
+    """
+    if request.method == "POST":
+        form = IdeaForm(request.POST)
+        if form.is_valid():
+            idea = form.save(commit=False)
+            idea.created_by = request.user
+            idea.updated_by = request.user
+            idea.save()
+            messages.success(request, "Idea created successfully.")
+            return redirect("idea_list")
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field}: {error}")
+    
+    return redirect("idea_list")
+
+
+@csrf_exempt
+@require_POST
+def csp_report(request):
+    """Handle CSP violation reports"""
+    try:
+        report = json.loads(request.body.decode("utf-8"))
+        logger.warning(f"CSP Violation: {report}")
+    except (ValueError, UnicodeDecodeError) as e:
+        logger.error(f"Failed to parse CSP report: {e}")
+
+    return HttpResponse(status=204)

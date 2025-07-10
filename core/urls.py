@@ -16,4 +16,7 @@ urlpatterns = [
     path("task_list/template/download/", views.download_template, name="template_download"),
     path("task/<slug:task_slug>/edit", views.task_edit, name="task_edit"),
     path("task/<slug:task_slug>/delete", views.task_delete, name="task_delete"),
+    path("idea_list/", views.idea_list, name="idea_list"),
+    path("idea_create/", views.idea_create, name="idea_create"),
+    path("csp-report/", views.csp_report, name="csp_report"),
 ]

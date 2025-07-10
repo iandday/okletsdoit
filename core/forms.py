@@ -1,20 +1,29 @@
 from django import forms
-from .models import TaskList, Task
+from django.forms import ModelForm
+from .models import TaskList, Task, Idea
+from django_ckeditor_5.fields import CKEditor5Field
 from users.models import User
+from django_ckeditor_5.widgets import CKEditor5Widget
 
 
 class TaskImportForm(forms.Form):
-    excel_file = forms.FileField()
+    excel_file = forms.FileField(
+        widget=forms.FileInput(
+            attrs={"class": "file-input file-input-bordered file-input-primary w-full", "accept": ".xlsx,.xls"}
+        )
+    )
 
 
-class TaskListForm(forms.ModelForm):
+class TaskListForm(ModelForm):
     """Form for creating and editing task lists."""
 
     class Meta:
         model = TaskList
         fields = ["name"]
         widgets = {
-            "name": forms.TextInput(attrs={"class": "input input-bordered w-full", "maxlength": 60, "required": True})
+            "name": forms.TextInput(
+                attrs={"class": "input input-bordered w-full", "placeholder": "Enter task list name"}
+            )
         }
 
     def __init__(self, *args, **kwargs):
@@ -22,21 +31,23 @@ class TaskListForm(forms.ModelForm):
         self.fields["name"].label = "Task List Name"
 
 
-class TaskForm(forms.ModelForm):
+class TaskForm(ModelForm):
     """Form for creating and editing tasks."""
 
     class Meta:
         model = Task
         fields = ["title", "description", "due_date", "priority", "assigned_to", "completed"]
         widgets = {
-            "title": forms.TextInput(
-                attrs={"class": "input input-bordered w-full", "maxlength": 250, "required": True}
+            "title": forms.TextInput(attrs={"class": "input input-bordered w-full", "placeholder": "Enter task title"}),
+            "description": forms.Textarea(
+                attrs={"class": "textarea textarea-bordered w-full", "rows": 4, "placeholder": "Enter task description"}
             ),
-            "description": forms.Textarea(attrs={"class": "textarea textarea-bordered w-full", "rows": 3}),
             "due_date": forms.DateInput(attrs={"class": "input input-bordered w-full", "type": "date"}),
-            "priority": forms.NumberInput(attrs={"class": "input input-bordered w-full", "min": 1, "max": 5}),
+            "priority": forms.NumberInput(
+                attrs={"class": "input input-bordered w-full", "placeholder": "Priority (1-5)"}
+            ),
             "assigned_to": forms.Select(attrs={"class": "select select-bordered w-full"}),
-            "completed": forms.CheckboxInput(attrs={"class": "checkbox checkbox-primary"}),
+            "completed": forms.CheckboxInput(attrs={"class": "toggle toggle-primary"}),
         }
 
     def __init__(self, *args, **kwargs):
@@ -53,3 +64,23 @@ class TaskForm(forms.ModelForm):
         self.fields["assigned_to"].queryset = User.objects.all()
         self.fields["completed"].label = "Mark as completed"
         self.fields["completed"].required = False
+
+
+class IdeaForm(ModelForm):
+    """Form for creating and editing ideas."""
+
+    class Meta:
+        model = Idea
+        fields = ["name", "description"]
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "input input-bordered w-full", "placeholder": "Enter idea name"}),
+            "description": forms.TextInput(
+                attrs={"class": "input input-bordered w-full", "placeholder": "Enter idea description"}
+            ),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["name"].label = "Idea Name"
+        self.fields["description"].label = "Description"
+        self.fields["description"].required = False

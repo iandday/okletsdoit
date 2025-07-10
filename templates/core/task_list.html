@@ -2,13 +2,13 @@
 
 {% load static form_extras %}
 
-{% block title %}Task Lists{% endblock %}
+{% block title %}Deadline Lists{% endblock %}
 {% block content %}
     <div class="max-w-7xl mx-auto px-4 py-8">
         <!-- Header Section -->
         <div class="text-center mb-8">
-            <h1 class="text-4xl font-bold text-base-content mb-4">Wedding Task Lists</h1>
-            <p class="text-lg text-base-content/70">Organize your wedding planning with these task lists</p>
+            <h1 class="text-4xl sm:text-lg font-bold text-base-content mb-4">Wedding Deadlines</h1>
+            <p class="text-lg text-base-content/70">Organize your wedding planning with these deadline lists</p>
         </div>
         <!-- Task Lists Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -17,9 +17,9 @@
                     <div class="card-body">
                         <!-- Task List Header -->
                         <div class="flex items-start justify-between mb-4">
-                            <h2 class="card-title text-primary">{{ task_list.name }}</h2>
+                            <a class="card-title text-primary"
+                               href="{% url 'task_list_detail' task_list.slug %}">{{ task_list.name }}</a>
                             <div class="flex items-center gap-2">
-                                <div class="badge badge-outline badge-sm">{{ task_list.total_tasks }} task{{ task_list.total_tasks|pluralize }}</div>
                                 <!-- Delete Button -->
                                 <button class="btn btn-ghost btn-xs btn-circle text-error-content hover:bg-error hover:text-error-content"
                                         title="Delete task list"
@@ -31,6 +31,16 @@
                                          stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1-1H8a1 1 0 00-1 1v3M4 7h16" />
                                     </svg>
+                                </button>
+                                <button class="btn btn-ghost btn-sm" id="show-edit-modal-{{ task_list.id }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         class="h-4 w-4"
+                                         fill="none"
+                                         viewBox="0 0 24 24"
+                                         stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                    </svg>
+                                    Edit
                                 </button>
                             </div>
                         </div>
@@ -63,41 +73,19 @@
                             </div>
                         {% endif %}
                         <!-- Card Actions -->
-                        <div class="card-actions justify-between items-center">
-                            <div class="flex gap-2">
-                                <a class="btn btn-primary btn-sm"
-                                   href="{% url 'task_list_detail' task_list.slug %}">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                         class="h-4 w-4"
-                                         fill="none"
-                                         viewBox="0 0 24 24"
-                                         stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                    </svg>
-                                    View Tasks
-                                </a>
-                                <button class="btn btn-ghost btn-sm" id="show-edit-modal-{{ task_list.id }}">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                         class="h-4 w-4"
-                                         fill="none"
-                                         viewBox="0 0 24 24"
-                                         stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                    </svg>
-                                    Edit
-                                </button>
-                            </div>
-                            <!-- Status Badge -->
-                            {% if task_list.total_tasks == 0 %}
-                                <div class="badge badge-ghost">Empty</div>
-                            {% elif task_list.completed_tasks == task_list.total_tasks %}
-                                <div class="badge badge-success">✓ Complete</div>
-                            {% elif task_list.completed_tasks == 0 %}
-                                <div class="badge badge-warning">📋 Not Started</div>
-                            {% else %}
-                                <div class="badge badge-info">⚡ In Progress</div>
-                            {% endif %}
+                        <div class="card-actions justify-center items-center">
+                            <a class="btn btn-primary btn-sm"
+                               href="{% url 'task_list_detail' task_list.slug %}">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     class="h-4 w-4"
+                                     fill="none"
+                                     viewBox="0 0 24 24"
+                                     stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                </svg>
+                                View Deadlines
+                            </a>
                         </div>
                     </div>
                 </div>
