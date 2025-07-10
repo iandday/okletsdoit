@@ -14,6 +14,7 @@ def site_vars(request):
             {"view_name": "venue", "icon": "fa-hotel", "text": "Venue"},
             {"view_name": "photos", "icon": "fa-camera", "text": "Upload Photos"},
             {"view_name": "rsvp", "icon": "fa-pen-to-square", "text": "RSVP"},
+            {"view_name": "task_list", "icon": "fa-list", "text": "Task List"},
         ],
         "sidebar_app_links": [
             {"view_name": "settings", "icon": "fa-gear", "text": "Settings"},

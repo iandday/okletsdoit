@@ -1,0 +1,321 @@
+{% extends "components/base.html" %}
+
+{% load static %}
+
+{% load form_extras %}
+
+{% block title %}Task Lists{% endblock %}
+{% block content %}
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <!-- Header Section -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-base-content mb-4">Wedding Task Lists</h1>
+            <p class="text-lg text-base-content/70">Organize your wedding planning with these task lists</p>
+        </div>
+        <!-- Task Lists Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for task_list in task_lists %}
+                <div class="card bg-neutral shadow-xl hover:shadow-2xl transition-shadow duration-300">
+                    <div class="card-body">
+                        <!-- Task List Header -->
+                        <div class="flex items-start justify-between mb-4">
+                            <h2 class="card-title text-primary">{{ task_list.name }}</h2>
+                            <div class="flex items-center gap-2">
+                                <!-- Status Badge -->
+                                {% if task_list.total_tasks == 0 %}
+                                    <div class="badge badge-sm badge-ghost">Empty</div>
+                                {% elif task_list.completed_tasks == task_list.total_tasks %}
+                                    <div class="badge badge-sm badge-success">✓ Complete</div>
+                                {% elif task_list.completed_tasks == 0 %}
+                                    <div class="badge badge-sm badge-warning">📋 Not Started</div>
+                                {% else %}
+                                    <div class="badge badge-info">⚡ In Progress</div>
+                                {% endif %}
+                                <!-- Delete Button -->
+                                <button class="btn btn-ghost btn-xs btn-circle text-error hover:bg-error hover:text-error-content delete-task-list-btn"
+                                        data-task-list-id="{{ task_list.id }}"
+                                        data-task-list-name="{{ task_list.name }}"
+                                        title="Delete task list">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         class="h-4 w-4"
+                                         fill="none"
+                                         viewBox="0 0 24 24"
+                                         stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1-1H8a1 1 0 00-1 1v3M4 7h16" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Task List Description (if available) -->
+                        {% if task_list.description %}<p class="text-base-content/80 mb-4">{{ task_list.description }}</p>{% endif %}
+                        <!-- Task List Stats -->
+                        <div class="stats stats-horizontal text-center shadow-sm bg-base-200 mb-4">
+                            <div class="stat py-2">
+                                <div class="stat-title text-xs">Total</div>
+                                <div class="stat-value text-sm">{{ task_list.total_tasks }}</div>
+                            </div>
+                            <div class="stat py-2">
+                                <div class="stat-title text-xs">Completed</div>
+                                <div class="stat-value text-sm text-success">{{ task_list.completed_tasks }}</div>
+                            </div>
+                            <div class="stat py-2">
+                                <div class="stat-title text-xs">Pending</div>
+                                <div class="stat-value text-sm text-warning">{{ task_list.pending_tasks }}</div>
+                            </div>
+                        </div>
+                        <!-- Progress Bar -->
+                        {% if task_list.total_tasks > 0 %}
+                            {% widthratio task_list.completed_tasks task_list.total_tasks 100 as progress_percentage %}
+                            <div class="mb-4">
+                                <div class="flex justify-between text-xs mb-1">
+                                    <span>Progress</span>
+                                    <span>{{ progress_percentage }}%</span>
+                                </div>
+                                <progress class="progress progress-primary w-full"
+                                          value="{{ progress_percentage }}"
+                                          max="100"></progress>
+                            </div>
+                        {% endif %}
+                        <!-- Card Actions -->
+                        <div class="card-actions justify-between items-center">
+                            <div class="flex gap-2">
+                                <a class="btn btn-primary btn-sm"
+                                   href="{% url 'task_list_detail' task_list.slug %}">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         class="h-4 w-4"
+                                         fill="none"
+                                         viewBox="0 0 24 24"
+                                         stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
+                                    View Tasks
+                                </a>
+                                <button class="btn btn-ghost btn-sm" id="show-edit-modal-{{ task_list.id }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         class="h-4 w-4"
+                                         fill="none"
+                                         viewBox="0 0 24 24"
+                                         stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                    </svg>
+                                    Edit
+                                </button>
+                                <button class="btn btn-error btn-sm"
+                                        id="show-delete-modal-{{ task_list.id }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         class="h-4 w-4"
+                                         fill="none"
+                                         viewBox="0 0 24 24"
+                                         stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <!-- Empty State -->
+                <div class="col-span-full">
+                    <div class="card bg-base-100 shadow-xl">
+                        <div class="card-body text-center py-16">
+                            <div class="text-6xl mb-4">📝</div>
+                            <h2 class="card-title text-2xl justify-center mb-4">No Task Lists Yet</h2>
+                            <p class="text-base-content/70 mb-6">Create your first task list to start organizing your wedding planning!</p>
+                            <div class="card-actions justify-center">
+                                <button class="btn btn-primary btn-lg">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         class="h-5 w-5"
+                                         fill="none"
+                                         viewBox="0 0 24 24"
+                                         stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                    </svg>
+                                    Create Task List
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-8">
+            <button class="btn btn-outline btn-primary">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     class="h-5 w-5"
+                     fill="none"
+                     viewBox="0 0 24 24"
+                     stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+                Add New Task List
+            </button>
+            <!-- Import Tasks Button -->
+            <button class="btn btn-secondary ml-4" id="toggleUploadBtn">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     class="h-5 w-5"
+                     fill="none"
+                     viewBox="0 0 24 24"
+                     stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                </svg>
+                <span id="import-btn-text">Import Tasks</span>
+            </button>
+        </div>
+        <!-- Upload Form Card (Hidden by default) -->
+        <div class="card bg-neutral shadow-xl mt-8 hidden" id="upload-form">
+            <div class="card-body">
+                <h2 class="card-title text-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         class="h-6 w-6"
+                         fill="none"
+                         viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                    </svg>
+                    Upload Excel File
+                </h2>
+                <form method="post" enctype="multipart/form-data" class="space-y-6">
+                    {% csrf_token %}
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-medium">Select Excel File</span>
+                        </label>
+                        <input type="file"
+                               name="excel_file"
+                               accept=".xlsx,.xls"
+                               class="file-input file-input-bordered file-input-primary w-full"
+                               required />
+                        <label class="label">
+                            <span class="label-text-alt">Supported formats: .xlsx, .xls</span>
+                        </label>
+                    </div>
+                    <div class="alert alert-info">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             class="h-5 w-5"
+                             viewBox="0 0 20 20"
+                             fill="currentColor">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                        </svg>
+                        <div>
+                            <h3 class="font-bold">Required Columns:</h3>
+                            <ul class="text-sm mt-1">
+                                <li>
+                                    • <code class="bg-base-200 px-1 rounded">task_list_name</code> - Name of the task list
+                                </li>
+                                <li>
+                                    • <code class="bg-base-200 px-1 rounded">title</code> - Task title (required)
+                                </li>
+                            </ul>
+                            <h3 class="font-bold mt-2">Optional Columns:</h3>
+                            <ul class="text-sm mt-1">
+                                <li>
+                                    • <code class="bg-base-200 px-1 rounded">description</code> - Task description
+                                </li>
+                                <li>
+                                    • <code class="bg-base-200 px-1 rounded">due_date</code> - Due date (YYYY-MM-DD)
+                                </li>
+                                <li>
+                                    • <code class="bg-base-200 px-1 rounded">priority</code> - Priority (1-5)
+                                </li>
+                                <li>
+                                    • <code class="bg-base-200 px-1 rounded">assigned_to</code> - User email
+                                </li>
+                                <li>
+                                    • <code class="bg-base-200 px-1 rounded">completed</code> - TRUE/FALSE
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-actions justify-end">
+                        <a href="{% url 'template_download' %}"
+                           class="btn btn-outline btn-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 class="h-5 w-5"
+                                 fill="none"
+                                 viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            Download Template
+                        </a>
+                        <button type="button" class="btn btn-ghost" id="cancelUploadBtn">Cancel</button>
+                        <button type="submit" class="btn btn-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 class="h-5 w-5"
+                                 fill="none"
+                                 viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                            </svg>
+                            Import Tasks
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Start Delete and Edit Confirmation Modals -->
+    {% for task_list in task_lists %}
+        {% url 'task_list_delete' task_list.slug as delete_action %}
+        {% url 'task_list_edit' task_list.slug as edit_action %}
+
+        {% include "components/modal_delete.html" with id=task_list.id action=delete_action name=task_list.name item="Task List" %}
+        {% include "components/modal_edit_task_list.html" with id=task_list.id action=edit_action form=task_list_forms|get_item:task_list.id item="Task List" %}
+
+    {% endfor %}
+    <!-- End Delete and Edit Confirmation Modals -->
+{% endblock content %}
+{% block extra_script %}
+    <script nonce="{{request.csp_nonce}}">
+      function toggleUploadForm() {
+        const uploadForm = document.getElementById('upload-form');
+        const btnText = document.getElementById('import-btn-text');
+
+        if (uploadForm.classList.contains('hidden')) {
+          uploadForm.classList.remove('hidden');
+          uploadForm.scrollIntoView({
+            behavior: 'smooth'
+          });
+          btnText.textContent = 'Hide Import Form';
+        } else {
+          uploadForm.classList.add('hidden');
+          btnText.textContent = 'Import Tasks';
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', function() {
+        // Toggle upload form button
+        const toggleBtn = document.getElementById('toggleUploadBtn');
+        if (toggleBtn) {
+          toggleBtn.addEventListener('click', toggleUploadForm);
+        }
+
+        // Cancel upload form button
+        const cancelBtn = document.getElementById('cancelUploadBtn');
+        if (cancelBtn) {
+          cancelBtn.addEventListener('click', toggleUploadForm);
+        }
+
+        // Delete task list buttons
+        document.querySelectorAll('.delete-task-list-btn').forEach(button => {
+          button.addEventListener('click', function() {
+            const taskListId = this.getAttribute('data-task-list-id');
+            const taskListName = this.getAttribute('data-task-list-name');
+            showDeleteModal(taskListId, taskListName);
+          });
+        });
+
+        // Confirm delete button
+        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+        if (confirmDeleteBtn) {
+          confirmDeleteBtn.addEventListener('click', function() {
+            const taskListId = this.getAttribute('data-task-list-id');
+            deleteTaskList(taskListId);
+          });
+        }
+      });
+    </script>
+{% endblock extra_script %}
