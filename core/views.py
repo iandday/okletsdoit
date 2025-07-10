@@ -1,3 +1,4 @@
+import logging
 import uuid
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
@@ -6,16 +7,16 @@ from django.contrib import messages
 from django.http import HttpResponse
 from django.utils.text import slugify
 import polars as pl
-from django import forms
 import io
 from datetime import datetime
 from django.http import HttpRequest
-from urllib3 import request
 
 
 from core.forms import TaskImportForm, TaskListForm, TaskForm
 from core.models import TaskList, Task
 from users.models import User
+
+logger = logging.getLogger(__name__)
 
 
 def home(request: HttpRequest):
@@ -238,9 +239,9 @@ def task_list(request: HttpRequest):
         TaskList.objects.filter(is_deleted=False)
         .prefetch_related("task_set")
         .annotate(
-            total_tasks=Count("task", filter=Q(task__is_deleted=False)),
-            completed_tasks=Count("task", filter=Q(task__completed=True, task__is_deleted=False)),
-            pending_tasks=Count("task", filter=Q(task__completed=False, task__is_deleted=False)),
+            total_tasks=Count("task"),
+            completed_tasks=Count("task", filter=Q(task__completed=True)),
+            pending_tasks=Count("task", filter=Q(task__completed=False)),
         )
         .order_by("name")
     )
@@ -251,9 +252,47 @@ def task_list(request: HttpRequest):
         task_list_forms[task_list.id] = TaskListForm(instance=task_list)
 
     form = TaskImportForm()
+    add_task_list_form = TaskListForm()
     return render(
-        request, "core/task_list.html", {"task_lists": task_lists, "form": form, "task_list_forms": task_list_forms}
+        request,
+        "core/task_list.html",
+        {
+            "task_lists": task_lists,
+            "form": form,
+            "task_list_forms": task_list_forms,
+            "add_task_list_form": add_task_list_form,
+        },
     )
+
+
+def task_list_create(request: HttpRequest):
+    """
+    Creates a new task list.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        HttpResponse: Redirects to the task list page with a success message.
+    """
+
+    if request.method == "POST":
+        form = TaskListForm(request.POST)
+        if form.is_valid():
+            task_list: TaskList = form.save(commit=False)
+            task_list.created_by = request.user
+            task_list.save()
+
+            messages.success(request, "Task list created successfully.")
+            return redirect("task_list_detail", task_list_slug=task_list.slug)
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field}: {error}")
+    else:
+        messages.error(request, "Invalid request method.")
+
+    return redirect("task_list")
 
 
 def task_list_delete(request: HttpRequest, task_list_slug: str):
@@ -352,23 +391,13 @@ def task_list_detail(request: HttpRequest, task_list_slug: str):
 
 
 def task_edit(request: HttpRequest, task_slug: str):
-    """
-    Edits a specific task within a task list.
-
-    Args:
-        request (HttpRequest): The HTTP request object.
-        task_id (uuid.UUID): The ID of the task to edit.
-
-    Returns:
-        HttpResponse: Redirects to the task list detail page with a success message.
-    """
     if request.method == "POST":
         try:
             task = Task.objects.get(slug=task_slug, is_deleted=False)
             form = TaskForm(request.POST, instance=task)
 
             if form.is_valid():
-                task = form.save(commit=False)
+                task: Task = form.save(commit=False)
                 task.updated_by = request.user
                 task.save()
                 messages.success(request, "Task updated successfully.")
@@ -387,7 +416,7 @@ def task_edit(request: HttpRequest, task_slug: str):
 
 def task_delete(request: HttpRequest, task_slug: str):
     """
-    Deletes a specific task within a task list.
+    Deletes a task from a task list.
 
     Args:
         request (HttpRequest): The HTTP request object.
@@ -397,7 +426,7 @@ def task_delete(request: HttpRequest, task_slug: str):
         HttpResponse: Redirects to the task list detail page with a success message.
     """
     try:
-        task = Task.objects.get(slug=task_slug, is_deleted=False)
+        task: Task = Task.objects.get(slug=task_slug, is_deleted=False)
         task.is_deleted = True
         task.save()
         messages.success(request, "Task deleted successfully.")

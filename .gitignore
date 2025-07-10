@@ -24,3 +24,5 @@ staticfiles/
 _persist/
 
 node_modules/
+~$task_import_template.xlsx
+task_import_template.xlsx

@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 from pathlib import Path
 import socket
+from pythonjsonlogger.json import JsonFormatter
 
 import environ
 from csp.constants import NONE
@@ -28,6 +29,7 @@ env = environ.Env(
     MEDIA_ROOT=(Path, "/app/media"),
     TIME_ZONE=(str, "UTC"),
     ALLOWED_HOSTS=(list, []),
+    DJANGO_LOG_LEVEL=(str, "DEBUG"),
 )
 env.read_env(BASE_DIR / ".env", overwrite=True)
 
@@ -121,6 +123,44 @@ DATABASES = {
         "HOST": env("POSTGRES_HOST"),
         "PORT": env("POSTGRES_PORT"),
     }
+}
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "{levelname} {asctime} {module} {process:d} {thread:d} {message}",
+            "style": "{",
+        },
+        "json": {
+            "()": JsonFormatter,
+            "format": "%(asctime)s %(levelname)s %(message)s %(module)s",
+        },
+    },
+    "handlers": {
+        "console": {
+            "level": env.str("DJANGO_LOG_LEVEL"),  # Changed to DEBUG
+            "class": "logging.StreamHandler",
+            "formatter": "verbose" if env.bool("DEBUG") else "json",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": env.str("DJANGO_LOG_LEVEL"),  # Added level and changed to DEBUG
+    },
+    "loggers": {
+        "core": {  # Add specific logger for your core app
+            "handlers": ["console"],
+            "level": "DEBUG",
+            "propagate": False,
+        },
+        "django": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": False,
+        },
+    },
 }
 
 AUTH_PASSWORD_VALIDATORS = [

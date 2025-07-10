@@ -21,7 +21,7 @@ css:
 
 dev:
     @echo "Starting django server"
-    uv run --group dev manage.py runserver_plus 0.0.0.0:8000
+    uv run --group dev manage.py runserver_plus 127.0.0.1:8000
 
 makemigrations:
     @echo "Running Django makemigrations..."

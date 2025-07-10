@@ -1,6 +1,7 @@
 import datetime
 import uuid
 from django.db import models
+from django.utils.text import slugify
 
 from users.models import User
 
@@ -24,6 +25,11 @@ class TaskList(models.Model):
         ordering = ["name"]
         verbose_name_plural = "Task Lists"
         constraints = [models.UniqueConstraint(fields=["name"], name="unique_task_list")]
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
 
 class Task(models.Model):
@@ -59,6 +65,8 @@ class Task(models.Model):
         # If Task is being marked complete, set the completed_date
         if self.completed:
             self.completed_at = datetime.datetime.now()
+        if not self.slug:
+            self.slug = slugify(self.title)
         super(Task, self).save()
 
     class Meta:
