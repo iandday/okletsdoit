@@ -1,9 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 from .models import TaskList, Task, Idea
-from django_ckeditor_5.fields import CKEditor5Field
 from users.models import User
-from django_ckeditor_5.widgets import CKEditor5Widget
 
 
 class TaskImportForm(forms.Form):
@@ -74,8 +72,8 @@ class IdeaForm(ModelForm):
         fields = ["name", "description"]
         widgets = {
             "name": forms.TextInput(attrs={"class": "input input-bordered w-full", "placeholder": "Enter idea name"}),
-            "description": forms.TextInput(
-                attrs={"class": "input input-bordered w-full", "placeholder": "Enter idea description"}
+            "description": forms.Textarea(
+                attrs={"class": "textarea textarea-bordered w-full", "rows": 4, "placeholder": "Enter idea description"}
             ),
         }
 

@@ -10,14 +10,14 @@ def site_vars(request):
             "rsvp_deadline": "2024-04-30",
         },
         "nav_links": [
-            {"view_name": "our_story", "icon": "fa-heart", "text": "Our Story"},
-            {"view_name": "venue", "icon": "fa-hotel", "text": "Venue"},
-            {"view_name": "photos", "icon": "fa-camera", "text": "Upload Photos"},
-            {"view_name": "rsvp", "icon": "fa-pen-to-square", "text": "RSVP"},
+            {"view_name": "core:our_story", "icon": "fa-heart", "text": "Our Story"},
+            {"view_name": "core:venue", "icon": "fa-hotel", "text": "Venue"},
+            {"view_name": "core:photos", "icon": "fa-camera", "text": "Upload Photos"},
+            {"view_name": "core:rsvp", "icon": "fa-pen-to-square", "text": "RSVP"},
         ],
         "planning_links": [
-            {"view_name": "task_list", "icon": "fa-list", "text": "Deadlines"},
-            {"view_name": "idea_list", "icon": "fa-lightbulb", "text": "Ideas"},
+            {"view_name": "core:task_list", "icon": "fa-list", "text": "Deadlines"},
+            {"view_name": "core:idea_list", "icon": "fa-lightbulb", "text": "Ideas"},
         ],
         "sidebar_app_links": [
             {"view_name": "settings", "icon": "fa-gear", "text": "Settings"},
