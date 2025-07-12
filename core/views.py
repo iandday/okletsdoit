@@ -287,7 +287,7 @@ def task_list_create(request: HttpRequest):
             task_list.save()
 
             messages.success(request, "Task list created successfully.")
-            return redirect("task_list_detail", task_list_slug=task_list.slug)
+            return redirect("core:task_list_detail", task_list_slug=task_list.slug)
         else:
             for field, errors in form.errors.items():
                 for error in errors:
@@ -295,7 +295,7 @@ def task_list_create(request: HttpRequest):
     else:
         messages.error(request, "Invalid request method.")
 
-    return redirect("task_list")
+    return redirect("core:task_list")
 
 
 def task_list_delete(request: HttpRequest, task_list_slug: str):
