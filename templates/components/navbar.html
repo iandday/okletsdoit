@@ -74,21 +74,36 @@
                         {% endif %}
                     </li>
                 {% endfor %}
-                <li>
-                    <details>
-                        <summary class="bg-neutral btn btn-ghost">Planning</summary>
-                        <ul class="bg-neutral">
-                            {% for item in planning_links %}
-                                <li>
-                                    <a href="{% url item.view_name %}" class="btn btn-ghost">
-                                        <i class="inline-block w-5 h-5 mr-2 fa {{ item.icon }}"></i>
-                                        {{ item.text }}
-                                    </a>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </details>
-                </li>
+                {% if user.is_authenticated %}
+                    <li>
+                        <details>
+                            <summary class="bg-neutral btn btn-ghost">Planning</summary>
+                            <ul class="bg-neutral">
+                                {% for item in planning_links %}
+                                    <li>
+                                        <a href="{% url item.view_name %}" class="btn btn-ghost">
+                                            <i class="inline-block w-5 h-5 mr-2 fa {{ item.icon }}"></i>
+                                            {{ item.text }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </details>
+                    </li>
+                    <li>
+                        <a href="{% url 'account_logout' %}" class="bg-neutral tn btn-ghost">
+                            <i class="inline-block w-5 h-5 mr-2 fa fa-sign-out-alt"></i>
+                            Logout
+                        </a>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="{% url 'account_login' %}" class="bg-neutral btn btn-ghost">
+                            <i class="inline-block w-5 h-5 mr-2 fa fa-sign-in-alt"></i>
+                            Login
+                        </a>
+                    </li>
+                {% endif %}
             </ul>
         </div>
     </div>

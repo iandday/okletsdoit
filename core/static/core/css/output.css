@@ -10,6 +10,7 @@
     --color-red-500: oklch(63.7% 0.237 25.331);
     --color-gray-800: oklch(27.8% 0.033 256.848);
     --color-black: #000;
+    --color-white: #fff;
     --spacing: 0.25rem;
     --container-sm: 24rem;
     --container-md: 28rem;
@@ -38,7 +39,8 @@
     --font-weight-semibold: 600;
     --font-weight-bold: 700;
     --radius-lg: 0.5rem;
-    --radius-2xl: 1rem;
+    --ease-out: cubic-bezier(0, 0, 0.2, 1);
+    --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
     --default-transition-duration: 150ms;
     --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     --default-font-family: var(--font-sans);
@@ -5212,20 +5214,11 @@
   .h-6 {
     height: calc(var(--spacing) * 6);
   }
-  .h-9\/10 {
-    height: calc(9/10 * 100%);
-  }
   .h-100 {
     height: calc(var(--spacing) * 100);
   }
   .h-full {
     height: 100%;
-  }
-  .max-h-9\/10 {
-    max-height: calc(9/10 * 100%);
-  }
-  .min-h-32 {
-    min-height: calc(var(--spacing) * 32);
   }
   .min-h-full {
     min-height: 100%;
@@ -5351,9 +5344,6 @@
   .w-6 {
     width: calc(var(--spacing) * 6);
   }
-  .w-9\/10 {
-    width: calc(9/10 * 100%);
-  }
   .w-52 {
     width: calc(var(--spacing) * 52);
   }
@@ -5371,6 +5361,9 @@
   }
   .max-w-7xl {
     max-width: var(--container-7xl);
+  }
+  .max-w-md {
+    max-width: var(--container-md);
   }
   .max-w-none {
     max-width: none;
@@ -5545,9 +5538,6 @@
   }
   .items-start {
     align-items: flex-start;
-  }
-  .justify-around {
-    justify-content: space-around;
   }
   .justify-between {
     justify-content: space-between;
@@ -6613,9 +6603,6 @@
   .progress-warning {
     color: var(--color-warning);
   }
-  .text-accent {
-    color: var(--color-accent);
-  }
   .text-accent-content {
     color: var(--color-accent-content);
   }
@@ -6648,9 +6635,6 @@
   }
   .text-gray-800 {
     color: var(--color-gray-800);
-  }
-  .text-info {
-    color: var(--color-info);
   }
   .text-primary {
     color: var(--color-primary);
@@ -7453,12 +7437,6 @@
     @media (width >= 40rem) {
       font-size: var(--text-lg);
       line-height: var(--tw-leading, var(--text-lg--line-height));
-    }
-  }
-  .sm\:text-xl {
-    @media (width >= 40rem) {
-      font-size: var(--text-xl);
-      line-height: var(--tw-leading, var(--text-xl--line-height));
     }
   }
   .md\:grid-cols-2 {

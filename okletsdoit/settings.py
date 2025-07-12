@@ -59,7 +59,7 @@ INSTALLED_APPS = [
     "allauth_ui",
     "allauth",
     "allauth.account",
-    "allauth.mfa",
+    # "allauth.mfa",
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
     "allauth.socialaccount.providers.openid_connect",
@@ -191,9 +191,10 @@ ACCOUNT_LOGIN_METHODS = {"email"}
 ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*", "password2*"]
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
-ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_EMAIL_VERIFICATION = "none"
 ACCOUNT_FORMS = {"signup": "users.forms.UserSignupForm"}
 ACCOUNT_ADAPTER = "users.adapters.AccountAdapter"
+SOCIALACCOUNT_ONLY = True
 SOCIALACCOUNT_ADAPTER = "users.adapters.SocialAccountAdapter"
 SOCIALACCOUNT_FORMS = {"signup": "users.forms.UserSocialSignupForm"}
 SOCIAL_PROVIDERS = "allauth.socialaccount.providers.openid_connect"
@@ -264,7 +265,7 @@ CONTENT_SECURITY_POLICY = {
         "object-src": [NONE],
         "base-uri": [SELF],
         "frame-ancestors": [SELF],
-        "form-action": [SELF],
+        "form-action": [SELF, "https://dev.internal", "https://auth.ianday.me"],
         # "report-uri": "/csp-report/",
         "upgrade-insecure-requests": True,
         "include-nonce": True,

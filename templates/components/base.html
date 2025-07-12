@@ -93,8 +93,10 @@
           </div>
         {% endif %}
         <div class="pt-4 h-full flex-1">
-          {% block content %}
-          {% endblock content %}
+          {% block body %}
+            {% block content %}
+            {% endblock content %}
+          {% endblock body %}
         </div>
       </div>
     </div>

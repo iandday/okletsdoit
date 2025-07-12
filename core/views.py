@@ -57,6 +57,7 @@ def photos(request: HttpRequest):
     return render(request, "core/photos.html")
 
 
+@login_required
 def task_list(request: HttpRequest):
     """
     Render the 'Task List' page of the application.
@@ -268,6 +269,7 @@ def task_list(request: HttpRequest):
     )
 
 
+@login_required
 def task_list_create(request: HttpRequest):
     """
     Creates a new task list.
@@ -298,6 +300,7 @@ def task_list_create(request: HttpRequest):
     return redirect("core:task_list")
 
 
+@login_required
 def task_list_delete(request: HttpRequest, task_list_slug: str):
     """
     Deletes a task list and all associated tasks.
@@ -319,6 +322,7 @@ def task_list_delete(request: HttpRequest, task_list_slug: str):
     return redirect("task_list")
 
 
+@login_required
 def task_list_edit(request: HttpRequest, task_list_slug: str):
     """
     Edits a task list.
@@ -353,6 +357,7 @@ def task_list_edit(request: HttpRequest, task_list_slug: str):
     return redirect("task_list")
 
 
+@login_required
 def task_list_detail(request: HttpRequest, task_list_slug: str):
     """
     Displays the details of a specific task list, including its tasks.
@@ -393,6 +398,7 @@ def task_list_detail(request: HttpRequest, task_list_slug: str):
         return redirect("task_list")
 
 
+@login_required
 def task_edit(request: HttpRequest, task_slug: str):
     if request.method == "POST":
         try:
@@ -423,6 +429,7 @@ def task_edit(request: HttpRequest, task_slug: str):
             return redirect("task_list")
 
 
+@login_required
 def task_delete(request: HttpRequest, task_slug: str):
     """
     Deletes a task from a task list.
@@ -444,7 +451,7 @@ def task_delete(request: HttpRequest, task_slug: str):
     return redirect("task_list_detail", task_list_slug=task.task_list.slug)
 
 
-# @login_required
+@login_required
 def download_template(request: HttpRequest):
     """
     Generates and returns an Excel file template for task import.
@@ -487,6 +494,7 @@ def download_template(request: HttpRequest):
     return response
 
 
+@login_required
 def task_create(request: HttpRequest, task_list_slug: str):
     """
     Create a new task.
@@ -524,6 +532,7 @@ def task_create(request: HttpRequest, task_list_slug: str):
         return render(request, "core/task_create.html", {"form": TaskForm(), "task_list": task_list})
 
 
+@login_required
 def idea_list(request: HttpRequest):
     """
     Render the 'Idea List' page of the application.
@@ -533,6 +542,7 @@ def idea_list(request: HttpRequest):
     return render(request, "core/idea_list.html", {"ideas": ideas, "add_idea_form": add_idea_form})
 
 
+@login_required
 def idea_create(request: HttpRequest):
     """
     Create a new idea.
@@ -554,6 +564,7 @@ def idea_create(request: HttpRequest):
     return render(request, "core/idea_create.html", context={"form": IdeaForm()})
 
 
+@login_required
 def idea_detail(request: HttpRequest, idea_slug: str):
     """
     Display the details of a specific idea.
@@ -573,6 +584,7 @@ def idea_detail(request: HttpRequest, idea_slug: str):
         return redirect("idea_list")
 
 
+@login_required
 def idea_delete(request: HttpRequest, idea_slug: str):
     """
     Deletes an idea.
@@ -595,6 +607,7 @@ def idea_delete(request: HttpRequest, idea_slug: str):
     return redirect("core:idea_list")
 
 
+@login_required
 def idea_edit(request: HttpRequest, idea_slug: str):
     """
     Edits an existing idea.
