@@ -1,9 +1,8 @@
-from django.contrib import admin
-from django.urls import include, path
-
-from core import views as core
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib import admin
+from django.urls import include
+from django.urls import path
 
 app_name = "okletsdoit"
 
@@ -11,6 +10,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/", include("allauth.urls")),
     path("health/", include("health_check.urls")),
+    path("expenses/", include("expenses.urls")),
     path("", include("core.urls")),
 ]
 

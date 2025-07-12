@@ -65,9 +65,11 @@ INSTALLED_APPS = [
     "allauth.socialaccount.providers.openid_connect",
     "import_export",  # https://django-import-export.readthedocs.io/en/latest/
     "simple_history",  # https://django-simple-history.readthedocs.io/en/latest/quick_start.html#install
+    "datatableview",
     "csp",
     "core",
     "users",
+    "expenses",
 ]
 
 if DEBUG:
