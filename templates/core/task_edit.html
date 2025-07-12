@@ -1,0 +1,379 @@
+{% extends "components/base.html" %}
+
+{% load static %}
+
+{% block title %}Edit {{ task.title }}{% endblock %}
+{% block extra_head %}
+  <link rel="stylesheet"
+        href="https://cdn.ckeditor.com/ckeditor5/46.0.0/ckeditor5.css"
+        crossorigin>
+  <link rel="stylesheet" href="{% static 'core/css/ckeditor.css' %}">
+  <script nonce="{{ request.csp_nonce }}"
+          src="https://cdn.ckeditor.com/ckeditor5/46.0.0/ckeditor5.umd.js"
+          crossorigin></script>
+{% endblock extra_head %}
+{% block content %}
+  <div class="max-w-3xl mx-auto px-4 py-8 h-full flex flex-col">
+    <!-- Header Section -->
+    <div class="mb-8">
+      <div class="breadcrumbs mb-4">
+        <ul>
+          <li>
+            <a href="{% url 'core:task_list' %}" class="link">Deadlines</a>
+          </li>
+          <li>
+            <a href="{% url 'core:task_list_detail' task.task_list.slug %}"
+               class="link">{{ task.task_list.name }}</a>
+          </li>
+          <li>Edit {{ task.title }}</li>
+        </ul>
+      </div>
+    </div>
+    <!-- Edit Task Form -->
+    <div class="card bg-neutral shadow-xl flex-1">
+      <div class="card-body h-full">
+        <form method="post"
+              action="{% url 'core:task_edit' task.slug %}"
+              class="space-y-6 h-full flex flex-col">
+          {% csrf_token %}
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-medium">{{ form.title.label }}</span>
+            </label>
+            {{ form.title }}
+            {% if form.title.errors %}
+              <div class="label">
+                {% for error in form.title.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
+              </div>
+            {% endif %}
+          </div>
+          <div class="form-control flex-1">
+            <label class="label">
+              <span class="label-text font-medium">{{ form.description.label }}</span>
+            </label>
+            {{ form.description }}
+            {% if form.description.errors %}
+              <div class="label">
+                {% for error in form.description.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
+              </div>
+            {% endif %}
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text font-medium">{{ form.task_list.label }}</span>
+              </label>
+              {{ form.task_list }}
+              {% if form.task_list.errors %}
+                <div class="label">
+                  {% for error in form.task_list.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
+                </div>
+              {% endif %}
+            </div>
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text font-medium">{{ form.assigned_to.label }}</span>
+              </label>
+              {{ form.assigned_to }}
+              {% if form.assigned_to.errors %}
+                <div class="label">
+                  {% for error in form.assigned_to.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
+                </div>
+              {% endif %}
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text font-medium">{{ form.due_date.label }}</span>
+              </label>
+              {{ form.due_date }}
+              {% if form.due_date.errors %}
+                <div class="label">
+                  {% for error in form.due_date.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
+                </div>
+              {% endif %}
+            </div>
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text font-medium">{{ form.priority.label }}</span>
+              </label>
+              {{ form.priority }}
+              {% if form.priority.errors %}
+                <div class="label">
+                  {% for error in form.priority.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
+                </div>
+              {% endif %}
+            </div>
+          </div>
+          <div class="form-control">
+            <label class="label cursor-pointer">
+              <span class="label-text font-medium">{{ form.completed.label }}</span>
+              {{ form.completed }}
+            </label>
+            {% if form.completed.errors %}
+              <div class="label">
+                {% for error in form.completed.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
+              </div>
+            {% endif %}
+          </div>
+          <div class="form-control"
+               id="completed-note-section"
+               style="{% if not task.completed %}display: none;
+                      {% endif %}">
+            <label class="label">
+              <span class="label-text font-medium">{{ form.completed_note.label }}</span>
+            </label>
+            {{ form.completed_note }}
+            {% if form.completed_note.errors %}
+              <div class="label">
+                {% for error in form.completed_note.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
+              </div>
+            {% endif %}
+          </div>
+          <div class="card-actions justify-end gap-4 mt-auto">
+            <a href="{% url 'core:task_list_detail' task.task_list.slug %}"
+               class="btn btn-ghost">
+              <svg xmlns="http://www.w3.org/2000/svg"
+                   class="h-4 w-4"
+                   fill="none"
+                   viewBox="0 0 24 24"
+                   stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+              Cancel
+            </a>
+            <button type="submit" class="btn btn-primary">
+              <svg xmlns="http://www.w3.org/2000/svg"
+                   class="h-4 w-4"
+                   fill="none"
+                   viewBox="0 0 24 24"
+                   stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              Save Changes
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
+{% block extra_script %}
+  <script nonce="{{ request.csp_nonce }}">
+    let ckEditor = null;
+
+    const LICENSE_KEY =
+      'eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3NTM0ODc5OTksImp0aSI6IjAwM2Q1ZDRlLTdiNzgtNGIyMS1hNDIwLTk5Y2FlNjRhMTYyMiIsInVzYWdlRW5kcG9pbnQiOiJodHRwczovL3Byb3h5LWV2ZW50LmNrZWRpdG9yLmNvbSIsImRpc3RyaWJ1dGlvbkNoYW5uZWwiOlsiY2xvdWQiLCJkcnVwYWwiLCJzaCJdLCJ3aGl0ZUxhYmVsIjp0cnVlLCJsaWNlbnNlVHlwZSI6InRyaWFsIiwiZmVhdHVyZXMiOlsiKiJdLCJ2YyI6IjNlZjY0OTJlIn0.PkIa3ygOlE2sKRbM0AtCYBspdQ9AOoL7-BfdCfFiclnILTBzwhgzj36a6oZREjZjxvcHs19s1H7YrK-hu_FAgg';
+
+    const {
+      ClassicEditor,
+      Alignment,
+      AutoLink,
+      Autosave,
+      BalloonToolbar,
+      BlockQuote,
+      Bold,
+      Code,
+      CodeBlock,
+      Essentials,
+      FontBackgroundColor,
+      FontColor,
+      FontFamily,
+      FontSize,
+      GeneralHtmlSupport,
+      Heading,
+      Highlight,
+      HorizontalLine,
+      ImageEditing,
+      ImageUtils,
+      Indent,
+      IndentBlock,
+      Italic,
+      Link,
+      Paragraph,
+      PlainTableOutput,
+      RemoveFormat,
+      Strikethrough,
+      Style,
+      Subscript,
+      Superscript,
+      Table,
+      TableCaption,
+      TableCellProperties,
+      TableColumnResize,
+      TableLayout,
+      TableProperties,
+      TableToolbar,
+      Underline
+    } = window.CKEDITOR;
+
+    const editorConfig = {
+      width: '100%',
+      height: '300px',
+      toolbar: {
+        items: [
+          'undo',
+          'redo',
+          '|',
+          'heading',
+          '|',
+          'fontSize',
+          'fontColor',
+          '|',
+          'bold',
+          'italic',
+          'underline',
+          '|',
+          'link',
+          'insertTable',
+          'highlight',
+          'blockQuote',
+          '|',
+          'alignment',
+          '|',
+          'outdent',
+          'indent'
+        ],
+        shouldNotGroupWhenFull: false
+      },
+      plugins: [
+        Alignment,
+        AutoLink,
+        Autosave,
+        BalloonToolbar,
+        BlockQuote,
+        Bold,
+        Code,
+        CodeBlock,
+        Essentials,
+        FontBackgroundColor,
+        FontColor,
+        FontFamily,
+        FontSize,
+        GeneralHtmlSupport,
+        Heading,
+        Highlight,
+        HorizontalLine,
+        ImageEditing,
+        ImageUtils,
+        Indent,
+        IndentBlock,
+        Italic,
+        Link,
+        Paragraph,
+        PlainTableOutput,
+        RemoveFormat,
+        Strikethrough,
+        Style,
+        Subscript,
+        Superscript,
+        Table,
+        TableCaption,
+        TableCellProperties,
+        TableColumnResize,
+        TableLayout,
+        TableProperties,
+        TableToolbar,
+        Underline
+      ],
+      balloonToolbar: ['bold', 'italic', '|', 'link'],
+      fontFamily: {
+        supportAllValues: true
+      },
+      fontSize: {
+        options: [10, 12, 14, 'default', 18, 20, 22],
+        supportAllValues: true
+      },
+      heading: {
+        options: [{
+          model: 'paragraph',
+          title: 'Paragraph',
+          class: 'ck-heading_paragraph'
+        }, {
+          model: 'heading1',
+          view: 'h1',
+          title: 'Heading 1',
+          class: 'ck-heading_heading1'
+        }, {
+          model: 'heading2',
+          view: 'h2',
+          title: 'Heading 2',
+          class: 'ck-heading_heading2'
+        }, {
+          model: 'heading3',
+          view: 'h3',
+          title: 'Heading 3',
+          class: 'ck-heading_heading3'
+        }]
+      },
+      htmlSupport: {
+        allow: [{
+          name: /^.*$/,
+          styles: true,
+          attributes: true,
+          classes: true
+        }]
+      },
+      licenseKey: LICENSE_KEY,
+      link: {
+        addTargetToExternalLinks: true,
+        defaultProtocol: 'https://'
+      },
+      menuBar: {
+        isVisible: false
+      },
+      placeholder: 'Enter task description...',
+      table: {
+        contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells', 'tableProperties', 'tableCellProperties']
+      }
+    };
+
+    function initializeCKEditor() {
+      if (ckEditor) return;
+
+      const textarea = document.getElementById('id_description');
+      if (!textarea) {
+        console.error('Description textarea not found');
+        return;
+      }
+
+      const editorConfigWithData = {
+        ...editorConfig,
+        initialData: textarea.value || ''
+      };
+
+      ClassicEditor.create(textarea, editorConfigWithData)
+        .then(editor => {
+          ckEditor = editor;
+        })
+        .catch(error => {
+          console.error('CKEditor initialization error:', error);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const completedCheckbox = document.getElementById('id_completed');
+      const completedNoteSection = document.getElementById('completed-note-section');
+
+      if (completedCheckbox && completedNoteSection) {
+        completedCheckbox.addEventListener('change', function() {
+          if (this.checked) {
+            completedNoteSection.style.display = 'block';
+          } else {
+            completedNoteSection.style.display = 'none';
+            // Clear completed note when unchecking completed
+            const completedNoteTextarea = document.getElementById('id_completed_note');
+            if (completedNoteTextarea) {
+              completedNoteTextarea.value = '';
+            }
+          }
+        });
+      }
+
+      setTimeout(() => {
+        initializeCKEditor();
+      }, 200);
+    });
+  </script>
+{% endblock %}

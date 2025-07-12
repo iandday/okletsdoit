@@ -2,7 +2,9 @@
 
 {% load static form_extras %}
 
-{% block title %}{{ task_list.name }} - Tasks{% endblock %}
+{% block title %}
+    {{ task_list.name }} - Deadlines
+{% endblock title %}
 {% block content %}
     <div class="max-w-7xl mx-auto px-4 py-8">
         <!-- Header Section -->
@@ -11,7 +13,7 @@
                 <div class="breadcrumbs text-sm mb-2">
                     <ul>
                         <li>
-                            <a href="{% url 'task_list' %}" class="link">Deadlines</a>
+                            <a href="{% url 'core:task_list' %}" class="link">Deadlines</a>
                         </li>
                         <li>{{ task_list.name }}</li>
                     </ul>
@@ -50,7 +52,8 @@
         {% endif %}
         <!-- Action Buttons -->
         <div class="flex flex-wrap gap-3 mb-6">
-            <button class="btn btn-primary">
+            <a class="btn btn-primary"
+               href="{% url 'core:task_create' task_list.slug %}">
                 <svg xmlns="http://www.w3.org/2000/svg"
                      class="h-5 w-5"
                      fill="none"
@@ -59,7 +62,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                 </svg>
                 Add
-            </button>
+            </a>
             <button class="btn btn-outline btn-secondary">
                 <svg xmlns="http://www.w3.org/2000/svg"
                      class="h-5 w-5"
@@ -104,7 +107,7 @@
                                             </h3>
                                             {% if task.description %}
                                                 <p class="text-base-content/70 mt-1 {% if task.completed %}opacity-60{% endif %}">
-                                                    {{ task.description|truncatewords:20 }}
+                                                    {{ task.description|safe|truncatewords:40 }}
                                                 </p>
                                             {% endif %}
                                         </div>
@@ -152,7 +155,8 @@
                                         </div>
                                         <!-- Action Buttons -->
                                         <div class="flex gap-1">
-                                            <button class="btn btn-ghost btn-xs" id="show-edit-task-modal-{{ task.id }}">
+                                            <a class="btn btn-ghost btn-xs"
+                                               href="{% url 'core:task_edit' task.slug %}">
                                                 <svg xmlns="http://www.w3.org/2000/svg"
                                                      class="h-4 w-4"
                                                      fill="none"
@@ -160,7 +164,7 @@
                                                      stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                                 </svg>
-                                            </button>
+                                            </a>
                                             <button class="btn btn-ghost btn-xs" id="show-delete-modal-{{ task.id }}">
                                                 <svg xmlns="http://www.w3.org/2000/svg"
                                                      class="h-4 w-4"
@@ -201,16 +205,14 @@
             </div>
         {% endif %}
     </div>
-    <!-- Start Task Edit Modals -->
+    <!-- Start Task Delete Modals -->
     {% for task in tasks %}
-        {% url 'task_edit' task.slug as edit_action %}
-        {% url 'task_delete' task.slug as delete_action %}
+        {% url 'core:task_delete' task.slug as delete_action %}
 
-        {% include "components/modal_edit_task.html" with id=task.id action=edit_action form=task_forms|get_item:task.id %}
         {% include "components/modal_delete.html" with id=task.id action=delete_action name=task.title item="Task" %}
 
     {% endfor %}
-    <!-- End Task Edit Modals -->
+    <!-- End Task Delete Modals -->
 {% endblock content %}
 {% block extra_script %}
     <script nonce="{{request.csp_nonce}}">

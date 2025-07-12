@@ -50,7 +50,7 @@ class Migration(migrations.Migration):
                 ('assigned_to', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='assigned_to_task', to=settings.AUTH_USER_MODEL)),
                 ('created_by', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='created_by_task', to=settings.AUTH_USER_MODEL)),
                 ('updated_by', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='updated_by_task', to=settings.AUTH_USER_MODEL)),
-                ('task_list', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='core.tasklist')),
+                ('core:task_list', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='core.tasklist')),
             ],
             options={
                 'ordering': ['priority', 'created_at'],

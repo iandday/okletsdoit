@@ -74,6 +74,21 @@
                         {% endif %}
                     </li>
                 {% endfor %}
+                <li>
+                    <details>
+                        <summary class="bg-neutral btn btn-ghost">Planning</summary>
+                        <ul class="bg-neutral">
+                            {% for item in planning_links %}
+                                <li>
+                                    <a href="{% url item.view_name %}" class="btn btn-ghost">
+                                        <i class="inline-block w-5 h-5 mr-2 fa {{ item.icon }}"></i>
+                                        {{ item.text }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </details>
+                </li>
             </ul>
         </div>
     </div>

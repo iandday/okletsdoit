@@ -36,9 +36,15 @@ class TaskForm(ModelForm):
         model = Task
         fields = ["title", "description", "due_date", "priority", "assigned_to", "completed"]
         widgets = {
-            "title": forms.TextInput(attrs={"class": "input input-bordered w-full", "placeholder": "Enter task title"}),
+            "title": forms.TextInput(
+                attrs={"class": "input input-bordered w-full", "placeholder": "Enter deadline title"}
+            ),
             "description": forms.Textarea(
-                attrs={"class": "textarea textarea-bordered w-full", "rows": 4, "placeholder": "Enter task description"}
+                attrs={
+                    "class": "textarea textarea-bordered w-full",
+                    "rows": 4,
+                    "placeholder": "Enter Deadline description",
+                }
             ),
             "due_date": forms.DateInput(attrs={"class": "input input-bordered w-full", "type": "date"}),
             "priority": forms.NumberInput(
@@ -73,7 +79,11 @@ class IdeaForm(ModelForm):
         widgets = {
             "name": forms.TextInput(attrs={"class": "input input-bordered w-full", "placeholder": "Enter idea name"}),
             "description": forms.Textarea(
-                attrs={"class": "textarea textarea-bordered w-full", "rows": 4, "placeholder": "Enter idea description"}
+                attrs={
+                    "class": "textarea textarea-bordered w-full h-100",
+                    "rows": 40,
+                    "placeholder": "Enter idea description",
+                }
             ),
         }
 

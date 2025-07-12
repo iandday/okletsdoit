@@ -53,7 +53,7 @@ class Task(models.Model):
     completed = models.BooleanField(default=False)
     completed_at = models.DateTimeField(blank=True, null=True)
     completed_note = models.TextField(blank=True, null=True)
-    priority = models.PositiveIntegerField(blank=True, null=True)
+    priority = models.PositiveIntegerField(blank=True, default=1)
 
     # Has due date for an instance of this object passed?
     def overdue_status(self):

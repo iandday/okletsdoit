@@ -408,13 +408,19 @@ def task_edit(request: HttpRequest, task_slug: str):
                 for field, errors in form.errors.items():
                     for error in errors:
                         messages.error(request, f"{field}: {error}")
+            return redirect("core:task_list_detail", task_list_slug=task.task_list.slug)
 
         except Task.DoesNotExist:
             messages.error(request, "Task not found.")
     else:
-        messages.error(request, "Invalid request method.")
+        try:
+            task = Task.objects.get(slug=task_slug, is_deleted=False)
+            form = TaskForm(instance=task)
+            return render(request, "core/task_edit.html", {"form": form, "task": task})
 
-    return redirect("task_list_detail", task_list_slug=task.task_list.slug)
+        except Task.DoesNotExist:
+            messages.error(request, "Task not found.")
+            return redirect("task_list")
 
 
 def task_delete(request: HttpRequest, task_slug: str):
@@ -481,6 +487,43 @@ def download_template(request: HttpRequest):
     return response
 
 
+def task_create(request: HttpRequest, task_list_slug: str):
+    """
+    Create a new task.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        HttpResponse: Redirects to the task list detail page with a success message.
+    """
+    if request.method == "POST":
+        form = TaskForm(request.POST)
+        if form.is_valid():
+            task: Task = form.save(commit=False)
+            task.task_list = TaskList.objects.get(slug=task_list_slug, is_deleted=False)
+            if not task.task_list:
+                messages.error(request, "Task list not found.")
+                return redirect("task_list")
+            task.created_by = request.user
+            task.updated_by = request.user
+            task.slug = slugify(task.title)
+            task.save()
+            messages.success(request, "Task created successfully.")
+            return redirect("core:task_list_detail", task_list_slug=task_list_slug)
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field}: {error}")
+            return redirect("core:task_list_detail", task_list_slug=task_list_slug)
+    else:
+        task_list = TaskList.objects.get(slug=task_list_slug, is_deleted=False)
+        if not task_list:
+            messages.error(request, "Task list not found.")
+            return redirect("task_list")
+        return render(request, "core/task_create.html", {"form": TaskForm(), "task_list": task_list})
+
+
 def idea_list(request: HttpRequest):
     """
     Render the 'Idea List' page of the application.
@@ -497,18 +540,95 @@ def idea_create(request: HttpRequest):
     if request.method == "POST":
         form = IdeaForm(request.POST)
         if form.is_valid():
-            idea = form.save(commit=False)
+            idea: Idea = form.save(commit=False)
             idea.created_by = request.user
             idea.updated_by = request.user
             idea.save()
             messages.success(request, "Idea created successfully.")
-            return redirect("idea_list")
+            return redirect("core:idea_detail", idea_slug=idea.slug)
         else:
             for field, errors in form.errors.items():
                 for error in errors:
                     messages.error(request, f"{field}: {error}")
-    
-    return redirect("idea_list")
+
+    return render(request, "core/idea_create.html", context={"form": IdeaForm()})
+
+
+def idea_detail(request: HttpRequest, idea_slug: str):
+    """
+    Display the details of a specific idea.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        idea_slug (str): The slug of the idea to display.
+
+    Returns:
+        HttpResponse: Renders the idea detail page.
+    """
+    try:
+        idea = Idea.objects.get(slug=idea_slug, is_deleted=False)
+        return render(request, "core/idea_detail.html", {"idea": idea})
+    except Idea.DoesNotExist:
+        messages.error(request, "Idea not found.")
+        return redirect("idea_list")
+
+
+def idea_delete(request: HttpRequest, idea_slug: str):
+    """
+    Deletes an idea.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        idea_slug (str): The slug of the idea to delete.
+
+    Returns:
+        HttpResponse: Redirects to the idea list page with a success message.
+    """
+    logger.error(f"Deleting idea: {idea_slug}")
+    try:
+        idea = Idea.objects.get(slug=idea_slug, is_deleted=False)
+        idea.is_deleted = True
+        idea.save()
+        messages.success(request, "Idea deleted successfully.")
+    except Idea.DoesNotExist:
+        messages.error(request, "Idea not found.")
+    return redirect("core:idea_list")
+
+
+def idea_edit(request: HttpRequest, idea_slug: str):
+    """
+    Edits an existing idea.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        idea_slug (str): The slug of the idea to edit.
+
+    Returns:
+        HttpResponse: Redirects to the idea detail page with a success message.
+    """
+    if request.method == "POST":
+        try:
+            idea = Idea.objects.get(slug=idea_slug, is_deleted=False)
+            form = IdeaForm(request.POST, instance=idea)
+
+            if form.is_valid():
+                idea: Idea = form.save(commit=False)
+                idea.updated_by = request.user
+                idea.save()
+                messages.success(request, "Idea updated successfully.")
+            else:
+                for field, errors in form.errors.items():
+                    for error in errors:
+                        messages.error(request, f"{field}: {error}")
+            return redirect("core:idea_detail", idea_slug=idea.slug)
+        except Idea.DoesNotExist:
+            messages.error(request, "Idea not found.")
+            return redirect("idea_list")
+    # If GET request, show the edit form
+    else:
+        idea = Idea.objects.get(slug=idea_slug, is_deleted=False)
+        form = IdeaForm(instance=idea)
+        return render(request, "core/idea_edit.html", {"form": form, "idea": idea})
 
 
 @csrf_exempt
