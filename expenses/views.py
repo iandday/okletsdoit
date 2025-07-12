@@ -1,8 +1,10 @@
+from typing import Any, Mapping
 from django.shortcuts import redirect, render
 from django.db.models import Sum, Case, When, Value, DecimalField, F
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Q
-from expenses.forms import CategoryForm
+from django.http import HttpRequest, JsonResponse
+from expenses.forms import CategoryForm, ExpenseForm
 from .models import Category, Expense
 
 
@@ -86,26 +88,59 @@ def summary(request):
 
 @login_required
 def create(request):
-    # Placeholder for create view logic
+    if request.method == "POST":
+        form = ExpenseForm(request.POST)
+        if form.is_valid():
+            expense = form.save(commit=False)
+            expense.created_by = request.user
+            expense.save()
+    return redirect("expenses:list")
+
     return render(request, "expenses/create.html")
 
 
 @login_required
-def list(request):
+def list(request: HttpRequest):
     # check if category is in parameters
     category_slug = request.GET.get("category")
+    context = {}
+    context["form"] = ExpenseForm()
     if category_slug:
         category = Category.objects.filter(slug=category_slug, is_deleted=False)
         if not category:
             return redirect("expenses:category_list")
-        expenses = Expense.objects.filter(category__slug=category_slug, is_deleted=False).order_by("-date")
-        context = {"expenses": expenses, "category": category}
-    else:
-        expenses = Expense.objects.filter(is_deleted=False).order_by("-date")
-        context = {"expenses": expenses}
+        context["category"] = category  # type: ignore[assignment]
+    context["expenses"] = Expense.objects.filter(is_deleted=False).order_by("-date")  # type: ignore[assignment]
 
-    # Placeholder for list view logic
-    return render(request, "expenses/list.html", context)
+    return render(request, "expenses/expense_list.html", context)
+
+
+@login_required
+def expense_data(request):
+    """JSON endpoint for DataTables"""
+    category_slug = request.GET.get("category")
+
+    if category_slug:
+        expenses = Expense.objects.filter(category__slug=category_slug, is_deleted=False).select_related("category")
+    else:
+        expenses = Expense.objects.filter(is_deleted=False).select_related("category")
+
+    data = []
+    for expense in expenses:
+        data.append(
+            {
+                "id": str(expense.id),
+                "item": expense.item,
+                "category": expense.category.name,
+                "date": expense.date.strftime("%Y-%m-%d"),
+                "estimated_amount": float(expense.estimated_amount) if expense.estimated_amount else 0,
+                "actual_amount": float(expense.actual_amount) if expense.actual_amount else 0,
+                "description": expense.description or "",
+                "slug": expense.slug,
+            }
+        )
+
+    return JsonResponse({"data": data})
 
 
 def category_list(request):

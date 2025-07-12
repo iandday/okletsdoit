@@ -65,7 +65,6 @@ INSTALLED_APPS = [
     "allauth.socialaccount.providers.openid_connect",
     "import_export",  # https://django-import-export.readthedocs.io/en/latest/
     "simple_history",  # https://django-simple-history.readthedocs.io/en/latest/quick_start.html#install
-    "datatableview",
     "csp",
     "core",
     "users",
@@ -246,13 +245,14 @@ CONTENT_SECURITY_POLICY = {
     "EXCLUDE_URL_PREFIXES": ["/excluded-path/"],
     "DIRECTIVES": {
         "default-src": [SELF],
-        "script-src": [SELF, NONCE],
+        "script-src": [SELF, NONCE, "code.jquery.com"],
         "style-src": [
             SELF,
             NONCE,
             "cdnjs.cloudflare.com",
             "cdn.ckeditor.com",
             "fonts.googleapis.com",
+            "cdn.datatables.net",
             "'unsafe-inline'",  # Required for daisyUI 5 theme switching
         ],
         "font-src": [

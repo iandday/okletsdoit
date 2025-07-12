@@ -1,0 +1,389 @@
+{% extends "components/base.html" %}
+
+{% load static %}
+
+{% block title %}
+    {% if category %}
+        {{ category.first.name }} Expenses
+    {% else %}
+        All Expenses
+    {% endif %}
+{% endblock title %}
+{% block content %}
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <!-- Header Section -->
+        <div class="breadcrumbs mb-4">
+            <ul>
+                <li>
+                    <a href="{% url 'expenses:summary' %}" class="link">Expenses</a>
+                </li>
+                {% if category %}
+                    <li>
+                        <a href="{% url 'expenses:list' %}" class="link">All Expenses</a>
+                    </li>
+                    <li>{{ category.first.name }}</li>
+                {% else %}
+                    <li>All Expenses</li>
+                {% endif %}
+            </ul>
+        </div>
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+            <div>
+                <h1 class="text-4xl font-bold text-base-content mb-2">
+                    {% if category %}
+                        {{ category.first.name }} Expenses
+                    {% else %}
+                        All Expenses
+                    {% endif %}
+                </h1>
+                <p class="text-lg text-base-content/70">
+                    {% if category %}
+                        Manage expenses in the {{ category.first.name }} category
+                    {% else %}
+                        Manage all your wedding expenses
+                    {% endif %}
+                </p>
+            </div>
+            <div class="flex gap-2">
+                {% if category %}
+                    <a href="{% url 'expenses:list' %}" class="btn btn-outline">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             class="h-5 w-5"
+                             fill="none"
+                             viewBox="0 0 24 24"
+                             stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                        </svg>
+                        All Expenses
+                    </a>
+                {% endif %}
+                <button class="btn btn-primary" id="show-add-expense-modal">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         class="h-5 w-5"
+                         fill="none"
+                         viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    Add Expense
+                </button>
+            </div>
+        </div>
+        <!-- DataTable -->
+        <div class="card bg-base-100 shadow-xl">
+            <div class="card-body">
+                <div class="overflow-x-auto">
+                    <table id="expensesTable" class="table table-zebra w-full">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Category</th>
+                                <th>Date</th>
+                                <th>Estimated</th>
+                                <th>Actual</th>
+                                <th>Variance</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- DataTables will populate this -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- Quick Actions -->
+        <div class="text-center mt-12">
+            <div class="join">
+                <a href="{% url 'expenses:summary' %}" class="btn btn-outline join-item">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         class="h-5 w-5"
+                         fill="none"
+                         viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                    Expense Summary
+                </a>
+                <a href="{% url 'expenses:category_list' %}"
+                   class="btn btn-outline join-item">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         class="h-5 w-5"
+                         fill="none"
+                         viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                    </svg>
+                    Manage Categories
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- Add Expense Modal -->
+    <dialog id="add_expense_modal" class="modal">
+        <div class="modal-box max-w-2xl">
+            <form method="dialog">
+                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+            </form>
+            <h3 class="font-bold text-lg mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     class="h-6 w-6 inline mr-2"
+                     fill="none"
+                     viewBox="0 0 24 24"
+                     stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+                Add New Expense
+            </h3>
+            <form method="post" action="{% url 'expenses:create' %}" id="expenseForm">
+                {% csrf_token %}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div class="form-control">
+                        <label class="label" for="{{ form.item.id_for_label }}">
+                            <span class="label-text font-medium">{{ form.item.label }}</span>
+                        </label>
+                        {{ form.item }}
+                        {% if form.item.errors %}
+                            <div class="label">
+                                {% for error in form.item.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="form-control">
+                        <label class="label" for="{{ form.category.id_for_label }}">
+                            <span class="label-text font-medium">{{ form.category.label }}</span>
+                        </label>
+                        {{ form.category }}
+                        {% if form.category.errors %}
+                            <div class="label">
+                                {% for error in form.category.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="form-control mb-4">
+                    <label class="label" for="{{ form.description.id_for_label }}">
+                        <span class="label-text font-medium">{{ form.description.label }}</span>
+                    </label>
+                    {{ form.description }}
+                    {% if form.description.errors %}
+                        <div class="label">
+                            {% for error in form.description.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div class="form-control">
+                        <label class="label" for="{{ form.date.id_for_label }}">
+                            <span class="label-text font-medium">{{ form.date.label }}</span>
+                        </label>
+                        {{ form.date }}
+                        {% if form.date.errors %}
+                            <div class="label">
+                                {% for error in form.date.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="form-control">
+                        <label class="label" for="{{ form.quantity.id_for_label }}">
+                            <span class="label-text font-medium">{{ form.quantity.label }}</span>
+                        </label>
+                        {{ form.quantity }}
+                        {% if form.quantity.errors %}
+                            <div class="label">
+                                {% for error in form.quantity.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div class="form-control">
+                        <label class="label" for="{{ form.estimated_amount.id_for_label }}">
+                            <span class="label-text font-medium">{{ form.estimated_amount.label }}</span>
+                        </label>
+                        {{ form.estimated_amount }}
+                        {% if form.estimated_amount.errors %}
+                            <div class="label">
+                                {% for error in form.estimated_amount.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="form-control">
+                        <label class="label" for="{{ form.actual_amount.id_for_label }}">
+                            <span class="label-text font-medium">{{ form.actual_amount.label }}</span>
+                        </label>
+                        {{ form.actual_amount }}
+                        {% if form.actual_amount.errors %}
+                            <div class="label">
+                                {% for error in form.actual_amount.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="modal-action">
+                    <button type="button" class="btn btn-ghost" id="cancel-add-expense">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             class="h-5 w-5"
+                             fill="none"
+                             viewBox="0 0 24 24"
+                             stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                        Add Expense
+                    </button>
+                </div>
+            </form>
+        </div>
+        <form method="dialog" class="modal-backdrop">
+            <button>close</button>
+        </form>
+    </dialog>
+{% endblock content %}
+{% block extra_script %}
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"
+            nonce="{{ request.csp_nonce }}"></script>
+    <script nonce="{{ request.csp_nonce }}">
+      $(document).ready(function() {
+        const categorySlug = new URLSearchParams(window.location.search).get('category');
+        let ajaxUrl = '{% url "expenses:expense_data" %}';
+        if (categorySlug) {
+          ajaxUrl += `?category=${categorySlug}`;
+        }
+
+        $('#expensesTable').DataTable({
+          ajax: {
+            url: ajaxUrl,
+            dataSrc: 'data'
+          },
+          columns: [{
+            data: 'item',
+            render: function(data, type, row) {
+              return `<div class="font-semibold">${data}</div>
+                                ${row.description ? `<div class="text-sm text-base-content/70">${row.description.substring(0, 50)}${row.description.length > 50 ? '...' : ''}</div>` : ''}`;
+            }
+          }, {
+            data: 'category',
+            render: function(data) {
+              return `<div class="badge badge-outline">${data}</div>`;
+            }
+          }, {
+            data: 'date',
+            render: function(data) {
+              return new Date(data).toLocaleDateString();
+            }
+          }, {
+            data: 'estimated_amount',
+            render: function(data) {
+              return data > 0 ? `$${data.toFixed(2)}` : '<span class="text-base-content/50">-</span>';
+            }
+          }, {
+            data: 'actual_amount',
+            render: function(data) {
+              return data > 0 ? `$${data.toFixed(2)}` : '<span class="text-base-content/50">-</span>';
+            }
+          }, {
+            data: null,
+            render: function(data, type, row) {
+              if (row.estimated_amount > 0 && row.actual_amount > 0) {
+                const variance = row.actual_amount - row.estimated_amount;
+                const varClass = variance >= 0 ? 'text-error' : 'text-success';
+                const sign = variance >= 0 ? '+' : '';
+                return `<span class="${varClass} font-mono">${sign}$${variance.toFixed(2)}</span>`;
+              }
+              return '<span class="text-base-content/50">-</span>';
+            }
+          }, {
+            data: null,
+            orderable: false,
+            render: function(data, type, row) {
+              return `
+                            <div class="dropdown dropdown-end">
+                                <div tabindex="0" role="button" class="btn btn-ghost btn-sm">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01" />
+                                    </svg>
+                                </div>
+                                <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-32 p-2 shadow">
+                                    <li><a href="/expenses/edit/${row.slug}/" class="text-sm">Edit</a></li>
+                                    <li><a href="/expenses/delete/${row.slug}/" class="text-sm text-error">Delete</a></li>
+                                </ul>
+                            </div>
+                        `;
+            }
+          }],
+          pageLength: 25,
+          responsive: true,
+          language: {
+            search: "Search expenses:",
+            lengthMenu: "Show _MENU_ expenses per page",
+            info: "Showing _START_ to _END_ of _TOTAL_ expenses",
+            infoEmpty: "No expenses found",
+            infoFiltered: "(filtered from _MAX_ total expenses)",
+            emptyTable: "No expenses available",
+            zeroRecords: "No matching expenses found"
+          },
+          dom: '<"flex flex-col lg:flex-row justify-between items-start lg:items-center mb-4"<"flex-1 mr-4"f><"flex gap-2"l>>' +
+            '<"overflow-x-auto"t>' +
+            '<"flex flex-col lg:flex-row justify-between items-center mt-4"<"mb-2 lg:mb-0"i><"flex gap-2"p>>',
+          initComplete: function() {
+            // Style the search input
+            $('.dataTables_filter input').addClass('input input-bordered input-sm');
+            $('.dataTables_filter label').addClass('flex items-center gap-2');
+
+            // Style the length select
+            $('.dataTables_length select').addClass('select select-bordered select-sm');
+            $('.dataTables_length label').addClass('flex items-center gap-2');
+
+            // Style pagination
+            $('.dataTables_paginate .paginate_button').addClass('btn btn-sm');
+            $('.dataTables_paginate .paginate_button.current').addClass('btn-primary');
+          }
+        });
+
+        // Modal functionality
+        const showAddModal = document.getElementById('show-add-expense-modal');
+        const addModal = document.getElementById('add_expense_modal');
+        const cancelAddBtn = document.getElementById('cancel-add-expense');
+
+        if (showAddModal && addModal) {
+          showAddModal.addEventListener('click', function() {
+            addModal.showModal();
+            // Set today's date as default
+            const dateField = document.getElementById('{{ form.date.id_for_label }}');
+            if (dateField) {
+              dateField.value = new Date().toISOString().split('T')[0];
+            }
+            // Focus on the item name field
+            setTimeout(() => {
+              const itemField = document.getElementById('{{ form.item.id_for_label }}');
+              if (itemField) {
+                itemField.focus();
+              }
+            }, 100);
+          });
+        }
+
+        if (cancelAddBtn && addModal) {
+          cancelAddBtn.addEventListener('click', function() {
+            addModal.close();
+          });
+        }
+
+        // Handle form submission
+        const form = document.getElementById('expenseForm');
+        if (form) {
+          form.addEventListener('submit', function(e) {
+            const submitBtn = form.querySelector('button[type="submit"]');
+            if (submitBtn) {
+              submitBtn.disabled = true;
+              submitBtn.innerHTML = `
+                        <span class="loading loading-spinner loading-sm"></span>
+                        Adding...
+                    `;
+            }
+          });
+        }
+      });
+    </script>
+{% endblock extra_script %}
