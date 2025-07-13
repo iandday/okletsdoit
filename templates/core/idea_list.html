@@ -15,9 +15,33 @@
 {% block content %}
     <div class="max-w-7xl mx-auto px-4 py-8">
         <!-- Header Section -->
-        <div class="text-center mb-8">
-            <h1 class="text-4xl font-bold text-base-content mb-4">Wedding Ideas</h1>
-            <p class="text-lg text-base-content/70">Capture and organize your creative wedding planning ideas</p>
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+            <div>
+                <h1 class="text-4xl font-bold text-base-content mb-4">Wedding Ideas</h1>
+                <p class="text-lg text-base-content/70">Capture and organize your creative wedding planning ideas</p>
+            </div>
+            <div class="flex gap-2">
+                <a class="list-add-btn" href="{% url 'core:idea_create' %}">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         class="h-5 w-5"
+                         fill="none"
+                         viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    Add New Idea
+                </a>
+                <button class="list-import-btn" id="show-import-modal">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         class="h-5 w-5"
+                         fill="none"
+                         viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                    </svg>
+                    Import
+                </button>
+            </div>
         </div>
         <!-- Ideas Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -27,9 +51,9 @@
                         <!-- Idea Header -->
                         <div class="flex items-start justify-between mb-4">
                             <a class="list-card-title" href="{% url 'core:idea_detail' idea.slug %}">{{ idea.name }}</a>
-                            {% url 'idea:detail' idea.slug as detail_action %}
-                            {% url 'idea:update' idea.slug as update_action %}
-                            {% url 'idea:delete' idea.slug as delete_action %}
+                            {% url 'core:idea_detail' idea.slug as detail_action %}
+                            {% url 'core:idea_edit' idea.slug as update_action %}
+                            {% url 'core:idea_delete' idea.slug as delete_action %}
 
                             {% include "components/card_options.html" with detail_action=detail_action update_action=update_action delete_action=delete_action %}
 
@@ -82,21 +106,75 @@
                 </div>
             {% endfor %}
         </div>
-        <!-- Add New Idea Button -->
-        <div class="text-center mt-8">
-            <a class="btn btn-outline btn-primary"
-               href="{% url 'core:idea_create' %}">
-                <svg xmlns="http://www.w3.org/2000/svg"
-                     class="h-5 w-5"
-                     fill="none"
-                     viewBox="0 0 24 24"
-                     stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                </svg>
-                Add New Idea
-            </a>
-        </div>
     </div>
+    <!-- Import Modal -->
+    <dialog id="importModal" class="modal">
+        <div class="modal-box">
+            <h3 class="text-lg font-bold text-primary mb-4">Import Ideas</h3>
+            <p class="text-base-content/70 mb-6">
+                Upload an Excel file with idea information. Download the template first to see the required format.
+            </p>
+            <form method="post"
+                  action="{% url 'core:idea_import' %}"
+                  enctype="multipart/form-data"
+                  class="space-y-4">
+                {% csrf_token %}
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text font-medium">Excel File</span>
+                    </label>
+                    <input type="file"
+                           name="excel_file"
+                           accept=".xlsx,.xls"
+                           class="file-input file-input-bordered w-full"
+                           required>
+                    <div class="label">
+                        <span class="label-text-alt">Accepted formats: .xlsx, .xls</span>
+                    </div>
+                </div>
+                <div class="alert alert-info">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         class="h-6 w-6"
+                         fill="none"
+                         viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <div>
+                        <h4 class="font-bold">Spreadsheet columns:</h4>
+                        <p class="text-sm">name (required), description</p>
+                        <a href="{% url 'core:idea_template_download' %}"
+                           class="btn btn-outline join-item">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 class="h-5 w-5"
+                                 fill="none"
+                                 viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            Download Template
+                        </a>
+                    </div>
+                </div>
+                <div class="modal-action">
+                    <button type="button" class="btn btn-ghost" id="close-import-modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             class="h-5 w-5"
+                             fill="none"
+                             viewBox="0 0 24 24"
+                             stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                        </svg>
+                        Import Ideas
+                    </button>
+                </div>
+            </form>
+        </div>
+        <form method="dialog" class="modal-backdrop">
+            <button>close</button>
+        </form>
+    </dialog>
     <!-- Delete Confirmation Modal -->
     <dialog id="deleteIdeaModal" class="modal">
         <div class="modal-box">
@@ -134,6 +212,21 @@
         const deleteIdeaName = document.getElementById('deleteIdeaName');
         const cancelDeleteBtn = document.getElementById('cancelDelete');
         const deleteButtons = document.querySelectorAll('[data-delete-id]');
+        const showImportModal = document.getElementById('show-import-modal');
+        const importModal = document.getElementById('importModal');
+        const closeImportModal = document.getElementById('close-import-modal');
+
+        if (showImportModal && importModal) {
+          showImportModal.addEventListener('click', function() {
+            importModal.showModal();
+          });
+        }
+
+        if (closeImportModal && importModal) {
+          closeImportModal.addEventListener('click', function() {
+            importModal.close();
+          });
+        }
 
         // Add event listeners to all delete buttons
         deleteButtons.forEach(button => {

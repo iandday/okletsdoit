@@ -92,3 +92,11 @@
 .list-card-title {
     @apply card-title text-primary text-2xl
 }
+
+.list-add-btn {
+    @apply btn btn-outline btn-primary
+}
+
+.list-import-btn {
+    @apply btn btn-outline btn-secondary
+}

@@ -6,9 +6,34 @@
 {% block content %}
     <div class="max-w-7xl mx-auto px-4 py-8">
         <!-- Header Section -->
-        <div class="text-center mb-8">
-            <h1 class="text-4xl sm:text-lg font-bold text-base-content mb-4">Wedding Deadlines</h1>
-            <p class="text-lg text-base-content/70">Organize your wedding planning with these deadline lists</p>
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+            <div>
+                <h1 class="text-4xl sm:text-lg font-bold text-base-content mb-4">Wedding Deadlines</h1>
+                <p class="text-lg text-base-content/70">Organize your wedding planning with these deadline lists</p>
+            </div>
+            <div class="flex gap-2">
+                <button class="list-add-btn" id="show-add-task-list-modal">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         class="h-5 w-5"
+                         fill="none"
+                         viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    Add New Deadline List
+                </button>
+                <!-- Import Tasks Button -->
+                <button class="list-import-btn" id="toggleUploadBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         class="h-5 w-5"
+                         fill="none"
+                         viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                    </svg>
+                    <span id="import-btn-text">Import Deadlines</span>
+                </button>
+            </div>
         </div>
         <!-- Task Lists Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -95,29 +120,6 @@
                     </div>
                 </div>
             {% endfor %}
-        </div>
-        <div class="text-center mt-8">
-            <button class="btn btn-outline btn-primary" id="show-add-task-list-modal">
-                <svg xmlns="http://www.w3.org/2000/svg"
-                     class="h-5 w-5"
-                     fill="none"
-                     viewBox="0 0 24 24"
-                     stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                </svg>
-                Add New Deadline List
-            </button>
-            <!-- Import Tasks Button -->
-            <button class="btn btn-secondary ml-4" id="toggleUploadBtn">
-                <svg xmlns="http://www.w3.org/2000/svg"
-                     class="h-5 w-5"
-                     fill="none"
-                     viewBox="0 0 24 24"
-                     stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                </svg>
-                <span id="import-btn-text">Import Deadlines</span>
-            </button>
         </div>
         <!-- Upload Form Card (Hidden by default) -->
         <div class="card bg-neutral shadow-xl mt-8 hidden" id="upload-form">

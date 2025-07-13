@@ -92,3 +92,11 @@ class IdeaForm(ModelForm):
         self.fields["name"].label = "Idea Name"
         self.fields["description"].label = "Description"
         self.fields["description"].required = False
+
+
+class IdeaImportForm(forms.Form):
+    excel_file = forms.FileField(
+        widget=forms.FileInput(
+            attrs={"class": "file-input file-input-bordered file-input-primary w-full", "accept": ".xlsx,.xls"}
+        )
+    )

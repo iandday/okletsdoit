@@ -13,9 +13,10 @@ from datetime import datetime
 from django.http import HttpRequest
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
+from urllib3 import request
 
 
-from core.forms import IdeaForm, TaskImportForm, TaskListForm, TaskForm
+from core.forms import IdeaForm, IdeaImportForm, TaskImportForm, TaskListForm, TaskForm
 from core.models import Idea, TaskList, Task
 from users.models import User
 
@@ -648,6 +649,113 @@ def idea_edit(request: HttpRequest, idea_slug: str):
         idea = Idea.objects.get(slug=idea_slug, is_deleted=False)
         form = IdeaForm(instance=idea)
         return render(request, "core/idea_edit.html", {"form": form, "idea": idea})
+
+
+def idea_import(request: HttpRequest):
+    if request.method == "POST":
+        form = IdeaImportForm(request.POST, request.FILES)
+        excel_file = request.FILES.get("excel_file")
+
+        if not excel_file:
+            messages.error(request, "Please select an Excel file to upload.")
+            return redirect("contacts:list")
+
+        if form.is_valid():
+            df = pl.read_excel(io.BytesIO(excel_file.read()))
+            # Validate required columns
+            required_columns = ["name"]
+            missing_columns = [col for col in required_columns if col not in df.columns]
+
+            if missing_columns:
+                messages.error(request, f"Missing required columns: {', '.join(missing_columns)}")
+                return redirect("idea:list")
+
+            created_count = 0
+            updated_count = 0
+            error_count = 0
+
+            for row in df.to_dicts():
+                try:
+                    name = row.get("name", "").strip()
+                    description = row.get("description", "").strip() if row.get("description") else ""
+
+                    # Check if idea already exists
+                    idea, created = Idea.objects.update_or_create(
+                        slug=slugify(name),
+                        defaults={
+                            "name": name,
+                            "description": description,
+                            "created_by": request.user,
+                            "updated_by": request.user,
+                        },
+                    )
+
+                    if created:
+                        created_count += 1
+                    else:
+                        updated_count += 1
+
+                except Exception as e:
+                    error_count += 1
+                    continue
+
+            # Success message
+            message_parts = []
+            if created_count > 0:
+                message_parts.append(f"{created_count} contact{'s' if created_count != 1 else ''} created")
+            if updated_count > 0:
+                message_parts.append(f"{updated_count} contact{'s' if updated_count != 1 else ''} updated")
+
+            if message_parts:
+                messages.success(request, f"Import completed: {', '.join(message_parts)}.")
+
+            if error_count > 0:
+                messages.warning(request, f"{error_count} row{'s' if error_count != 1 else ''} skipped due to errors.")
+
+            return redirect("core:idea_list")
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field}: {error}")
+    else:
+        form = IdeaImportForm()
+    return render(request, "core/idea_import.html", {"form": form})
+
+
+def idea_template_download(request: HttpRequest):
+    """
+    Generates and returns an Excel file template for idea import.
+
+    This view creates a sample idea list as a Polars DataFrame, writes it to an Excel file in memory,
+    and returns it as an HTTP response with appropriate headers for file download.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        HttpResponse: An HTTP response containing the Excel file as an attachment.
+    """
+    df = pl.DataFrame(
+        data={
+            "name": ["Wedding Venue", "Catering", "Photography"],
+            "description": [
+                "Find and book the perfect ceremony location",
+                "Select appetizers and main courses",
+                "Hire professional wedding photographer",
+            ],
+        }
+    )
+    output = io.BytesIO()
+    df.write_excel(output)
+    output.seek(0)
+
+    # Create the HTTP response with the Excel file
+    response = HttpResponse(
+        output.getvalue(), content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
+    response["Content-Disposition"] = 'attachment; filename="idea_import_template.xlsx"'
+
+    return response
 
 
 @csrf_exempt
