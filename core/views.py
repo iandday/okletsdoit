@@ -66,7 +66,6 @@ def task_list(request: HttpRequest):
     if request.method == "POST":
         form = TaskImportForm(request.POST, request.FILES)
         if form.is_valid():
-            print(request.FILES)
             uploaded_file = request.FILES.get("excel_file")
             if uploaded_file:
                 try:

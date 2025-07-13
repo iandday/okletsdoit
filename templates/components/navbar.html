@@ -75,6 +75,7 @@
                     </li>
                 {% endfor %}
                 {% if user.is_authenticated %}
+                    <div class="divider"></div>
                     {% for item in planning_links %}
                         <li>
                             <a href="{% url item.view_name %}" class="btn btn-ghost">

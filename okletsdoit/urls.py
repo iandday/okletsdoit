@@ -11,6 +11,7 @@ urlpatterns = [
     path("accounts/", include("allauth.urls")),
     path("health/", include("health_check.urls")),
     path("expenses/", include("expenses.urls")),
+    path("contacts/", include("contacts.urls")),
     path("", include("core.urls")),
 ]
 

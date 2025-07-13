@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     "core",
     "users",
     "expenses",
+    "contacts",
 ]
 
 if DEBUG:
