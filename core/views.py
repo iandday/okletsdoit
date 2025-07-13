@@ -687,6 +687,7 @@ def idea_import(request: HttpRequest):
                             "description": description,
                             "created_by": request.user,
                             "updated_by": request.user,
+                            "is_deleted": False,
                         },
                     )
 

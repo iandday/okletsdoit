@@ -60,7 +60,9 @@
                         </div>
                         <!-- Description Preview -->
                         {% if idea.description %}
-                            <div class="prose prose-sm max-w-none text-base-content/80 mb-4">{{ idea.description|safe|truncatewords:50 }}</div>
+                            <div class="prose prose-sm max-w-none text-base-content/80 mb-4 ckeditor-content">
+                                {{ idea.description|safe|truncatewords:50 }}
+                            </div>
                         {% else %}
                             <p class="text-base-content/60 italic mb-4">No description available</p>
                         {% endif %}

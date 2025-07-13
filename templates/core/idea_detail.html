@@ -60,7 +60,7 @@
             <div class="card-body">
                 <h2 class="card-title text-xl text-secondary mb-4">Description</h2>
                 {% if idea.description %}
-                    <div class="prose prose-lg max-w-none text-base-content">{{ idea.description|safe }}</div>
+                    <div class="prose prose-lg ckeditor-content">{{ idea.description|safe }}</div>
                 {% else %}
                     <div class="text-center py-8">
                         <div class="text-6xl mb-4 opacity-50">📝</div>
@@ -102,3 +102,33 @@
         </form>
     </dialog>
 {% endblock content %}
+{% block extra_script %}
+    <script nonce="{{ request.csp_nonce }}">
+      document.addEventListener('DOMContentLoaded', function() {
+        // Delete Modal
+        const showDeleteModal = document.getElementById('show-delete-modal');
+        const deleteModal = document.getElementById('deleteIdeaModal');
+        const closeDeleteModal = document.getElementById('close-delete-modal');
+
+        if (showDeleteModal && deleteModal) {
+          showDeleteModal.addEventListener('click', function() {
+            deleteModal.showModal();
+          });
+        }
+
+        if (closeDeleteModal && deleteModal) {
+          closeDeleteModal.addEventListener('click', function() {
+            deleteModal.close();
+          });
+        }
+
+        // Add Description Button
+        const addDescriptionBtn = document.getElementById('add-description-btn');
+        if (addDescriptionBtn) {
+          addDescriptionBtn.addEventListener('click', function() {
+            window.location.href = "{% url 'core:idea_edit' idea.slug %}";
+          });
+        }
+      });
+    </script>
+{% endblock extra_script %}

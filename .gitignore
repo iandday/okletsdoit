@@ -24,4 +24,4 @@ staticfiles/
 _persist/
 
 node_modules/
-*.xlsx
+_imports
