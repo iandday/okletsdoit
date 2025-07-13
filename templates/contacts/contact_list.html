@@ -9,7 +9,7 @@
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
             <div>
                 <h1 class="text-4xl font-bold text-base-content mb-2">Wedding Contacts</h1>
-                <p class="text-lg text-base-content/70">Manage your wedding vendor and guest contacts</p>
+                <p class="text-lg text-base-content/70">Manage your wedding vendor contacts</p>
             </div>
             <div class="flex gap-2">
                 <a href="{% url 'contacts:create' %}" class="btn btn-primary">
@@ -81,7 +81,7 @@
         {% if page_obj.object_list %}
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {% for contact in page_obj.object_list %}
-                    <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow duration-300">
+                    <div class="list-card">
                         <div class="card-body">
                             <!-- Contact Header -->
                             <div class="flex items-start justify-between mb-4">
@@ -91,29 +91,12 @@
                                     {% if contact.company %}<p class="text-base-content/70 text-sm">{{ contact.company }}</p>{% endif %}
                                     {% if contact.category %}<div class="badge badge-outline badge-sm mt-1">{{ contact.category }}</div>{% endif %}
                                 </div>
-                                <div class="dropdown dropdown-end">
-                                    <div tabindex="0" role="button" class="btn btn-ghost btn-sm btn-circle">
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                             class="h-4 w-4"
-                                             fill="none"
-                                             viewBox="0 0 24 24"
-                                             stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01" />
-                                        </svg>
-                                    </div>
-                                    <ul tabindex="0"
-                                        class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
-                                        <li>
-                                            <a href="{% url 'contacts:detail' contact.slug %}">View Details</a>
-                                        </li>
-                                        <li>
-                                            <a href="{% url 'contacts:update' contact.slug %}">Edit</a>
-                                        </li>
-                                        <li>
-                                            <a href="{% url 'contacts:delete' contact.slug %}" class="text-error">Delete</a>
-                                        </li>
-                                    </ul>
-                                </div>
+                                {% url 'contact:detail' contact.slug as detail_action %}
+                                {% url 'contact:update' contact.slug as update_action %}
+                                {% url 'contact:delete' contact.slug as delete_action %}
+
+                                {% include "components/card_options.html" with detail_action=detail_action update_action=update_action delete_action=delete_action %}
+
                             </div>
                             <!-- Contact Info -->
                             <div class="space-y-2 mb-4">
@@ -163,22 +146,6 @@
                                     <p class="text-sm text-base-content/70">{{ contact.notes|truncatewords:15 }}</p>
                                 </div>
                             {% endif %}
-                            <!-- Card Actions -->
-                            <div class="card-actions justify-between items-center">
-                                <a href="{% url 'contacts:detail' contact.slug %}"
-                                   class="btn btn-primary btn-sm">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                         class="h-4 w-4"
-                                         fill="none"
-                                         viewBox="0 0 24 24"
-                                         stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                    </svg>
-                                    View
-                                </a>
-                                <div class="text-xs text-base-content/50">{{ contact.created_at|date:"M d, Y" }}</div>
-                            </div>
                         </div>
                     </div>
                 {% endfor %}

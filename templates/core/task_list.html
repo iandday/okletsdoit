@@ -19,30 +19,12 @@
                         <div class="flex items-start justify-between mb-4">
                             <a class="card-title text-primary"
                                href="{% url 'core:task_list_detail' task_list.slug %}">{{ task_list.name }}</a>
-                            <div class="flex items-center gap-2">
-                                <!-- Delete Button -->
-                                <button class="btn btn-ghost btn-xs btn-circle text-error-content hover:bg-error hover:text-error-content"
-                                        title="Delete task list"
-                                        id="show-delete-modal-{{ task_list.id }}">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                         class="h-4 w-4"
-                                         fill="none"
-                                         viewBox="0 0 24 24"
-                                         stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1-1H8a1 1 0 00-1 1v3M4 7h16" />
-                                    </svg>
-                                </button>
-                                <button class="btn btn-ghost btn-sm" id="show-edit-modal-{{ task_list.id }}">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                         class="h-4 w-4"
-                                         fill="none"
-                                         viewBox="0 0 24 24"
-                                         stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                    </svg>
-                                    Edit
-                                </button>
-                            </div>
+                            {% url 'core:task_list_detail' task_list.slug as detail_action %}
+                            {% url 'core:task_list_edit' task_list.slug as update_action %}
+                            {% url 'core:task_list_delete' task_list.slug as delete_action %}
+
+                            {% include "components/card_options.html" with detail_action=detail_action update_action=update_action delete_action=delete_action %}
+
                         </div>
                         <!-- Task List Stats -->
                         <div class="stats stats-horizontal text-center shadow-sm bg-base-200 mb-4">
@@ -234,16 +216,6 @@
 
     {% include "components/modal_add_task_list.html" with form=add_task_list_form %}
 
-    <!-- Start Delete and Edit Confirmation Modals -->
-    {% for task_list in task_lists %}
-        {% url 'task_list_delete' task_list.slug as delete_action %}
-        {% url 'task_list_edit' task_list.slug as edit_action %}
-
-        {% include "components/modal_delete.html" with id=task_list.id action=delete_action name=task_list.name item="Task List" %}
-        {% include "components/modal_edit_task_list.html" with id=task_list.id action=edit_action form=task_list_forms|get_item:task_list.id item="Task List" %}
-
-    {% endfor %}
-    <!-- End Delete and Edit Confirmation Modals -->
 {% endblock content %}
 {% block extra_script %}
     <script nonce="{{request.csp_nonce}}">

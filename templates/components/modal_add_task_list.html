@@ -17,9 +17,7 @@
                 {% endif %}
             </div>
             <div class="modal-action">
-                <button type="button"
-                        class="btn btn-ghost"
-                        onclick="document.getElementById('addTaskListModal').close()">Cancel</button>
+                <button type="button" class="btn btn-ghost" id="cancelAddTaskList">Cancel</button>
                 <button type="submit" class="btn btn-primary">
                     <svg xmlns="http://www.w3.org/2000/svg"
                          class="h-4 w-4"
@@ -40,5 +38,8 @@
 <script nonce="{{ request.csp_nonce }}">
   document.getElementById('show-add-task-list-modal').onclick = function() {
     document.getElementById('addTaskListModal').showModal()
+  };
+  document.getElementById('cancelAddTaskList').onclick = function() {
+    document.getElementById('addTaskListModal').close();
   };
 </script>

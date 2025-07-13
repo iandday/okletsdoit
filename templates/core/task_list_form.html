@@ -1,0 +1,128 @@
+{% extends "components/base.html" %}
+
+{% load static %}
+
+{% block title %}
+    {{ title }}
+{% endblock title %}
+{% block content %}
+    <div class="max-w-2xl mx-auto px-4 py-8">
+        <!-- Header Section -->
+        <div class="breadcrumbs mb-4">
+            <ul>
+                <li>
+                    <a href="{% url 'core:task_list' %}" class="link">Task Lists</a>
+                </li>
+                {% if task_list %}
+                    <li>
+                        <a href="{% url 'core:task_list_detail' task_list.slug %}" class="link">{{ task_list.name }}</a>
+                    </li>
+                    <li>Edit</li>
+                {% else %}
+                    <li>Add New Task List</li>
+                {% endif %}
+            </ul>
+        </div>
+        <div class="flex items-center gap-4 mb-8">
+            <div class="avatar placeholder">
+                <div class="bg-primary text-primary-content rounded-full w-12 h-12">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         class="h-6 w-6"
+                         fill="none"
+                         viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        {% if task_list %}
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        {% else %}
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        {% endif %}
+                    </svg>
+                </div>
+            </div>
+            <div>
+                <h1 class="text-4xl font-bold text-base-content mb-2">{{ title }}</h1>
+                <p class="text-lg text-base-content/70">
+                    {% if task_list %}
+                        Update task list information
+                    {% else %}
+                        Add a new task list to organize your wedding tasks
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+        <!-- Form -->
+        <div class="card bg-base-100 shadow-xl">
+            <div class="card-body">
+                <form method="post" id="taskListForm">
+                    {% csrf_token %}
+                    <!-- Name Field -->
+                    <div class="form-control mb-6">
+                        <label class="label" for="{{ form.name.id_for_label }}">
+                            <span class="label-text font-medium">{{ form.name.label }}</span>
+                            <span class="label-text-alt text-error">*</span>
+                        </label>
+                        {{ form.name }}
+                        {% if form.name.errors %}
+                            <div class="label">
+                                {% for error in form.name.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
+                            </div>
+                        {% endif %}
+                        <div class="label">
+                            <span class="label-text-alt">Enter a descriptive name for your task list</span>
+                        </div>
+                    </div>
+                    <!-- Form Actions -->
+                    <div class="card-actions justify-end">
+                        {% if task_list %}
+                            <a href="{% url 'core:task_list_detail' task_list.slug %}"
+                               class="btn btn-ghost">Cancel</a>
+                        {% else %}
+                            <a href="{% url 'core:task_list' %}" class="btn btn-ghost">Cancel</a>
+                        {% endif %}
+                        <button type="submit" class="btn btn-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 class="h-5 w-5"
+                                 fill="none"
+                                 viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            {% if task_list %}
+                                Update Task List
+                            {% else %}
+                                Add Task List
+                            {% endif %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+{% block extra_script %}
+    <script nonce="{{ request.csp_nonce }}">
+      document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('taskListForm');
+
+        if (form) {
+          form.addEventListener('submit', function(e) {
+            const submitBtn = form.querySelector('button[type="submit"]');
+            if (submitBtn) {
+              submitBtn.disabled = true;
+              const isUpdate = submitBtn.textContent.includes('Update');
+              submitBtn.innerHTML = `
+                        <span class="loading loading-spinner loading-sm"></span>
+                        ${isUpdate ? 'Updating...' : 'Adding...'}
+                    `;
+            }
+          });
+        }
+
+        // Focus on the name field when page loads
+        const nameField = document.getElementById('{{ form.name.id_for_label }}');
+        if (nameField) {
+          nameField.focus();
+        }
+      });
+    </script>
+{% endblock extra_script %}

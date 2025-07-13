@@ -83,3 +83,12 @@
     --tab-radius: 0.5rem;
     /* border radius of tabs */
 }
+
+/* custom */
+.list-card {
+    @apply card bg-neutral shadow-xl hover:shadow-2xl transition-shadow duration-300
+}
+
+.list-card-title {
+    @apply card-title text-primary text-2xl
+}

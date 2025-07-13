@@ -1,7 +1,7 @@
 import logging
 import uuid
 import json
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Q
 from django.contrib import messages
@@ -293,10 +293,10 @@ def task_list_create(request: HttpRequest):
             for field, errors in form.errors.items():
                 for error in errors:
                     messages.error(request, f"{field}: {error}")
+            return redirect("core:task_list")
     else:
-        messages.error(request, "Invalid request method.")
-
-    return redirect("core:task_list")
+        form = TaskListForm()
+    return render(request, "core/task_list_form.html", {"form": form})
 
 
 @login_required
@@ -311,14 +311,16 @@ def task_list_delete(request: HttpRequest, task_list_slug: str):
     Returns:
         HttpResponse: Redirects to the task list page with a success message.
     """
-    try:
-        task_list = TaskList.objects.get(slug=task_list_slug, is_deleted=False)
+    task_list = get_object_or_404(TaskList, slug=task_list_slug, is_deleted=False)
+    if request.method == "POST":
         task_list.is_deleted = True
+        task_list.updated_by = request.user
         task_list.save()
         messages.success(request, "Task list deleted successfully.")
-    except TaskList.DoesNotExist:
-        messages.error(request, "Task list not found.")
-    return redirect("task_list")
+        return redirect("core:task_list")
+    context = {"task_list": task_list}
+
+    return render(request, "core/task_list_confirm_delete.html", context)
 
 
 @login_required
@@ -333,24 +335,29 @@ def task_list_edit(request: HttpRequest, task_list_slug: str):
     Returns:
         HttpResponse: Redirects to the task list page with a success message.
     """
+    try:
+        task_list = TaskList.objects.get(slug=task_list_slug, is_deleted=False)
+    except TaskList.DoesNotExist:
+        messages.error(request, "Task list not found.")
+        return redirect("core:task_list")
+
     if request.method == "POST":
-        try:
-            task_list = TaskList.objects.get(slug=task_list_slug, is_deleted=False)
-            form = TaskListForm(request.POST, instance=task_list)
+        form = TaskListForm(request.POST, instance=task_list)
 
-            if form.is_valid():
-                task_list = form.save(commit=False)
-                task_list.updated_by = request.user
-                task_list.save()
-                messages.success(request, "Task list updated successfully.")
-            else:
-                for field, errors in form.errors.items():
-                    for error in errors:
-                        messages.error(request, f"{field}: {error}")
+        if form.is_valid():
+            task_list = form.save(commit=False)
+            task_list.updated_by = request.user
+            task_list.save()
+            messages.success(request, "Task list updated successfully.")
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field}: {error}")
+        return redirect("core:task_list_detail", task_list_slug=task_list.slug)
 
-        except TaskList.DoesNotExist:
-            messages.error(request, "Task list not found.")
     else:
+        form = TaskListForm(instance=task_list)
+        return render(request, "core/task_list_form.html", {"form": form, "task_list": task_list})
         messages.error(request, "Invalid request method.")
 
     return redirect("task_list")
