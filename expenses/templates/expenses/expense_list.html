@@ -259,8 +259,7 @@
           columns: [{
             data: 'item',
             render: function(data, type, row) {
-              return `<div class="font-semibold">${data}</div>
-                                ${row.description ? `<div class="text-sm text-base-content/70">${row.description.substring(0, 50)}${row.description.length > 50 ? '...' : ''}</div>` : ''}`;
+              return `<div class="font-semibold">${data}</div>`;
             }
           }, {
             data: 'category',
@@ -270,7 +269,7 @@
           }, {
             data: 'date',
             render: function(data) {
-              return new Date(data).toLocaleDateString();
+              return data ? new Date(data).toLocaleDateString() : '<span class="text-base-content/50">-</span>';
             }
           }, {
             data: 'estimated_amount',

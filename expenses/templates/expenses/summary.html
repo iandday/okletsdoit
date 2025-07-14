@@ -91,12 +91,6 @@
                                             <td>{{ data.percentage|default:"0"|floatformat:1 }}%</td>
                                         </tr>
                                     {% endfor %}
-                                    <tr>
-                                        <td>Total</td>
-                                        <td>${{ overall_estimated|floatformat:2|intcomma }}</td>
-                                        <td>${{ overall_actual|floatformat:2|intcomma }}</td>
-                                        <td>100%</td>
-                                    </tr>
                                 </tbody>
                                 <tfoot>
                                     <tr>
