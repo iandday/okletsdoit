@@ -38,7 +38,7 @@ class Expense(models.Model):
     item = models.CharField(max_length=250)
     slug = models.SlugField(max_length=250, null=True, blank=True, unique=True)
     description = models.TextField(blank=True, null=True)
-    date = models.DateField()
+    date = models.DateField(blank=True, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
     estimated_amount = models.DecimalField(max_digits=40, decimal_places=2, blank=True, null=True)
@@ -63,8 +63,17 @@ class Expense(models.Model):
     class Meta:
         ordering = ["-date", "item"]
         verbose_name_plural = "Expenses"
+        constraints = [models.UniqueConstraint(fields=["item", "category"], name="unique_expense_item_category")]
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.item)
+            base_slug = slugify(self.item)
+            slug = base_slug
+            counter = 1
+
+            while Expense.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+
+            self.slug = slug
         super().save(*args, **kwargs)

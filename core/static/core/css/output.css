@@ -4482,6 +4482,9 @@
       border-width: var(--border, 1px) 0 var(--border, 1px) var(--border, 1px);
     }
   }
+  .me-2 {
+    margin-inline-end: calc(var(--spacing) * 2);
+  }
   .modal-action {
     margin-top: calc(0.25rem * 6);
     display: flex;
@@ -5185,6 +5188,10 @@
     width: var(--size);
     height: var(--size);
   }
+  .size-4 {
+    width: calc(var(--spacing) * 4);
+    height: calc(var(--spacing) * 4);
+  }
   .status-lg {
     width: calc(0.25rem * 3);
     height: calc(0.25rem * 3);
@@ -5229,6 +5236,9 @@
   }
   .h-12 {
     height: calc(var(--spacing) * 12);
+  }
+  .h-96 {
+    height: calc(var(--spacing) * 96);
   }
   .h-100 {
     height: calc(var(--spacing) * 100);
@@ -5408,6 +5418,9 @@
   .flex-1 {
     flex: 1;
   }
+  .flex-2 {
+    flex: 2;
+  }
   .flex-shrink-0 {
     flex-shrink: 0;
   }
@@ -5560,6 +5573,12 @@
   }
   .grid-cols-1 {
     grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+  .grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
   .flex-col {
     flex-direction: column;
@@ -6141,6 +6160,9 @@
   .p-4 {
     padding: calc(var(--spacing) * 4);
   }
+  .p-6 {
+    padding: calc(var(--spacing) * 6);
+  }
   .menu-title {
     padding-inline: calc(0.25rem * 3);
     padding-block: calc(0.25rem * 2);
@@ -6266,6 +6288,9 @@
   .pt-4 {
     padding-top: calc(var(--spacing) * 4);
   }
+  .pb-4 {
+    padding-bottom: calc(var(--spacing) * 4);
+  }
   .text-center {
     text-align: center;
   }
@@ -6345,6 +6370,14 @@
   .text-xs {
     font-size: var(--text-xs);
     line-height: var(--tw-leading, var(--text-xs--line-height));
+  }
+  .tabs-lg {
+    --tab-height: calc(var(--size-field, 0.25rem) * 12);
+    :where(.tab) {
+      font-size: 1.125rem;
+      --tab-p: 1rem;
+      --tab-radius-min: calc(1.5rem - var(--border));
+    }
   }
   .kbd-lg {
     --size: calc(var(--size-selector, 0.25rem) * 7);
@@ -7442,6 +7475,11 @@
       }
     }
   }
+  .sm\:inline {
+    @media (width >= 40rem) {
+      display: inline;
+    }
+  }
   .sm\:max-w-md {
     @media (width >= 40rem) {
       max-width: var(--container-md);
@@ -7496,6 +7534,26 @@
     @media (width >= 40rem) {
       font-size: var(--text-lg);
       line-height: var(--tw-leading, var(--text-lg--line-height));
+    }
+  }
+  .sm\:tabs-sm {
+    @media (width >= 40rem) {
+      --tab-height: calc(var(--size-field, 0.25rem) * 8);
+      :where(.tab) {
+        font-size: 0.875rem;
+        --tab-p: 0.5rem;
+        --tab-radius-min: calc(0.5rem - var(--border));
+      }
+    }
+  }
+  .sm\:tabs-xs {
+    @media (width >= 40rem) {
+      --tab-height: calc(var(--size-field, 0.25rem) * 6);
+      :where(.tab) {
+        font-size: 0.75rem;
+        --tab-p: 0.375rem;
+        --tab-radius-min: calc(0.5rem - var(--border));
+      }
     }
   }
   .md\:col-span-2 {
@@ -7637,6 +7695,21 @@
       display: none;
     }
   }
+  .lg\:h-5 {
+    @media (width >= 64rem) {
+      height: calc(var(--spacing) * 5);
+    }
+  }
+  .lg\:w-5 {
+    @media (width >= 64rem) {
+      width: calc(var(--spacing) * 5);
+    }
+  }
+  .lg\:flex-4 {
+    @media (width >= 64rem) {
+      flex: 4;
+    }
+  }
   .lg\:stats-horizontal {
     @media (width >= 64rem) {
       grid-auto-flow: column;
@@ -7660,6 +7733,11 @@
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
   }
+  .lg\:grid-cols-4 {
+    @media (width >= 64rem) {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
   .lg\:flex-row {
     @media (width >= 64rem) {
       flex-direction: row;
@@ -7673,6 +7751,43 @@
   .lg\:text-left {
     @media (width >= 64rem) {
       text-align: left;
+    }
+  }
+  .lg\:tabs-lg {
+    @media (width >= 64rem) {
+      --tab-height: calc(var(--size-field, 0.25rem) * 12);
+      :where(.tab) {
+        font-size: 1.125rem;
+        --tab-p: 1rem;
+        --tab-radius-min: calc(1.5rem - var(--border));
+      }
+    }
+  }
+  .lg\:tabs-md {
+    @media (width >= 64rem) {
+      --tab-height: calc(var(--size-field, 0.25rem) * 10);
+      :where(.tab) {
+        font-size: 0.875rem;
+        --tab-p: 0.75rem;
+        --tab-radius-min: calc(0.75rem - var(--border));
+      }
+    }
+  }
+  .lg\:tabs-xl {
+    @media (width >= 64rem) {
+      --tab-height: calc(var(--size-field, 0.25rem) * 14);
+      :where(.tab) {
+        font-size: 1.125rem;
+        --tab-p: 1.25rem;
+        --tab-radius-min: calc(2rem - var(--border));
+      }
+    }
+  }
+  .lg\:btn-md {
+    @media (width >= 64rem) {
+      --fontsize: 0.875rem;
+      --btn-p: 1rem;
+      --size: calc(var(--size-field, 0.25rem) * 10);
     }
   }
   .\[\&_a\]\:link {

@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
+    "django.contrib.humanize",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
@@ -246,7 +247,7 @@ CONTENT_SECURITY_POLICY = {
     "EXCLUDE_URL_PREFIXES": ["/excluded-path/"],
     "DIRECTIVES": {
         "default-src": [SELF],
-        "script-src": [SELF, NONCE, "code.jquery.com"],
+        "script-src": [SELF, NONCE, "code.jquery.com", "cdn.jsdelivr.net"],
         "style-src": [
             SELF,
             NONCE,
