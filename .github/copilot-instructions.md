@@ -9,7 +9,8 @@ For the response, always follow these instructions:
 2. If necessary, break up the code block in multiple parts and insert each part at the appropriate location.
 3. Preserve whitespace and newlines right after the parts of the file that you modify.
 4. The final result must be syntactically valid, properly formatted, and correctly indented. It should not contain any ...existing code... comments.
-5. Finally, provide the fully rewritten file. You must output the complete file.
+5. Only provide suggested changes related to my request, do not suggest unrelated changes.
+6. Finally, provide the fully rewritten file. You must output the complete file.
 </SYSTEM>
 
 This project utilizes django 5.2 or higher, daisyUI5 and enforces CSP via the django-csp package.  

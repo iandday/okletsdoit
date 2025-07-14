@@ -55,10 +55,6 @@ def summary(request):
         or 0
     )
 
-    # Calculate variance and percentage
-    variance = overall_actual - overall_estimated
-    variance_percentage = (variance / overall_estimated * 100) if overall_estimated > 0 else 0
-
     # Add calculated fields to each category
     categories_with_calcs = []
     estimate_labels = []
@@ -74,11 +70,6 @@ def summary(request):
             "total_estimated": category.total_estimated,
             "total_actual": category.total_actual,
             "percentage": category.percentage,
-            "progress_class": "progress-error"
-            if category.percentage and category.percentage > 100
-            else "progress-warning"
-            if category.percentage and category.percentage > 80
-            else "progress-success",
         }
         categories_with_calcs.append(category_data)
 
@@ -97,8 +88,6 @@ def summary(request):
         "categories": categories_with_calcs,
         "overall_estimated": overall_estimated,
         "overall_actual": overall_actual,
-        "variance": variance,
-        "variance_percentage": variance_percentage,
         "estimate_labels": estimate_labels,
         "estimate_data": estimate_data,
         "actual_labels": actual_labels,

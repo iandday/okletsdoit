@@ -63,6 +63,55 @@
         <!-- Charts Section -->
         <div class="tabs tabs-lift text-primary sm:tabs-xs tabs-lg mb-6">
             <label class="tab">
+                <input type="radio" name="my_tabs_4" checked="checked" />
+                Categories
+            </label>
+            <div class="tab-content bg-base-100 border-base-300 p-2">
+                <div class="list-card">
+                    <div class="list-body">
+                        <h3 class="list-title text-center px-4">Expenses by Category</h3>
+                        <div class="overflow-x-auto">
+                            <table id="categoryBreakdownTable" class="table table-zebra w-full">
+                                <thead>
+                                    <tr>
+                                        <th>Category</th>
+                                        <th>Estimated</th>
+                                        <th>Actual</th>
+                                        <th>Percentage</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for data in categories %}
+                                        <tr>
+                                            <td>
+                                                <a href="{% url 'expenses:list' %}?category={{ data.category.slug }}">{{ data.category.name }}</a>
+                                            </td>
+                                            <td>${{ data.total_estimated|default:"0"|floatformat:2|intcomma }}</td>
+                                            <td>${{ data.total_actual|default:"0"|floatformat:2|intcomma }}</td>
+                                            <td>{{ data.percentage|default:"0"|floatformat:1 }}%</td>
+                                        </tr>
+                                    {% endfor %}
+                                    <tr>
+                                        <td>Total</td>
+                                        <td>${{ overall_estimated|floatformat:2|intcomma }}</td>
+                                        <td>${{ overall_actual|floatformat:2|intcomma }}</td>
+                                        <td>100%</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td>Total</td>
+                                        <td>${{ overall_estimated|floatformat:2|intcomma }}</td>
+                                        <td>${{ overall_actual|floatformat:2|intcomma }}</td>
+                                        <td>-</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <label class="tab">
                 <input type="radio" name="my_tabs_4" />
                 <svg xmlns="http://www.w3.org/2000/svg"
                      class="h-8 w-8"
@@ -84,7 +133,7 @@
                 </div>
             </div>
             <label class="tab">
-                <input type="radio" name="my_tabs_4" checked="checked" />
+                <input type="radio" name="my_tabs_4" />
                 <svg xmlns="http://www.w3.org/2000/svg"
                      class="h-8 w-8"
                      fill="none"
@@ -98,20 +147,6 @@
                 <div class="list-card">
                     <div class="list-body">
                         <h3 class="list-title text-center">${{ overall_actual|floatformat:2|intcomma }}</h3>
-                        <div class="h-96">
-                            <canvas id="actualPieChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <label class="tab">
-                <input type="radio" name="my_tabs_4" checked="checked" />
-                Categories
-            </label>
-            <div class="tab-content bg-base-100 border-base-300 p-2">
-                <div class="list-card">
-                    <div class="list-body">
-                        <h3 class="list-title text-center px-4">Expenses by Category</h3>
                         <div class="h-96">
                             <canvas id="actualPieChart"></canvas>
                         </div>
@@ -199,6 +234,10 @@
 {% block extra_script %}
     <script nonce="{{ request.csp_nonce }}"
             src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script nonce="{{ request.csp_nonce }}"
+            src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script nonce="{{ request.csp_nonce }}"
+            src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
     <script nonce="{{ request.csp_nonce }}">
       document.addEventListener('DOMContentLoaded', function() {
         // Parse data
@@ -300,6 +339,39 @@
           });
         }
 
+        // Initialize DataTable
+        function initializeDataTable() {
+          $('#categoryBreakdownTable').DataTable({
+            paging: false,
+            searching: false,
+            ordering: true,
+            info: false,
+            responsive: {
+              details: false
+            },
+            columnDefs: [{
+              targets: [1, 2],
+              type: 'currency'
+            }, {
+              targets: [3],
+              type: 'num-fmt',
+              responsivePriority: 10001
+            }],
+            order: [
+              [3, 'desc']
+            ],
+            language: {
+              emptyTable: "No categories found"
+            },
+            dom: '<"flex flex-col lg:flex-row justify-between items-start lg:items-center mb-4"<"flex-1 mr-4"f>>' +
+              '<"overflow-x-auto"t>',
+            initComplete: function() {
+              $('.dataTables_filter input').addClass('input input-bordered input-sm');
+              $('.dataTables_filter label').addClass('flex items-center gap-2');
+            }
+          });
+        }
+
         // Initialize modal handlers
         function initializeModalHandlers() {
           const showImportModal = document.getElementById('show-import-modal');
@@ -323,11 +395,15 @@
         if (window.requestIdleCallback) {
           requestIdleCallback(function() {
             initializeCharts();
+            initializeDataTable();
           }, {
             timeout: 2000
           });
         } else {
-          setTimeout(initializeCharts, 100);
+          setTimeout(function() {
+            initializeCharts();
+            initializeDataTable();
+          }, 100);
         }
 
         // Initialize modal handlers immediately (lightweight)
