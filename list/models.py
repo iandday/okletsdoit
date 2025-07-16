@@ -7,7 +7,7 @@ from users.models import User
 
 
 class List(models.Model):
-    """A list that contains multiple list entries"""
+    """A list that contains multiple ListEntry objects"""
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=250)
@@ -83,6 +83,26 @@ class ListEntry(models.Model):
     )
     updated_at = models.DateTimeField(auto_now=True)
     is_deleted = models.BooleanField(default=False)
+    expense_item = models.BooleanField(
+        default=False, help_text="Indicates if this entry is associated with an expense entry"
+    )
+    associated_expense = models.ForeignKey(
+        "expenses.Expense",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="list_entries",
+        help_text="The associated expense item if this entry is marked as an expense item",
+    )
+    quantity = models.PositiveIntegerField(default=1)
+    unit_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    additional_price = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=0.00,
+        help_text="Additional price for this entry, regardless of quantity",
+    )
+    total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
 
     class Meta:
         ordering = ["order", "item"]
@@ -109,4 +129,8 @@ class ListEntry(models.Model):
             self.completed_at = self.updated_at.date()
         elif not self.is_completed:
             self.completed_at = None
+
+        # update total_price
+        self.total_price = (self.unit_price * self.quantity) + self.additional_price
+
         super().save(*args, **kwargs)

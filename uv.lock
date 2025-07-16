@@ -469,6 +469,15 @@ wheels = [
 ]
 
 [[package]]
+name = "docutils"
+version = "0.21.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/ae/ed/aefcc8cd0ba62a0560c3c18c33925362d46c6075480bfa4df87b28e169a9/docutils-0.21.2.tar.gz", hash = "sha256:3a6b18732edf182daa3cd12775bbb338cf5691468f91eeeb109deff6ebfa986f", size = 2204444 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/8f/d7/9322c609343d929e75e7e5e6255e614fcc67572cfd083959cdef3b7aad79/docutils-0.21.2-py3-none-any.whl", hash = "sha256:dafca5b9e384f0e419294eb4d2ff9fa826435bf15f15b7bd45723e8ad76811b2", size = 587408 },
+]
+
+[[package]]
 name = "editorconfig"
 version = "0.17.1"
 source = { registry = "https://pypi.org/simple" }
@@ -714,6 +723,7 @@ dependencies = [
     { name = "django-import-export" },
     { name = "django-simple-history" },
     { name = "django-widget-tweaks" },
+    { name = "docutils" },
     { name = "fastexcel" },
     { name = "gunicorn" },
     { name = "openpyxl" },
@@ -755,6 +765,7 @@ requires-dist = [
     { name = "django-import-export", specifier = ">=4.3.8" },
     { name = "django-simple-history", specifier = ">=3.10.1" },
     { name = "django-widget-tweaks", specifier = ">=1.5.0" },
+    { name = "docutils", specifier = ">=0.21.2" },
     { name = "fastexcel", specifier = ">=0.14.0" },
     { name = "gunicorn", specifier = ">=21.2.0" },
     { name = "openpyxl", specifier = ">=3.1.5" },

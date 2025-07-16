@@ -21,7 +21,16 @@ class ListForm(forms.ModelForm):
 class ListEntryForm(forms.ModelForm):
     class Meta:
         model = ListEntry
-        fields = ["item", "description", "is_completed"]
+        fields = [
+            "item",
+            "description",
+            "is_completed",
+            "quantity",
+            "unit_price",
+            "additional_price",
+            "expense_item",
+            "associated_expense",
+        ]
         widgets = {
             "item": forms.TextInput(attrs={"class": "input input-bordered w-full", "placeholder": "Enter item name"}),
             "description": forms.Textarea(
@@ -31,7 +40,28 @@ class ListEntryForm(forms.ModelForm):
                     "rows": 2,
                 }
             ),
+            "quantity": forms.NumberInput(
+                attrs={"class": "input input-bordered w-full", "placeholder": "Enter quantity", "min": 1}
+            ),
+            "expense_item": forms.CheckboxInput(attrs={"class": "checkbox checkbox-primary"}),
+            "unit_price": forms.NumberInput(
+                attrs={
+                    "class": "input input-bordered w-full",
+                    "placeholder": "Enter unit price",
+                    "step": "0.01",
+                    "min": 0,
+                }
+            ),
+            "additional_price": forms.NumberInput(
+                attrs={
+                    "class": "input input-bordered w-full",
+                    "placeholder": "Enter additional price (optional)",
+                    "step": "0.01",
+                    "min": 0,
+                }
+            ),
             "is_completed": forms.CheckboxInput(attrs={"class": "checkbox checkbox-primary"}),
+            "associated_expense": forms.Select(attrs={"class": "select select-bordered w-full"}),
         }
 
 

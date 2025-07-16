@@ -319,6 +319,17 @@ def expense_import(request):
 
 
 @login_required
+def detail(request, slug: str):
+    """View for expense detail"""
+    expense = get_object_or_404(Expense, slug=slug, is_deleted=False)
+    context = {
+        "expense": expense,
+        "form": ExpenseForm(instance=expense),
+    }
+    return render(request, "expenses/detail.html", context)
+
+
+@login_required
 def template_download(request):
     """Download Excel template for expense import"""
     # Create a workbook and worksheet
@@ -383,6 +394,18 @@ def template_download(request):
     return response
 
 
+@login_required
+def category_detail(request, slug: str):
+    category = get_object_or_404(Category, slug=slug, is_deleted=False)
+    expenses = Expense.objects.filter(category=category, is_deleted=False)
+    context = {
+        "category": category,
+        "expenses": expenses,
+    }
+    return render(request, "expenses/category_detail.html", context)
+
+
+@login_required
 def category_list(request):
     categories = (
         Category.objects.filter(is_deleted=False)

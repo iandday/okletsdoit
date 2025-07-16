@@ -7,6 +7,7 @@ from django.urls import path
 app_name = "okletsdoit"
 
 urlpatterns = [
+    path("admin/doc/", include("django.contrib.admindocs.urls")),
     path("admin/", admin.site.urls),
     path("accounts/", include("allauth.urls")),
     path("health/", include("health_check.urls")),

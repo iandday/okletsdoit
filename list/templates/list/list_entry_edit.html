@@ -29,10 +29,11 @@
                          stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                     </svg>
-                    Edit List Item
+                    Edit {{ entry.list.name }} Item
                 </h1>
                 <form method="post">
                     {% csrf_token %}
+                    <!-- Item Name -->
                     <div class="form-control mb-4">
                         <label class="label" for="{{ form.item.id_for_label }}">
                             <span class="label-text font-medium">{{ form.item.label }}</span>
@@ -44,6 +45,7 @@
                             </div>
                         {% endif %}
                     </div>
+                    <!-- Description -->
                     <div class="form-control mb-4">
                         <label class="label" for="{{ form.description.id_for_label }}">
                             <span class="label-text font-medium">{{ form.description.label }}</span>
@@ -55,6 +57,72 @@
                             </div>
                         {% endif %}
                     </div>
+                    <!-- Quantity and Pricing Fields -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <!-- Quantity -->
+                        <div class="form-control">
+                            <label class="label" for="{{ form.quantity.id_for_label }}">
+                                <span class="label-text font-medium">{{ form.quantity.label }}</span>
+                            </label>
+                            {{ form.quantity }}
+                            {% if form.quantity.errors %}
+                                <div class="label">
+                                    {% for error in form.quantity.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <!-- Unit Price -->
+                        <div class="form-control">
+                            <label class="label" for="{{ form.unit_price.id_for_label }}">
+                                <span class="label-text font-medium">{{ form.unit_price.label }}</span>
+                            </label>
+                            {{ form.unit_price }}
+                            {% if form.unit_price.errors %}
+                                <div class="label">
+                                    {% for error in form.unit_price.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <!-- Additional Price -->
+                    <div class="form-control mb-4">
+                        <label class="label" for="{{ form.additional_price.id_for_label }}">
+                            <span class="label-text font-medium">{{ form.additional_price.label }}</span>
+                        </label>
+                        {{ form.additional_price }}
+                        {% if form.additional_price.errors %}
+                            <div class="label">
+                                {% for error in form.additional_price.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <!-- Expense Item Checkbox -->
+                    <div class="form-control mb-4">
+                        <label class="cursor-pointer label">
+                            <span class="label-text font-medium">{{ form.expense_item.label }}</span>
+                            {{ form.expense_item }}
+                        </label>
+                        {% if form.expense_item.errors %}
+                            <div class="label">
+                                {% for error in form.expense_item.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <!-- Associated Expense -->
+                    <div class="form-control mb-4">
+                        <label class="label" for="{{ form.associated_expense.id_for_label }}">
+                            <span class="label-text font-medium">{{ form.associated_expense.label }}</span>
+                        </label>
+                        {{ form.associated_expense }}
+                        {% if form.associated_expense.errors %}
+                            <div class="label">
+                                {% for error in form.associated_expense.errors %}
+                                    <span class="label-text-alt text-error">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <!-- Completion Status -->
                     <div class="form-control mb-6">
                         <label class="cursor-pointer label">
                             <span class="label-text font-medium">Completion Status</span>
