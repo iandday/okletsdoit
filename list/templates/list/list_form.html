@@ -1,0 +1,79 @@
+{% extends "components/base.html" %}
+
+{% load static %}
+
+{% block title %}
+    {% if list %}
+        Edit List
+    {% else %}
+        Create List
+    {% endif %}
+    - Wedding Lists
+{% endblock title %}
+{% block content %}
+    <div class="max-w-2xl mx-auto px-4 py-8">
+        <!-- Breadcrumbs -->
+        <div class="breadcrumbs mb-4">
+            <ul>
+                <li>
+                    <a href="{% url 'list:summary' %}" class="link">Lists</a>
+                </li>
+                {% if list %}
+                    <li>
+                        <a href="{% url 'list:detail' list.slug %}" class="link">{{ list.name }}</a>
+                    </li>
+                    <li>Edit</li>
+                {% else %}
+                    <li>Create</li>
+                {% endif %}
+            </ul>
+        </div>
+        <div class="card bg-base-100 shadow-xl">
+            <div class="card-body">
+                <h1 class="card-title text-2xl mb-6">
+                    {% if list %}
+                        Edit List
+                    {% else %}
+                        Create New List
+                    {% endif %}
+                </h1>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-control mb-4">
+                        <label class="label" for="{{ form.name.id_for_label }}">
+                            <span class="label-text font-medium">{{ form.name.label }}</span>
+                        </label>
+                        {{ form.name }}
+                        {% if form.name.errors %}
+                            <div class="label">
+                                {% for error in form.name.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="form-control mb-6">
+                        <label class="label" for="{{ form.description.id_for_label }}">
+                            <span class="label-text font-medium">{{ form.description.label }}</span>
+                        </label>
+                        {{ form.description }}
+                        {% if form.description.errors %}
+                            <div class="label">
+                                {% for error in form.description.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="card-actions justify-end">
+                        <a href="{% if list %}{% url 'list:detail' list.slug %}{% else %}{% url 'list:summary' %}{% endif %}"
+                           class="btn btn-ghost">Cancel</a>
+                        <button type="submit" class="btn btn-primary">
+                            {% if list %}
+                                Update List
+                            {% else %}
+                                Create List
+                            {% endif %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

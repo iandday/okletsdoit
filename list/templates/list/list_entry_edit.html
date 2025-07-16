@@ -1,0 +1,125 @@
+{% extends "components/base.html" %}
+
+{% load static %}
+
+{% block title %}
+    Edit {{ entry.item }} - Wedding Lists
+{% endblock title %}
+{% block content %}
+    <div class="max-w-2xl mx-auto px-4 py-8">
+        <!-- Breadcrumbs -->
+        <div class="breadcrumbs mb-4">
+            <ul>
+                <li>
+                    <a href="{% url 'list:summary' %}" class="link">Lists</a>
+                </li>
+                <li>
+                    <a href="{% url 'list:detail' entry.list.slug %}" class="link">{{ entry.list.name }}</a>
+                </li>
+                <li>Edit {{ entry.item }}</li>
+            </ul>
+        </div>
+        <div class="card bg-base-100 shadow-xl">
+            <div class="card-body">
+                <h1 class="card-title text-2xl mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         class="h-6 w-6"
+                         fill="none"
+                         viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                    Edit List Item
+                </h1>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-control mb-4">
+                        <label class="label" for="{{ form.item.id_for_label }}">
+                            <span class="label-text font-medium">{{ form.item.label }}</span>
+                        </label>
+                        {{ form.item }}
+                        {% if form.item.errors %}
+                            <div class="label">
+                                {% for error in form.item.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="form-control mb-4">
+                        <label class="label" for="{{ form.description.id_for_label }}">
+                            <span class="label-text font-medium">{{ form.description.label }}</span>
+                        </label>
+                        {{ form.description }}
+                        {% if form.description.errors %}
+                            <div class="label">
+                                {% for error in form.description.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="form-control mb-6">
+                        <label class="cursor-pointer label">
+                            <span class="label-text font-medium">Completion Status</span>
+                            {{ form.is_completed }}
+                            <span class="label-text">Mark as completed</span>
+                        </label>
+                        {% if form.is_completed.errors %}
+                            <div class="label">
+                                {% for error in form.is_completed.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    {% if entry.completed_at %}
+                        <div class="alert alert-success mb-6">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 class="h-6 w-6"
+                                 fill="none"
+                                 viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span>Completed on {{ entry.completed_at|date:"F j, Y" }}</span>
+                        </div>
+                    {% endif %}
+                    <div class="card-actions justify-end">
+                        <a href="{% url 'list:detail' entry.list.slug %}" class="btn btn-ghost">Cancel</a>
+                        <button type="submit" class="btn btn-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 class="h-5 w-5"
+                                 fill="none"
+                                 viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            Update Item
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+{% block extra_script %}
+    <script nonce="{{ request.csp_nonce }}">
+      document.addEventListener('DOMContentLoaded', function() {
+        // Focus on the item name field when the page loads
+        const itemField = document.getElementById('{{ form.item.id_for_label }}');
+        if (itemField) {
+          itemField.focus();
+        }
+
+        // Handle form submission with loading state
+        const form = document.querySelector('form');
+        if (form) {
+          form.addEventListener('submit', function(e) {
+            const submitBtn = form.querySelector('button[type="submit"]');
+            if (submitBtn) {
+              submitBtn.disabled = true;
+              submitBtn.innerHTML = `
+                            <span class="loading loading-spinner loading-sm"></span>
+                            Updating...
+                        `;
+            }
+          });
+        }
+      });
+    </script>
+{% endblock extra_script %}

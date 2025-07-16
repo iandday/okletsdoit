@@ -1,0 +1,224 @@
+{% extends "components/base.html" %}
+
+{% load static %}
+
+{% block title %}
+    {{ list.name }} - Wedding Lists
+{% endblock title %}
+{% block content %}
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <!-- Breadcrumbs -->
+        <div class="breadcrumbs mb-4">
+            <ul>
+                <li>
+                    <a href="{% url 'list:summary' %}" class="link">Lists</a>
+                </li>
+                <li>{{ list.name }}</li>
+            </ul>
+        </div>
+        <!-- Header Section -->
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+            <div>
+                <h1 class="text-4xl font-bold text-base-content mb-2">{{ list.name }}</h1>
+                {% if list.description %}<p class="text-lg text-base-content/70">{{ list.description }}</p>{% endif %}
+            </div>
+            <div class="flex gap-2">
+                <a href="{% url 'list:edit' list.slug %}" class="btn btn-outline">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         class="h-5 w-5"
+                         fill="none"
+                         viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                    Edit List
+                </a>
+                <button class="btn btn-primary" id="show-add-entry-modal">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         class="h-5 w-5"
+                         fill="none"
+                         viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    Add Item
+                </button>
+            </div>
+        </div>
+        <!-- Stats -->
+        <div class="stats stats-horizontal shadow w-full mb-8">
+            <div class="stat">
+                <div class="stat-title">Total Items</div>
+                <div class="stat-value">{{ entries.count }}</div>
+            </div>
+            <div class="stat">
+                <div class="stat-title">Completed</div>
+                <div class="stat-value text-success">{{ completed_count }}</div>
+            </div>
+            <div class="stat">
+                <div class="stat-title">Pending</div>
+                <div class="stat-value text-warning">{{ pending_count }}</div>
+            </div>
+        </div>
+        <!-- Entries List -->
+        <div class="card bg-base-100 shadow-xl">
+            <div class="card-body">
+                <h2 class="card-title">List Items</h2>
+                {% if entries %}
+                    <div class="space-y-4">
+                        {% for entry in entries %}
+                            <div class="card bg-base-200 {% if entry.is_completed %}opacity-60{% endif %}">
+                                <div class="card-body p-4">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center gap-4 flex-1">
+                                            <input type="checkbox"
+                                                   class="checkbox checkbox-primary"
+                                                   {% if entry.is_completed %}checked{% endif %}
+                                                   onchange="toggleEntry('{{ entry.slug }}', this.checked)">
+                                            <div class="flex-1">
+                                                <h3 class="font-semibold {% if entry.is_completed %}line-through{% endif %}">{{ entry.item }}</h3>
+                                                {% if entry.description %}<p class="text-sm text-base-content/70 mt-1">{{ entry.description }}</p>{% endif %}
+                                            </div>
+                                        </div>
+                                        {% url 'list:entry_detail' entry.slug as detail_action %}
+                                        {% url 'list:entry_edit' entry.slug as update_action %}
+                                        {% url 'list:entry_delete' entry.slug as delete_action %}
+
+                                        {% include "components/card_options.html" with detail_action=detail_action update_action=update_action delete_action=delete_action %}
+
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="text-center py-8">
+                        <div class="text-4xl mb-4">📝</div>
+                        <p class="text-base-content/70">No items in this list yet.</p>
+                        <button class="btn btn-primary mt-4" id="show-add-entry-modal-empty">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 class="h-5 w-5"
+                                 fill="none"
+                                 viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                            </svg>
+                            Add First Item
+                        </button>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <!-- Add Entry Modal -->
+    <dialog id="add_entry_modal" class="modal">
+        <div class="modal-box">
+            <form method="dialog">
+                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+            </form>
+            <h3 class="font-bold text-lg mb-6">Add New Item</h3>
+            <form method="post"
+                  action="{% url 'list:entry_create' list.slug %}"
+                  id="entryForm">
+                {% csrf_token %}
+                <div class="form-control mb-4">
+                    <label class="label">
+                        <span class="label-text font-medium">Item Name</span>
+                    </label>
+                    <input type="text"
+                           name="item"
+                           class="input input-bordered w-full"
+                           placeholder="Enter item name"
+                           required>
+                </div>
+                <div class="form-control mb-4">
+                    <label class="label">
+                        <span class="label-text font-medium">Description</span>
+                    </label>
+                    <textarea name="description"
+                              class="textarea textarea-bordered w-full"
+                              placeholder="Enter description (optional)"
+                              rows="3"></textarea>
+                </div>
+                <div class="form-control mb-6">
+                    <label class="cursor-pointer label">
+                        <span class="label-text">Mark as completed</span>
+                        <input type="checkbox" name="is_completed" class="checkbox checkbox-primary">
+                    </label>
+                </div>
+                <div class="modal-action">
+                    <button type="button" class="btn btn-ghost" id="cancel-add-entry">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             class="h-5 w-5"
+                             fill="none"
+                             viewBox="0 0 24 24"
+                             stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                        Add Item
+                    </button>
+                </div>
+            </form>
+        </div>
+        <form method="dialog" class="modal-backdrop">
+            <button>close</button>
+        </form>
+    </dialog>
+{% endblock content %}
+{% block extra_script %}
+    <script nonce="{{ request.csp_nonce }}">
+      function toggleEntry(entrySlug, isCompleted) {
+        // Here you would make an AJAX request to update the entry
+        // For now, we'll just reload the page
+        window.location.reload();
+      }
+
+      document.addEventListener('DOMContentLoaded', function() {
+        // Modal functionality
+        const showAddModal = document.getElementById('show-add-entry-modal');
+        const showAddModalEmpty = document.getElementById('show-add-entry-modal-empty');
+        const addModal = document.getElementById('add_entry_modal');
+        const cancelAddBtn = document.getElementById('cancel-add-entry');
+
+        function openModal() {
+          addModal.showModal();
+          setTimeout(() => {
+            const itemField = document.querySelector('input[name="item"]');
+            if (itemField) {
+              itemField.focus();
+            }
+          }, 100);
+        }
+
+        if (showAddModal) {
+          showAddModal.addEventListener('click', openModal);
+        }
+
+        if (showAddModalEmpty) {
+          showAddModalEmpty.addEventListener('click', openModal);
+        }
+
+        if (cancelAddBtn && addModal) {
+          cancelAddBtn.addEventListener('click', function() {
+            addModal.close();
+          });
+        }
+
+        // Handle form submission
+        const form = document.getElementById('entryForm');
+        if (form) {
+          form.addEventListener('submit', function(e) {
+            const submitBtn = form.querySelector('button[type="submit"]');
+            if (submitBtn) {
+              submitBtn.disabled = true;
+              submitBtn.innerHTML = `
+                        <span class="loading loading-spinner loading-sm"></span>
+                        Adding...
+                    `;
+            }
+          });
+        }
+      });
+    </script>
+{% endblock extra_script %}
