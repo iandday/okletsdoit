@@ -5,6 +5,8 @@ from django.utils.text import slugify
 
 from users.models import User
 
+# TODO Link to vendor model to make shopping lists
+
 
 class List(models.Model):
     """A list that contains multiple ListEntry objects"""
@@ -83,8 +85,14 @@ class ListEntry(models.Model):
     )
     updated_at = models.DateTimeField(auto_now=True)
     is_deleted = models.BooleanField(default=False)
-    expense_item = models.BooleanField(
-        default=False, help_text="Indicates if this entry is associated with an expense entry"
+    purchased = models.BooleanField(default=False, help_text="Indicates if this entry was already purchased")
+    vendor = models.ForeignKey(
+        "contacts.Contact",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="vendor_list_entries",
+        help_text="The vendor from which this item was/will be purchased",
     )
     associated_expense = models.ForeignKey(
         "expenses.Expense",

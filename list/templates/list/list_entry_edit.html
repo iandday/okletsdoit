@@ -96,15 +96,15 @@
                             </div>
                         {% endif %}
                     </div>
-                    <!-- Expense Item Checkbox -->
+                    <!-- Purchased Checkbox -->
                     <div class="form-control mb-4">
                         <label class="cursor-pointer label">
-                            <span class="label-text font-medium">{{ form.expense_item.label }}</span>
-                            {{ form.expense_item }}
+                            <span class="label-text font-medium">{{ form.purchased.label }}</span>
+                            {{ form.purchased }}
                         </label>
-                        {% if form.expense_item.errors %}
+                        {% if form.purchased.errors %}
                             <div class="label">
-                                {% for error in form.expense_item.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
+                                {% for error in form.purchased.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
                             </div>
                         {% endif %}
                     </div>
@@ -119,6 +119,18 @@
                                 {% for error in form.associated_expense.errors %}
                                     <span class="label-text-alt text-error">{{ error }}</span>
                                 {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <!-- Vendor Selection -->
+                    <div class="form-control mb-4">
+                        <label class="label" for="{{ form.vendor.id_for_label }}">
+                            <span class="label-text font-medium">{{ form.vendor.label }}</span>
+                        </label>
+                        {{ form.vendor }}
+                        {% if form.vendor.errors %}
+                            <div class="label">
+                                {% for error in form.vendor.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
                             </div>
                         {% endif %}
                     </div>

@@ -61,7 +61,7 @@ class ListEntryAdmin(admin.ModelAdmin):
         "total_price",
         "is_completed",
         "completed_at",
-        "expense_item",
+        "purchased",
         "associated_expense",
         "created_by",
         "created_at",
@@ -75,7 +75,7 @@ class ListEntryAdmin(admin.ModelAdmin):
         "is_deleted",
         "list",
         "created_by",
-        "expense_item",
+        "purchased",
         "associated_expense",
     ]
     search_fields = ["item", "description", "list__name", "associated_expense__item"]
@@ -86,7 +86,7 @@ class ListEntryAdmin(admin.ModelAdmin):
     fieldsets = (
         ("Basic Information", {"fields": ("item", "slug", "description", "list", "order")}),
         ("Pricing", {"fields": ("quantity", "unit_price", "additional_price", "total_price")}),
-        ("Expense Integration", {"fields": ("expense_item", "associated_expense")}),
+        ("Expense Integration", {"fields": ("purchased", "associated_expense")}),
         ("Completion Status", {"fields": ("is_completed", "completed_at")}),
         ("Metadata", {"fields": ("id", "created_by", "created_at", "updated_by", "updated_at")}),
         ("Status", {"fields": ("is_deleted",)}),
