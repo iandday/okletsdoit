@@ -39,7 +39,7 @@ class Expense(models.Model):
     slug = models.SlugField(max_length=250, null=True, blank=True, unique=True)
     description = models.TextField(blank=True, null=True)
     date = models.DateField(blank=True, null=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
     quantity = models.PositiveIntegerField(default=1)
     estimated_amount = models.DecimalField(max_digits=40, decimal_places=2, blank=True, null=True)
     actual_amount = models.DecimalField(max_digits=40, decimal_places=2, blank=True, null=True)

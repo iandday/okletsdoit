@@ -144,7 +144,7 @@ def expense_data(request):
             {
                 "id": str(expense.id),
                 "item": expense.item,
-                "category": expense.category.name,
+                "category": expense.category.name if expense.category else "Uncategorized",
                 "date": expense.date.strftime("%Y-%m-%d") if expense.date else None,
                 "estimated_amount": float(expense.estimated_amount) if expense.estimated_amount else 0,
                 "actual_amount": float(expense.actual_amount) if expense.actual_amount else 0,

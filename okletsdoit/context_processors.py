@@ -20,6 +20,7 @@ def site_vars(request):
             {"view_name": "core:idea_list", "icon": "fa-lightbulb", "text": "Ideas"},
             {"view_name": "expenses:summary", "icon": "fa-dollar-sign", "text": "Budget"},
             {"view_name": "contacts:list", "icon": "fa-address-book", "text": "Contacts"},
+            {"view_name": "list:summary", "icon": "fa-list-check", "text": "Lists"},
         ],
         "sidebar_app_links": [
             {"view_name": "settings", "icon": "fa-gear", "text": "Settings"},

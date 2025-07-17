@@ -10,9 +10,12 @@ import polars as pl
 from datetime import datetime
 from django.http import HttpRequest
 from io import BytesIO
+
+from expenses.models import Expense
 from .forms import ListForm, ListEntryForm, ListImportForm
 from .models import List, ListEntry
 from users.models import User
+from contacts.models import Contact
 
 logger = logging.getLogger(__name__)
 
@@ -34,9 +37,12 @@ def list_summary(request: HttpRequest):
     ]
     import_optional_fields = [
         ("description", "Item description"),
+        ("vendor", "Vendor/Contact name"),
         ("is_completed", "TRUE/FALSE"),
         ("quantity", "Quantity (default 1)"),
         ("unit_price", "Unit price (default 0.00)"),
+        ("additional_price", "Additional price regardless of quantity (default 0.00)"),
+        ("expense", "Associated Expense/Budget item"),
     ]
     return render(
         request,
@@ -258,8 +264,29 @@ def template_download(request: HttpRequest):
                 "Phillips head screws 1 inch",
                 "Medium size paint brush for walls",
             ],
+            "vendor": [
+                "Costco",
+                "Costco",
+                "Amazon",
+                "Party City",
+                "Party City",
+                "Party City",
+                "Home Depot",
+                "Home Depot",
+            ],
             "quantity": [2, 1, 3, 1, 2, 4, 1, 2],
             "unit_price": [3.49, 2.99, 1.99, 4.99, 3.49, 2.99, 5.99, 7.49],
+            "additional_price": [2.00, 1.00, 0.99, 13.99, 12.99, 10.99, 0.50, 1.50],
+            "expense": [
+                "Breakfast",
+                "Lunch",
+                "Lunch",
+                "Party",
+                "Party",
+                "Party",
+                "Home Improvement",
+                "Home Improvement",
+            ],
             "is_completed": ["FALSE", "TRUE", "FALSE", "FALSE", "TRUE", "FALSE", "FALSE", "FALSE"],
         }
     )
@@ -281,7 +308,7 @@ def list_import(request: HttpRequest):
     """
     Handles the import of lists from an Excel file.
     """
-    if request.method == "POST":
+    if request.method == "POST" and request.user.is_authenticated and isinstance(request.user, User):
         uploaded_file = request.FILES.get("excel_file")
 
         if not uploaded_file:
@@ -301,6 +328,7 @@ def list_import(request: HttpRequest):
 
             # Process the data
             success_count = 0
+            updated_count = 0
             error_count = 0
             errors = []
 
@@ -325,12 +353,6 @@ def list_import(request: HttpRequest):
                     item = str(row.get("item", "")).strip()
                     if not item or item == "null":
                         errors.append(f"Row {index + 2}: Item name is required")
-                        error_count += 1
-                        continue
-
-                    # Check if item already exists
-                    if ListEntry.objects.filter(item=item, list=list_obj).exists():
-                        errors.append(f"Row {index + 2}: Item '{item}' already exists in list '{list_name}'")
                         error_count += 1
                         continue
 
@@ -365,18 +387,64 @@ def list_import(request: HttpRequest):
                         except (ValueError, TypeError):
                             unit_price = 0.00
 
-                    # Create list entry
-                    list_entry = ListEntry.objects.create(
+                    # Parse additional price
+                    additional_price = 0.00
+                    if row.get("additional_price") is not None:
+                        try:
+                            additional_price = float(row["additional_price"])
+                            if additional_price < 0:
+                                additional_price = 0.00
+                        except (ValueError, TypeError):
+                            additional_price = 0.00
+
+                    # Create/update list entry
+                    list_entry, created = ListEntry.objects.get_or_create(
                         item=item,
-                        description=description,
                         list=list_obj,
-                        created_by=request.user,
-                        is_completed=is_completed,
-                        quantity=quantity,
-                        unit_price=unit_price,
+                        defaults={
+                            "description": description,
+                            "created_by": request.user,
+                            "is_completed": is_completed,
+                            "quantity": quantity,
+                            "unit_price": unit_price,
+                            "additional_price": additional_price,
+                        },
                     )
 
-                    success_count += 1
+                    # If item already existed, update it with new values
+                    if not created:
+                        list_entry.description = description
+                        list_entry.is_completed = is_completed
+                        list_entry.quantity = quantity
+                        list_entry.unit_price = unit_price
+                        list_entry.additional_price = additional_price
+                        list_entry.updated_by = request.user
+                        list_entry.save()
+                        updated_count += 1
+                    else:
+                        success_count += 1
+
+                    # add vendor if supplied
+                    if row.get("vendor") is not None:
+                        vendor_name = str(row["vendor"]).strip()
+                        if vendor_name and vendor_name.lower() != "null":
+                            vendor, _ = Contact.objects.get_or_create(
+                                company=vendor_name,
+                                defaults={"created_by": request.user},
+                            )
+                            list_entry.vendor = vendor
+                            list_entry.save()
+
+                    # add expense if supplied
+                    if row.get("expense") is not None:
+                        expense = str(row["expense"]).strip()
+                        if expense and expense.lower() != "null":
+                            expense_item, _ = Expense.objects.get_or_create(
+                                item=expense,
+                                defaults={"created_by": request.user},
+                            )
+                            list_entry.associated_expense = expense_item
+                            list_entry.save()
 
                 except Exception as e:
                     errors.append(f"Row {index + 2}: {str(e)}")
@@ -384,14 +452,17 @@ def list_import(request: HttpRequest):
 
             # Show results
             if success_count > 0:
-                messages.success(request, f"Successfully imported {success_count} list items.")
+                messages.success(request, f"Successfully imported {success_count} new list items.")
+
+            if updated_count > 0:
+                messages.info(request, f"Updated {updated_count} existing list items.")
 
             if error_count > 0:
                 messages.warning(request, f"{error_count} items had errors and were skipped.")
                 for error in errors[:5]:  # Show first 5 errors
                     messages.error(request, error)
 
-            if not success_count and not error_count:
+            if not success_count and not updated_count and not error_count:
                 messages.info(request, "No list items found in the uploaded file.")
 
         except Exception as e:
