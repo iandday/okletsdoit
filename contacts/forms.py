@@ -48,7 +48,7 @@ class ContactForm(ModelForm):
         self.fields["notes"].label = "Notes"
 
         # Mark required fields
-        self.fields["name"].required = True
+        self.fields["name"].required = False
         self.fields["company"].required = False
         self.fields["email"].required = False
         self.fields["phone"].required = False

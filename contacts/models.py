@@ -1,4 +1,5 @@
 import uuid
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.text import slugify
 from users.models import User
@@ -6,7 +7,7 @@ from users.models import User
 
 class Contact(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, blank=True, null=True)
     slug = models.SlugField(max_length=250, null=True, blank=True, unique=True)
     company = models.CharField(max_length=100, blank=True, null=True)
     email = models.EmailField(blank=True, null=True)
@@ -25,20 +26,26 @@ class Contact(models.Model):
     is_deleted = models.BooleanField(default=False)
 
     def __str__(self):
+        if self.company:
+            if self.name:
+                return f"{self.name} ({self.company})"
+            else:
+                return self.company
         return self.name
+
+    def clean(self):
+        super().clean()
+        if not self.name and not self.company:
+            raise ValidationError("Either name or company must be provided.")
 
     class Meta:
         ordering = ["name"]
         verbose_name_plural = "Contacts"
-        constraints = [models.UniqueConstraint(fields=["name"], name="unique_contact")]
+        constraints = [models.UniqueConstraint(fields=["name", "company"], name="unique_contact")]
 
     def save(self, *args, **kwargs):
+        self.full_clean()
         if not self.slug:
-            self.slug = slugify(self.name)
+            slug_base = self.name or self.company
+            self.slug = slugify(slug_base)
         super().save(*args, **kwargs)
-
-    def get_display_name(self):
-        """Return name with company if available"""
-        if self.company:
-            return f"{self.name} ({self.company})"
-        return self.name
