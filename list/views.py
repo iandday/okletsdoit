@@ -1,5 +1,6 @@
 import logging
 import io
+from operator import index
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Q
@@ -10,6 +11,7 @@ import polars as pl
 from datetime import datetime
 from django.http import HttpRequest
 from io import BytesIO
+from django.utils import timezone
 
 from expenses.models import Expense
 from .forms import ListForm, ListEntryForm, ListImportForm
@@ -277,6 +279,16 @@ def template_download(request: HttpRequest):
             "quantity": [2, 1, 3, 1, 2, 4, 1, 2],
             "unit_price": [3.49, 2.99, 1.99, 4.99, 3.49, 2.99, 5.99, 7.49],
             "additional_price": [2.00, 1.00, 0.99, 13.99, 12.99, 10.99, 0.50, 1.50],
+            "url": [
+                "https://www.costco.com/milk",
+                "https://www.costco.com/bread",
+                "https://www.amazon.com/apples",
+                "https://www.partycity.com/balloons",
+                "https://www.partycity.com/paper-plates",
+                "https://www.partycity.com/plastic-cups",
+                "https://www.homedepot.com/s/screws",
+                "https://www.homedepot.com/s/paint%20brush",
+            ],
             "expense": [
                 "Breakfast",
                 "Lunch",
@@ -366,6 +378,7 @@ def list_import(request: HttpRequest):
                     if row.get("is_completed") is not None:
                         completed_val = str(row["is_completed"]).lower().strip()
                         is_completed = completed_val in ["true", "1", "yes", "completed", "done"]
+                        logger.info(f"Row {index + 2}: Parsed is_completed as {is_completed}")
 
                     # Parse quantity
                     quantity = 1
@@ -397,19 +410,28 @@ def list_import(request: HttpRequest):
                         except (ValueError, TypeError):
                             additional_price = 0.00
 
+                    # Prepare defaults for get_or_create
+                    defaults = {
+                        "description": description,
+                        "created_by": request.user,
+                        "is_completed": is_completed,
+                        "quantity": quantity,
+                        "unit_price": unit_price,
+                        "additional_price": additional_price,
+                    }
+
+                    # Set completed_at if item is completed
+                    if is_completed:
+                        defaults["completed_at"] = timezone.now()
+
                     # Create/update list entry
+                    logger.info(f"Row {index + 2}: Creating/updating list entry for {item}")
                     list_entry, created = ListEntry.objects.get_or_create(
                         item=item,
                         list=list_obj,
-                        defaults={
-                            "description": description,
-                            "created_by": request.user,
-                            "is_completed": is_completed,
-                            "quantity": quantity,
-                            "unit_price": unit_price,
-                            "additional_price": additional_price,
-                        },
+                        defaults=defaults,
                     )
+                    logger.info(f"Row {index + 2}: List entry {'created' if created else 'found'}")
 
                     # If item already existed, update it with new values
                     if not created:
@@ -419,6 +441,13 @@ def list_import(request: HttpRequest):
                         list_entry.unit_price = unit_price
                         list_entry.additional_price = additional_price
                         list_entry.updated_by = request.user
+
+                        # Handle completed_at field
+                        if is_completed and not list_entry.completed_at:
+                            list_entry.completed_at = timezone.now()
+                        elif not is_completed:
+                            list_entry.completed_at = None
+
                         list_entry.save()
                         updated_count += 1
                     else:
@@ -446,7 +475,15 @@ def list_import(request: HttpRequest):
                             list_entry.associated_expense = expense_item
                             list_entry.save()
 
+                    # add URL if supplied
+                    if row.get("url") is not None:
+                        url = str(row["url"]).strip()
+                        if url and url.lower() != "null":
+                            list_entry.url = url
+                            list_entry.save()
+
                 except Exception as e:
+                    logger.error(f"Error processing row {index + 2}: {str(e)}")
                     errors.append(f"Row {index + 2}: {str(e)}")
                     error_count += 1
 

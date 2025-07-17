@@ -5901,6 +5901,12 @@
       border-color: color-mix(in oklab, var(--color-success) 20%, transparent);
     }
   }
+  .border-warning\/20 {
+    border-color: var(--color-warning);
+    @supports (color: color-mix(in lab, red, red)) {
+      border-color: color-mix(in oklab, var(--color-warning) 20%, transparent);
+    }
+  }
   .chat-bubble-accent {
     background-color: var(--color-accent);
     color: var(--color-accent-content);
@@ -6032,6 +6038,12 @@
     background-color: var(--color-success);
     @supports (color: color-mix(in lab, red, red)) {
       background-color: color-mix(in oklab, var(--color-success) 10%, transparent);
+    }
+  }
+  .bg-warning\/10 {
+    background-color: var(--color-warning);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-warning) 10%, transparent);
     }
   }
   .divider-accent {
@@ -6491,6 +6503,9 @@
   .font-semibold {
     --tw-font-weight: var(--font-weight-semibold);
     font-weight: var(--font-weight-semibold);
+  }
+  .break-all {
+    word-break: break-all;
   }
   .whitespace-pre-wrap {
     white-space: pre-wrap;

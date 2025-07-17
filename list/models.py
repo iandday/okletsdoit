@@ -111,6 +111,12 @@ class ListEntry(models.Model):
         help_text="Additional price for this entry, regardless of quantity",
     )
     total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    url = models.URLField(
+        blank=True,
+        null=True,
+        max_length=1000,
+        help_text="URL for this item, e.g., a link to an online store or product page",
+    )
 
     class Meta:
         ordering = ["order", "item"]

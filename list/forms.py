@@ -31,6 +31,7 @@ class ListEntryForm(forms.ModelForm):
             "purchased",
             "associated_expense",
             "vendor",
+            "url",
         ]
         widgets = {
             "item": forms.TextInput(attrs={"class": "input input-bordered w-full", "placeholder": "Enter item name"}),
@@ -64,6 +65,9 @@ class ListEntryForm(forms.ModelForm):
             "is_completed": forms.CheckboxInput(attrs={"class": "checkbox checkbox-primary"}),
             "associated_expense": forms.Select(attrs={"class": "select select-bordered w-full"}),
             "vendor": forms.Select(attrs={"class": "select select-bordered w-full"}),
+            "url": forms.URLInput(
+                attrs={"class": "input input-bordered w-full", "placeholder": "Enter URL (optional)"}
+            ),
         }
 
 

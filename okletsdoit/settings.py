@@ -133,38 +133,14 @@ DATABASES = {
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
-    "formatters": {
-        "verbose": {
-            "format": "{levelname} {asctime} {module} {process:d} {thread:d} {message}",
-            "style": "{",
-        },
-        "json": {
-            "()": JsonFormatter,
-            "format": "%(asctime)s %(levelname)s %(message)s %(module)s",
-        },
-    },
     "handlers": {
         "console": {
-            "level": env.str("DJANGO_LOG_LEVEL"),  # Changed to DEBUG
             "class": "logging.StreamHandler",
-            "formatter": "verbose" if env.bool("DEBUG") else "json",
         },
     },
     "root": {
         "handlers": ["console"],
-        "level": env.str("DJANGO_LOG_LEVEL"),  # Added level and changed to DEBUG
-    },
-    "loggers": {
-        "core": {  # Add specific logger for your core app
-            "handlers": ["console"],
-            "level": "DEBUG",
-            "propagate": False,
-        },
-        "django": {
-            "handlers": ["console"],
-            "level": "INFO",
-            "propagate": False,
-        },
+        "level": env.str("DJANGO_LOG_LEVEL"),
     },
 }
 

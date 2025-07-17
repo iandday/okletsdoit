@@ -111,6 +111,22 @@
                                 </div>
                             </div>
                         {% endif %}
+                        <!-- Item URL -->
+                        {% if entry.url %}
+                            <a href="{{ entry.url }}"
+                               target="_blank"
+                               rel="noopener noreferrer"
+                               class="btn btn-outline btn-warning btn-sm flex-shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     class="h-4 w-4 mr-1"
+                                     fill="none"
+                                     viewBox="0 0 24 24"
+                                     stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                </svg>
+                                Visit Link
+                            </a>
+                        {% endif %}
                         <!-- Vendor Information -->
                         {% if entry.vendor %}
                             <div class="mb-6">
@@ -136,7 +152,7 @@
                                                      fill="none"
                                                      viewBox="0 0 24 24"
                                                      stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 7.89a2 2 0 002.83 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 012 2z" />
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 7.89a2 2 0 002.83 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                                                 </svg>
                                                 <a href="mailto:{{ entry.vendor.email }}" class="link">{{ entry.vendor.email }}</a>
                                             </div>
