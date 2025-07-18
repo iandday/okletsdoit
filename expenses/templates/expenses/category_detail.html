@@ -164,13 +164,19 @@
                                                         <p class="text-sm text-base-content/70 mb-2">{{ expense.description|truncatechars:50 }}</p>
                                                     {% endif %}
                                                     <div class="flex items-center gap-4 text-sm">
-                                                        {% if expense.date %}<span class="text-base-content/60">{{ expense.date|date:"M j, Y" }}</span>{% endif %}
-                                                        {% if expense.quantity > 1 %}<span class="badge badge-outline badge-sm">Qty: {{ expense.quantity }}</span>{% endif %}
-                                                        {% if expense.estimated_amount %}
-                                                            <span class="text-info">Est: ${{ expense.estimated_amount|floatformat:2 }}</span>
-                                                        {% endif %}
-                                                        {% if expense.actual_amount %}
-                                                            <span class="text-success font-semibold">Actual: ${{ expense.actual_amount|floatformat:2 }}</span>
+                                                        {% if expense.list_entries.exists %}
+                                                            <span class="text-info">
+                                                                {{ expense.list_entries.count }} List Entry{{ expense.list_entries.count|pluralize }}: {{ expense.calculated_price }}
+                                                            </span>
+                                                        {% else %}
+                                                            {% if expense.date %}<span class="text-base-content/60">{{ expense.date|date:"M j, Y" }}</span>{% endif %}
+                                                            {% if expense.quantity > 1 %}<span class="badge badge-outline badge-sm">Qty: {{ expense.quantity }}</span>{% endif %}
+                                                            {% if expense.estimated_amount %}
+                                                                <span class="text-info">Est: ${{ expense.estimated_amount|floatformat:2 }}</span>
+                                                            {% endif %}
+                                                            {% if expense.actual_amount %}
+                                                                <span class="text-success font-semibold">Actual: ${{ expense.actual_amount|floatformat:2 }}</span>
+                                                            {% endif %}
                                                         {% endif %}
                                                     </div>
                                                 </div>
@@ -186,7 +192,7 @@
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                                         </svg>
                                                     </a>
-                                                    <a href="{% url 'expenses:edit' expense.slug %}"
+                                                    <a href="{% url 'expenses:expense_edit' expense.slug %}"
                                                        class="btn btn-outline btn-sm">
                                                         <svg xmlns="http://www.w3.org/2000/svg"
                                                              class="h-4 w-4"
@@ -406,4 +412,4 @@
         }
       });
     </script>
-{% endblock extra_script
+{% endblock extra_script %}

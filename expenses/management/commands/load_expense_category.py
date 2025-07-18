@@ -58,6 +58,7 @@ class Command(BaseCommand):
             {"name": "Guest Gifts", "description": "Favors, welcome bags, thank you gifts for guests"},
             {"name": "Weekend Food, Drinks & Supplies", "description": "Provisions for the rest of the weekend"},
             {"name": "Miscellaneous", "description": "Wedding insurance, tips, unexpected expenses, emergency fund"},
+            {"name": "Uncategorized", "description": "Expenses that do not fit into other categories"},
         ]
 
         created_count = 0

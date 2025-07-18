@@ -5230,6 +5230,9 @@
   .h-12 {
     height: calc(var(--spacing) * 12);
   }
+  .h-24 {
+    height: calc(var(--spacing) * 24);
+  }
   .h-96 {
     height: calc(var(--spacing) * 96);
   }
@@ -5417,6 +5420,9 @@
   .flex-grow {
     flex-grow: 1;
   }
+  .grow {
+    flex-grow: 1;
+  }
   .swap-rotate {
     .swap-on, input:indeterminate ~ .swap-on {
       rotate: 45deg;
@@ -5503,6 +5509,9 @@
     .carousel-item {
       scroll-snap-align: start;
     }
+  }
+  .list-disc {
+    list-style-type: disc;
   }
   .alert-horizontal {
     justify-content: start;
@@ -6351,6 +6360,9 @@
   }
   .pt-4 {
     padding-top: calc(var(--spacing) * 4);
+  }
+  .pl-5 {
+    padding-left: calc(var(--spacing) * 5);
   }
   .text-center {
     text-align: center;
@@ -7688,6 +7700,11 @@
         background-color: var(--color-base-100);
         box-shadow: 0 1px 3px 0 oklch(0% 0 0/0.1), 0 1px 2px -1px oklch(0% 0 0/0.1);
       }
+    }
+  }
+  .lg\:col-span-1 {
+    @media (width >= 64rem) {
+      grid-column: span 1 / span 1;
     }
   }
   .lg\:col-span-2 {

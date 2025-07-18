@@ -468,9 +468,13 @@ def list_import(request: HttpRequest):
                     if row.get("expense") is not None:
                         expense = str(row["expense"]).strip()
                         if expense and expense.lower() != "null":
+                            uncategorized_category, _ = Category.objects.get_or_create(
+                                name="Uncategorized",
+                                defaults={"created_by": request.user, "slug": slugify("Uncategorized")},
+                            )
                             expense_item, _ = Expense.objects.get_or_create(
                                 item=expense,
-                                defaults={"created_by": request.user},
+                                defaults={"created_by": request.user, "category": uncategorized_category},
                             )
                             list_entry.associated_expense = expense_item
                             list_entry.save()

@@ -41,3 +41,12 @@ class ExpenseForm(ModelForm):
             "estimated_amount": forms.NumberInput(attrs={"class": "input input-bordered w-full", "step": 0.01}),
             "actual_amount": forms.NumberInput(attrs={"class": "input input-bordered w-full", "step": 0.01}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["description"].required = False
+        self.fields["date"].required = False
+        self.fields["category"].required = True
+        self.fields["estimated_amount"].required = False
+        self.fields["actual_amount"].required = False
+        self.fields["quantity"].required = False

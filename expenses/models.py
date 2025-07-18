@@ -2,7 +2,9 @@ import datetime
 import uuid
 
 from django.db import models
+from django.db.models import Sum, F, DecimalField
 from django.utils.text import slugify
+from decimal import Decimal
 from users.models import User
 
 
@@ -56,6 +58,16 @@ class Expense(models.Model):
         if self.actual_amount is not None and self.actual_amount > 0:
             return True
         return False
+
+    @property
+    def calculated_price(self):
+        # calculate the sum of the total_price values for all associated ListEntry objects
+        return self.list_entries.filter(is_deleted=False).aggregate(
+            total_price=Sum(
+                F("total_price"),
+                output_field=DecimalField(max_digits=100, decimal_places=2),
+            )
+        )["total_price"] or Decimal("0.00")
 
     def __str__(self):
         return self.item

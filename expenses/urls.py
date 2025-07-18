@@ -12,6 +12,7 @@ urlpatterns = [
     path("import", views.expense_import, name="import"),
     path("template_download", views.template_download, name="template_download"),
     path("<slug:slug>", views.detail, name="detail"),
+    path("<slug:slug>/edit", views.expense_edit, name="expense_edit"),
     path("category/list", views.category_list, name="category_list"),
     path("category/create", views.category_create, name="category_create"),
     path("category/<slug:slug>/", views.category_detail, name="category_detail"),

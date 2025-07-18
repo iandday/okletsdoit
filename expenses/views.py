@@ -7,12 +7,14 @@ from django.db.models import Count, Q
 from django.http import HttpRequest, JsonResponse, HttpResponse
 from django.contrib import messages
 from django.utils.text import slugify
+from django.urls import reverse
 import polars as pl
 import openpyxl
 from io import BytesIO
 from datetime import datetime
 from decimal import Decimal, InvalidOperation
 from expenses.forms import CategoryForm, ExpenseForm
+from list.models import ListEntry
 from .models import Category, Expense
 
 
@@ -129,6 +131,31 @@ def list(request: HttpRequest):
 
 
 @login_required
+def expense_edit(request, slug: str):
+    """Edit an existing expense"""
+    expense = get_object_or_404(Expense, slug=slug, is_deleted=False)
+
+    if request.method == "POST":
+        form = ExpenseForm(request.POST, instance=expense)
+        if form.is_valid():
+            expense = form.save(commit=False)
+            expense.updated_by = request.user
+            expense.save()
+            messages.success(request, f"Expense '{expense.item}' updated successfully.")
+            return redirect("expenses:detail", slug=expense.slug)
+        else:
+            # Add field-specific error messages
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field}: {error}")
+            messages.error(request, "Please correct the errors below.")
+    else:
+        form = ExpenseForm(instance=expense)
+
+    return render(request, "expenses/expense_form.html", {"form": form, "expense": expense})
+
+
+@login_required
 def expense_data(request):
     """JSON endpoint for DataTables"""
     category_slug = request.GET.get("category")
@@ -139,18 +166,33 @@ def expense_data(request):
         expenses = Expense.objects.filter(is_deleted=False).select_related("category")
 
     data = []
+    list_data = []
     for expense in expenses:
-        data.append(
-            {
-                "id": str(expense.id),
-                "item": expense.item,
-                "category": expense.category.name if expense.category else "Uncategorized",
-                "date": expense.date.strftime("%Y-%m-%d") if expense.date else None,
-                "estimated_amount": float(expense.estimated_amount) if expense.estimated_amount else 0,
-                "actual_amount": float(expense.actual_amount) if expense.actual_amount else 0,
-                "slug": expense.slug,
-            }
-        )
+        if not expense.list_entries.exists():
+            data.append(
+                {
+                    "id": str(expense.id),
+                    "item": f'<a href="{reverse("expenses:detail", args=[expense.slug])}" class="link link-primary">{expense.item}</a>',
+                    "category": expense.category.name if expense.category else "Uncategorized",
+                    "date": expense.date.strftime("%Y-%m-%d") if expense.date else None,
+                    "estimated_amount": float(expense.estimated_amount) if expense.estimated_amount else 0,
+                    "actual_amount": float(expense.actual_amount) if expense.actual_amount else 0,
+                    "slug": expense.slug,
+                }
+            )
+        else:
+            # If expense has list entries, we don't show it in the DataTable
+            list_data.append(
+                {
+                    "id": str(expense.id),
+                    "item": f'<a href="{reverse("expenses:detail", args=[expense.slug])}" class="link link-primary">{expense.item}</a>',
+                    "category": expense.category.name if expense.category else "Uncategorized",
+                    "date": expense.date.strftime("%Y-%m-%d") if expense.date else None,
+                    "estimated_amount": float(expense.estimated_amount) if expense.estimated_amount else 0,
+                    "actual_amount": float(expense.actual_amount) if expense.actual_amount else 0,
+                    "slug": expense.slug,
+                }
+            )
 
     return JsonResponse({"data": data})
 
@@ -325,8 +367,9 @@ def detail(request, slug: str):
     context = {
         "expense": expense,
         "form": ExpenseForm(instance=expense),
+        "list_entries": expense.list_entries.filter(is_deleted=False).order_by("order"),  # type: ignore
     }
-    return render(request, "expenses/detail.html", context)
+    return render(request, "expenses/expense_detail.html", context)
 
 
 @login_required

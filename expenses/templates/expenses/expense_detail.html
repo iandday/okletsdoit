@@ -55,7 +55,7 @@
                 </p>
             </div>
             <div class="flex gap-2">
-                <a href="{% url 'expenses:detail' expense.slug %}"
+                <a href="{% url 'expenses:expense_edit' expense.slug %}"
                    class="btn btn-outline">
                     <svg xmlns="http://www.w3.org/2000/svg"
                          class="h-5 w-5"
@@ -80,67 +80,81 @@
         </div>
         <!-- Main Content -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <!-- Expense Details Card -->
-            <div class="lg:col-span-2">
-                <div class="card bg-base-100 shadow-xl">
-                    <div class="card-body">
-                        <h2 class="card-title text-primary mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                 class="h-6 w-6"
-                                 fill="none"
-                                 viewBox="0 0 24 24"
-                                 stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                            </svg>
-                            Expense Details
-                        </h2>
-                        {% if expense.description %}
-                            <div class="mb-6">
-                                <h3 class="font-semibold text-base-content mb-2">Description</h3>
-                                <div class="bg-base-200 rounded-lg p-4">
-                                    <p class="text-base-content/80">{{ expense.description }}</p>
-                                </div>
-                            </div>
-                        {% endif %}
-                        <!-- Financial Information -->
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-                            <div class="bg-base-200 rounded-lg p-4">
-                                <h4 class="font-semibold text-base-content mb-2">Quantity</h4>
-                                <div class="text-2xl font-bold text-primary">{{ expense.quantity }}</div>
-                            </div>
-                            {% if expense.estimated_amount %}
-                                <div class="bg-base-200 rounded-lg p-4">
-                                    <h4 class="font-semibold text-base-content mb-2">Estimated Amount</h4>
-                                    <div class="text-2xl font-bold text-info">${{ expense.estimated_amount|floatformat:2 }}</div>
+            {% if list_entries %}
+                <div class="lg:col-span-1">
+                    <div class="card bg-base-100 shadow-xl">
+                        <div class="card-body">
+                            <h3 class="card-title">List Entries</h3>
+                            <ul class="list-disc pl-5">
+                                {% for entry in list_entries %}<li>{{ entry.item }}: {{ entry.total_price }}</li>{% endfor %}
+                            </ul>
+                            Total: {{ expense.calculated_price }}
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <!-- Expense Details Card -->
+                <div class="lg:col-span-2">
+                    <div class="card bg-base-100 shadow-xl">
+                        <div class="card-body">
+                            <h2 class="card-title text-primary mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     class="h-6 w-6"
+                                     fill="none"
+                                     viewBox="0 0 24 24"
+                                     stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                                Expense Details
+                            </h2>
+                            {% if expense.description %}
+                                <div class="mb-6">
+                                    <h3 class="font-semibold text-base-content mb-2">Description</h3>
+                                    <div class="bg-base-200 rounded-lg p-4">
+                                        <p class="text-base-content/80">{{ expense.description }}</p>
+                                    </div>
                                 </div>
                             {% endif %}
-                        </div>
-                        {% if expense.actual_amount %}
-                            <div class="bg-success/10 border border-success/20 rounded-lg p-4 mb-6">
-                                <h4 class="font-semibold text-success mb-2">Actual Amount</h4>
-                                <div class="text-3xl font-bold text-success">${{ expense.actual_amount|floatformat:2 }}</div>
-                                {% if expense.estimated_amount and variance is not None %}
-                                    <div class="text-sm mt-2">
-                                        {% if variance > 0 %}
-                                            <span class="text-error">+${{ variance|floatformat:2 }} over estimate</span>
-                                        {% elif variance < 0 %}
-                                            <span class="text-success">${{ variance|floatformat:2|slice:"1:" }} under estimate</span>
-                                        {% else %}
-                                            <span class="text-neutral">Exactly on estimate</span>
-                                        {% endif %}
+                            <!-- Financial Information -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                                <div class="bg-base-200 rounded-lg p-4">
+                                    <h4 class="font-semibold text-base-content mb-2">Quantity</h4>
+                                    <div class="text-2xl font-bold text-primary">{{ expense.quantity }}</div>
+                                </div>
+                                {% if expense.estimated_amount %}
+                                    <div class="bg-base-200 rounded-lg p-4">
+                                        <h4 class="font-semibold text-base-content mb-2">Estimated Amount</h4>
+                                        <div class="text-2xl font-bold text-info">${{ expense.estimated_amount|floatformat:2 }}</div>
                                     </div>
                                 {% endif %}
                             </div>
-                        {% endif %}
-                        {% if expense.date %}
-                            <div class="mb-6">
-                                <h4 class="font-semibold text-base-content mb-2">Date</h4>
-                                <div class="text-lg text-base-content/80">{{ expense.date|date:"F j, Y" }}</div>
-                            </div>
-                        {% endif %}
+                            {% if expense.actual_amount %}
+                                <div class="bg-success/10 border border-success/20 rounded-lg p-4 mb-6">
+                                    <h4 class="font-semibold text-success mb-2">Actual Amount</h4>
+                                    <div class="text-3xl font-bold text-success">${{ expense.actual_amount|floatformat:2 }}</div>
+                                    {% if expense.estimated_amount and variance is not None %}
+                                        <div class="text-sm mt-2">
+                                            {% if variance > 0 %}
+                                                <span class="text-error">+${{ variance|floatformat:2 }} over estimate</span>
+                                            {% elif variance < 0 %}
+                                                <span class="text-success">${{ variance|floatformat:2|slice:"1:" }} under estimate</span>
+                                            {% else %}
+                                                <span class="text-neutral">Exactly on estimate</span>
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                            {% if expense.date %}
+                                <div class="mb-6">
+                                    <h4 class="font-semibold text-base-content mb-2">Date</h4>
+                                    <div class="text-lg text-base-content/80">{{ expense.date|date:"F j, Y" }}</div>
+                                </div>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
-            </div>
+            {% endif %}
             <!-- Sidebar -->
             <div class="space-y-6">
                 <!-- Expense Metadata -->
