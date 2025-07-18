@@ -31,9 +31,11 @@
     <div class="drawer">
       <input id="my-drawer-3" type="checkbox" class="drawer-toggle" />
       <div class="drawer-content flex flex-col">
+        <div class="sticky top-0 z-30 bg-base-100">
 
-        {% include "components/navbar.html" %}
+          {% include "components/navbar.html" %}
 
+        </div>
         <!-- Django Messages Section -->
         {% if messages %}
           <div class="toast toast-top toast-center z-50">
@@ -97,7 +99,7 @@
             {% endfor %}
           </div>
         {% endif %}
-        <div class="pt-4 h-full flex-1">
+        <div class="flex-1">
           {% block body %}
             {% block content %}
             {% endblock content %}
