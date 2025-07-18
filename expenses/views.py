@@ -39,6 +39,7 @@ def summary(request):
                 output_field=DecimalField(max_digits=5, decimal_places=1),
             ),
         )
+        .filter(total_estimated__isnull=False)
         .order_by("name")
     )
 
