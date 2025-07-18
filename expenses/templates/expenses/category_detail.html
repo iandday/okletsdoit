@@ -70,28 +70,12 @@
             </div>
             <div class="stat">
                 <div class="stat-title">Total Estimated</div>
-                <div class="stat-value text-info">
-                    {% with total_estimated=expenses|length %}
-                        {% if total_estimated > 0 %}
-                            ${% widthratio expenses.aggregate.estimated_amount__sum 1 1 %}
-                        {% else %}
-                            $0.00
-                        {% endif %}
-                    {% endwith %}
-                </div>
+                <div class="stat-value text-info">{{ total_estimated|floatformat:2 }}</div>
                 <div class="stat-desc">estimated amount</div>
             </div>
             <div class="stat">
                 <div class="stat-title">Total Actual</div>
-                <div class="stat-value text-success">
-                    {% with total_actual=expenses|length %}
-                        {% if total_actual > 0 %}
-                            ${% widthratio expenses.aggregate.actual_amount__sum 1 1 %}
-                        {% else %}
-                            $0.00
-                        {% endif %}
-                    {% endwith %}
-                </div>
+                <div class="stat-value text-success">{{ total_actual|floatformat:2 }}</div>
                 <div class="stat-desc">actual amount</div>
             </div>
         </div>
@@ -228,111 +212,6 @@
                     </div>
                 </div>
             </div>
-            <!-- Sidebar -->
-            <div class="space-y-6">
-                <!-- Category Metadata -->
-                <div class="card bg-base-100 shadow-xl">
-                    <div class="card-body">
-                        <h3 class="card-title text-primary mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                 class="h-5 w-5"
-                                 fill="none"
-                                 viewBox="0 0 24 24"
-                                 stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            Category Info
-                        </h3>
-                        <div class="space-y-3">
-                            <div>
-                                <div class="text-sm font-medium text-base-content/60">ID</div>
-                                <div class="text-xs font-mono text-base-content bg-base-200 rounded px-2 py-1">{{ category.id }}</div>
-                            </div>
-                            <div>
-                                <div class="text-sm font-medium text-base-content/60">Slug</div>
-                                <div class="text-xs font-mono text-base-content bg-base-200 rounded px-2 py-1">{{ category.slug }}</div>
-                            </div>
-                            <div>
-                                <div class="text-sm font-medium text-base-content/60">Created by</div>
-                                <div class="text-base-content">{{ category.created_by.get_full_name|default:category.created_by.email }}</div>
-                            </div>
-                            <div>
-                                <div class="text-sm font-medium text-base-content/60">Created on</div>
-                                <div class="text-base-content">{{ category.created_at|date:"F j, Y \a\t g:i A" }}</div>
-                            </div>
-                            {% if category.updated_by and category.updated_at != category.created_at %}
-                                <div>
-                                    <div class="text-sm font-medium text-base-content/60">Last updated by</div>
-                                    <div class="text-base-content">{{ category.updated_by.get_full_name|default:category.updated_by.email }}</div>
-                                </div>
-                                <div>
-                                    <div class="text-sm font-medium text-base-content/60">Updated on</div>
-                                    <div class="text-base-content">{{ category.updated_at|date:"F j, Y \a\t g:i A" }}</div>
-                                </div>
-                            {% endif %}
-                            <div>
-                                <div class="text-sm font-medium text-base-content/60">Status</div>
-                                <div class="text-base-content">
-                                    {% if category.is_deleted %}
-                                        <span class="badge badge-error">Deleted</span>
-                                    {% else %}
-                                        <span class="badge badge-success">Active</span>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Quick Actions -->
-                <div class="card bg-base-100 shadow-xl">
-                    <div class="card-body">
-                        <h3 class="card-title text-primary mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                 class="h-5 w-5"
-                                 fill="none"
-                                 viewBox="0 0 24 24"
-                                 stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                            </svg>
-                            Quick Actions
-                        </h3>
-                        <div class="space-y-2">
-                            <a href="{% url 'expenses:summary' %}" class="btn btn-outline btn-block">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     class="h-4 w-4"
-                                     fill="none"
-                                     viewBox="0 0 24 24"
-                                     stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                                </svg>
-                                Expense Summary
-                            </a>
-                            <a href="{% url 'expenses:category_list' %}"
-                               class="btn btn-outline btn-block">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     class="h-4 w-4"
-                                     fill="none"
-                                     viewBox="0 0 24 24"
-                                     stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-                                </svg>
-                                All Categories
-                            </a>
-                            <a href="{% url 'expenses:create' %}?category={{ category.slug }}"
-                               class="btn btn-outline btn-block">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     class="h-4 w-4"
-                                     fill="none"
-                                     viewBox="0 0 24 24"
-                                     stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                                </svg>
-                                Add New Expense
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
     <!-- Delete Confirmation Modal -->
@@ -371,7 +250,7 @@
                 <button type="button" class="btn btn-ghost" id="cancel-delete">Cancel</button>
                 <form method="post"
                       action="{% url 'expenses:category_delete' category.slug %}"
-                      style="display: inline">
+                      class="inline">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-error">
                         <svg xmlns="http://www.w3.org/2000/svg"

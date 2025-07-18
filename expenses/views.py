@@ -166,34 +166,46 @@ def expense_data(request):
         expenses = Expense.objects.filter(is_deleted=False).select_related("category")
 
     data = []
-    list_data = []
     for expense in expenses:
-        if not expense.list_entries.exists():
-            data.append(
-                {
-                    "id": str(expense.id),
-                    "item": f'<a href="{reverse("expenses:detail", args=[expense.slug])}" class="link link-primary">{expense.item}</a>',
-                    "category": expense.category.name if expense.category else "Uncategorized",
-                    "date": expense.date.strftime("%Y-%m-%d") if expense.date else None,
-                    "estimated_amount": float(expense.estimated_amount) if expense.estimated_amount else 0,
-                    "actual_amount": float(expense.actual_amount) if expense.actual_amount else 0,
-                    "slug": expense.slug,
-                }
-            )
+        if expense.list_entries.exists():
+            est_amount = float(expense.calculated_estimated_amount())
+            actual_amount = float(expense.calculated_actual_amount())
+            item = f'<a href="{reverse("expenses:detail", args=[expense.slug])}" class="link link-primary"><span class="italic">{expense.item}</span></a>'
         else:
-            # If expense has list entries, we don't show it in the DataTable
-            list_data.append(
-                {
-                    "id": str(expense.id),
-                    "item": f'<a href="{reverse("expenses:detail", args=[expense.slug])}" class="link link-primary">{expense.item}</a>',
-                    "category": expense.category.name if expense.category else "Uncategorized",
-                    "date": expense.date.strftime("%Y-%m-%d") if expense.date else None,
-                    "estimated_amount": float(expense.estimated_amount) if expense.estimated_amount else 0,
-                    "actual_amount": float(expense.actual_amount) if expense.actual_amount else 0,
-                    "slug": expense.slug,
-                }
-            )
+            est_amount = float(expense.estimated_amount) if expense.estimated_amount else 0
+            actual_amount = float(expense.actual_amount) if expense.actual_amount else 0
+            item = f'<a href="{reverse("expenses:detail", args=[expense.slug])}" class="link link-primary">{expense.item}</a>'
 
+        # add link to the associated list in the drop-down menu
+        menu_content = """
+            <div class="dropdown dropdown-end">
+                <div tabindex="0" role="button" class="btn btn-ghost btn-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01" />
+                    </svg>
+                </div>
+                <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-32 p-2 shadow">
+        """
+        if expense.list_entries.exists():
+            menu_content += f'<li><a href="{reverse("list:detail", args=[expense.list_entries.first().list.slug])}" class="link link-primary">List</a></li>'
+        menu_content += f"""
+                    <li><a href="{reverse("expenses:expense_edit", args=[expense.slug])}" class="text-sm">Edit</a></li>
+                </ul>
+            </div>
+        """
+
+        data.append(
+            {
+                "id": str(expense.id),
+                "item": item,
+                "category": expense.category.name if expense.category else "Uncategorized",
+                "date": expense.date.strftime("%Y-%m-%d") if expense.date else None,
+                "estimated_amount": est_amount,
+                "actual_amount": actual_amount,
+                "slug": expense.slug,
+                "menu_content": menu_content,
+            }
+        )
     return JsonResponse({"data": data})
 
 
@@ -444,6 +456,12 @@ def category_detail(request, slug: str):
     context = {
         "category": category,
         "expenses": expenses,
+        "total_estimated": expenses.aggregate(total=Sum("estimated_amount", filter=Q(estimated_amount__isnull=False)))[
+            "total"
+        ]
+        or Decimal("0.00"),
+        "total_actual": expenses.aggregate(total=Sum("actual_amount", filter=Q(actual_amount__isnull=False)))["total"]
+        or Decimal("0.00"),
     }
     return render(request, "expenses/category_detail.html", context)
 

@@ -69,6 +69,24 @@ class Expense(models.Model):
             )
         )["total_price"] or Decimal("0.00")
 
+    def calculated_estimated_amount(self) -> Decimal:
+        """Calculate the sum of total_price fields for all associated list_entries that are not marked purchased"""
+        return self.list_entries.filter(is_deleted=False).aggregate(
+            total_price=Sum(
+                F("total_price"),
+                output_field=DecimalField(max_digits=100, decimal_places=2),
+            )
+        )["total_price"] or Decimal("0.00")
+
+    def calculated_actual_amount(self) -> Decimal:
+        """Calculate the sum of total_price fields for all associated list_entries that are marked purchased"""
+        return self.list_entries.filter(purchased=True, is_deleted=False).aggregate(
+            total_price=Sum(
+                F("total_price"),
+                output_field=DecimalField(max_digits=100, decimal_places=2),
+            )
+        )["total_price"] or Decimal("0.00")
+
     def __str__(self):
         return self.item
 
@@ -88,4 +106,8 @@ class Expense(models.Model):
                 counter += 1
 
             self.slug = slug
+        # update estimated_amount and actual_amount for expenses with associated list entries
+        if self.list_entries.exists():
+            self.estimated_amount = self.calculated_estimated_amount()
+            self.actual_amount = self.calculated_actual_amount()
         super().save(*args, **kwargs)

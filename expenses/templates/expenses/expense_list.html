@@ -36,12 +36,11 @@
                         All Expenses
                     {% endif %}
                 </h1>
-                <p class="text-lg text-base-content/70">
-                    {% if category %}
-                        Manage expenses in the {{ category.first.name }} category
-                    {% else %}
-                        Manage all your wedding expenses
-                    {% endif %}
+                <p class="text-md text-base-content/70">
+                    Expenses associated with a list are <span class="italic">italicized</span>.
+                </p>
+                <p class="text-sm text-base-content/70">
+                    The Estimated and Actual fields for associated items are calculated based on their respective list entries. Estimated will show the total of all items in the list, while Actual will only show the sum of items marked Purchased.
                 </p>
             </div>
             <div class="flex gap-2">
@@ -81,7 +80,6 @@
                                 <th>Date</th>
                                 <th>Estimated</th>
                                 <th>Actual</th>
-                                <th>Variance</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -282,33 +280,10 @@
               return data > 0 ? `$${data.toFixed(2)}` : '<span class="text-base-content/50">-</span>';
             }
           }, {
-            data: null,
-            render: function(data, type, row) {
-              if (row.estimated_amount > 0 && row.actual_amount > 0) {
-                const variance = row.actual_amount - row.estimated_amount;
-                const varClass = variance >= 0 ? 'text-error' : 'text-success';
-                const sign = variance >= 0 ? '+' : '';
-                return `<span class="${varClass} font-mono">${sign}$${variance.toFixed(2)}</span>`;
-              }
-              return '<span class="text-base-content/50">-</span>';
-            }
-          }, {
-            data: null,
+            data: 'menu_content',
             orderable: false,
-            render: function(data, type, row) {
-              return `
-                            <div class="dropdown dropdown-end">
-                                <div tabindex="0" role="button" class="btn btn-ghost btn-sm">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01" />
-                                    </svg>
-                                </div>
-                                <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-32 p-2 shadow">
-                                    <li><a href="/expenses/edit/${row.slug}/" class="text-sm">Edit</a></li>
-                                    <li><a href="/expenses/delete/${row.slug}/" class="text-sm text-error">Delete</a></li>
-                                </ul>
-                            </div>
-                        `;
+            render: function(data) {
+              return data;
             }
           }],
           pageLength: 25,

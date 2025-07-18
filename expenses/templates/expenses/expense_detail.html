@@ -84,7 +84,12 @@
                 <div class="lg:col-span-1">
                     <div class="card bg-base-100 shadow-xl">
                         <div class="card-body">
-                            <h3 class="card-title">List Entries</h3>
+                            {% with first_entry=list_entries.first %}
+                                <a class="link link-primary"
+                                   href="{% url 'list:detail' first_entry.list.slug %}">
+                                    <h3 class="card-title">{{ first_entry.list.name }} Entries</h3>
+                                </a>
+                            {% endwith %}
                             <ul class="list-disc pl-5">
                                 {% for entry in list_entries %}<li>{{ entry.item }}: {{ entry.total_price }}</li>{% endfor %}
                             </ul>
@@ -172,137 +177,19 @@
                         </h3>
                         <div class="space-y-3">
                             <div>
-                                <div class="text-sm font-medium text-base-content/60">ID</div>
-                                <div class="text-xs font-mono text-base-content bg-base-200 rounded px-2 py-1">{{ expense.id }}</div>
-                            </div>
-                            <div>
-                                <div class="text-sm font-medium text-base-content/60">Slug</div>
-                                <div class="text-xs font-mono text-base-content bg-base-200 rounded px-2 py-1">{{ expense.slug }}</div>
-                            </div>
-                            <div>
                                 <div class="text-sm font-medium text-base-content/60">Created by</div>
-                                <div class="text-base-content">{{ expense.created_by.get_full_name|default:expense.created_by.email }}</div>
-                            </div>
-                            <div>
-                                <div class="text-sm font-medium text-base-content/60">Created on</div>
-                                <div class="text-base-content">{{ expense.created_at|date:"F j, Y \a\t g:i A" }}</div>
+                                <div class="text-base-content">
+                                    {{ expense.created_by.get_full_name|default:expense.created_by.email }} on {{ expense.created_at|date:"F j, Y \a\t g:i A" }}
+                                </div>
                             </div>
                             {% if expense.updated_by and expense.updated_at != expense.created_at %}
                                 <div>
                                     <div class="text-sm font-medium text-base-content/60">Last updated by</div>
-                                    <div class="text-base-content">{{ expense.updated_by.get_full_name|default:expense.updated_by.email }}</div>
-                                </div>
-                                <div>
-                                    <div class="text-sm font-medium text-base-content/60">Updated on</div>
-                                    <div class="text-base-content">{{ expense.updated_at|date:"F j, Y \a\t g:i A" }}</div>
+                                    <div class="text-base-content">
+                                        {{ expense.updated_by.get_full_name|default:expense.updated_by.email }} on {{ expense.updated_at|date:"F j, Y \a\t g:i A" }}
+                                    </div>
                                 </div>
                             {% endif %}
-                            <div>
-                                <div class="text-sm font-medium text-base-content/60">Status</div>
-                                <div class="text-base-content">
-                                    {% if expense.completed %}
-                                        <span class="badge badge-success">Completed</span>
-                                    {% else %}
-                                        <span class="badge badge-warning">Pending</span>
-                                    {% endif %}
-                                </div>
-                            </div>
-                            <div>
-                                <div class="text-sm font-medium text-base-content/60">Deleted Status</div>
-                                <div class="text-base-content">
-                                    {% if expense.is_deleted %}
-                                        <span class="badge badge-error">Deleted</span>
-                                    {% else %}
-                                        <span class="badge badge-success">Active</span>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Category Information -->
-                <div class="card bg-base-100 shadow-xl">
-                    <div class="card-body">
-                        <h3 class="card-title text-primary mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                 class="h-5 w-5"
-                                 fill="none"
-                                 viewBox="0 0 24 24"
-                                 stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-                            </svg>
-                            Category Details
-                        </h3>
-                        <div class="space-y-3">
-                            <div>
-                                <div class="text-sm font-medium text-base-content/60">Category ID</div>
-                                <div class="text-xs font-mono text-base-content bg-base-200 rounded px-2 py-1">{{ expense.category.id }}</div>
-                            </div>
-                            <div>
-                                <div class="text-sm font-medium text-base-content/60">Category Name</div>
-                                <div class="text-base-content">
-                                    <a href="{% url 'expenses:category_detail' expense.category.slug %}"
-                                       class="link link-primary">{{ expense.category.name }}</a>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="text-sm font-medium text-base-content/60">Category Slug</div>
-                                <div class="text-xs font-mono text-base-content bg-base-200 rounded px-2 py-1">{{ expense.category.slug }}</div>
-                            </div>
-                            {% if expense.category.description %}
-                                <div>
-                                    <div class="text-sm font-medium text-base-content/60">Category Description</div>
-                                    <div class="text-sm text-base-content/80">{{ expense.category.description|truncatewords:20 }}</div>
-                                </div>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-                <!-- Quick Actions -->
-                <div class="card bg-base-100 shadow-xl">
-                    <div class="card-body">
-                        <h3 class="card-title text-primary mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                 class="h-5 w-5"
-                                 fill="none"
-                                 viewBox="0 0 24 24"
-                                 stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                            </svg>
-                            Quick Actions
-                        </h3>
-                        <div class="space-y-2">
-                            <a href="{% url 'expenses:list' %}" class="btn btn-outline btn-block">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     class="h-4 w-4"
-                                     fill="none"
-                                     viewBox="0 0 24 24"
-                                     stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-                                </svg>
-                                View All Expenses
-                            </a>
-                            <a href="{% url 'expenses:category_detail' expense.category.slug %}"
-                               class="btn btn-outline btn-block">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     class="h-4 w-4"
-                                     fill="none"
-                                     viewBox="0 0 24 24"
-                                     stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-                                </svg>
-                                Category Expenses
-                            </a>
-                            <a href="{% url 'expenses:create' %}" class="btn btn-outline btn-block">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     class="h-4 w-4"
-                                     fill="none"
-                                     viewBox="0 0 24 24"
-                                     stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                                </svg>
-                                Add New Expense
-                            </a>
                         </div>
                     </div>
                 </div>
