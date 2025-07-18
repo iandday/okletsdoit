@@ -13,7 +13,7 @@ from django.http import HttpRequest
 from io import BytesIO
 from django.utils import timezone
 
-from expenses.models import Expense
+from expenses.models import Category, Expense
 from .forms import ListForm, ListEntryForm, ListImportForm
 from .models import List, ListEntry
 from users.models import User

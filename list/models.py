@@ -1,6 +1,8 @@
 import uuid
 
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.utils.text import slugify
 
 from users.models import User
@@ -148,3 +150,11 @@ class ListEntry(models.Model):
         self.total_price = (self.unit_price * self.quantity) + self.additional_price
 
         super().save(*args, **kwargs)
+
+
+@receiver(post_save, sender=ListEntry)
+def update_associated_expense(sender, instance, created, **kwargs):
+    """Update the associated expense when a ListEntry is saved"""
+    if instance.associated_expense:
+        # Trigger a save on the associated expense to update calculated fields
+        instance.associated_expense.save()
