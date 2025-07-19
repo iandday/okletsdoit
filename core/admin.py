@@ -46,8 +46,8 @@ class TaskListAdmin(admin.ModelAdmin):
 
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
-    list_display = ("title", "task_list", "assigned_to", "priority", "due_date_display", "status_display", "created_at")
-    list_filter = ("completed", "task_list", "priority", "due_date", "created_at", "assigned_to", "is_deleted")
+    list_display = ("title", "task_list", "assigned_to", "priority", "due_date_display", "status_display", "updated_by")
+    list_filter = ("completed", "task_list", "priority", "due_date", "assigned_to", "is_deleted")
     search_fields = ("title", "description", "slug")
     prepopulated_fields = {"slug": ("title",)}
     readonly_fields = ("id", "created_at", "updated_at", "completed_at", "overdue_status")

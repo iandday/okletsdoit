@@ -32,7 +32,16 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Expense)
 class ExpenseAdmin(admin.ModelAdmin):
-    list_display = ("item", "category", "date", "estimated_amount", "actual_amount", "created_by", "is_deleted")
+    list_display = (
+        "item",
+        "category",
+        "date",
+        "estimated_amount",
+        "actual_amount",
+        "created_by",
+        "is_deleted",
+        "updated_by",
+    )
     list_filter = ("category", "is_deleted", "date", "created_at")
     search_fields = ("item", "description", "category__name")
     prepopulated_fields = {"slug": ("item",)}
