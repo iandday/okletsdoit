@@ -8,10 +8,13 @@ from django.http import HttpResponse
 import polars as pl
 import openpyxl
 from io import BytesIO
+import logging
 
 from list.models import ListEntry
 from .models import Contact
 from .forms import ContactForm
+
+logger = logging.getLogger(__name__)
 
 
 @login_required
@@ -137,9 +140,13 @@ def contact_import(request):
             messages.error(request, "Please select an Excel file to upload.")
             return redirect("contacts:list")
 
+        if not excel_file.name.endswith((".xlsx", ".xls")):
+            messages.error(request, "Please upload a valid Excel file (.xlsx or .xls).")
+            return redirect("contacts:list")
+
         try:
             # Read the Excel file
-            df = pl.read_excel(io.BytesIO(excel_file.read()))
+            df = pl.read_excel(BytesIO(excel_file.read()))
 
             # Validate required columns
             required_columns = ["name"]
@@ -156,17 +163,17 @@ def contact_import(request):
 
             for row in df.to_dicts():
                 try:
-                    name = str(row.get("name", "")).strip()
-                    if not name or name.lower() == "nan":
-                        error_count += 1
-                        continue
+                    name = str(row.get("name", "")).strip() if row.get("name", None) else None
+                    company = str(row.get("company", "")).strip() if row.get("company", None) else None
 
                     # Check if contact already exists
-                    existing_contact = Contact.objects.filter(name__iexact=name, is_deleted=False).first()
+                    existing_contact = Contact.objects.filter(
+                        name__iexact=name, company__iexact=company, is_deleted=False
+                    ).first()
 
                     contact_data = {
                         "name": name,
-                        "company": str(row.get("company", "")).strip() if row.get("company", None) is not None else "",
+                        "company": company,
                         "email": str(row.get("email", "")).strip() if row.get("email", None) is not None else "",
                         "phone": str(row.get("phone", "")).strip() if row.get("phone", None) is not None else "",
                         "website": str(row.get("website", "")).strip() if row.get("website", None) is not None else "",
@@ -176,15 +183,10 @@ def contact_import(request):
                         "notes": str(row.get("notes", "")).strip() if row.get("notes", None) is not None else "",
                     }
 
-                    # Clean empty strings
-                    for key, value in contact_data.items():
-                        if isinstance(value, str) and (value.lower() == "nan" or not value):
-                            contact_data[key] = "" if key != "name" else contact_data[key]
-
                     if existing_contact:
                         # Update existing contact
                         for key, value in contact_data.items():
-                            if value:  # Only update non-empty values
+                            if value is not None and value != "":  # Only update non-empty values
                                 setattr(existing_contact, key, value)
                         existing_contact.updated_by = request.user
                         existing_contact.save()
@@ -197,6 +199,7 @@ def contact_import(request):
                         created_count += 1
 
                 except Exception as e:
+                    messages.error(request, f"Error processing contact row {row}: {str(e)}")
                     error_count += 1
                     continue
 
