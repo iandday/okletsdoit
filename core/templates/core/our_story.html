@@ -1,0 +1,193 @@
+{% extends "components/base.html" %}
+
+{% load static %}
+
+{% block title %}
+    Our Story
+{% endblock title %}
+{% block content %}
+    <div class="max-w-4xl mx-auto px-4 py-8">
+        <!-- Hero Section -->
+        <div class="hero min-h-[50vh] bg-gradient-to-br from-primary/20 to-secondary/20 rounded-2xl mb-12">
+            <div class="hero-content text-center">
+                <div class="max-w-md">
+                    <h1 class="text-5xl font-bold text-primary mb-4">Our Story</h1>
+                    <p class="text-lg text-base-content/80">How a swipe right and a terrible pickup line led to forever</p>
+                </div>
+            </div>
+        </div>
+        <!-- Timeline -->
+        <div class="timeline timeline-vertical">
+            <div class="timeline-start timeline-box">
+                <div class="card bg-base-200 shadow-2xl border border-primary/20">
+                    <div class="card-body">
+                        <h2 class="card-title text-accent">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 class="h-6 w-6"
+                                 fill="none"
+                                 viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                            </svg>
+                            The Match
+                        </h2>
+                        <p class="text-base-content/80">
+                            It all started with a swipe right on Hinge. Two people, miles apart, both looking for something real in the digital dating world. Little did we know that this simple gesture would change everything.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="timeline-middle">
+                <div class="timeline-marker bg-primary border-4 border-base-200"></div>
+            </div>
+            <div class="timeline-end"></div>
+            <div class="timeline-start"></div>
+            <div class="timeline-middle">
+                <div class="timeline-marker bg-secondary border-4 border-base-200"></div>
+            </div>
+            <div class="timeline-end timeline-box">
+                <div class="card bg-base-200 shadow-2xl border border-secondary/20">
+                    <div class="card-body">
+                        <h2 class="card-title text-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 class="h-6 w-6"
+                                 fill="none"
+                                 viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.478 8-10 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.478-8 10-8s10 3.582 10 8z" />
+                            </svg>
+                            The Conversation
+                        </h2>
+                        <p class="text-base-content/80 mb-4">
+                            After matching, we chatted for a while and decided to meet up for our first date. Everything was going well with normal getting-to-know-you conversation...
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="timeline-start timeline-box">
+                <div class="card bg-base-200 shadow-2xl border border-warning/20">
+                    <div class="card-body">
+                        <h2 class="card-title text-warning">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 class="h-6 w-6"
+                                 fill="none"
+                                 viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.99-.833-2.76 0L4.054 15.5c-.77.833.192 2.5 1.732 2.5z" />
+                            </svg>
+                            The First Date Disaster
+                        </h2>
+                        <p class="text-base-content/80 mb-4">
+                            Then, right there on our first date, Ian decided to break the ice with what can only be described as the <em>worst</em> pickup line in dating history.
+                        </p>
+                        <div class="chat chat-start">
+                            <div class="chat-bubble chat-bubble-primary">So, I have to say something...</div>
+                        </div>
+                        <div class="chat chat-start">
+                            <div class="chat-bubble chat-bubble-primary">I thought your hair would be brighter</div>
+                        </div>
+                        <div class="divider divider-horizontal"></div>
+                        <p class="text-sm text-base-content/60 italic">
+                            *Record scratch* *Freeze frame* Yep, that's Ian making fun of Steph's hair on their FIRST DATE. The audacity.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="timeline-middle">
+                <div class="timeline-marker bg-warning border-4 border-base-200"></div>
+            </div>
+            <div class="timeline-end"></div>
+            <div class="timeline-start"></div>
+            <div class="timeline-middle">
+                <div class="timeline-marker bg-accent border-4 border-base-200"></div>
+            </div>
+            <div class="timeline-end timeline-box">
+                <div class="card bg-base-200 shadow-2xl border border-accent/20">
+                    <div class="card-body">
+                        <h2 class="card-title text-accent">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 class="h-6 w-6"
+                                 fill="none"
+                                 viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            The Miracle
+                        </h2>
+                        <p class="text-base-content/80 mb-4">
+                            Against all odds, and probably defying every dating rule ever written, Steph didn't immediately get up and leave. In fact, she found his brutal honesty... refreshing?
+                        </p>
+                        <div class="chat chat-end">
+                            <div class="chat-bubble chat-bubble-secondary">Well, that's certainly a unique way to compliment someone 😂</div>
+                        </div>
+                        <div class="chat chat-end">
+                            <div class="chat-bubble chat-bubble-secondary">
+                                Most guys just give fake compliments, so thanks for the honesty, I guess?
+                            </div>
+                        </div>
+                        <p class="text-sm text-base-content/60 italic mt-4">
+                            And that's when Ian knew he had found someone special - someone who could laugh at his terrible timing and even worse social skills.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="timeline-start timeline-box">
+                <div class="card bg-base-200 shadow-2xl border border-success/20">
+                    <div class="card-body">
+                        <h2 class="card-title text-success">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 class="h-6 w-6"
+                                 fill="none"
+                                 viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                            </svg>
+                            The Rest is History
+                        </h2>
+                        <p class="text-base-content/80">
+                            From that wonderfully awkward first date, our love story unfolded. Through countless more dates, shared laughs, and yes, many hair care tips later, we discovered that sometimes the best relationships start with the most cringe-worthy moments.
+                        </p>
+                        <p class="text-base-content/80 mt-4">
+                            Who knew that insulting someone's hair on a first date could be the foundation of forever? We certainly didn't, but here we are - planning our wedding and proving that love truly does find a way, even when you start with the world's worst opening line.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="timeline-middle">
+                <div class="timeline-marker bg-success border-4 border-base-200"></div>
+            </div>
+            <div class="timeline-end"></div>
+        </div>
+        <!-- Call to Action -->
+        <div class="card bg-gradient-to-r from-primary/10 to-secondary/10 shadow-xl mt-12">
+            <div class="card-body text-center">
+                <h2 class="card-title justify-center text-2xl mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         class="h-8 w-8"
+                         fill="none"
+                         viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                    </svg>
+                    Join Us on Our Big Day!
+                </h2>
+                <p class="text-base-content/80 mb-6">
+                    We can't wait to celebrate with you as we turn this beautiful, chaotic love story into marriage.
+                    And don't worry - Ian promises not to comment on anyone's hair at the wedding.
+                </p>
+                <div class="card-actions justify-center">
+                    <a href="{% url 'core:home' %}" class="btn btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             class="h-5 w-5"
+                             fill="none"
+                             viewBox="0 0 24 24"
+                             stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18" />
+                        </svg>
+                        Back to Wedding Details
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
