@@ -74,10 +74,12 @@
                     </h2>
                     <div class="space-y-4">
                         <!-- Name -->
-                        <div class="flex items-center gap-3">
-                            <div class="badge badge-primary badge-sm">Name</div>
-                            <span class="text-base-content">{{ contact.name }}</span>
-                        </div>
+                        {% if contact.name %}
+                            <div class="flex items-center gap-3">
+                                <div class="badge badge-primary badge-sm">Name</div>
+                                <span class="text-base-content">{{ contact.name }}</span>
+                            </div>
+                        {% endif %}
                         <!-- Company -->
                         {% if contact.company %}
                             <div class="flex items-center gap-3">

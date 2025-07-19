@@ -24,7 +24,7 @@
         </li>
         {% if contact %}
           <li>
-            <a href="{% url 'contacts:detail' contact.slug %}" class="link">{{ contact.name }}</a>
+            <a href="{% url 'contacts:detail' contact.slug %}" class="link">{{ contact }}</a>
           </li>
           <li>Edit</li>
         {% else %}
@@ -110,6 +110,18 @@
             {% if form.phone.errors %}
               <div class="label">
                 {% for error in form.phone.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
+              </div>
+            {% endif %}
+          </div>
+          <!-- Website Field -->
+          <div class="form-control mb-4">
+            <label class="label" for="{{ form.website.id_for_label }}">
+              <span class="label-text font-medium">{{ form.website.label }}</span>
+            </label>
+            {{ form.website }}
+            {% if form.website.errors %}
+              <div class="label">
+                {% for error in form.website.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
               </div>
             {% endif %}
           </div>

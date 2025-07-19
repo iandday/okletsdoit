@@ -96,9 +96,9 @@
                                     {% endif %}
                                     {% if contact.category %}<div class="badge badge-outline badge-sm mt-1">{{ contact.category }}</div>{% endif %}
                                 </div>
-                                {% url 'contact:detail' contact.slug as detail_action %}
-                                {% url 'contact:update' contact.slug as update_action %}
-                                {% url 'contact:delete' contact.slug as delete_action %}
+                                {% url 'contacts:detail' contact.slug as detail_action %}
+                                {% url 'contacts:update' contact.slug as update_action %}
+                                {% url 'contacts:delete' contact.slug as delete_action %}
 
                                 {% include "components/card_options.html" with detail_action=detail_action update_action=update_action delete_action=delete_action %}
 
