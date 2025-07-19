@@ -37,15 +37,76 @@
                 </button>
             </div>
         </div>
+        <!-- Filter Section -->
+        <div class="mb-6">
+            <div class="card bg-base-100 shadow-lg">
+                <div class="card-body p-4">
+                    <div class="flex flex-wrap items-center gap-4">
+                        <div class="flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 class="h-5 w-5 text-base-content/60"
+                                 fill="none"
+                                 viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.707A1 1 0 013 7V4z" />
+                            </svg>
+                            <span class="text-sm font-medium">Filter Lists:</span>
+                        </div>
+                        <div class="tabs tabs-border">
+                            <a href="{% url 'list:summary' %}"
+                               class="tab {% if not filter_type %}tab-active{% endif %}">
+                                All Lists
+                                <div class="badge badge-neutral badge-sm ml-2">{{ total_lists }}</div>
+                            </a>
+                            <a href="{% url 'list:summary' %}?filter=with_expenses"
+                               class="tab {% if filter_type == 'with_expenses' %}tab-active{% endif %}">
+                                With Expenses
+                                <div class="badge badge-primary badge-sm ml-2">{{ lists_with_expenses_count }}</div>
+                            </a>
+                            <a href="{% url 'list:summary' %}?filter=without_expenses"
+                               class="tab {% if filter_type == 'without_expenses' %}tab-active{% endif %}">
+                                Without Expenses
+                                <div class="badge badge-secondary badge-sm ml-2">{{ lists_without_expenses_count }}</div>
+                            </a>
+                        </div>
+                        {% if filter_type %}
+                            <a href="{% url 'list:summary' %}" class="btn btn-ghost btn-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     class="h-4 w-4"
+                                     fill="none"
+                                     viewBox="0 0 24 24"
+                                     stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                                Clear Filter
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- Lists Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {% for list in lists %}
-                <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow duration-300">
+                <div class="list-card">
                     <div class="card-body">
                         <!-- List Header -->
                         <div class="flex items-start justify-between mb-4">
-                            <a class="card-title text-primary"
-                               href="{% url 'list:detail' list.slug %}">{{ list.name }}</a>
+                            <div class="flex-1">
+                                <a class="list-card-title" href="{% url 'list:detail' list.slug %}">{{ list.name }}</a>
+                                {% if list.has_expense_entries %}
+                                    <div class="badge badge-accent badge-sm mt-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             class="h-3 w-3 mr-1"
+                                             fill="none"
+                                             viewBox="0 0 24 24"
+                                             stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+                                        </svg>
+                                        Has Expenses
+                                    </div>
+                                {% endif %}
+                            </div>
                             {% url 'list:detail' list.slug as detail_action %}
                             {% url 'list:edit' list.slug as update_action %}
                             {% url 'list:delete' list.slug as delete_action %}
@@ -107,21 +168,45 @@
                 <div class="col-span-full">
                     <div class="card bg-base-100 shadow-xl">
                         <div class="card-body text-center py-16">
-                            <div class="text-6xl mb-4">📝</div>
-                            <h2 class="card-title text-2xl justify-center mb-4">No Lists Yet</h2>
-                            <p class="text-base-content/70 mb-6">Create your first list to start organizing your wedding planning!</p>
-                            <div class="card-actions justify-center">
-                                <button class="btn btn-primary btn-lg" id="show-add-list-modal-empty">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                         class="h-5 w-5"
-                                         fill="none"
-                                         viewBox="0 0 24 24"
-                                         stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                                    </svg>
-                                    Create List
-                                </button>
-                            </div>
+                            {% if filter_type %}
+                                <div class="text-6xl mb-4">🔍</div>
+                                <h2 class="card-title text-2xl justify-center mb-4">No Lists Found</h2>
+                                <p class="text-base-content/70 mb-6">
+                                    {% if filter_type == 'with_expenses' %}
+                                        No lists contain items with associated expenses. Try creating some expense-linked list items!
+                                    {% elif filter_type == 'without_expenses' %}
+                                        All lists have items with associated expenses. Try creating some lists without expense links!
+                                    {% endif %}
+                                </p>
+                                <div class="card-actions justify-center">
+                                    <a href="{% url 'list:summary' %}" class="btn btn-outline">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             class="h-5 w-5"
+                                             fill="none"
+                                             viewBox="0 0 24 24"
+                                             stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                        Clear Filter
+                                    </a>
+                                </div>
+                            {% else %}
+                                <div class="text-6xl mb-4">📝</div>
+                                <h2 class="card-title text-2xl justify-center mb-4">No Lists Yet</h2>
+                                <p class="text-base-content/70 mb-6">Create your first list to start organizing your wedding planning!</p>
+                                <div class="card-actions justify-center">
+                                    <button class="btn btn-primary btn-lg" id="show-add-list-modal-empty">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             class="h-5 w-5"
+                                             fill="none"
+                                             viewBox="0 0 24 24"
+                                             stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                        </svg>
+                                        Create List
+                                    </button>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

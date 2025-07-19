@@ -3,7 +3,7 @@ import io
 from operator import index
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
-from django.db.models import Count, Q
+from django.db.models import Count, Q, Exists, OuterRef
 from django.contrib import messages
 from django.http import HttpResponse
 from django.utils.text import slugify
@@ -27,8 +27,30 @@ def list_summary(request: HttpRequest):
     """
     Render the list summary page showing all lists with their statistics.
     """
+    filter_type = request.GET.get("filter")
 
-    lists = List.objects.filter(is_deleted=False).order_by("name")
+    # Get base queryset
+    base_queryset = List.objects.filter(is_deleted=False)
+
+    # Annotate all lists with expense information
+    all_lists = base_queryset.annotate(
+        has_expense_entries=Exists(
+            ListEntry.objects.filter(list=OuterRef("pk"), is_deleted=False, associated_expense__isnull=False)
+        )
+    ).order_by("name")
+
+    # Apply filters
+    if filter_type == "with_expenses":
+        lists = all_lists.filter(has_expense_entries=True)
+    elif filter_type == "without_expenses":
+        lists = all_lists.filter(has_expense_entries=False)
+    else:
+        lists = all_lists
+
+    # Calculate counts for filter badges
+    total_lists = all_lists.count()
+    lists_with_expenses_count = all_lists.filter(has_expense_entries=True).count()
+    lists_without_expenses_count = all_lists.filter(has_expense_entries=False).count()
 
     form = ListImportForm()
     add_list_form = ListForm()
@@ -46,6 +68,7 @@ def list_summary(request: HttpRequest):
         ("additional_price", "Additional price regardless of quantity (default 0.00)"),
         ("expense", "Associated Expense/Budget item"),
     ]
+
     return render(
         request,
         "list/list_summary.html",
@@ -55,6 +78,10 @@ def list_summary(request: HttpRequest):
             "add_list_form": add_list_form,
             "import_required_fields": import_required_fields,
             "import_optional_fields": import_optional_fields,
+            "filter_type": filter_type,
+            "total_lists": total_lists,
+            "lists_with_expenses_count": lists_with_expenses_count,
+            "lists_without_expenses_count": lists_without_expenses_count,
         },
     )
 

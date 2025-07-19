@@ -86,11 +86,11 @@
 
 /* custom */
 .list-card {
-    @apply card bg-neutral shadow-xl hover:shadow-2xl transition-shadow duration-300;
+    @apply card bg-neutral shadow-xl hover: shadow-2xl transition-shadow duration-300;
 }
 
 .list-card-title {
-    @apply card-title text-primary text-2xl
+    @apply card-title text-primary text-2xl sm:text-xl
 }
 
 .list-add-btn {
