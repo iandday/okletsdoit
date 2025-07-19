@@ -78,11 +78,12 @@ def task_list(request: HttpRequest):
 
                     if missing_columns:
                         messages.error(request, f"Missing required columns: {', '.join(missing_columns)}")
-                        return redirect("task_list")
+                        return redirect("core:task_list")
 
                     # Process the data
                     success_count = 0
                     error_count = 0
+                    update_count = 0
                     errors = []
 
                     # Get all users for assignment lookup
@@ -117,21 +118,9 @@ def task_list(request: HttpRequest):
                                 error_count += 1
                                 continue
 
-                            # Check if task already exists
-                            if Task.objects.filter(title=title, task_list=task_list, is_deleted=False).exists():
-                                errors.append(
-                                    f"Row {index + 2}: Task '{title}' already exists in list '{task_list_name}'"
-                                )
-                                error_count += 1
-                                continue
-
-                            # Process optional fields
                             description = (
-                                str(row.get("description", "")).strip() if row.get("description") is not None else ""
+                                str(row.get("description", "")).strip() if row.get("description", None) else None
                             )
-                            if description == "null":
-                                description = ""
-
                             # Parse due date
                             due_date = None
                             if row.get("due_date") is not None:
@@ -176,21 +165,33 @@ def task_list(request: HttpRequest):
                                 completed_val = str(row["completed"]).lower().strip()
                                 completed = completed_val in ["true", "1", "yes", "completed", "done"]
 
-                            # Create task
-                            task = Task.objects.create(
+                            task, created = Task.objects.get_or_create(
                                 title=title,
-                                description=description,
-                                slug=slugify(title),
                                 task_list=task_list,
-                                created_by=request.user,
-                                updated_by=request.user,
-                                due_date=due_date,
-                                assigned_to=assigned_to,
-                                completed=completed,
-                                priority=priority,
+                                is_deleted=False,
+                                defaults={
+                                    "created_by": request.user,
+                                    "updated_by": request.user,
+                                    "description": description,
+                                    "due_date": due_date,
+                                    "assigned_to": assigned_to,
+                                    "completed": completed,
+                                    "priority": priority,
+                                },
                             )
 
-                            success_count += 1
+                            if created:
+                                success_count += 1
+                            else:
+                                # Update existing task
+                                task.description = description
+                                task.due_date = due_date
+                                task.assigned_to = assigned_to
+                                task.completed = completed
+                                task.priority = priority
+                                task.updated_by = request.user
+                                task.save()
+                                update_count += 1
 
                         except Exception as e:
                             errors.append(f"Row {index + 2}: {str(e)}")
@@ -200,12 +201,15 @@ def task_list(request: HttpRequest):
                     if success_count > 0:
                         messages.success(request, f"Successfully imported {success_count} tasks.")
 
+                    if update_count > 0:
+                        messages.info(request, f"Updated {update_count} existing tasks.")
+
                     if error_count > 0:
                         messages.warning(request, f"{error_count} tasks had errors and were skipped.")
                         for error in errors[:5]:  # Show first 5 errors
                             messages.error(request, error)
 
-                    if not success_count and not error_count:
+                    if not success_count and not update_count and not error_count:
                         messages.info(request, "No tasks found in the uploaded file.")
 
                 except Exception as e:
@@ -237,7 +241,7 @@ def task_list(request: HttpRequest):
                 .order_by("name")
             )
             return render(request, "core/task_list.html", {"task_lists": task_lists})
-        return redirect("task_list")
+        return redirect("core:task_list")
 
     task_lists = (
         TaskList.objects.filter(is_deleted=False)
@@ -361,7 +365,7 @@ def task_list_edit(request: HttpRequest, task_list_slug: str):
         return render(request, "core/task_list_form.html", {"form": form, "task_list": task_list})
         messages.error(request, "Invalid request method.")
 
-    return redirect("task_list")
+    return redirect("core:task_list")
 
 
 @login_required
@@ -402,7 +406,7 @@ def task_list_detail(request: HttpRequest, task_list_slug: str):
         )
     except TaskList.DoesNotExist:
         messages.error(request, "Task list not found.")
-        return redirect("task_list")
+        return redirect("core:task_list")
 
 
 @login_required
@@ -433,7 +437,7 @@ def task_edit(request: HttpRequest, task_slug: str):
 
         except Task.DoesNotExist:
             messages.error(request, "Task not found.")
-            return redirect("task_list")
+            return redirect("core:task_list")
 
 
 @login_required
@@ -519,7 +523,7 @@ def task_create(request: HttpRequest, task_list_slug: str):
             task.task_list = TaskList.objects.get(slug=task_list_slug, is_deleted=False)
             if not task.task_list:
                 messages.error(request, "Task list not found.")
-                return redirect("task_list")
+                return redirect("core:task_list")
             task.created_by = request.user
             task.updated_by = request.user
             task.slug = slugify(task.title)
@@ -535,7 +539,7 @@ def task_create(request: HttpRequest, task_list_slug: str):
         task_list = TaskList.objects.get(slug=task_list_slug, is_deleted=False)
         if not task_list:
             messages.error(request, "Task list not found.")
-            return redirect("task_list")
+            return redirect("core:task_list")
         return render(request, "core/task_create.html", {"form": TaskForm(), "task_list": task_list})
 
 
