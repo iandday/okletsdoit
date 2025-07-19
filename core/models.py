@@ -1,9 +1,10 @@
 import datetime
 import uuid
 
-
 from django.db import models
 from django.utils.text import slugify
+from simple_history.models import HistoricalRecords
+
 from users.models import User
 
 
@@ -18,6 +19,7 @@ class TaskList(models.Model):
     )
     updated_at = models.DateTimeField(auto_now=True)
     is_deleted = models.BooleanField(default=False)
+    history = HistoricalRecords()
 
     def __str__(self):
         return self.name
@@ -54,6 +56,7 @@ class Task(models.Model):
     completed_at = models.DateTimeField(blank=True, null=True)
     completed_note = models.TextField(blank=True, null=True)
     priority = models.PositiveIntegerField(blank=True, default=1)
+    history = HistoricalRecords()
 
     # Has due date for an instance of this object passed?
     def overdue_status(self):
@@ -86,6 +89,7 @@ class Idea(models.Model):
     )
     updated_at = models.DateTimeField(auto_now=True)
     is_deleted = models.BooleanField(default=False)
+    history = HistoricalRecords()
 
     def __str__(self):
         return self.name

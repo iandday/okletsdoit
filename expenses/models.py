@@ -1,10 +1,13 @@
-import datetime
 import uuid
+from decimal import Decimal
 
 from django.db import models
-from django.db.models import Sum, F, DecimalField
+from django.db.models import DecimalField
+from django.db.models import F
+from django.db.models import Sum
 from django.utils.text import slugify
-from decimal import Decimal
+from simple_history.models import HistoricalRecords
+
 from users.models import User
 
 
@@ -20,6 +23,7 @@ class Category(models.Model):
     )
     updated_at = models.DateTimeField(auto_now=True)
     is_deleted = models.BooleanField(default=False)
+    history = HistoricalRecords()
 
     def __str__(self):
         return self.name
@@ -58,6 +62,7 @@ class Expense(models.Model):
     )
     updated_at = models.DateTimeField(auto_now=True)
     is_deleted = models.BooleanField(default=False)
+    history = HistoricalRecords()
 
     @property
     def completed(self):

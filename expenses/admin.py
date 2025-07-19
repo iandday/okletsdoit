@@ -1,9 +1,13 @@
 from django.contrib import admin
-from .models import Category, Expense
+from import_export.admin import ImportExportModelAdmin
+from simple_history.admin import SimpleHistoryAdmin
+
+from .models import Category
+from .models import Expense
 
 
 @admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
+class CategoryAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
     list_display = ("name", "slug", "created_by", "created_at", "is_deleted")
     list_filter = ("is_deleted", "created_at", "updated_at")
     search_fields = ("name", "description")
@@ -31,7 +35,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 @admin.register(Expense)
-class ExpenseAdmin(admin.ModelAdmin):
+class ExpenseAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
     list_display = (
         "item",
         "category",

@@ -4,10 +4,9 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.text import slugify
+from simple_history.models import HistoricalRecords
 
 from users.models import User
-
-# TODO Link to vendor model to make shopping lists
 
 
 class List(models.Model):
@@ -24,6 +23,7 @@ class List(models.Model):
     )
     updated_at = models.DateTimeField(auto_now=True)
     is_deleted = models.BooleanField(default=False)
+    history = HistoricalRecords()
 
     class Meta:
         ordering = ["name"]
@@ -119,6 +119,7 @@ class ListEntry(models.Model):
         max_length=1000,
         help_text="URL for this item, e.g., a link to an online store or product page",
     )
+    history = HistoricalRecords()
 
     class Meta:
         ordering = ["order", "item"]

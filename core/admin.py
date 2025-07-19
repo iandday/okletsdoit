@@ -1,13 +1,16 @@
 from django.contrib import admin
-from django.utils.html import format_html
 from django.urls import reverse
-from django.utils.safestring import mark_safe
+from django.utils.html import format_html
+from import_export.admin import ImportExportModelAdmin
+from simple_history.admin import SimpleHistoryAdmin
 
-from .models import Task, TaskList, Idea
+from .models import Idea
+from .models import Task
+from .models import TaskList
 
 
 @admin.register(TaskList)
-class TaskListAdmin(admin.ModelAdmin):
+class TaskListAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
     list_display = ("name", "created_by", "task_count", "created_at", "updated_at")
     list_filter = ("created_at", "updated_at", "is_deleted")
     search_fields = ("name", "slug")
@@ -45,7 +48,7 @@ class TaskListAdmin(admin.ModelAdmin):
 
 
 @admin.register(Task)
-class TaskAdmin(admin.ModelAdmin):
+class TaskAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
     list_display = ("title", "task_list", "assigned_to", "priority", "due_date_display", "status_display", "updated_by")
     list_filter = ("completed", "task_list", "priority", "due_date", "assigned_to", "is_deleted")
     search_fields = ("title", "description", "slug")
@@ -121,7 +124,7 @@ class TaskAdmin(admin.ModelAdmin):
 
 
 @admin.register(Idea)
-class IdeaAdmin(admin.ModelAdmin):
+class IdeaAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
     list_display = ("name", "created_by", "description_preview", "created_at", "updated_at")
     list_filter = ("created_at", "updated_at", "is_deleted", "created_by")
     search_fields = ("name", "slug", "description")

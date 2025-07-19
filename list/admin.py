@@ -1,9 +1,13 @@
 from django.contrib import admin
-from .models import List, ListEntry
+from import_export.admin import ImportExportModelAdmin
+from simple_history.admin import SimpleHistoryAdmin
+
+from .models import List
+from .models import ListEntry
 
 
 @admin.register(List)
-class ListAdmin(admin.ModelAdmin):
+class ListAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
     list_display = [
         "name",
         "created_by",
@@ -51,7 +55,7 @@ class ListAdmin(admin.ModelAdmin):
 
 
 @admin.register(ListEntry)
-class ListEntryAdmin(admin.ModelAdmin):
+class ListEntryAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
     list_display = [
         "item",
         "list",
