@@ -14,13 +14,12 @@
                     <li>
                         <a href="{% url 'contacts:list' %}" class="link">Contacts</a>
                     </li>
-                    <li>{{ contact.name }}</li>
+                    <li>{{ contact }}</li>
                 </ul>
             </div>
             <div class="flex items-start justify-between mb-6">
                 <div>
-                    <h1 class="text-4xl font-bold text-primary mb-2">{{ contact.name }}</h1>
-                    {% if contact.company %}<p class="text-xl text-base-content/70">{{ contact.company }}</p>{% endif %}
+                    <h1 class="text-4xl font-bold text-primary mb-2">{{ contact }}</h1>
                     {% if contact.category %}<div class="badge badge-primary badge-lg mt-2">{{ contact.category }}</div>{% endif %}
                     <div class="flex items-center gap-4 text-sm text-base-content/70 mt-2">
                         <span>Created {{ contact.created_at|date:"M d, Y" }} by {{ contact.created_by.email }}</span>

@@ -86,9 +86,14 @@
                             <!-- Contact Header -->
                             <div class="flex items-start justify-between mb-4">
                                 <div class="flex-1">
-                                    <a class="card-title text-primary"
-                                       href="{% url 'contacts:detail' contact.slug %}">{{ contact.name }}</a>
-                                    {% if contact.company %}<p class="text-base-content/70 text-sm">{{ contact.company }}</p>{% endif %}
+                                    {% if contact.name %}
+                                        <a class="card-title text-primary"
+                                           href="{% url 'contacts:detail' contact.slug %}">{{ contact.name }}</a>
+                                        {% if contact.company %}<p class="text-base-content/70 text-sm">{{ contact.company }}</p>{% endif %}
+                                    {% else %}
+                                        <a class="card-title text-primary"
+                                           href="{% url 'contacts:detail' contact.slug %}">{{ contact }}</a>
+                                    {% endif %}
                                     {% if contact.category %}<div class="badge badge-outline badge-sm mt-1">{{ contact.category }}</div>{% endif %}
                                 </div>
                                 {% url 'contact:detail' contact.slug as detail_action %}
