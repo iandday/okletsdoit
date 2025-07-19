@@ -120,6 +120,18 @@
                                 </a>
                             </div>
                         {% endif %}
+                        {% if contact.notes %}
+                            <div class="prose max-w-none">
+                                <p class="text-base-content whitespace-pre-wrap">{{ contact.notes }}</p>
+                            </div>
+                        {% else %}
+                            <div class="text-center py-8">
+                                <div class="text-4xl mb-4">📝</div>
+                                <p class="text-base-content/60">No notes added yet</p>
+                                <a href="{% url 'contacts:update' contact.slug %}"
+                                   class="btn btn-outline btn-sm mt-4">Add Notes</a>
+                            </div>
+                        {% endif %}
                     </div>
                     <!-- Quick Actions -->
                     <div class="card-actions justify-start mt-6">
@@ -165,7 +177,7 @@
                     </div>
                 </div>
             </div>
-            <!-- Notes Card -->
+            <!-- Shopping list -->
             <div class="card bg-base-100 shadow-xl">
                 <div class="card-body">
                     <h2 class="card-title text-primary mb-6">
@@ -176,20 +188,15 @@
                              stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
-                        Notes
+                        Shopping List
                     </h2>
-                    {% if contact.notes %}
-                        <div class="prose max-w-none">
-                            <p class="text-base-content whitespace-pre-wrap">{{ contact.notes }}</p>
-                        </div>
-                    {% else %}
-                        <div class="text-center py-8">
-                            <div class="text-4xl mb-4">📝</div>
-                            <p class="text-base-content/60">No notes added yet</p>
-                            <a href="{% url 'contacts:update' contact.slug %}"
-                               class="btn btn-outline btn-sm mt-4">Add Notes</a>
-                        </div>
-                    {% endif %}
+                    <ul class="list-disc pl-5">
+                        {% for item in shopping_list %}
+                            <li>{{ item.item }} - {{ item.quantity }}</li>
+                        {% empty %}
+                            <li>No items in shopping list.</li>
+                        {% endfor %}
+                    </ul>
                 </div>
             </div>
         </div>

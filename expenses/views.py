@@ -323,6 +323,7 @@ def expense_import(request):
                         "quantity": quantity,
                         "estimated_amount": estimated_amount,
                         "actual_amount": actual_amount,
+                        "url": str(row.get("url", "")).strip() if row.get("url", None) is not None else "",
                     }
 
                     # Clean empty strings
@@ -394,7 +395,7 @@ def template_download(request):
     ws.title = "Expenses Template"
 
     # Define headers
-    headers = ["item", "description", "date", "category", "quantity", "estimated_amount", "actual_amount"]
+    headers = ["item", "description", "date", "category", "quantity", "estimated_amount", "actual_amount", "url"]
 
     # Add headers to the first row
     for col_num, header in enumerate(headers, 1):
@@ -412,11 +413,48 @@ def template_download(request):
             1,
             2500.00,
             2800.00,
+            "https://example.com/wedding-photography",
         ],
-        ["Wedding Cake", "3-tier vanilla cake with custom decorations", "2024-08-15", "Catering", 1, 800.00, 750.00],
-        ["Bridal Dress", "Designer wedding dress with alterations", "2024-06-01", "Attire", 1, 1500.00, 1650.00],
-        ["Flower Arrangements", "Bridal bouquet and centerpieces", "2024-08-15", "Flowers", 8, 150.00, 140.00],
-        ["Wedding Venue", "Reception hall rental for 6 hours", "2024-08-15", "Venue", 1, 3000.00, ""],
+        [
+            "Wedding Cake",
+            "3-tier vanilla cake with custom decorations",
+            "2024-08-15",
+            "Catering",
+            1,
+            800.00,
+            750.00,
+            "https://example.com/wedding-cake",
+        ],
+        [
+            "Bridal Dress",
+            "Designer wedding dress with alterations",
+            "2024-06-01",
+            "Attire",
+            1,
+            1500.00,
+            1650.00,
+            "https://example.com/bridal-dress",
+        ],
+        [
+            "Flower Arrangements",
+            "Bridal bouquet and centerpieces",
+            "2024-08-15",
+            "Flowers",
+            8,
+            150.00,
+            140.00,
+            "https://example.com/flower-arrangements",
+        ],
+        [
+            "Wedding Venue",
+            "Reception hall rental for 6 hours",
+            "2024-08-15",
+            "Venue",
+            1,
+            3000.00,
+            "",
+            "https://example.com/wedding-venue",
+        ],
     ]
 
     for row_num, row_data in enumerate(sample_data, 2):

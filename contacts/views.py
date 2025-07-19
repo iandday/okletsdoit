@@ -8,6 +8,8 @@ from django.http import HttpResponse
 import polars as pl
 import openpyxl
 from io import BytesIO
+
+from list.models import ListEntry
 from .models import Contact
 from .forms import ContactForm
 
@@ -48,8 +50,12 @@ def contact_detail(request, slug):
     """Show contact details"""
     contact = get_object_or_404(Contact, slug=slug, is_deleted=False)
 
+    # get related list entries to form a shopping list
+    shopping_list = ListEntry.objects.filter(vendor=contact, purchased=False, is_deleted=False).order_by("item")
+
     context = {
         "contact": contact,
+        "shopping_list": shopping_list,
     }
 
     return render(request, "contacts/contact_detail.html", context)

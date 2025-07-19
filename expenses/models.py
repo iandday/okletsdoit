@@ -45,6 +45,12 @@ class Expense(models.Model):
     quantity = models.PositiveIntegerField(default=1)
     estimated_amount = models.DecimalField(max_digits=40, decimal_places=2, blank=True, null=True)
     actual_amount = models.DecimalField(max_digits=40, decimal_places=2, blank=True, null=True)
+    url = models.URLField(
+        blank=True,
+        null=True,
+        max_length=1000,
+        help_text="URL for this item, e.g., a link to an online store or product page",
+    )
     created_by = models.ForeignKey(User, related_name="created_by_expense", on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_by = models.ForeignKey(

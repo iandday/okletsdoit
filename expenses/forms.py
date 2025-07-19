@@ -29,7 +29,7 @@ class ExpenseForm(ModelForm):
 
     class Meta:
         model = Expense
-        fields = ["item", "description", "date", "category", "quantity", "estimated_amount", "actual_amount"]
+        fields = ["item", "description", "date", "category", "quantity", "estimated_amount", "actual_amount", "url"]
         widgets = {
             "item": forms.TextInput(attrs={"class": "input input-bordered w-full", "placeholder": "Enter item name"}),
             "description": forms.Textarea(
@@ -40,6 +40,9 @@ class ExpenseForm(ModelForm):
             "quantity": forms.NumberInput(attrs={"class": "input input-bordered w-full", "min": 1}),
             "estimated_amount": forms.NumberInput(attrs={"class": "input input-bordered w-full", "step": 0.01}),
             "actual_amount": forms.NumberInput(attrs={"class": "input input-bordered w-full", "step": 0.01}),
+            "url": forms.URLInput(
+                attrs={"class": "input input-bordered w-full", "placeholder": "Enter URL (optional)"}
+            ),
         }
 
     def __init__(self, *args, **kwargs):
@@ -50,3 +53,4 @@ class ExpenseForm(ModelForm):
         self.fields["estimated_amount"].required = False
         self.fields["actual_amount"].required = False
         self.fields["quantity"].required = False
+        self.fields["url"].required = False
