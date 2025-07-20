@@ -73,6 +73,7 @@ INSTALLED_APPS = [
     "expenses",
     "contacts",
     "list",
+    "deadline",
 ]
 
 if DEBUG:
