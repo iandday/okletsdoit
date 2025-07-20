@@ -30,10 +30,8 @@
                          stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                     </svg>
-                    Add Deadline
-                </a>
-                <a href="{% url 'deadline:deadline_list_edit' deadline_list.slug %}"
-                   class="btn btn-secondary">
+                    Add Deadline </a> <a href="{% url 'deadline:deadline_list_edit' deadline_list.slug %}"
+    class="btn btn-secondary">
                     <svg xmlns="http://www.w3.org/2000/svg"
                          class="h-5 w-5"
                          fill="none"
@@ -41,8 +39,7 @@
                          stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                     </svg>
-                    Edit List
-                </a>
+                Edit List </a>
             </div>
         </div>
         <!-- Summary Stats -->
@@ -104,11 +101,6 @@
                         <table class="table table-zebra">
                             <thead>
                                 <tr>
-                                    <th>
-                                        <label>
-                                            <input type="checkbox" class="checkbox" id="select-all" />
-                                        </label>
-                                    </th>
                                     <th>Deadline</th>
                                     <th>Due Date</th>
                                     <th>Assigned To</th>
@@ -119,13 +111,6 @@
                             <tbody>
                                 {% for deadline in deadlines %}
                                     <tr class="{% if deadline.completed %}opacity-60{% endif %}">
-                                        <td>
-                                            <label>
-                                                <input type="checkbox"
-                                                       class="checkbox deadline-checkbox"
-                                                       data-deadline-id="{{ deadline.id }}" />
-                                            </label>
-                                        </td>
                                         <td>
                                             <div class="flex items-center gap-3">
                                                 <div>
@@ -180,6 +165,7 @@
                                             <div class="flex gap-1">
                                                 <button class="btn btn-ghost btn-xs"
                                                         data-deadline-id="{{ deadline.id }}"
+                                                        data-deadline-slug="{% url 'deadline:deadline_toggle_complete' deadline.slug %}"
                                                         data-completed="{{ deadline.completed|yesno:'true,false' }}"
                                                         id="toggle-deadline-{{ deadline.id }}">
                                                     {% if deadline.completed %}
@@ -210,8 +196,9 @@
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                                     </svg>
                                                 </a>
-                                                <a href="{% url 'deadline:deadline_delete' deadline.slug %}"
-                                                   class="btn btn-ghost btn-xs">
+                                                <button type="button"
+                                                        class="btn btn-ghost btn-xs open-delete-modal"
+                                                        data-deadline-id="{{ deadline.id }}">
                                                     <svg xmlns="http://www.w3.org/2000/svg"
                                                          class="h-4 w-4"
                                                          fill="none"
@@ -219,52 +206,50 @@
                                                          stroke="currentColor">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                                     </svg>
-                                                </a>
+                                                </button>
                                             </div>
+                                            <dialog id="delete-modal-{{ deadline.id }}" class="modal">
+                                                <div class="modal-box">
+                                                    <form method="post"
+                                                          action="{% url 'deadline:deadline_delete' deadline.slug %}">
+                                                        {% csrf_token %}
+                                                        <button type="button"
+                                                                class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 close-delete-modal"
+                                                                data-deadline-id="{{ deadline.id }}">✕</button>
+                                                        <h3 class="text-lg font-bold mb-4">Confirm Delete</h3>
+                                                        <p class="mb-4">
+                                                            Are you sure you want to delete <span class="font-semibold">{{ deadline.name }}</span>? This action cannot be undone.
+                                                        </p>
+                                                        <div class="modal-action">
+                                                            <button type="button"
+                                                                    class="btn btn-ghost close-delete-modal"
+                                                                    data-deadline-id="{{ deadline.id }}">
+                                                                Cancel
+                                                            </button>
+                                                            <button type="submit" class="btn btn-error">
+                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                     class="h-4 w-4"
+                                                                     fill="none"
+                                                                     viewBox="0 0 24 24"
+                                                                     stroke="currentColor">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                                </svg>
+                                                                Delete
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <form method="dialog"
+                                                      class="modal-backdrop close-delete-modal"
+                                                      data-deadline-id="{{ deadline.id }}">
+                                                    <button>close</button>
+                                                </form>
+                                            </dialog>
                                         </td>
                                     </tr>
                                 {% endfor %}
                             </tbody>
                         </table>
-                    </div>
-                </div>
-            </div>
-            <!-- Bulk Actions -->
-            <div class="card bg-base-100 shadow-xl mt-4 hidden" id="bulk-actions">
-                <div class="card-body">
-                    <div class="flex flex-wrap gap-2 items-center">
-                        <span class="text-sm font-medium">Bulk Actions:</span>
-                        <button class="btn btn-sm btn-success" id="bulk-complete">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                 class="h-4 w-4"
-                                 fill="none"
-                                 viewBox="0 0 24 24"
-                                 stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                            </svg>
-                            Mark Complete
-                        </button>
-                        <button class="btn btn-sm btn-warning" id="bulk-incomplete">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                 class="h-4 w-4"
-                                 fill="none"
-                                 viewBox="0 0 24 24"
-                                 stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
-                            </svg>
-                            Mark Incomplete
-                        </button>
-                        <button class="btn btn-sm btn-error" id="bulk-delete">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                 class="h-4 w-4"
-                                 fill="none"
-                                 viewBox="0 0 24 24"
-                                 stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                            </svg>
-                            Delete
-                        </button>
-                        <span class="text-sm text-base-content/70" id="selected-count">0 selected</span>
                     </div>
                 </div>
             </div>
@@ -292,8 +277,7 @@
                                  stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                             </svg>
-                            Add First Deadline
-                        </a>
+                        Add First Deadline </a>
                     </div>
                 </div>
             </div>
@@ -303,102 +287,55 @@
 {% block extra_script %}
     <script nonce="{{ request.csp_nonce }}">
       document.addEventListener('DOMContentLoaded', function() {
-        const selectAllCheckbox = document.getElementById('select-all');
-        const deadlineCheckboxes = document.querySelectorAll('.deadline-checkbox');
-        const bulkActions = document.getElementById('bulk-actions');
-        const selectedCount = document.getElementById('selected-count');
 
-        // Handle select all functionality
-        if (selectAllCheckbox) {
-          selectAllCheckbox.addEventListener('change', function() {
-            deadlineCheckboxes.forEach(checkbox => {
-              checkbox.checked = this.checked;
-            });
-            updateBulkActions();
-          });
-        }
 
-        // Handle individual checkbox changes
-        deadlineCheckboxes.forEach(checkbox => {
-          checkbox.addEventListener('change', function() {
-            updateBulkActions();
-
-            // Update select all checkbox state
-            if (selectAllCheckbox) {
-              const checkedCount = document.querySelectorAll('.deadline-checkbox:checked').length;
-              selectAllCheckbox.checked = checkedCount === deadlineCheckboxes.length;
-              selectAllCheckbox.indeterminate = checkedCount > 0 && checkedCount < deadlineCheckboxes.length;
-            }
-          });
-        });
-
-        function updateBulkActions() {
-          const checkedBoxes = document.querySelectorAll('.deadline-checkbox:checked');
-          const count = checkedBoxes.length;
-
-          if (bulkActions && selectedCount) {
-            if (count > 0) {
-              bulkActions.classList.remove('hidden');
-              selectedCount.textContent = `${count} selected`;
-            } else {
-              bulkActions.classList.add('hidden');
-            }
-          }
-        }
 
         // Handle individual deadline toggle buttons
         document.querySelectorAll('[id^="toggle-deadline-"]').forEach(button => {
           button.addEventListener('click', function() {
-            const deadlineId = this.getAttribute('data-deadline-id');
-            const isCompleted = this.getAttribute('data-completed') === 'true';
+            const deadlineSlug = this.getAttribute('data-deadline-slug');
+            console.log(deadlineSlug);
+            if (!deadlineSlug) return;
 
-            // Here you would make an AJAX call to toggle the deadline status
-            // For now, we'll just reload the page
-            // TODO: Implement AJAX toggle functionality
-            console.log(`Toggle deadline ${deadlineId}, currently completed: ${isCompleted}`);
+            fetch(deadlineSlug, {
+                method: "POST",
+                headers: {
+                  "X-CSRFToken": "{{ request.COOKIES.csrftoken }}",
+                  "Content-Type": "application/x-www-form-urlencoded"
+                },
+                credentials: "same-origin"
+              })
+              .then(response => {
+                if (response.ok) {
+                  window.location.reload();
+                } else {
+                  alert("Failed to toggle deadline status.");
+                }
+              })
+              .catch(() => {
+                alert("Failed to toggle deadline status.");
+              });
           });
         });
 
-        // Handle bulk actions
-        const bulkCompleteBtn = document.getElementById('bulk-complete');
-        const bulkIncompleteBtn = document.getElementById('bulk-incomplete');
-        const bulkDeleteBtn = document.getElementById('bulk-delete');
 
-        if (bulkCompleteBtn) {
-          bulkCompleteBtn.addEventListener('click', function() {
-            const checkedBoxes = document.querySelectorAll('.deadline-checkbox:checked');
-            const deadlineIds = Array.from(checkedBoxes).map(cb => cb.getAttribute('data-deadline-id'));
 
-            if (deadlineIds.length > 0) {
-              // TODO: Implement bulk complete functionality
-              console.log('Bulk complete deadlines:', deadlineIds);
-            }
+        // Delete modal logic
+        document.querySelectorAll('.open-delete-modal').forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            const deadlineId = btn.getAttribute('data-deadline-id');
+            const modal = document.getElementById('delete-modal-' + deadlineId);
+            if (modal) modal.showModal();
           });
-        }
-
-        if (bulkIncompleteBtn) {
-          bulkIncompleteBtn.addEventListener('click', function() {
-            const checkedBoxes = document.querySelectorAll('.deadline-checkbox:checked');
-            const deadlineIds = Array.from(checkedBoxes).map(cb => cb.getAttribute('data-deadline-id'));
-
-            if (deadlineIds.length > 0) {
-              // TODO: Implement bulk incomplete functionality
-              console.log('Bulk incomplete deadlines:', deadlineIds);
-            }
+        });
+        document.querySelectorAll('.close-delete-modal').forEach(function(btn) {
+          btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const deadlineId = btn.getAttribute('data-deadline-id');
+            const modal = document.getElementById('delete-modal-' + deadlineId);
+            if (modal) modal.close();
           });
-        }
-
-        if (bulkDeleteBtn) {
-          bulkDeleteBtn.addEventListener('click', function() {
-            const checkedBoxes = document.querySelectorAll('.deadline-checkbox:checked');
-            const deadlineIds = Array.from(checkedBoxes).map(cb => cb.getAttribute('data-deadline-id'));
-
-            if (deadlineIds.length > 0 && confirm(`Are you sure you want to delete ${deadlineIds.length} deadline(s)?`)) {
-              // TODO: Implement bulk delete functionality
-              console.log('Bulk delete deadlines:', deadlineIds);
-            }
-          });
-        }
+        });
       });
     </script>
 {% endblock extra_script %}

@@ -5,15 +5,18 @@ import polars as pl
 import io
 from django.http import HttpResponse
 from django.contrib import messages
-from deadline.forms import DeadlineForm, DeadlineImportForm
+from deadline.forms import DeadlineForm, DeadlineImportForm, DeadlineListForm
 from deadline.models import Deadline, DeadlineList
 from datetime import datetime
 from django.db.models import Count, Q
 from users.models import User
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 @login_required
-def deadline_summary(request: HttpRequest):
+def deadline_summary(request: HttpRequest) -> HttpResponse:
     """ """
     deadline_lists = (
         DeadlineList.objects.filter(is_deleted=False)
@@ -36,19 +39,38 @@ def deadline_summary(request: HttpRequest):
 
 
 @login_required
-def deadline_create(request: HttpRequest):
-    pass
+def deadline_create(request: HttpRequest) -> HttpResponse:
+    if request.method == "POST":
+        form = DeadlineForm(request.POST, user=request.user)
+        if form.is_valid():
+            deadline = form.save(commit=False)
+            deadline.created_by = request.user
+            deadline.updated_by = request.user
+            deadline.save()
+            messages.success(request, "Deadline created successfully.")
+            return redirect("deadline:deadline_list_detail", deadline_list_slug=deadline.deadline_list.slug)
+        else:
+            messages.error(request, "Please correct the errors below.")
+            return render(
+                request, "deadline/deadline_form.html", {"form": DeadlineForm(user=request.user, object=form.instance)}
+            )
+    else:
+        context = {
+            "form": DeadlineForm(),
+        }
+
+        return render(request, "deadline/deadline_form.html", context)
 
 
 @login_required
-def deadline_edit(request: HttpRequest, deadline_slug: str):
+def deadline_edit(request: HttpRequest, deadline_slug: str) -> HttpResponse:
     try:
         deadline = Deadline.objects.get(slug=deadline_slug, is_deleted=False)
     except Deadline.DoesNotExist:
         messages.error(request, "Deadline not found.")
         return redirect("deadline:deadline_summary")
 
-    if request.method == "POST":
+    if request.method == "POST" and deadline:
         form = DeadlineForm(request.POST, instance=deadline)
         if form.is_valid():
             form.save()
@@ -65,27 +87,70 @@ def deadline_edit(request: HttpRequest, deadline_slug: str):
 
 
 @login_required
-def deadline_delete(request: HttpRequest, deadline_slug: str):
+def deadline_delete(request: HttpRequest, deadline_slug: str) -> HttpResponse:
+    if request.method == "POST":
+        try:
+            deadline = Deadline.objects.get(slug=deadline_slug, is_deleted=False)
+        except Deadline.DoesNotExist:
+            messages.error(request, "Deadline not found.")
+            return redirect("deadline:deadline_summary")
+        deadline.is_deleted = True
+        deadline.save()
+        messages.success(request, "Deadline deleted successfully.")
+        return redirect("deadline:deadline_list_detail", deadline_list_slug=deadline.deadline_list.slug)
+    else:
+        messages.error(request, "Invalid request method.")
+        return redirect("deadline:deadline_summary")
+
+
+@login_required
+def deadline_toggle_complete(request: HttpRequest, deadline_slug: str) -> HttpResponse:
+    """
+    Toggle the completion status of a deadline.
+    """
+    if request.method != "POST":
+        messages.error(request, "Invalid request method.")
+        return redirect("deadline:deadline_summary")
     try:
         deadline = Deadline.objects.get(slug=deadline_slug, is_deleted=False)
     except Deadline.DoesNotExist:
         messages.error(request, "Deadline not found.")
         return redirect("deadline:deadline_summary")
 
+    deadline.completed = not deadline.completed
+    deadline.save()
+    status = "completed" if deadline.completed else "pending"
+    messages.success(request, f"Deadline marked as {status}.")
+    return redirect("deadline:deadline_list_detail", deadline_list_slug=deadline.deadline_list.slug)
+
+
+@login_required
+def deadline_list_create(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
-        deadline.is_deleted = True
-        deadline.save()
-        messages.success(request, "Deadline deleted successfully.")
-        return redirect("deadline:deadline_list_detail", deadline_list_slug=deadline.deadline_list.slug)
+        form = DeadlineForm(request.POST, user=request.user)
+        if form.is_valid():
+            deadline_list = form.save(commit=False)
+            deadline_list.created_by = request.user
+            deadline_list.updated_by = request.user
+            deadline_list.save()
+            messages.success(request, "Deadline list created successfully.")
+            return redirect("deadline:deadline_list_detail", deadline_list_slug=deadline_list.slug)
+        else:
+            messages.error(request, "Please correct the errors below.")
+            return render(
+                request,
+                "deadline/deadline_list_form.html",
+                {"form": DeadlineForm(user=request.user, object=form.instance)},
+            )
+    else:
+        context = {
+            "form": DeadlineForm(),
+        }
+        return render(request, "deadline/deadline_list_form.html", context)
 
 
 @login_required
-def deadline_list_create(request: HttpRequest):
-    pass
-
-
-@login_required
-def deadline_list_detail(request: HttpRequest, deadline_list_slug: str):
+def deadline_list_detail(request: HttpRequest, deadline_list_slug: str) -> HttpResponse:
     """
     View to display details of a specific deadline list.
     """
@@ -104,17 +169,62 @@ def deadline_list_detail(request: HttpRequest, deadline_list_slug: str):
 
 
 @login_required
-def deadline_list_delete(request: HttpRequest):
-    pass
+def deadline_list_delete(request: HttpRequest) -> HttpResponse:
+    if request.method == "POST":
+        form = DeadlineForm(request.POST)
+        if form.is_valid():
+            deadline_list = form.save(commit=False)
+            deadline_list.is_deleted = True
+            deadline_list.updated_by = request.user
+            deadline_list.save()
+            messages.success(request, "Deadline list deleted successfully.")
+            return redirect("deadline:deadline_summary")
+        else:
+            messages.error(request, "Please correct the errors below.")
+            return render(
+                request,
+                "deadline/deadline_list_form.html",
+                {"form": DeadlineForm(user=request.user, object=form.instance)},
+            )
+    else:
+        messages.error(request, "Invalid request method.")
+        return redirect("deadline:deadline_summary")
 
 
 @login_required
-def deadline_list_edit(request: HttpRequest):
-    pass
+def deadline_list_edit(request: HttpRequest, deadline_list_slug: str) -> HttpResponse:
+    try:
+        deadline_list = DeadlineList.objects.get(slug=deadline_list_slug, is_deleted=False)
+    except DeadlineList.DoesNotExist:
+        messages.error(request, "Deadline list not found.")
+        return redirect("deadline:deadline_summary")
+
+    if request.method == "POST":
+        form = DeadlineListForm(request.POST)
+        if form.is_valid():
+            deadline_list = form.save(commit=False)
+            deadline_list.created_by = request.user
+            deadline_list.updated_by = request.user
+            deadline_list.save()
+            messages.success(request, "Deadline list updated successfully.")
+            return redirect("deadline:deadline_list_detail", deadline_list_slug=deadline_list.slug)
+        else:
+            messages.error(request, "Please correct the errors below.")
+            return render(
+                request,
+                "deadline/deadline_list_form.html",
+                {"form": DeadlineListForm(object=form.instance)},
+            )
+    else:
+        context = {
+            "form": DeadlineListForm(instance=deadline_list),
+            "deadline_list": deadline_list,
+        }
+        return render(request, "deadline/deadline_list_form.html", context)
 
 
 @login_required
-def deadline_import(request: HttpRequest):
+def deadline_import(request: HttpRequest) -> HttpResponse:
     """
     Handles the import of deadlines from an uploaded Excel file and provides a template for import.
     - On POST:

@@ -20,15 +20,9 @@
             {% for item in nav_links %}
                 <li>
                     {% if request.resolver_match.url_name == item.view_name %}
-                        <a href="{% url item.view_name %}" class="btn btn-primary">
-                            <i class="inline-block w-5 h-5 mr-2 fa {{ item.icon }}"></i>
-                            {{ item.text }}
-                        </a>
+                        <a href="{% url item.view_name %}" class="btn btn-primary">{{ item.text }}</a>
                     {% else %}
-                        <a href="{% url item.view_name %}" class="btn btn-ghost">
-                            <i class="inline-block w-5 h-5 mr-2 fa {{ item.icon }}"></i>
-                            {{ item.text }}
-                        </a>
+                        <a href="{% url item.view_name %}" class="btn btn-ghost">{{ item.text }}</a>
                     {% endif %}
                 </li>
             {% endfor %}
@@ -39,10 +33,7 @@
                         <ul class="bg-neutral">
                             {% for item in planning_links %}
                                 <li>
-                                    <a href="{% url item.view_name %}" class="btn btn-ghost">
-                                        <i class="inline-block w-5 h-5 mr-2 fa {{ item.icon }}"></i>
-                                        {{ item.text }}
-                                    </a>
+                                    <a href="{% url item.view_name %}" class="btn btn-ghost">{{ item.text }}</a>
                                 </li>
                             {% endfor %}
                         </ul>
@@ -50,17 +41,11 @@
                 </li>
                 <!-- logout -->
                 <li>
-                    <a href="{% url 'account_logout' %}" class="btn btn-ghost">
-                        <i class="inline-block w-5 h-5 mr-2 fa fa-sign-out-alt"></i>
-                        Logout
-                    </a>
+                    <a href="{% url 'account_logout' %}" class="btn btn-ghost">Logout</a>
                 </li>
             {% else %}
                 <li>
-                    <a href="{% url 'account_login' %}" class="bg-neutral btn btn-ghost">
-                        <i class="inline-block w-5 h-5 mr-2 fa fa-sign-in-alt"></i>
-                        Login
-                    </a>
+                    <a href="{% url 'account_login' %}" class="bg-neutral btn btn-ghost">Login</a>
                 </li>
             {% endif %}
         </ul>

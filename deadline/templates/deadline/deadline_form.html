@@ -19,13 +19,13 @@
                         <li>
                             <a href="{% url 'deadline:deadline_summary' %}">Deadline Lists</a>
                         </li>
-                        {% if form.instance.deadline_list %}
+                        {% if deadline.deadline_list %}
                             <li>
-                                <a href="{% url 'deadline:deadline_list_detail' form.instance.deadline_list.slug %}">{{ form.instance.deadline_list.name }}</a>
+                                <a href="{% url 'deadline:deadline_list_detail' deadline.deadline_list.slug %}">{{ deadline.deadline_list.name }}</a>
                             </li>
                         {% endif %}
                         <li>
-                            {% if form.instance.pk %}
+                            {% if deadline %}
                                 Edit Deadline
                             {% else %}
                                 New Deadline
@@ -34,14 +34,14 @@
                     </ul>
                 </div>
                 <h1 class="text-3xl font-bold text-base-content mb-2">
-                    {% if form.instance.pk %}
+                    {% if deadline %}
                         Edit Deadline
                     {% else %}
                         Create New Deadline
                     {% endif %}
                 </h1>
                 <p class="text-base-content/70">
-                    {% if form.instance.pk %}
+                    {% if deadline.name %}
                         Update the details for this deadline
                     {% else %}
                         Add a new deadline to track your progress
@@ -173,9 +173,7 @@
                         {% endif %}
                     </div>
                     <!-- Completion Notes (shown only if completed is checked) -->
-                    <div class="form-control w-full"
-                         id="completion-notes-field"
-                         {% if not form.instance.completed %}style="display: none;"{% endif %}>
+                    <div class="form-control w-full" id="completion-notes-field">
                         <label class="label">
                             <span class="label-text font-semibold">{{ form.completed_note.label }}</span>
                             <span class="label-text-alt">Optional</span>
@@ -211,55 +209,12 @@
                 </form>
             </div>
         </div>
-        <!-- Help Card -->
-        <div class="card bg-base-200/50 shadow mt-6">
-            <div class="card-body">
-                <h3 class="text-lg font-semibold mb-3 flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                         class="h-5 w-5 text-info"
-                         fill="none"
-                         viewBox="0 0 24 24"
-                         stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    Tips
-                </h3>
-                <ul class="space-y-2 text-sm text-base-content/80">
-                    <li>• Give your deadline a clear, descriptive name</li>
-                    <li>• Use the description to provide more context or details</li>
-                    <li>• Setting a due date helps with prioritization and scheduling</li>
-                    <li>• Assign deadlines to team members for better accountability</li>
-                    <li>• Mark deadlines as completed when finished and add notes about the outcome</li>
-                </ul>
-            </div>
-        </div>
     </div>
 {% endblock content %}
 {% block extra_script %}
     <script nonce="{{ request.csp_nonce }}">
       document.addEventListener('DOMContentLoaded', function() {
-        const completedCheckbox = document.querySelector('input[name="completed"]');
-        const completionNotesField = document.getElementById('completion-notes-field');
-        const completionNotesTextarea = document.querySelector('textarea[name="completed_note"]');
 
-        if (completedCheckbox && completionNotesField) {
-          // Show/hide completion notes based on completed checkbox
-          completedCheckbox.addEventListener('change', function() {
-            if (this.checked) {
-              completionNotesField.style.display = 'block';
-              completionNotesTextarea.removeAttribute('disabled');
-            } else {
-              completionNotesField.style.display = 'none';
-              completionNotesTextarea.setAttribute('disabled', 'disabled');
-              completionNotesTextarea.value = '';
-            }
-          });
-
-          // Set initial state
-          if (!completedCheckbox.checked) {
-            completionNotesTextarea.setAttribute('disabled', 'disabled');
-          }
-        }
 
         // Auto-resize textareas
         const textareas = document.querySelectorAll('textarea');

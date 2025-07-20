@@ -135,7 +135,7 @@ def site_vars(request):
             {"view_name": "core:rsvp", "icon": "fa-pen-to-square", "text": "RSVP"},
         ],
         "planning_links": [
-            {"view_name": "core:task_list", "icon": "fa-list", "text": "Deadlines"},
+            {"view_name": "deadline:deadline_summary", "icon": "fa-list", "text": "Deadlines"},
             {"view_name": "core:idea_list", "icon": "fa-lightbulb", "text": "Ideas"},
             {"view_name": "expenses:summary", "icon": "fa-dollar-sign", "text": "Budget"},
             {"view_name": "contacts:list", "icon": "fa-address-book", "text": "Contacts"},

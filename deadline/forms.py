@@ -13,6 +13,21 @@ class DeadlineImportForm(forms.Form):
     )
 
 
+class DeadlineListForm(forms.ModelForm):
+    class Meta:
+        model = DeadlineList
+        fields = ["name"]
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "input input-bordered w-full", "placeholder": "Enter list name"}),
+        }
+        labels = {
+            "name": "List Name",
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+
 class DeadlineForm(forms.ModelForm):
     class Meta:
         model = Deadline
@@ -65,10 +80,6 @@ class DeadlineForm(forms.ModelForm):
         # Set required fields
         self.fields["name"].required = True
         self.fields["deadline_list"].required = True
-
-        # Make completed_note only visible if completed is checked
-        if not self.instance.completed:
-            self.fields["completed_note"].widget = forms.HiddenInput()
 
     def clean_due_date(self):
         due_date = self.cleaned_data.get("due_date")
