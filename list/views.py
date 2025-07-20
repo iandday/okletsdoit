@@ -125,6 +125,7 @@ def list_detail(request: HttpRequest, list_slug: str):
             {
                 "list": list_obj,
                 "entries": entries,
+                "entry_form": ListEntryForm(),
                 "completed_count": entries.filter(is_completed=True).count(),
                 "pending_count": entries.filter(is_completed=False).count(),
             },
