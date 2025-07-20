@@ -10,6 +10,7 @@
         "Users",
         "Expenses",
         "Contacts",
-        "List"
+        "List",
+        "Deadline"
     ]
 }
