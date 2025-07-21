@@ -23,9 +23,7 @@
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
             <div class="flex-1">
                 <div class="flex items-center gap-4 mb-2">
-                    <h1 class="text-4xl font-bold text-base-content {% if entry.is_completed %}line-through opacity-60{% endif %}">
-                        {{ entry.item }}
-                    </h1>
+                    <h1 class="text-4xl font-bold {% if entry.is_completed %}line-through opacity-60{% endif %}">{{ entry.item }}</h1>
                     {% if entry.is_completed %}
                         <div class="badge badge-success badge-lg">
                             <svg xmlns="http://www.w3.org/2000/svg"
@@ -90,7 +88,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <!-- Item Details Card -->
             <div class="lg:col-span-2">
-                <div class="card bg-base-100 shadow-xl">
+                <div class="list-card shadow-xl">
                     <div class="card-body">
                         <h2 class="card-title text-primary mb-4">
                             <svg xmlns="http://www.w3.org/2000/svg"
@@ -105,9 +103,9 @@
                         <!-- Description -->
                         {% if entry.description %}
                             <div class="mb-6">
-                                <h3 class="font-semibold text-base-content mb-2">Description</h3>
+                                <h3 class="font-semibold text-primary mb-2">Description</h3>
                                 <div class="bg-base-200 rounded-lg p-4">
-                                    <p class="text-base-content/80">{{ entry.description }}</p>
+                                    <p class="text-primary/80">{{ entry.description }}</p>
                                 </div>
                             </div>
                         {% endif %}
@@ -128,43 +126,43 @@
                             </a>
                         {% endif %}
                         <!-- Pricing Information -->
-                        {% if entry.unit_price > 0 or entry.additional_price > 0 or entry.quantity > 1 %}
+                        {% if entry.unit_price > 0 or entry.additional_price > 0 %}
                             <div class="mb-6">
-                                <h3 class="font-semibold text-base-content mb-2">Pricing Details</h3>
+                                <h3 class="font-semibold text-primary mb-2">Pricing Details</h3>
                                 <div class="bg-info/10 border border-info/20 rounded-lg p-4">
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                                         <div>
-                                            <div class="text-sm font-medium text-base-content/60">Quantity</div>
-                                            <div class="text-lg font-semibold text-base-content">{{ entry.quantity }}</div>
+                                            <div class="text-sm font-medium text-primary/60">Quantity</div>
+                                            <div class="text-lg font-semibold text-primary">{{ entry.quantity }}</div>
                                         </div>
                                         {% if entry.unit_price > 0 %}
                                             <div>
-                                                <div class="text-sm font-medium text-base-content/60">Unit Price</div>
-                                                <div class="text-lg font-semibold text-base-content">${{ entry.unit_price|floatformat:2 }}</div>
+                                                <div class="text-sm font-medium text-primary/60">Unit Price</div>
+                                                <div class="text-lg font-semibold text-primary">${{ entry.unit_price|floatformat:2 }}</div>
                                             </div>
                                         {% endif %}
                                         {% if entry.additional_price > 0 %}
                                             <div>
-                                                <div class="text-sm font-medium text-base-content/60">Additional Price</div>
-                                                <div class="text-lg font-semibold text-base-content">${{ entry.additional_price|floatformat:2 }}</div>
+                                                <div class="text-sm font-medium text-primary/60">Additional Price</div>
+                                                <div class="text-lg font-semibold text-primary">${{ entry.additional_price|floatformat:2 }}</div>
                                             </div>
                                         {% endif %}
                                         {% if entry.total_price > 0 %}
                                             <div>
-                                                <div class="text-sm font-medium text-base-content/60">Total Price</div>
+                                                <div class="text-sm font-medium text-primary/60">Total Price</div>
                                                 <div class="text-xl font-bold text-primary">${{ entry.total_price|floatformat:2 }}</div>
                                             </div>
                                         {% endif %}
                                     </div>
                                     <div class="flex items-center gap-2">
                                         <svg xmlns="http://www.w3.org/2000/svg"
-                                             class="h-5 w-5 {% if entry.purchased %}text-success{% else %}text-base-content/40{% endif %}"
+                                             class="h-5 w-5 {% if entry.purchased %}text-success{% else %}text-primary/40{% endif %}"
                                              fill="none"
                                              viewBox="0 0 24 24"
                                              stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                                         </svg>
-                                        <span class="{% if entry.purchased %}text-success font-semibold{% else %}text-base-content/60{% endif %}">
+                                        <span class="{% if entry.purchased %}text-success font-semibold{% else %}text-primary/60{% endif %}">
                                             {% if entry.purchased %}
                                                 Already Purchased
                                             {% else %}
@@ -176,9 +174,9 @@
                             </div>
                         {% endif %}
                         <div class="mb-6">
-                            <h3 class="font-semibold text-base-content mb-2">Order</h3>
+                            <h3 class="font-semibold text-primary mb-2">Order</h3>
                             <div class="bg-base-200 rounded-lg p-4">
-                                <p class="text-base-content/80">{{ entry.order }}</p>
+                                <p class="text-primary/80">{{ entry.order }}</p>
                             </div>
                         </div>
                         <!-- Completion Status -->
@@ -203,7 +201,7 @@
             <!-- Sidebar -->
             <div class="space-y-6">
                 <!-- Item Metadata -->
-                <div class="card bg-base-100 shadow-xl">
+                <div class="list-card  shadow-xl">
                     <div class="card-body">
                         <h3 class="card-title text-primary mb-4">
                             <svg xmlns="http://www.w3.org/2000/svg"
@@ -217,26 +215,26 @@
                         </h3>
                         <div class="space-y-3">
                             <div>
-                                <div class="text-sm font-medium text-base-content/60">Created by</div>
-                                <div class="text-base-content">{{ entry.created_by.get_full_name|default:entry.created_by.email }}</div>
+                                <div class="text-sm font-medium text-primary/60">Created by</div>
+                                <div class="text-primary">{{ entry.created_by.get_full_name|default:entry.created_by.email }}</div>
                             </div>
                             <div>
-                                <div class="text-sm font-medium text-base-content/60">Created on</div>
-                                <div class="text-base-content">{{ entry.created_at|date:"F j, Y \a\t g:i A" }}</div>
+                                <div class="text-sm font-medium text-primary/60">Created on</div>
+                                <div class="text-primary">{{ entry.created_at|date:"F j, Y \a\t g:i A" }}</div>
                             </div>
                             {% if entry.updated_by and entry.updated_at != entry.created_at %}
                                 <div>
-                                    <div class="text-sm font-medium text-base-content/60">Last updated by</div>
-                                    <div class="text-base-content">{{ entry.updated_by.get_full_name|default:entry.updated_by.email }}</div>
+                                    <div class="text-sm font-medium text-primary/60">Last updated by</div>
+                                    <div class="text-primary">{{ entry.updated_by.get_full_name|default:entry.updated_by.email }}</div>
                                 </div>
                                 <div>
-                                    <div class="text-sm font-medium text-base-content/60">Updated on</div>
-                                    <div class="text-base-content">{{ entry.updated_at|date:"F j, Y \a\t g:i A" }}</div>
+                                    <div class="text-sm font-medium text-primary/60">Updated on</div>
+                                    <div class="text-primary">{{ entry.updated_at|date:"F j, Y \a\t g:i A" }}</div>
                                 </div>
                             {% endif %}
                             <div>
-                                <div class="text-sm font-medium text-base-content/60">Completion Status</div>
-                                <div class="text-base-content">
+                                <div class="text-sm font-medium text-primary/60">Completion Status</div>
+                                <div class="text-primary">
                                     {% if entry.is_completed %}
                                         <span class="badge badge-success">Completed</span>
                                     {% else %}
@@ -246,13 +244,13 @@
                             </div>
                             {% if entry.completed_at %}
                                 <div>
-                                    <div class="text-sm font-medium text-base-content/60">Completed on</div>
-                                    <div class="text-base-content">{{ entry.completed_at|date:"F j, Y" }}</div>
+                                    <div class="text-sm font-medium text-primary/60">Completed on</div>
+                                    <div class="text-primary">{{ entry.completed_at|date:"F j, Y" }}</div>
                                 </div>
                             {% endif %}
                             <div>
-                                <div class="text-sm font-medium text-base-content/60">Purchase Status</div>
-                                <div class="text-base-content">
+                                <div class="text-sm font-medium text-primary/60">Purchase Status</div>
+                                <div class="text-primary">
                                     {% if entry.purchased %}
                                         <span class="badge badge-success">Purchased</span>
                                     {% else %}
@@ -263,8 +261,8 @@
                             <!-- Vendor Information -->
                             {% if entry.vendor %}
                                 <div>
-                                    <div class="text-sm font-medium text-base-content/60">Vendor</div>
-                                    <div class="text-base-content">
+                                    <div class="text-sm font-medium text-primary/60">Vendor</div>
+                                    <div class="text-primary">
                                         <a href="{% url 'contacts:detail' entry.vendor.slug %}"
                                            class="badge badge-success">{{ entry.vendor }}</a>
                                     </div>
@@ -273,8 +271,8 @@
                             <!-- Associated Expense -->
                             {% if entry.associated_expense %}
                                 <div>
-                                    <div class="text-sm font-medium text-base-content/60">Expense</div>
-                                    <div class="text-base-content">
+                                    <div class="text-sm font-medium text-primary/60">Expense</div>
+                                    <div class="text-primary">
                                         <a href="{% url 'expenses:detail' entry.associated_expense.slug %}"
                                            class="badge badge-success">{{ entry.associated_expense.item }}</a>
                                     </div>

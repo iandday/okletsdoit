@@ -1,7 +1,7 @@
 {% load static i18n %}
 
 {% get_current_language as LANGUAGE_CODE %}
-<div class="navbar bg-neutral shadow-lg">
+<div class="navbar  bg-base-300 shadow-lg">
     <div class="navbar-start"></div>
     <!-- Desktop menu -->
     <div class="navbar-center hidden lg:flex">
@@ -10,22 +10,22 @@
                 <li>
                     {% if request.resolver_match.url_name == item.view_name %}
                         <a href="{% url item.view_name %}"
-                           class="btn btn-primary text-accent-content">{{ item.text }}</a>
+                           class="btn btn-primary text-primary-content">{{ item.text }}</a>
                     {% else %}
                         <a href="{% url item.view_name %}"
-                           class="btn btn-ghost text-accent-content">{{ item.text }}</a>
+                           class="btn btn-ghost text-primary-content">{{ item.text }}</a>
                     {% endif %}
                 </li>
             {% endfor %}
             {% if user.is_authenticated %}
                 <li>
                     <details>
-                        <summary class="bg-neutral btn btn-ghost text-accent-content">Planning</summary>
-                        <ul class="bg-neutral">
+                        <summary class="bg-base-300 btn btn-ghost text-primary-content">Planning</summary>
+                        <ul class="bg-base-300">
                             {% for item in planning_links %}
                                 <li>
                                     <a href="{% url item.view_name %}"
-                                       class="btn btn-ghost text-accent-content">{{ item.text }}</a>
+                                       class="btn btn-ghost text-primary-content">{{ item.text }}</a>
                                 </li>
                             {% endfor %}
                         </ul>
@@ -34,26 +34,26 @@
                 <!-- logout -->
                 <li>
                     <a href="{% url 'account_logout' %}"
-                       class="btn btn-ghost text-accent-content">Logout</a>
+                       class="btn btn-ghost text-primary-content">Logout</a>
                 </li>
             {% else %}
                 <li>
                     <a href="{% url 'account_login' %}"
-                       class="bg-neutral btn btn-ghost text-accent-content">Login</a>
+                       class="bg-neutral btn btn-ghost text-primary-content">Login</a>
                 </li>
             {% endif %}
         </ul>
     </div>
     <div class="navbar-end">
         <!-- Mobile menu dropdown -->
-        <div class="dropdown dropdown-end lg:hidden">
-            <div tabindex="0" role="button" class="btn btn-ghost text-accent-content">
+        <div class="dropdown dropdown-end text-primary-content lg:hidden">
+            <div tabindex="0" role="button" class="btn btn-ghost">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16"></path>
                 </svg>
             </div>
             <ul tabindex="0"
-                class="menu menu-sm dropdown-content bg-neutral rounded-box z-[1] mt-3 w-52 p-2 shadow">
+                class="menu menu-sm dropdown-content bg-base-300 text-primary-content rounded-box z-[1] mt-3 w-52 p-2 shadow">
                 {% for item in nav_links %}
                     <li>
                         {% if request.resolver_match.url_name == item.view_name %}
@@ -62,8 +62,7 @@
                                 {{ item.text }}
                             </a>
                         {% else %}
-                            <a href="{% url item.view_name %}"
-                               class="btn btn-ghost btn-sm text-accent-content">
+                            <a href="{% url item.view_name %}" class="btn btn-ghost btn-sm ">
                                 <i class="inline-block w-5 h-5 mr-2 fa {{ item.icon }}"></i>
                                 {{ item.text }}
                             </a>
@@ -74,24 +73,21 @@
                     <div class="divider"></div>
                     {% for item in planning_links %}
                         <li>
-                            <a href="{% url item.view_name %}"
-                               class="btn btn-ghost text-accent-content">
+                            <a href="{% url item.view_name %}" class="btn btn-ghost">
                                 <i class="inline-block w-5 h-5 mr-2 fa {{ item.icon }}"></i>
                                 {{ item.text }}
                             </a>
                         </li>
                     {% endfor %}
                     <li>
-                        <a href="{% url 'account_logout' %}"
-                           class="btn btn-ghost text-accent-content">
+                        <a href="{% url 'account_logout' %}" class="btn btn-ghost">
                             <i class="inline-block w-5 h-5 mr-2 fa fa-sign-out-alt"></i>
                             Logout
                         </a>
                     </li>
                 {% else %}
                     <li>
-                        <a href="{% url 'account_login' %}"
-                           class="bg-neutral btn btn-ghost text-accent-content">
+                        <a href="{% url 'account_login' %}" class="bg-neutral btn btn-ghost">
                             <i class="inline-block w-5 h-5 mr-2 fa fa-sign-in-alt"></i>
                             Login
                         </a>

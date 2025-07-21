@@ -9,61 +9,36 @@
     name: "dark";
     prefersdark: true;
     color-scheme: dark;
-
-
-
-    /* Fall wedding color palette using semantic names */
+    --color-base-200: #819d76;
     --color-base-100: #d2ae98;
-    /* main background color, a warm beige */
-    --color-base-200: #61303e;
-    /* Deep burgundy for elevated surfaces */
     --color-base-300: #67260b;
-    /* Dark russet for deeper elevations */
-    --color-base-400: #303a2b;
-    /* Dark sage green */
-    --color-base-content: #000000;
-    /* Black text on base colors */
-
+    --color-base-content: oklch(14% 0.005 285.823);
     --color-primary: #e0960b;
-    /* Warm amber for primary actions */
-    --color-primary-content: #303a2b;
-    /* Dark sage text on primary */
+    --color-primary-content: oklch(96% 0.018 272.314);
+    --color-secondary: #303a2b;
+    --color-secondary-content: oklch(94% 0.028 342.258);
+    --color-accent: #61303e;
+    --color-accent-content: oklch(38% 0.063 188.416);
+    --color-neutral: oklch(14% 0.005 285.823);
+    --color-neutral-content: oklch(92% 0.004 286.32);
+    --color-info: #303a2b;
+    --color-info-content: #d2ae98;
+    --color-success: oklch(76% 0.177 163.223);
+    --color-success-content: oklch(37% 0.077 168.94);
+    --color-warning: oklch(82% 0.189 84.429);
+    --color-warning-content: #61303e;
+    --color-error: oklch(71% 0.194 13.428);
+    --color-error-content: oklch(27% 0.105 12.094);
+    --radius-selector: 0.5rem;
+    --radius-field: 2rem;
+    --radius-box: 2rem;
+    --size-selector: 0.25rem;
+    --size-field: 0.25rem;
+    --border: 1px;
+    --depth: 1;
+    --noise: 1;
 
-    --color-secondary: #819d76;
-    /* Sage green for secondary elements */
-    --color-secondary-content: #000000;
-    /* Dark sage text on secondary */
 
-    --color-accent: #8c4417;
-    /* Burnt orange for accent elements */
-    --color-accent-content: #f5f5dc;
-    /* Warm cream text on accent */
-
-    --color-neutral: #67260b;
-    /* Dark russet for neutral elements */
-    --color-neutral-content: #f5f5dc;
-    /* Warm cream text on neutral */
-
-    /* Status colors adapted to fall theme */
-    --color-info: #819d76;
-    /* Sage green for info */
-    --color-info-content: #303a2b;
-    /* Dark text on info */
-
-    --color-success: #819d76;
-    /* Sage green for success */
-    --color-success-content: #303a2b;
-    /* Dark text on success */
-
-    --color-warning: #e0960b;
-    /* Warm amber for warnings */
-    --color-warning-content: #303a2b;
-    /* Dark text on warning */
-
-    --color-error: #61303e;
-    /* Deep burgundy for errors */
-    --color-error-content: #f5f5dc;
-    /* Light text on error */
 
     /* Component styling */
     --rounded-box: 0.75rem;
@@ -90,7 +65,7 @@
 
 /* custom */
 .list-card {
-    @apply card bg-neutral shadow-xl hover:shadow-2xl transition-shadow duration-300;
+    @apply card bg-base-300 shadow-xl hover:shadow-2xl transition-shadow duration-300;
 }
 
 .list-card-title {
@@ -114,7 +89,7 @@
 }
 
 .our-story-card {
-    @apply card bg-secondary text-secondary-content gap-6 shadow-xl hover:shadow-2xl transition-shadow duration-300;
+    @apply card bg-base-200 text-base-content gap-6 shadow-xl hover:shadow-2xl transition-shadow duration-300;
 }
 
 .edit-card {

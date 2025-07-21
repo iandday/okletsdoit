@@ -146,6 +146,18 @@
                             </div>
                         {% endif %}
                     </div>
+                    <!-- Order Number -->
+                    <div class="form-control mb-4">
+                        <label class="label" for="{{ form.order.id_for_label }}">
+                            <span class="label-text font-medium">{{ form.order.label }}</span>
+                        </label>
+                        {{ form.order }}
+                        {% if form.order.errors %}
+                            <div class="label">
+                                {% for error in form.order.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
                     <!-- Completion Status -->
                     <div class="form-control mb-6">
                         <label class="cursor-pointer label">

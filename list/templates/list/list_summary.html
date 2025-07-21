@@ -39,7 +39,7 @@
         </div>
         <!-- Filter Section -->
         <div class="mb-6">
-            <div class="card bg-base-100 shadow-lg">
+            <div class="card bg-base-200 shadow-lg">
                 <div class="card-body p-4">
                     <div class="flex flex-wrap items-center gap-4">
                         <div class="flex items-center gap-2">
@@ -94,18 +94,7 @@
                         <div class="flex items-start justify-between mb-4">
                             <div class="flex-1">
                                 <a class="list-card-title" href="{% url 'list:detail' list.slug %}">{{ list.name }}</a>
-                                {% if list.has_expense_entries %}
-                                    <div class="badge badge-accent badge-sm mt-1">
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                             class="h-3 w-3 mr-1"
-                                             fill="none"
-                                             viewBox="0 0 24 24"
-                                             stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
-                                        </svg>
-                                        Has Expenses
-                                    </div>
-                                {% endif %}
+                                {% if list.has_expense_entries %}<div class="badge badge-secondary badge-sm mt-1">Has Expenses</div>{% endif %}
                             </div>
                             {% url 'list:detail' list.slug as detail_action %}
                             {% url 'list:edit' list.slug as update_action %}
@@ -137,7 +126,7 @@
                         {% if list.total_entries > 0 %}
                             {% widthratio list.completed_entries list.total_entries 100 as progress_percentage %}
                             <div class="mb-4">
-                                <div class="flex justify-between text-xs mb-1">
+                                <div class="flex justify-between text-xs text-warning mb-1">
                                     <span>Progress</span>
                                     <span>{{ progress_percentage }}%</span>
                                 </div>

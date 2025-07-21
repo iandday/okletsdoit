@@ -32,6 +32,7 @@ class ListEntryForm(forms.ModelForm):
             "associated_expense",
             "vendor",
             "url",
+            "order"
         ]
         widgets = {
             "item": forms.TextInput(attrs={"class": "input input-bordered w-full", "placeholder": "Enter item name"}),
@@ -67,6 +68,9 @@ class ListEntryForm(forms.ModelForm):
             "vendor": forms.Select(attrs={"class": "select select-bordered w-full"}),
             "url": forms.URLInput(
                 attrs={"class": "input input-bordered w-full", "placeholder": "Enter URL (optional)"}
+            ),
+            "order": forms.NumberInput(
+                attrs={"class": "input input-bordered w-full", "placeholder": "Enter order number (optional)", "min": 0}
             ),
         }
 
