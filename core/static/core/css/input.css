@@ -10,15 +10,19 @@
     prefersdark: true;
     color-scheme: dark;
 
+
+
     /* Fall wedding color palette using semantic names */
-    --color-base-100: #303a2b;
-    /* Dark sage green for main background */
+    --color-base-100: #d2ae98;
+    /* main background color, a warm beige */
     --color-base-200: #61303e;
     /* Deep burgundy for elevated surfaces */
     --color-base-300: #67260b;
     /* Dark russet for deeper elevations */
-    --color-base-content: #f5f5dc;
-    /* Warm cream text on base colors */
+    --color-base-400: #303a2b;
+    /* Dark sage green */
+    --color-base-content: #000000;
+    /* Black text on base colors */
 
     --color-primary: #e0960b;
     /* Warm amber for primary actions */
@@ -27,7 +31,7 @@
 
     --color-secondary: #819d76;
     /* Sage green for secondary elements */
-    --color-secondary-content: #303a2b;
+    --color-secondary-content: #000000;
     /* Dark sage text on secondary */
 
     --color-accent: #8c4417;
@@ -107,4 +111,16 @@
 
 .upload-card {
     @apply card bg-neutral shadow-xl hover:shadow-2xl transition-shadow duration-300;
+}
+
+.our-story-card {
+    @apply card bg-secondary text-secondary-content gap-6 shadow-xl hover:shadow-2xl transition-shadow duration-300;
+}
+
+.edit-card {
+    @apply card bg-neutral text-neutral-content shadow-xl hover:shadow-2xl transition-shadow duration-300;
+}
+
+.input-form-color {
+    @apply bg-base-200 text-neutral-content
 }

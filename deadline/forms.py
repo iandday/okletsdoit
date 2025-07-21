@@ -8,7 +8,7 @@ from users.models import User
 class DeadlineImportForm(forms.Form):
     excel_file = forms.FileField(
         widget=forms.FileInput(
-            attrs={"class": "file-input file-input-bordered file-input-primary w-full", "accept": ".xlsx,.xls"}
+            attrs={"class": "file-input file-input-bordered input-form-color file-input-primary w-full", "accept": ".xlsx,.xls"}
         )
     )
 
@@ -18,7 +18,7 @@ class DeadlineListForm(forms.ModelForm):
         model = DeadlineList
         fields = ["name"]
         widgets = {
-            "name": forms.TextInput(attrs={"class": "input input-bordered w-full", "placeholder": "Enter list name"}),
+            "name": forms.TextInput(attrs={"class": "input input-form-color input-bordered w-full", "placeholder": "Enter list name"}),
         }
         labels = {
             "name": "List Name",
@@ -34,22 +34,22 @@ class DeadlineForm(forms.ModelForm):
         fields = ["name", "description", "deadline_list", "due_date", "assigned_to", "completed", "completed_note"]
         widgets = {
             "name": forms.TextInput(
-                attrs={"class": "input input-bordered w-full", "placeholder": "Enter deadline name"}
+                attrs={"class": "input input-form-color input-bordered w-full", "placeholder": "Enter deadline name"}
             ),
             "description": forms.Textarea(
                 attrs={
-                    "class": "textarea textarea-bordered w-full",
+                    "class": "textarea textarea-bordered w-full input-form-color",
                     "placeholder": "Enter description (optional)",
                     "rows": 3,
                 }
             ),
-            "deadline_list": forms.Select(attrs={"class": "select select-bordered w-full"}),
-            "due_date": forms.DateInput(attrs={"class": "input input-bordered w-full", "type": "date"}),
-            "assigned_to": forms.Select(attrs={"class": "select select-bordered w-full"}),
-            "completed": forms.CheckboxInput(attrs={"class": "toggle toggle-primary"}),
+            "deadline_list": forms.Select(attrs={"class": "select select-bordered w-full input-form-color"}),
+            "due_date": forms.DateInput(attrs={"class": "input input-bordered w-full input-form-color", "type": "date"}),
+            "assigned_to": forms.Select(attrs={"class": "select select-bordered w-full input-form-color"}),
+            "completed": forms.CheckboxInput(attrs={"class": "toggle toggle-primary input-form-color"}),
             "completed_note": forms.Textarea(
                 attrs={
-                    "class": "textarea textarea-bordered w-full",
+                    "class": "textarea textarea-bordered w-full input-form-color",
                     "placeholder": "Add completion notes (optional)",
                     "rows": 2,
                 }

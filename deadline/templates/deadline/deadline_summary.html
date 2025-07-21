@@ -36,58 +36,13 @@
                 </a>
             </div>
         </div>
-        <!-- Summary Stats -->
-        <div class="stats stats-vertical lg:stats-horizontal shadow mb-8 w-full">
-            <div class="stat">
-                <div class="stat-figure text-primary">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                         class="h-8 w-8"
-                         fill="none"
-                         viewBox="0 0 24 24"
-                         stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                    </svg>
-                </div>
-                <div class="stat-title">Total Lists</div>
-                <div class="stat-value text-primary">{{ deadline_lists.count }}</div>
-                <div class="stat-desc">Active deadline lists</div>
-            </div>
-            <div class="stat">
-                <div class="stat-figure text-secondary">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                         class="h-8 w-8"
-                         fill="none"
-                         viewBox="0 0 24 24"
-                         stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                </div>
-                <div class="stat-title">Completed</div>
-                <div class="stat-value text-secondary">{{ completed_deadline }}</div>
-                <div class="stat-desc">Total completed deadlines</div>
-            </div>
-            <div class="stat">
-                <div class="stat-figure text-warning">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                         class="h-8 w-8"
-                         fill="none"
-                         viewBox="0 0 24 24"
-                         stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                </div>
-                <div class="stat-title">Pending</div>
-                <div class="stat-value text-warning">{{ pending_deadline }}</div>
-                <div class="stat-desc">Total pending deadlines</div>
-            </div>
-        </div>
         <!-- Deadline Lists Grid -->
         {% if deadline_lists %}
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {% for deadline_list in deadline_lists %}
-                    <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow">
+                    <div class="list-card">
                         <div class="card-body">
-                            <a class="card-title text-primary"
+                            <a class="list-card-title"
                                href="{% url 'deadline:deadline_list_detail' deadline_list.slug %}">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                      class="h-5 w-5"
@@ -113,7 +68,7 @@
                             {% if deadline_list.total_deadline > 0 %}
                                 {% widthratio deadline_list.completed_deadline deadline_list.total_deadline 100 as completion_percentage %}
                                 <div class="mb-4">
-                                    <div class="flex justify-between text-sm mb-1">
+                                    <div class="flex justify-between text-sm text-neutral-content mb-1">
                                         <span>Progress</span>
                                         <span>{{ completion_percentage }}%</span>
                                     </div>
@@ -148,7 +103,7 @@
                                     View Details
                                 </a>
                                 <a href="{% url 'deadline:deadline_list_edit' deadline_list.slug %}"
-                                   class="btn btn-ghost btn-sm">
+                                   class="btn btn-primary btn-sm">
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                          class="h-4 w-4"
                                          fill="none"

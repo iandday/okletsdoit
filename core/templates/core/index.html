@@ -1,58 +1,73 @@
 {% extends "components/base.html" %}
 
+{% load static %}
+
+{% block meta_description %}
+    <meta name="description" content="Join us for our wedding celebration!">
+{% endblock meta_description %}
 {% block title %}
     Home
 {% endblock title %}
 {% block content %}
     <!-- Hero Section -->
-    <div class="hero min-h-screen">
-        <div class="hero-content flex-col">
-            <div class="md:flex-row flex flex-col items-center gap-8">
-                <img src="https://img.daisyui.com/images/stock/photo-1635805737707-575885ab0820.webp"
-                     alt="us"
-                     height="200"
-                     width="200"
-                     class="max-w-sm rounded-lg shadow-2xl justify-self-center " />
-                <div class="text-center lg:text-left">
-                    <h1 class="text-5xl font-bold">{{ site_title }}</h1>
-                    <p class="py-6">
-                        Join us as we celebrate our special day. We can't wait to share this moment with our friends and family!
+    <div class="pt-5">
+        <img src="{% static 'core/img/logo.png' %}"
+             alt="Wedding Logo"
+             class="max-w-sm rounded-lg justify-self-center " />
+        <div class="md:flex-row flex flex-col items-center gap-8 px-10">
+            <img src="https://img.daisyui.com/images/stock/photo-1635805737707-575885ab0820.webp"
+                 alt="us"
+                 height="200"
+                 width="200"
+                 class="max-w-sm rounded-lg shadow-2xl justify-self-center " />
+            <img src="https://img.daisyui.com/images/stock/photo-1635805737707-575885ab0820.webp"
+                 alt="us"
+                 height="200"
+                 width="200"
+                 class="max-w-sm rounded-lg shadow-2xl justify-self-center " />
+            <div>
+                <div class="text-center lg:text-left text-black p-8">
+                    <p class="py-6 text-lg">
+                        We're finally getting married and we cant wait to share this moment with our friends and family!
                     </p>
+                    <p class="py-6 font-bold text-xl">November 7, 2026 in Hocking Hills, Ohio</p>
+                    <p class="italic">More info to come!</p>
                 </div>
-            </div>
-            <div class="card bg-base-200 shadow-xl">
-                <div class="card-body">
-                    <h2 class="card-title justify-center">Countdown to Our Big Day</h2>
-                    <div class="stats stats-horizontal shadow bg-base-200 gap-4">
-                        <!-- Days -->
-                        <div class="stat bg-accent text-accent-content rounded-lg">
-                            <div class="stat-value text-center">
-                                <span id="days" class="font-mono">0</span>
+                <div class="card bg-success shadow-xl">
+                    <div class="card-body">
+                        <h2 class="card-title justify-center">Countdown With Us!</h2>
+                        <div class="stats stats-horizontal shadow bg-base-000 gap-4">
+                            <!-- Months -->
+                            <div class="stat bg-primary-content text-accent-content rounded-lg">
+                                <div class="stat-value text-center">
+                                    <span id="months" class="font-mono">0</span>
+                                </div>
+                                <div class="stat-title text-center text-accent-content">months</div>
                             </div>
-                            <div class="stat-title text-center text-accent-content">days</div>
-                        </div>
-                        <!-- Hours -->
-                        <div class="stat bg-accent text-accent-content rounded-lg">
-                            <div class="stat-value text-center">
-                                <span id="hours" class="font-mono">0</span>
+                            <!-- Days -->
+                            <div class="stat bg-primary-content text-accent-content rounded-lg">
+                                <div class="stat-value text-center">
+                                    <span id="days" class="font-mono">0</span>
+                                </div>
+                                <div class="stat-title text-center text-accent-content">days</div>
                             </div>
-                            <div class="stat-title text-center text-accent-content">hours</div>
-                        </div>
-                        <!-- Minutes -->
-                        <div class="stat bg-accent text-accent-content rounded-lg">
-                            <div class="stat-value text-center">
-                                <span id="minutes" class="font-mono">0</span>
+                            <!-- Hours -->
+                            <div class="stat bg-primary-content text-accent-content rounded-lg">
+                                <div class="stat-value text-center">
+                                    <span id="hours" class="font-mono">0</span>
+                                </div>
+                                <div class="stat-title text-center text-accent-content">hours</div>
                             </div>
-                            <div class="stat-title text-center text-accent-content">minutes</div>
                         </div>
-                    </div>
-                    <div class="card-actions justify-center mt-6">
-                        <button class="btn btn-primary">RSVP Now</button>
+                        <div class="card-actions justify-center mt-6">
+                            <button class="btn btn-primary">RSVP Coming Soon</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 {% endblock content %}
 {% block extra_script %}
     <script nonce="{{request.csp_nonce}}">
@@ -60,18 +75,60 @@
 
         const countDownDate = new Date("{{ wedding_data.date }}T{{ wedding_data.time }}").getTime();
 
+        function getMonthsDaysHours(now, target) {
+          // Calculate months, days, hours between two dates
+          let start = new Date(now);
+          let end = new Date(target);
+
+          let months = (end.getFullYear() - start.getFullYear()) * 12 + (end.getMonth() - start.getMonth());
+          let temp = new Date(start.getTime());
+          temp.setMonth(temp.getMonth() + months);
+
+          // If temp > end, subtract one month
+          if (temp > end) {
+            months -= 1;
+            temp.setMonth(temp.getMonth() - 1);
+          }
+
+          // Days left after months
+          let days = Math.floor((end - temp) / (1000 * 60 * 60 * 24));
+          temp.setDate(temp.getDate() + days);
+
+          // Hours left after days
+          let hours = Math.floor((end - temp) / (1000 * 60 * 60));
+
+          return {
+            months,
+            days,
+            hours
+          };
+        }
+
         const updateCountdown = () => {
           const now = new Date().getTime();
           const distance = countDownDate - now;
 
-          const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-          const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-          const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-
+          const monthsEl = document.getElementById('months');
           const daysEl = document.getElementById('days');
           const hoursEl = document.getElementById('hours');
-          const minutesEl = document.getElementById('minutes');
 
+          if (distance < 0) {
+            if (monthsEl) monthsEl.textContent = '0';
+            if (daysEl) daysEl.textContent = '0';
+            if (hoursEl) hoursEl.textContent = '0';
+            return;
+          }
+
+          const {
+            months,
+            days,
+            hours
+          } = getMonthsDaysHours(now, countDownDate);
+
+          if (monthsEl) {
+            monthsEl.textContent = months;
+            monthsEl.setAttribute('aria-label', `${months} months`);
+          }
           if (daysEl) {
             daysEl.textContent = days;
             daysEl.setAttribute('aria-label', `${days} days`);
@@ -79,17 +136,6 @@
           if (hoursEl) {
             hoursEl.textContent = hours.toString().padStart(2, '0');
             hoursEl.setAttribute('aria-label', `${hours} hours`);
-          }
-          if (minutesEl) {
-            minutesEl.textContent = minutes.toString().padStart(2, '0');
-            minutesEl.setAttribute('aria-label', `${minutes} minutes`);
-          }
-
-          if (distance < 0) {
-            clearInterval(x);
-            if (daysEl) daysEl.textContent = '0';
-            if (hoursEl) hoursEl.textContent = '00';
-            if (minutesEl) minutesEl.textContent = '00';
           }
         };
 

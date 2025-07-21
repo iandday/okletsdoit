@@ -1,0 +1,27 @@
+<div class="card bg-accent text-accent-content shadow-xl mt-12">
+    <div class="card-body text-center">
+        <h2 class="card-title justify-center text-2xl mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 class="h-8 w-8"
+                 fill="none"
+                 viewBox="0 0 24 24"
+                 stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+            </svg>
+            Join Us on Our Big Day!
+        </h2>
+        <p class="mb-6">{{ content }}</p>
+        <div class="card-actions justify-center">
+            <a href="{% url 'core:home' %}" class="btn btn-primary">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     class="h-5 w-5"
+                     fill="none"
+                     viewBox="0 0 24 24"
+                     stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18" />
+                </svg>
+                Back to Wedding Details
+            </a>
+        </div>
+    </div>
+</div>
