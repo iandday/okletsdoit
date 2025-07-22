@@ -246,7 +246,7 @@ def list_entry_edit(request: HttpRequest, entry_slug: str):
         return redirect("list:detail", list_slug=entry.list.slug)
     else:
         form = ListEntryForm(instance=entry)
-        return render(request, "list/list_entry_edit.html", {"form": form, "entry": entry})
+        return render(request, "list/list_entry_form.html", {"form": form, "entry": entry})
 
 
 @login_required

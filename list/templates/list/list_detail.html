@@ -17,12 +17,10 @@
             </ul>
         </div>
         <!-- Header Section -->
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 px-4 gap-4">
             <div>
-                <h1 class="text-4xl font-bold text-base-content mb-2">{{ list.name }}</h1>
-                {% if list.description %}
-                    <p class="text-lg text-base-content/70">{{ list.description|truncatechars:50 }}</p>
-                {% endif %}
+                <h1 class=" text-2xl lg:text-4xl font-bold text-base-content mb-2">{{ list.name }}</h1>
+                {% if list.description %}<p class="text-lg text-base-content/70">{{ list.description }}</p>{% endif %}
             </div>
             <div class="flex gap-2">
                 <a href="{% url 'list:edit' list.slug %}" class="btn btn-outline">
@@ -63,41 +61,32 @@
             </div>
         </div>
         <!-- Entries List -->
-        <div class="card bg-base-100 shadow-xl">
+        <div class="list-card shadow-xl">
             <div class="card-body">
-                <h2 class="card-title">List Items</h2>
+                <h2 class="list-card-title">List Items</h2>
                 {% if entries %}
                     <div class="space-y-4">
                         {% for entry in entries %}
-                            <div class="card bg-base-200 {% if entry.is_completed %}opacity-60{% endif %}">
+                            <div class="list-card {% if entry.is_completed %}opacity-60{% endif %}">
                                 <div class="card-body p-4">
                                     <div class="flex items-center justify-between">
                                         <div class="flex items-center gap-4 flex-1">
                                             <div class="flex-1">
-                                                <div class="flex items-center gap-2 mb-1">
-                                                    <h3 class="font-semibold {% if entry.is_completed %}line-through{% endif %}">{{ entry.item }}</h3>
-                                                    {% if entry.expense_item %}
-                                                        <div class="badge badge-accent badge-sm">
-                                                            <icon class="fa fa-money-check-dollar"></icon>
-                                                            <a href="{% url 'expenses:detail' entry.associated_expense.slug %}"
-                                                               class="link link-primary text-sm">
-                                                                {{ entry.associated_expense|truncatechars:30 }}
-                                                            </a>
-                                                        </div>
-                                                    {% endif %}
+                                                <div class="list-card-title">
+                                                    <a href="{% url 'list:entry_detail' entry.slug %}">
+                                                        <h3 class="font-semibold text-primary{% if entry.is_completed %}line-through{% endif %}">{{ entry.item }}</h3>
+                                                    </a>
                                                 </div>
-                                                {% if entry.description %}
-                                                    <p class="text-sm text-base-content/70 mt-1">{{ entry.description|truncatechars:50 }}</p>
-                                                {% endif %}
+                                                {% if entry.description %}<p class="text-sm mt-1">{{ entry.description|truncatechars:50 }}</p>{% endif %}
                                                 <!-- Pricing Information -->
                                                 {% if entry.unit_price > 0 or entry.additional_price > 0 %}
-                                                    <div class="mt-2 text-sm text-base-content/70">
+                                                    <div class="mt-2 text-sm">
                                                         <div class="flex items-center gap-4">
-                                                            {% if entry.quantity > 1 %}<span>Qty: {{ entry.quantity }}</span>{% endif %}
+                                                            <span>Qty: {{ entry.quantity }}</span>
                                                             {% if entry.unit_price > 0 %}<span>Unit: ${{ entry.unit_price|floatformat:2 }}</span>{% endif %}
                                                             {% if entry.additional_price > 0 %}<span>Additional: ${{ entry.additional_price|floatformat:2 }}</span>{% endif %}
                                                             {% if entry.total_price > 0 %}
-                                                                <span class="font-semibold text-primary">Total: ${{ entry.total_price|floatformat:2 }}</span>
+                                                                <span class="font-semibold ">Total: ${{ entry.total_price|floatformat:2 }}</span>
                                                             {% endif %}
                                                         </div>
                                                     </div>
@@ -119,12 +108,6 @@
                                                 </a>
                                             {% endif %}
                                         </div>
-                                        {% url 'list:entry_detail' entry.slug as detail_action %}
-                                        {% url 'list:entry_edit' entry.slug as update_action %}
-                                        {% url 'list:entry_delete' entry.slug as delete_action %}
-
-                                        {% include "components/card_options.html" with detail_action=detail_action update_action=update_action delete_action=delete_action %}
-
                                     </div>
                                 </div>
                             </div>

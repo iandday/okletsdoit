@@ -69,7 +69,7 @@
 }
 
 .list-card-title {
-    @apply card-title text-primary text-2xl sm:text-xl
+    @apply card-title text-primary lg:text-xl text-lg
 }
 
 .list-add-btn {
@@ -81,7 +81,7 @@
 }
 
 .ckeditor-content {
-    @apply max-w-none text-base-content [&_ul]:list-disc [&_ul]:ml-6 [&_ol]:list-decimal [&_ol]:ml-6 [&_li]:mb-1 [&_a]:link [&_a]:link-primary [&_a]:underline;
+    @apply max-w-none [&_ul]:list-disc [&_ul]:ml-6 [&_ol]:list-decimal [&_ol]:ml-6 [&_li]:mb-1 [&_a]:link [&_a]:link-primary [&_a]:underline;
 }
 
 .upload-card {

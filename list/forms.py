@@ -7,10 +7,12 @@ class ListForm(forms.ModelForm):
         model = List
         fields = ["name", "description"]
         widgets = {
-            "name": forms.TextInput(attrs={"class": "input input-bordered w-full", "placeholder": "Enter list name"}),
+            "name": forms.TextInput(
+                attrs={"class": "input input-form-color input-bordered w-full", "placeholder": "Enter list name"}
+            ),
             "description": forms.Textarea(
                 attrs={
-                    "class": "textarea textarea-bordered w-full",
+                    "class": "textarea input-form-color textarea-bordered w-full",
                     "placeholder": "Enter list description (optional)",
                     "rows": 3,
                 }
@@ -32,24 +34,30 @@ class ListEntryForm(forms.ModelForm):
             "associated_expense",
             "vendor",
             "url",
-            "order"
+            "order",
         ]
         widgets = {
-            "item": forms.TextInput(attrs={"class": "input input-bordered w-full", "placeholder": "Enter item name"}),
+            "item": forms.TextInput(
+                attrs={"class": "input input-form-color input-bordered w-full", "placeholder": "Enter item name"}
+            ),
             "description": forms.Textarea(
                 attrs={
-                    "class": "textarea textarea-bordered w-full",
+                    "class": "textarea input-form-color textarea-bordered w-full",
                     "placeholder": "Enter item description (optional)",
                     "rows": 2,
                 }
             ),
             "quantity": forms.NumberInput(
-                attrs={"class": "input input-bordered w-full", "placeholder": "Enter quantity", "min": 1}
+                attrs={
+                    "class": "input input-form-color input-bordered w-full",
+                    "placeholder": "Enter quantity",
+                    "min": 1,
+                }
             ),
             "purchased": forms.CheckboxInput(attrs={"class": "checkbox checkbox-primary"}),
             "unit_price": forms.NumberInput(
                 attrs={
-                    "class": "input input-bordered w-full",
+                    "class": "input input-form-color input-bordered w-full",
                     "placeholder": "Enter unit price",
                     "step": "0.01",
                     "min": 0,
@@ -57,20 +65,24 @@ class ListEntryForm(forms.ModelForm):
             ),
             "additional_price": forms.NumberInput(
                 attrs={
-                    "class": "input input-bordered w-full",
+                    "class": "input input-form-color input-bordered w-full",
                     "placeholder": "Enter additional price (optional)",
                     "step": "0.01",
                     "min": 0,
                 }
             ),
             "is_completed": forms.CheckboxInput(attrs={"class": "checkbox checkbox-primary"}),
-            "associated_expense": forms.Select(attrs={"class": "select select-bordered w-full"}),
-            "vendor": forms.Select(attrs={"class": "select select-bordered w-full"}),
+            "associated_expense": forms.Select(attrs={"class": "input-form-color select select-bordered w-full"}),
+            "vendor": forms.Select(attrs={"class": "input-form-color select select-bordered w-full"}),
             "url": forms.URLInput(
-                attrs={"class": "input input-bordered w-full", "placeholder": "Enter URL (optional)"}
+                attrs={"class": "input input-form-color input-bordered w-full", "placeholder": "Enter URL (optional)"}
             ),
             "order": forms.NumberInput(
-                attrs={"class": "input input-bordered w-full", "placeholder": "Enter order number (optional)", "min": 0}
+                attrs={
+                    "class": "input input-form-color input-bordered w-full",
+                    "placeholder": "Enter order number (optional)",
+                    "min": 0,
+                }
             ),
         }
 
