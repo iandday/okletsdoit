@@ -6854,9 +6854,6 @@
   .progress-warning {
     color: var(--color-warning);
   }
-  .text-accent-content {
-    color: var(--color-accent-content);
-  }
   .text-base-100 {
     color: var(--color-base-100);
   }
@@ -6893,12 +6890,6 @@
       color: color-mix(in oklab, var(--color-base-content) 80%, transparent);
     }
   }
-  .text-base-content\/90 {
-    color: var(--color-base-content);
-    @supports (color: color-mix(in lab, red, red)) {
-      color: color-mix(in oklab, var(--color-base-content) 90%, transparent);
-    }
-  }
   .text-black {
     color: var(--color-black);
   }
@@ -6928,6 +6919,12 @@
   }
   .text-primary-content {
     color: var(--color-primary-content);
+  }
+  .text-primary-content\/90 {
+    color: var(--color-primary-content);
+    @supports (color: color-mix(in lab, red, red)) {
+      color: color-mix(in oklab, var(--color-primary-content) 90%, transparent);
+    }
   }
   .text-primary\/40 {
     color: var(--color-primary);
@@ -7990,6 +7987,12 @@
       text-align: left;
     }
   }
+  .lg\:text-2xl {
+    @media (width >= 64rem) {
+      font-size: var(--text-2xl);
+      line-height: var(--tw-leading, var(--text-2xl--line-height));
+    }
+  }
   .lg\:btn-md {
     @media (width >= 64rem) {
       --fontsize: 0.875rem;
@@ -8071,6 +8074,7 @@
     outline: 2px solid currentColor;
   }
   background-color: var(--color-base-300);
+  color: var(--color-secondary-content);
   --tw-shadow: 0 20px 25px -5px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 8px 10px -6px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
   box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   transition-property: box-shadow;

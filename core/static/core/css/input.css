@@ -65,7 +65,7 @@
 
 /* custom */
 .list-card {
-    @apply card bg-base-300 shadow-xl hover:shadow-2xl transition-shadow duration-300;
+    @apply card bg-base-300 shadow-xl hover:shadow-2xl transition-shadow duration-300 text-secondary-content;
 }
 
 .list-card-title {
