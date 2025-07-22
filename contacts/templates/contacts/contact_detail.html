@@ -19,7 +19,7 @@
             </div>
             <div class="flex items-start justify-between mb-6">
                 <div>
-                    <h1 class="text-4xl font-bold text-primary mb-2">{{ contact }}</h1>
+                    <h1 class="text-4xl font-bold text-content mb-2">{{ contact }}</h1>
                     {% if contact.category %}<div class="badge badge-primary badge-lg mt-2">{{ contact.category }}</div>{% endif %}
                     <div class="flex items-center gap-4 text-sm text-base-content/70 mt-2">
                         <span>Created {{ contact.created_at|date:"M d, Y" }} by {{ contact.created_by.email }}</span>
@@ -60,9 +60,9 @@
         <!-- Contact Information -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <!-- Contact Details Card -->
-            <div class="card bg-base-100 shadow-xl">
+            <div class="list-card ">
                 <div class="card-body">
-                    <h2 class="card-title text-primary mb-6">
+                    <h2 class="list-card-title">
                         <svg xmlns="http://www.w3.org/2000/svg"
                              class="h-6 w-6"
                              fill="none"
@@ -73,47 +73,33 @@
                         Contact Information
                     </h2>
                     <div class="space-y-4">
-                        <!-- Name -->
-                        {% if contact.name %}
-                            <div class="flex items-center gap-3">
-                                <div class="badge badge-primary badge-sm">Name</div>
-                                <span class="text-base-content">{{ contact.name }}</span>
-                            </div>
-                        {% endif %}
-                        <!-- Company -->
-                        {% if contact.company %}
-                            <div class="flex items-center gap-3">
-                                <div class="badge badge-secondary badge-sm">Company</div>
-                                <span class="text-base-content">{{ contact.company }}</span>
-                            </div>
-                        {% endif %}
                         <!-- Email -->
                         {% if contact.email %}
                             <div class="flex items-center gap-3">
-                                <div class="badge badge-accent badge-sm">Email</div>
+                                <div class="badge badge-primary">Email</div>
                                 <a href="mailto:{{ contact.email }}"
-                                   class="link link-hover text-base-content">{{ contact.email }}</a>
+                                   class="link link-hover text-success text-lg">{{ contact.email }}</a>
                             </div>
                         {% endif %}
                         <!-- Phone -->
                         {% if contact.phone %}
                             <div class="flex items-center gap-3">
-                                <div class="badge badge-info badge-sm">Phone</div>
+                                <div class="badge badge-primary">Phone</div>
                                 <a href="tel:{{ contact.phone }}"
-                                   class="link link-hover text-base-content">{{ contact.phone }}</a>
+                                   class="link link-hover text-success text-lg">{{ contact.phone }}</a>
                             </div>
                         {% endif %}
                         <!-- Website -->
                         {% if contact.website %}
                             <div class="flex items-center gap-3">
-                                <div class="badge badge-success badge-sm">Website</div>
+                                <div class="badge badge-primary">Website</div>
                                 <a href="{{ contact.website }}"
                                    target="_blank"
                                    rel="noopener noreferrer"
-                                   class="link link-hover text-base-content">
-                                    {{ contact.website }}
+                                   class="link link-hover text-success text-lg">
+                                    Visit
                                     <svg xmlns="http://www.w3.org/2000/svg"
-                                         class="h-4 w-4 inline ml-1"
+                                         class="h-6 w-6 inline ml-1"
                                          fill="none"
                                          viewBox="0 0 24 24"
                                          stroke="currentColor">
@@ -124,12 +110,12 @@
                         {% endif %}
                         {% if contact.notes %}
                             <div class="prose max-w-none">
-                                <p class="text-base-content whitespace-pre-wrap">{{ contact.notes }}</p>
+                                <p class="text-base-primary whitespace-pre-wrap">{{ contact.notes|safe }}</p>
                             </div>
                         {% else %}
                             <div class="text-center py-8">
                                 <div class="text-4xl mb-4">📝</div>
-                                <p class="text-base-content/60">No notes added yet</p>
+                                <p class="text-base-primary/60">No notes added yet</p>
                                 <a href="{% url 'contacts:update' contact.slug %}"
                                    class="btn btn-outline btn-sm mt-4">Add Notes</a>
                             </div>
@@ -180,9 +166,9 @@
                 </div>
             </div>
             <!-- Shopping list -->
-            <div class="card bg-base-100 shadow-xl">
+            <div class="list-card">
                 <div class="card-body">
-                    <h2 class="card-title text-primary mb-6">
+                    <h2 class="list-card-title">
                         <svg xmlns="http://www.w3.org/2000/svg"
                              class="h-6 w-6"
                              fill="none"

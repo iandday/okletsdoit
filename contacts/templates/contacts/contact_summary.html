@@ -2,7 +2,9 @@
 
 {% load static %}
 
-{% block title %}Contacts{% endblock %}
+{% block title %}
+    Contacts
+{% endblock title %}
 {% block content %}
     <div class="max-w-7xl mx-auto px-4 py-8">
         <!-- Header Section -->
@@ -35,7 +37,7 @@
             </div>
         </div>
         <!-- Search and Stats -->
-        <div class="card bg-base-100 shadow-xl mb-6" id="search_and_stats">
+        <div class="card bg-base-200 shadow-xl mb-6" id="search_and_stats">
             <div class="card-body">
                 <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
                     <!-- Search Form -->
@@ -58,8 +60,8 @@
                         </div>
                     </form>
                     <!-- Stats -->
-                    <div class="stats stats-horizontal shadow">
-                        <div class="stat">
+                    <div class="stats stats-horizontal shadow bg-base-300 ">
+                        <div class="stat ">
                             <div class="stat-figure text-primary">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                      class="h-8 w-8"
@@ -69,9 +71,9 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                                 </svg>
                             </div>
-                            <div class="stat-title">Total Contacts</div>
+                            <div class="stat-title text-primary">Total Contacts</div>
                             <div class="stat-value text-primary">{{ total_contacts }}</div>
-                            <div class="stat-desc">{{ page_obj.paginator.count }} showing</div>
+                            <div class="stat-desc text-primary">{{ page_obj.paginator.count }} showing</div>
                         </div>
                     </div>
                 </div>
@@ -87,11 +89,11 @@
                             <div class="flex items-start justify-between mb-4">
                                 <div class="flex-1">
                                     {% if contact.name %}
-                                        <a class="card-title text-primary"
+                                        <a class="list-card-title text-primary"
                                            href="{% url 'contacts:detail' contact.slug %}">{{ contact.name }}</a>
-                                        {% if contact.company %}<p class="text-base-content/70 text-sm">{{ contact.company }}</p>{% endif %}
+                                        {% if contact.company %}<p class="text-primary/70 text-sm">{{ contact.company }}</p>{% endif %}
                                     {% else %}
-                                        <a class="card-title text-primary"
+                                        <a class="list-card-title text-primary"
                                            href="{% url 'contacts:detail' contact.slug %}">{{ contact }}</a>
                                     {% endif %}
                                     {% if contact.category %}<div class="badge badge-outline badge-sm mt-1">{{ contact.category }}</div>{% endif %}

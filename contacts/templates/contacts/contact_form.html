@@ -33,21 +33,6 @@
       </ul>
     </div>
     <div class="flex items-center gap-4 mb-8">
-      <div class="avatar placeholder">
-        <div class="bg-primary text-primary-content rounded-full w-12 h-12">
-          <svg xmlns="http://www.w3.org/2000/svg"
-               class="h-6 w-6"
-               fill="none"
-               viewBox="0 0 24 24"
-               stroke="currentColor">
-            {% if contact %}
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-            {% else %}
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-            {% endif %}
-          </svg>
-        </div>
-      </div>
       <div>
         <h1 class="text-4xl font-bold text-base-content mb-2">{{ title }}</h1>
         <p class="text-lg text-base-content/70">
@@ -60,7 +45,7 @@
       </div>
     </div>
     <!-- Form -->
-    <div class="card bg-base-100 shadow-xl">
+    <div class="list-card">
       <div class="card-body">
         <form method="post" id="contactForm">
           {% csrf_token %}
@@ -155,9 +140,9 @@
           <!-- Form Actions -->
           <div class="card-actions justify-end">
             {% if contact %}
-              <a href="{% url 'contacts:detail' contact.slug %}" class="btn btn-ghost">Cancel</a>
+              <a href="{% url 'contacts:detail' contact.slug %}" class="btn">Cancel</a>
             {% else %}
-              <a href="{% url 'contacts:list' %}" class="btn btn-ghost">Cancel</a>
+              <a href="{% url 'contacts:list' %}" class="btn">Cancel</a>
             {% endif %}
             <button type="submit" class="btn btn-primary">
               <svg xmlns="http://www.w3.org/2000/svg"
@@ -180,220 +165,7 @@
   </div>
 {% endblock content %}
 {% block extra_script %}
-  <script nonce="{{ request.csp_nonce }}">
-    let ckEditor = null;
 
-    const LICENSE_KEY =
-      'eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3NTM0ODc5OTksImp0aSI6IjAwM2Q1ZDRlLTdiNzgtNGIyMS1hNDIwLTk5Y2FlNjRhMTYyMiIsInVzYWdlRW5kcG9pbnQiOiJodHRwczovL3Byb3h5LWV2ZW50LmNrZWRpdG9yLmNvbSIsImRpc3RyaWJ1dGlvbkNoYW5uZWwiOlsiY2xvdWQiLCJkcnVwYWwiLCJzaCJdLCJ3aGl0ZUxhYmVsIjp0cnVlLCJsaWNlbnNlVHlwZSI6InRyaWFsIiwiZmVhdHVyZXMiOlsiKiJdLCJ2YyI6IjNlZjY0OTJlIn0.PkIa3ygOlE2sKRbM0AtCYBspdQ9AOoL7-BfdCfFiclnILTBzwhgzj36a6oZREjZjxvcHs19s1H7YrK-hu_FAgg';
+  {% include "components/ckeditor_script.html" with form="contactForm" initial_data=form.notes.value placeholder="Enter additional notes about this contact..." element_id=form.notes.id_for_label focus_field=form.name.id_for_label %}
 
-    const {
-      ClassicEditor,
-      Alignment,
-      AutoLink,
-      Autosave,
-      BalloonToolbar,
-      BlockQuote,
-      Bold,
-      Code,
-      CodeBlock,
-      Essentials,
-      FontBackgroundColor,
-      FontColor,
-      FontFamily,
-      FontSize,
-      GeneralHtmlSupport,
-      Heading,
-      Highlight,
-      HorizontalLine,
-      ImageEditing,
-      ImageUtils,
-      Indent,
-      IndentBlock,
-      Italic,
-      Link,
-      Paragraph,
-      PlainTableOutput,
-      RemoveFormat,
-      Strikethrough,
-      Style,
-      Subscript,
-      Superscript,
-      Table,
-      TableCaption,
-      TableCellProperties,
-      TableColumnResize,
-      TableLayout,
-      TableProperties,
-      TableToolbar,
-      Underline
-    } = window.CKEDITOR;
-
-    const editorConfig = {
-      width: '100%',
-      height: '200px',
-      toolbar: {
-        items: [
-          'undo',
-          'redo',
-          '|',
-          'heading',
-          '|',
-          'fontSize',
-          'fontColor',
-          '|',
-          'bold',
-          'italic',
-          'underline',
-          '|',
-          'link',
-          'highlight',
-          'blockQuote',
-          '|',
-          'alignment',
-          '|',
-          'outdent',
-          'indent'
-        ],
-        shouldNotGroupWhenFull: false
-      },
-      plugins: [
-        Alignment,
-        AutoLink,
-        Autosave,
-        BalloonToolbar,
-        BlockQuote,
-        Bold,
-        Code,
-        CodeBlock,
-        Essentials,
-        FontBackgroundColor,
-        FontColor,
-        FontFamily,
-        FontSize,
-        GeneralHtmlSupport,
-        Heading,
-        Highlight,
-        HorizontalLine,
-        ImageEditing,
-        ImageUtils,
-        Indent,
-        IndentBlock,
-        Italic,
-        Link,
-        Paragraph,
-        PlainTableOutput,
-        RemoveFormat,
-        Strikethrough,
-        Style,
-        Subscript,
-        Superscript,
-        Table,
-        TableCaption,
-        TableCellProperties,
-        TableColumnResize,
-        TableLayout,
-        TableProperties,
-        TableToolbar,
-        Underline
-      ],
-      balloonToolbar: ['bold', 'italic', '|', 'link'],
-      fontFamily: {
-        supportAllValues: true
-      },
-      fontSize: {
-        options: [10, 12, 14, 'default', 18, 20, 22],
-        supportAllValues: true
-      },
-      heading: {
-        options: [{
-          model: 'paragraph',
-          title: 'Paragraph',
-          class: 'ck-heading_paragraph'
-        }, {
-          model: 'heading1',
-          view: 'h1',
-          title: 'Heading 1',
-          class: 'ck-heading_heading1'
-        }, {
-          model: 'heading2',
-          view: 'h2',
-          title: 'Heading 2',
-          class: 'ck-heading_heading2'
-        }, {
-          model: 'heading3',
-          view: 'h3',
-          title: 'Heading 3',
-          class: 'ck-heading_heading3'
-        }]
-      },
-      htmlSupport: {
-        allow: [{
-          name: /^.*$/,
-          styles: true,
-          attributes: true,
-          classes: true
-        }]
-      },
-      initialData: '',
-      licenseKey: LICENSE_KEY,
-      link: {
-        addTargetToExternalLinks: true,
-        defaultProtocol: 'https://'
-      },
-      menuBar: {
-        isVisible: false
-      },
-      placeholder: 'Enter additional notes about this contact...',
-      table: {
-        contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells', 'tableProperties', 'tableCellProperties']
-      }
-    };
-
-    function initializeCKEditor() {
-      if (ckEditor) return;
-
-      const textarea = document.getElementById('{{ form.notes.id_for_label }}');
-      if (!textarea) {
-        console.error('Notes textarea not found');
-        return;
-      }
-
-      ClassicEditor.create(textarea, editorConfig)
-        .then(editor => {
-          ckEditor = editor;
-        })
-        .catch(error => {
-          console.error('CKEditor initialization error:', error);
-        });
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-      const form = document.getElementById('contactForm');
-
-      if (form) {
-        form.addEventListener('submit', function(e) {
-          const submitBtn = form.querySelector('button[type="submit"]');
-          if (submitBtn) {
-            submitBtn.disabled = true;
-            const isUpdate = submitBtn.textContent.includes('Update');
-            submitBtn.innerHTML = `
-                        <span class="loading loading-spinner loading-sm"></span>
-                        ${isUpdate ? 'Updating...' : 'Adding...'}
-                    `;
-          }
-        });
-      }
-
-      // Focus on the name field when page loads
-      const nameField = document.getElementById('{{ form.name.id_for_label }}');
-      if (nameField) {
-        nameField.focus();
-      }
-
-      // Initialize CKEditor after a short delay
-      setTimeout(() => {
-        initializeCKEditor();
-      }, 200);
-    });
-  </script>
 {% endblock extra_script %}

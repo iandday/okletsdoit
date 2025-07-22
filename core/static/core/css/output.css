@@ -6916,12 +6916,6 @@
       color: color-mix(in oklab, var(--color-primary) 70%, transparent);
     }
   }
-  .text-primary\/80 {
-    color: var(--color-primary);
-    @supports (color: color-mix(in lab, red, red)) {
-      color: color-mix(in oklab, var(--color-primary) 80%, transparent);
-    }
-  }
   .text-secondary {
     color: var(--color-secondary);
   }
@@ -8153,22 +8147,6 @@
     --btn-fg: var(--color-primary-content);
     isolation: isolate;
   }
-  &:not( .btn-active, :hover, :active:focus, :focus-visible, :disabled, [disabled], .btn-disabled, :checked ) {
-    --btn-shadow: "";
-    --btn-bg: #0000;
-    --btn-fg: var(--btn-color);
-    --btn-border: var(--btn-color);
-    --btn-noise: none;
-  }
-  @media (hover: none) {
-    &:hover:not( .btn-active, :active, :focus-visible, :disabled, [disabled], .btn-disabled, :checked ) {
-      --btn-shadow: "";
-      --btn-bg: #0000;
-      --btn-fg: var(--btn-color);
-      --btn-border: var(--btn-color);
-      --btn-noise: none;
-    }
-  }
   --btn-color: var(--color-primary);
   --btn-fg: var(--color-primary-content);
 }
@@ -8295,72 +8273,8 @@
     --btn-fg: var(--color-primary-content);
     isolation: isolate;
   }
-  &:not( .btn-active, :hover, :active:focus, :focus-visible, :disabled, [disabled], .btn-disabled, :checked ) {
-    --btn-shadow: "";
-    --btn-bg: #0000;
-    --btn-fg: var(--btn-color);
-    --btn-border: var(--btn-color);
-    --btn-noise: none;
-  }
-  @media (hover: none) {
-    &:hover:not( .btn-active, :active, :focus-visible, :disabled, [disabled], .btn-disabled, :checked ) {
-      --btn-shadow: "";
-      --btn-bg: #0000;
-      --btn-fg: var(--btn-color);
-      --btn-border: var(--btn-color);
-      --btn-noise: none;
-    }
-  }
-  --btn-color: var(--color-secondary);
-  --btn-fg: var(--color-secondary-content);
-}
-.ckeditor-content {
-  max-width: none;
-  & a {
-    cursor: pointer;
-    text-decoration-line: underline;
-    &:focus {
-      --tw-outline-style: none;
-      outline-style: none;
-      @media (forced-colors: active) {
-        outline: 2px solid transparent;
-        outline-offset: 2px;
-      }
-    }
-    &:focus-visible {
-      outline: 2px solid currentColor;
-      outline-offset: 2px;
-    }
-  }
-  & a {
-    color: var(--color-primary);
-    @media (hover: hover) {
-      &:hover {
-        color: var(--color-primary);
-        @supports (color: color-mix(in lab, red, red)) {
-          color: color-mix(in oklab, var(--color-primary) 80%, #000);
-        }
-      }
-    }
-  }
-  & a {
-    text-decoration-line: underline;
-  }
-  & li {
-    margin-bottom: calc(var(--spacing) * 1);
-  }
-  & ol {
-    margin-left: calc(var(--spacing) * 6);
-  }
-  & ol {
-    list-style-type: decimal;
-  }
-  & ul {
-    margin-left: calc(var(--spacing) * 6);
-  }
-  & ul {
-    list-style-type: disc;
-  }
+  --btn-color: var(--color-primary);
+  --btn-fg: var(--color-primary-content);
 }
 .upload-card {
   position: relative;
@@ -8816,6 +8730,7 @@
       --border: 1px;
       --depth: 1;
       --noise: 1;
+      --ck-spacking-standard: 3em;
       --rounded-box: 0.75rem;
       --rounded-btn: 0.375rem;
       --rounded-badge: 0.5rem;
@@ -8859,6 +8774,7 @@
     --border: 1px;
     --depth: 1;
     --noise: 1;
+    --ck-spacking-standard: 3em;
     --rounded-box: 0.75rem;
     --rounded-btn: 0.375rem;
     --rounded-badge: 0.5rem;

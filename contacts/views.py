@@ -45,7 +45,7 @@ def contact_list(request):
         "total_contacts": contacts.count(),
     }
 
-    return render(request, "contacts/contact_list.html", context)
+    return render(request, "contacts/contact_summary.html", context)
 
 
 @login_required

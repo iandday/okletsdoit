@@ -11,26 +11,29 @@ class ContactForm(ModelForm):
         fields = ["name", "company", "email", "phone", "website", "category", "notes"]
         widgets = {
             "name": forms.TextInput(
-                attrs={"class": "input input-bordered w-full", "placeholder": "Enter contact name"}
+                attrs={"class": "input input-form-color input-bordered w-full", "placeholder": "Enter contact name"}
             ),
             "company": forms.TextInput(
-                attrs={"class": "input input-bordered w-full", "placeholder": "Enter company name"}
+                attrs={"class": "input input-form-color input-bordered w-full", "placeholder": "Enter company name"}
             ),
             "email": forms.EmailInput(
-                attrs={"class": "input input-bordered w-full", "placeholder": "Enter email address"}
+                attrs={"class": "input input-form-color input-bordered w-full", "placeholder": "Enter email address"}
             ),
             "phone": forms.TextInput(
-                attrs={"class": "input input-bordered w-full", "placeholder": "Enter phone number"}
+                attrs={"class": "input input-form-color input-bordered w-full", "placeholder": "Enter phone number"}
             ),
             "website": forms.URLInput(
-                attrs={"class": "input input-bordered w-full", "placeholder": "https://example.com"}
+                attrs={"class": "input input-form-color input-bordered w-full", "placeholder": "https://example.com"}
             ),
             "category": forms.TextInput(
-                attrs={"class": "input input-bordered w-full", "placeholder": "e.g., Vendor, Guest, Venue"}
+                attrs={
+                    "class": "input input-form-color input-bordered w-full",
+                    "placeholder": "e.g., Vendor, Guest, Venue",
+                }
             ),
             "notes": forms.Textarea(
                 attrs={
-                    "class": "textarea textarea-bordered w-full",
+                    "class": "",
                     "rows": 4,
                     "placeholder": "Enter any additional notes",
                 }

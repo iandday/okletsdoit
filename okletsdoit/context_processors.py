@@ -147,39 +147,40 @@ def site_vars(request):
             {"view_name": "account_logout", "icon": "fa-sign-out", "text": "Logout"},
         ],
         "our_story": [
-            { 
-                "title": "The Match", 
+            {
+                "title": "The Match",
                 "svg": "M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z",
                 "content": [
-                    "It all started with a swipe right on Hinge. Two people on opposite sides of Columbus, both more than a little skeptical of online dating but still hoping to find something real. Neither of us expected much, but here we are."],
+                    "It all started with a swipe right on Hinge. Two people on opposite sides of Columbus, both more than a little skeptical of online dating but still hoping to find something real. Neither of us expected much, but here we are."
+                ],
             },
-            { 
-                "title": "Let's Set The Scene", 
+            {
+                "title": "Let's Set The Scene",
                 "svg": "M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.478 8-10 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.478-8 10-8s10 3.582 10 8z",
                 "content": [
-                    "Ian had just sold his house and was getting ready to spend a month in Delaware before moving into a new place in Columbus. Steph debated saying yes to the date; she was convinced she’d catch feelings and then Ian would decide to stay in New Jersey permanently. But she said yes anyway."], 
+                    "Ian had just sold his house and was getting ready to spend a month in Delaware, the state for all you Ohioans, before moving into a new place in Columbus. Steph debated saying yes to the date; she was convinced she’d catch feelings and then Ian would decide to stay in Delaware permanently. But she said yes anyway."
+                ],
             },
-            { 
-                "title": "The First Date Blunder", 
+            {
+                "title": "The First Date Blunder",
                 "svg": "M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.99-.833-2.76 0L4.054 15.5c-.77.833.192 2.5 1.732 2.5z",
                 "content": [
-                    "Steph picked the place, a bar in Easton called The Beeline, not knowing that Ian lived across town, all the way in Galloway. Obviously she beat him there! So, she waited and waited and waited.", 
-                    'When Ian finally strolled up, he skipped the small talk and opened with, "Huh. I thought your hair would be brighter."', 
-                    "The audacity of this man, we hadn’t even walked inside yet! Surprisingly, but true to character, Steph laughed it off and didn’t toss a drink in his face later. And that’s when Ian knew he’d said something dumb, but maybe to the right person."
-                    ], 
+                    "Steph picked the place, a bar in Easton called The Beeline, not knowing that Ian lived across town, all the way in Galloway. Obviously she beat him there! So, she waited and waited and waited.",
+                    'When Ian finally strolled up, he skipped the small talk and opened with, "Huh. I thought your hair would be brighter."',
+                    "The audacity of this man, we hadn’t even walked inside yet! Surprisingly, but true to character, Steph laughed it off and didn’t toss a drink in his face later. And that’s when Ian knew he’d said something dumb, but maybe to the right person.",
+                ],
             },
-            { 
-                "title": "The Rest is History", 
+            {
+                "title": "The Rest is History",
                 "svg": "M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z",
                 "content": [
-                    "From that slightly awkward start to the first date, our love story unfolded. Believe it or not, Ian didn’t ghost Steph and came back to Columbus! And they continued seeing each other and definitely caught feelings.", 
-
+                    "From that slightly awkward start to the first date, our love story unfolded. Believe it or not, Ian didn’t ghost Steph and came back to Columbus! And they continued seeing each other and definitely caught feelings.",
                     "After countless dates and memories, tons of laughs, adventures, and concerts, and of course, lots of sarcastic comments and jests along the way, we discovered that sometimes the best relationships start with somewhat cringe-worthy moments.",
-
                     "Who knew that insulting someone's hair on a first date could be the foundation of forever? Ian certainly didn't! Yet here we are, planning our wedding and proving that love truly does find a way, even when you start with the world's worst opening line.",
                 ],
             },
-            
         ],
-        "call_to_action": {"our_story": "We can't wait to celebrate with you as we turn this beautiful, chaotic love story into marriage.  And don't worry - Ian promises not to comment on anyone's hair at the wedding." }
+        "call_to_action": {
+            "our_story": "We can't wait to celebrate with you as we turn this beautiful, chaotic love story into marriage.  And don't worry - Ian promises not to comment on anyone's hair at the wedding."
+        },
     }
