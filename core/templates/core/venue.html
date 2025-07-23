@@ -7,31 +7,34 @@
 {% endblock title %}
 {% block content %}
     <div class="max-w-6xl mx-auto px-4 py-8">
+        <div class="flex flex-col items-center justify-center mx-auto px-4 py-8">
+            <img src="{% static 'core/img/timberframeLodge.png' %}"
+                 alt="rsvp"
+                 height="300"
+                 width="300">
+        </div>
         <!-- Hero Section -->
-        <div class="hero min-h-[60vh] rounded-2xl mb-12 relative">
+        <div class="hero min-h-[60vh] mb-12 relative">
             <img src="{% static 'core/img/timberframeExterior.webp' %}"
                  alt="{{ wedding_data.location }}"
                  class="absolute inset-0 w-full h-full object-cover rounded-2xl">
             <div class="hero-overlay bg-black/60 rounded-2xl"></div>
             <div class="hero-content text-center relative z-10 h-full w-full">
-                <div class="flex flex-col justify-between h-full w-full max-w-4xl">
-                    <h1 class="text-5xl font-bold text-primary-content mb-4">{{ wedding_data.location }}</h1>
-                    <div>
-                        <p class="text-xl lg:text-2xl text-primary-content/90 mb-6">
-                            Join us at {{ wedding_data.location }}, tucked away in the Hocking Hills region of southeastern Ohio.
-                        </p>
-                        <div class="flex flex-wrap justify-center gap-4">
-                            <a href="{{ wedding_data.google_maps_url }}">
-                                <img src="{% static 'core/img/googleMaps.svg' %}"
-                                     alt="Google Maps"
-                                     class="h-10 w-10 mr-2" />
-                            </a>
-                            <a href="{{ wedding_data.apple_maps_url }}">
-                                <img src="{% static 'core/img/appleMaps.png' %}"
-                                     alt="Apple Maps"
-                                     class="h-10 w-10 mr-2" />
-                            </a>
-                        </div>
+                <div class="flex flex-col justify-end h-full w-full max-w-4xl">
+                    <p class="text-xl lg:text-2xl text-primary-content/90 mb-6">
+                        Join us at {{ wedding_data.location }}, tucked away in the Hocking Hills region of southeastern Ohio.
+                    </p>
+                    <div class="flex flex-wrap justify-center gap-4">
+                        <a href="{{ wedding_data.google_maps_url }}">
+                            <img src="{% static 'core/img/googleMaps.svg' %}"
+                                 alt="Google Maps"
+                                 class="h-10 w-10 mr-2" />
+                        </a>
+                        <a href="{{ wedding_data.apple_maps_url }}">
+                            <img src="{% static 'core/img/appleMaps.png' %}"
+                                 alt="Apple Maps"
+                                 class="h-10 w-10 mr-2" />
+                        </a>
                     </div>
                 </div>
             </div>

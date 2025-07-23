@@ -1,9 +1,17 @@
 {% extends "components/base.html" %}
 
+{% load static %}
+
 {% block title %}
     Photos
 {% endblock title %}
 {% block content %}
-    <h1 class="text-center mb-4">Photos</h1>
-    <p class="text-center">This is where we showcase our photos.</p>
+    <div class="flex flex-col items-center justify-center mx-auto px-4 py-8">
+        <img src="{% static 'core/img/shareYourPhotos.png' %}"
+             alt="photos"
+             class="rounded-lg"
+             height="300"
+             width="300">
+        <p class="text-center">This is where we showcase our photos.</p>
+    </div>
 {% endblock content %}
