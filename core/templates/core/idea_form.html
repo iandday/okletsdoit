@@ -1,0 +1,122 @@
+{% extends "components/base.html" %}
+
+{% load static %}
+
+{% block title %}
+    {% if idea %}
+        Edit {{ idea.name }}
+    {% else %}
+        Create New Idea
+    {% endif %}
+{% endblock title %}
+{% block extra_head %}
+    <link rel="stylesheet"
+          href="https://cdn.ckeditor.com/ckeditor5/46.0.0/ckeditor5.css"
+          crossorigin>
+    <script nonce="{{ request.csp_nonce }}"
+            src="https://cdn.ckeditor.com/ckeditor5/46.0.0/ckeditor5.umd.js"
+            crossorigin></script>
+{% endblock extra_head %}
+{% block content %}
+    <div class="max-w-3xl mx-auto px-4 py-8 h-full flex flex-col">
+        <!-- Header Section -->
+        <div class="mb-8">
+            <div class="breadcrumbs mb-4">
+                <ul>
+                    <li>
+                        <a href="{% url 'core:idea_list' %}" class="link">Ideas</a>
+                    </li>
+                    <li>
+                        {% if idea %}
+                            Edit {{ idea.name }}
+                        {% else %}
+                            Create New Idea
+                        {% endif %}
+                    </li>
+                </ul>
+            </div>
+            <h1 class="text-3xl font-bold text-primary mb-2">
+                {% if idea %}
+                    Edit {{ idea.name }}
+                {% else %}
+                    Create New Idea
+                {% endif %}
+            </h1>
+            <p class="text-base-content/70">
+                {% if idea %}
+                    Update your wedding planning idea
+                {% else %}
+                    Add a new wedding planning idea to your collection
+                {% endif %}
+            </p>
+        </div>
+        <!-- Idea Form -->
+        <div class="list-card ">
+            <div class="card-body h-full">
+                <form method="post"
+                      action="{% if idea %}{% url 'core:idea_edit' idea.slug %}{% else %}{% url 'core:idea_create' %}{% endif %}"
+                      class="space-y-6 h-full flex flex-col">
+                    {% csrf_token %}
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-medium">{{ form.name.label }}</span>
+                        </label>
+                        {{ form.name }}
+                        {% if form.name.errors %}
+                            <div class="label">
+                                {% for error in form.name.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="form-control flex-1">
+                        <label class="label">
+                            <span class="label-text font-medium">{{ form.description.label }}</span>
+                        </label>
+                        {{ form.description }}
+                        {% if form.description.errors %}
+                            <div class="label">
+                                {% for error in form.description.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="card-actions justify-end gap-4 mt-auto">
+                        <a href="{% url 'core:idea_list' %}" class="btn btn-ghost">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 class="h-4 w-4"
+                                 fill="none"
+                                 viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        Cancel </a>
+                        <button type="submit" class="btn btn-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 class="h-4 w-4"
+                                 fill="none"
+                                 viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="
+                                {% if idea %}
+                                    M12 4v16m8-8H4
+                                {% else %}
+                                    M12 4v16m8-8H4
+                                {% endif %}
+                                " />
+                            </svg>
+                            {% if idea %}
+                                Save Changes
+                            {% else %}
+                                Create Idea
+                            {% endif %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+{% block extra_script %}
+
+    {% include "components/ckeditor_script.html" with form="ideaForm" initial_data=form.description.value placeholder="Enter a description for the idea..." element_id=form.description.id_for_label focus_field=form.name.id_for_label %}
+
+{% endblock extra_script %}

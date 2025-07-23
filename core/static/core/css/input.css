@@ -41,26 +41,26 @@
     --ck-spacking-standard: 3em;
 
     /* Component styling */
-    --rounded-box: 0.75rem;
-    /* border radius of boxes (card, modal, alert) */
-    --rounded-btn: 0.375rem;
-    /* border radius of buttons */
-    --rounded-badge: 0.5rem;
-    /* border radius of badges */
-
+    --rounded-box: 0rem;
+    --rounded-btn: 0rem;
+    --rounded-badge: 0rem;
     --animation-btn: 0.25s;
-    /* duration of animation when you click on button */
     --animation-input: 0.2s;
-    /* duration of animation for inputs like checkbox, toggle, radio, etc */
-
     --btn-focus-scale: 0.95;
-    /* scale transform of button when you focus on it */
     --border-btn: 1px;
-    /* border width of buttons */
     --tab-border: 1px;
-    /* border width of tabs */
-    --tab-radius: 0.5rem;
-    /* border radius of tabs */
+    --tab-radius: 0rem;
+    /* curves are bad, i guess */
+    --radius-box: 0rem;
+    --radius-card: 0rem;
+    --radius-input: 0rem;
+    --radius-field: 0rem;
+    --radius-select: 0rem;
+    --radius-toggle: 0rem;
+    --radius-badge: 0rem;
+    --radius-dropdown: 0rem;
+    --radius-modal: 0rem;
+    --radius-alert: 0rem;
 }
 
 /* custom */

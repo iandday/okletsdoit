@@ -150,7 +150,7 @@
                             <!-- Notes Preview -->
                             {% if contact.notes %}
                                 <div class="mb-4">
-                                    <p class="text-sm text-base-content/70">{{ contact.notes|truncatewords:15 }}</p>
+                                    <p class="text-sm text-base-content/70">{{ contact.notes|safe|truncatewords:15 }}</p>
                                 </div>
                             {% endif %}
                         </div>

@@ -84,7 +84,7 @@ def idea_create(request: HttpRequest):
                 for error in errors:
                     messages.error(request, f"{field}: {error}")
 
-    return render(request, "core/idea_create.html", context={"form": IdeaForm()})
+    return render(request, "core/idea_form.html", context={"form": IdeaForm()})
 
 
 @login_required
@@ -164,7 +164,7 @@ def idea_edit(request: HttpRequest, idea_slug: str):
     else:
         idea = Idea.objects.get(slug=idea_slug, is_deleted=False)
         form = IdeaForm(instance=idea)
-        return render(request, "core/idea_edit.html", {"form": form, "idea": idea})
+        return render(request, "core/idea_form.html", {"form": form, "idea": idea})
 
 
 def idea_import(request: HttpRequest):

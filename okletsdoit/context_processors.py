@@ -129,11 +129,11 @@ def site_vars(request):
             },
         ],
         "nav_links": [
+            {"view_name": "core:home", "icon": "fa-house", "text": "Home"},
             {"view_name": "core:our_story", "icon": "fa-heart", "text": "Our Story"},
             {"view_name": "core:venue", "icon": "fa-hotel", "text": "Venue"},
             {"view_name": "core:photos", "icon": "fa-camera", "text": "Upload Photos"},
             {"view_name": "core:rsvp", "icon": "fa-pen-to-square", "text": "RSVP"},
-            {"view_name": "core:home", "icon": "fa-pen-to-square", "text": "Home"},
         ],
         "planning_links": [
             {"view_name": "deadline:deadline_summary", "icon": "fa-list", "text": "Deadlines"},
