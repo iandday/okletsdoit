@@ -1,0 +1,296 @@
+{% extends "components/base.html" %}
+
+{% load static %}
+
+{% block title %}
+    {{ guest.first_name }} {{ guest.last_name }} - Guest Details
+{% endblock title %}
+{% block content %}
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-6xl mx-auto">
+            <!-- Page Header -->
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
+                <div>
+                    <nav class="text-sm breadcrumbs mb-2">
+                        <ul>
+                            <li>
+                                <a href="{% url 'guestlist:guestlist_summary' %}"
+                                   class="link link-hover">Guest Lists</a>
+                            </li>
+                            {% if guest.group %}
+                                <li>
+                                    <a href="{% url 'guestlist:guestgroup_detail' guest.group.slug %}"
+                                       class="link link-hover">{{ guest.group.name }}</a>
+                                </li>
+                            {% endif %}
+                            <li class="text-base-content">{{ guest.first_name }} {{ guest.last_name }}</li>
+                        </ul>
+                    </nav>
+                    <h1 class="text-3xl font-bold text-base-content mb-2">{{ guest.first_name }} {{ guest.last_name }}</h1>
+                    <div class="flex flex-wrap gap-2 mb-2">
+                        {% if guest.plus_one %}<div class="badge badge-primary">Plus One</div>{% endif %}
+                        {% if guest.is_invited %}
+                            <div class="badge badge-success">Invited</div>
+                        {% else %}
+                            <div class="badge badge-ghost">Not Invited</div>
+                        {% endif %}
+                        {% if guest.responded %}
+                            {% if guest.is_attending %}
+                                <div class="badge badge-success">Attending</div>
+                            {% else %}
+                                <div class="badge badge-error">Not Attending</div>
+                            {% endif %}
+                        {% elif guest.is_invited %}
+                            <div class="badge badge-warning">Pending Response</div>
+                        {% endif %}
+                        {% if guest.overnight %}<div class="badge badge-info">Overnight</div>{% endif %}
+                    </div>
+                </div>
+                <div class="flex flex-row gap-2 mt-4 sm:mt-0">
+                    <a href="{% url 'guestlist:guest_edit' guest.slug %}"
+                       class="btn btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             class="h-5 w-5"
+                             fill="none"
+                             viewBox="0 0 24 24"
+                             stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                        Edit Guest
+                    </a>
+                    <a href="{% url 'guestlist:guest_delete' guest.slug %}"
+                       class="btn btn-error lg:btn-outline">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             class="h-5 w-5"
+                             fill="none"
+                             viewBox="0 0 24 24"
+                             stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                        Delete Guest
+                    </a>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Guest Information -->
+                <div class="lg:col-span-1">
+                    <div class="detail-card">
+                        <div class="detail-card-body">
+                            <h2 class="detail-card-title">Guest Information</h2>
+                            <div class="space-y-4">
+                                <!-- Basic Info -->
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <div class="detail-card-field-name">First Name</div>
+                                        <div class="detail-card-field-value">{{ guest.first_name|default:"—" }}</div>
+                                    </div>
+                                    <div>
+                                        <div class="detail-card-field-name">Last Name</div>
+                                        <div class="detail-card-field-value">{{ guest.last_name|default:"—" }}</div>
+                                    </div>
+                                </div>
+                                <!-- Guest Group -->
+                                {% if guest.group %}
+                                    <div>
+                                        <div class="detail-card-field-name">Guest Group</div>
+                                        <div class="text-base">
+                                            <a href="{% url 'guestlist:guestgroup_detail' guest.group.slug %}"
+                                               class="link link-primary">{{ guest.group.name }}</a>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                <!-- Status Indicators -->
+                                <div class="divider"></div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <div class="detail-card-field-name">Plus One</div>
+                                        <div class="detail-card-field-value">
+                                            {% if guest.plus_one %}
+                                                Yes
+                                            {% else %}
+                                                No
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="detail-card-field-name">Invited</div>
+                                        <div class="detail-card-field-value">
+                                            {% if guest.is_invited %}
+                                                Yes
+                                            {% else %}
+                                                No
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="detail-card-field-name">Responded</div>
+                                        <div class="detail-card-field-value">
+                                            {% if guest.responded %}
+                                                Yes
+                                            {% else %}
+                                                No
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="detail-card-field-name">Attending</div>
+                                        <div class="detail-card-field-value">
+                                            {% if guest.is_attending %}
+                                                Yes
+                                            {% else %}
+                                                No
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="detail-card-field-name">Overnight</div>
+                                        <div class="detail-card-field-value">
+                                            {% if guest.overnight %}
+                                                Yes
+                                            {% else %}
+                                                No
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Timestamps -->
+                                <div class="divider"></div>
+                                <div class="grid grid-cols-1: lg:grid-cols-2 gap-4">
+                                    <div>
+                                        <div class="detail-card-field-name">Created</div>
+                                        <div class="detail-card-field-value">{{ guest.created_at|date:"M d, Y \a\t g:i A" }}</div>
+                                        {% if guest.created_by %}
+                                            <div class="detail-card-field-value">by {{ guest.created_by.get_first_name|default:guest.created_by.email }}</div>
+                                        {% endif %}
+                                    </div>
+                                    {% if guest.updated_at != guest.created_at %}
+                                        <div>
+                                            <div class="detail-card-field-name">Last Updated</div>
+                                            <div class="detail-card-field-value">{{ guest.updated_at|date:"M d, Y \a\t g:i A" }}</div>
+                                            {% if guest.updated_by %}
+                                                <div class="detail-card-field-value">by {{ guest.updated_by.get_first_name|default:guest.updated_by.email }}</div>
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Notes Section -->
+                <div class="lg:col-span-1">
+                    <div class="detail-card">
+                        <div class="detail-card-body">
+                            <h2 class="detail-card-title">Notes & Responses</h2>
+                            <div class="space-y-6">
+                                <!-- General Notes -->
+                                <div>
+                                    <div class="detail-card-field-name mb-2">General Notes</div>
+                                    {% if guest.notes %}
+                                        <div class="detail-card-field-value">{{ guest.notes|linebreaks }}</div>
+                                    {% else %}
+                                        <div class="detail-card-field-value">No notes available</div>
+                                    {% endif %}
+                                </div>
+                                <!-- Response Notes -->
+                                <div>
+                                    <div class="detail-card-field-name mb-2">Response Notes</div>
+                                    {% if guest.response_notes %}
+                                        <div class="detail-card-field-value">{{ guest.response_notes|linebreaks }}</div>
+                                    {% else %}
+                                        <div class="detail-card-field-value">No response notes available</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Quick Actions -->
+                    <div class="detail-action-card">
+                        <div class="detail-action-card-body">
+                            <h2 class="detail-action-card-title">Quick Actions</h2>
+                            <div class="grid grid-cols-1 lg:grid-cols-3 gap-3">
+                                {% if not guest.is_invited %}
+                                    <button class="btn btn-success btn-sm" onclick="updateGuestStatus('invite')">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             class="h-4 w-4"
+                                             fill="none"
+                                             viewBox="0 0 24 24"
+                                             stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                        </svg>
+                                        Send Invitation
+                                    </button>
+                                {% endif %}
+                                {% if guest.is_invited and not guest.responded %}
+                                    <button class="btn btn-warning btn-sm" onclick="updateGuestStatus('remind')">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             class="h-4 w-4"
+                                             fill="none"
+                                             viewBox="0 0 24 24"
+                                             stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        Send Reminder
+                                    </button>
+                                {% endif %}
+                                {% if not guest.responded %}
+                                    <button class="btn btn-success btn-sm"
+                                            onclick="updateGuestStatus('attending')">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             class="h-4 w-4"
+                                             fill="none"
+                                             viewBox="0 0 24 24"
+                                             stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        RSVP Yes
+                                    </button>
+                                    <button class="btn btn-error btn-sm"
+                                            onclick="updateGuestStatus('not_attending')">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             class="h-4 w-4"
+                                             fill="none"
+                                             viewBox="0 0 24 24"
+                                             stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                        RSVP No
+                                    </button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script nonce="{{request.csp_nonce}}">
+      document.addEventListener('DOMContentLoaded', function() {
+        // Quick action handlers
+        window.updateGuestStatus = function(action) {
+          // This would typically make an AJAX call to update the guest status
+          // For now, we'll redirect to the edit page
+          switch (action) {
+            case 'invite':
+              alert('This would send an invitation to the guest.');
+              break;
+            case 'remind':
+              alert('This would send a reminder to the guest.');
+              break;
+            case 'attending':
+              if (confirm('Mark this guest as attending?')) {
+                // Could make an AJAX call here or redirect to edit page
+                window.location.href = "{% url 'guestlist:guest_edit' guest.slug %}";
+              }
+              break;
+            case 'not_attending':
+              if (confirm('Mark this guest as not attending?')) {
+                // Could make an AJAX call here or redirect to edit page
+                window.location.href = "{% url 'guestlist:guest_edit' guest.slug %}";
+              }
+              break;
+          }
+        };
+      });
+    </script>
+{% endblock content %}

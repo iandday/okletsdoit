@@ -28,7 +28,7 @@
     --color-success-content: oklch(37% 0.077 168.94);
     --color-warning: oklch(82% 0.189 84.429);
     --color-warning-content: #61303e;
-    --color-error: oklch(71% 0.194 13.428);
+    --color-error: #ED4337;
     --color-error-content: oklch(27% 0.105 12.094);
     --radius-selector: 0.5rem;
     --radius-field: 2rem;
@@ -80,8 +80,32 @@
     @apply btn btn-primary
 }
 
+/* start table listing items from associated models */
+.associated-card {
+    @apply card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow duration-300 text-base-content;
+}
 
+.associated-card-title {
+    @apply card-title text-base-content lg:text-xl text-lg;
+}
 
+.associated-table {
+    @apply table w-full bg-base-300 text-secondary-content;
+}
+
+.associated-table-header {
+    @apply text-primary;
+}
+
+.associated-table-checkbox {
+    @apply checkbox border-neutral bg-base-100 checked:bg-base-100 checked:text-accent-content;
+}
+
+.associated-table-toggle {
+    @apply toggle border-neutral bg-base-100 checked:text-accent-content;
+}
+
+/* end table listing items from associated models */
 .upload-card {
     @apply card bg-neutral shadow-xl hover:shadow-2xl transition-shadow duration-300;
 }
@@ -90,10 +114,58 @@
     @apply card bg-base-200 text-base-content gap-6 shadow-xl hover:shadow-2xl transition-shadow duration-300;
 }
 
+/* start object edit page */
 .edit-card {
-    @apply card bg-neutral text-neutral-content shadow-xl hover:shadow-2xl transition-shadow duration-300;
+    @apply card bg-secondary text-secondary-content shadow-xl hover:shadow-2xl transition-shadow duration-300 p-6;
 }
 
-.input-form-color {
-    @apply bg-base-200 text-neutral-content
+.edit-card-title {
+    @apply card-title text-secondary-content lg:text-xl text-lg mb-4;
+}
+
+.edit-card-field-name {
+    @apply text-secondary-content/60 font-semibold mb-2;
+}
+
+.edit-card-field-value {
+    @apply w-full bg-base-300 text-secondary-content font-medium;
+}
+
+.edit-card-field-toggle {
+    @apply toggle bg-base-300 text-secondary-content checked:bg-base-100 checked:text-accent-content;
+}
+
+
+/* end object edit page */
+/* start detail object view */
+.detail-card {
+    @apply card bg-base-300 shadow-xl hover:shadow-2xl transition-shadow duration-300 text-primary-content;
+}
+
+.detail-card-title {
+    @apply card-title text-primary lg:text-xl text-lg mb-4;
+}
+
+.detail-card-body {
+    @apply card-body px-6 py-4;
+}
+
+.detail-card-field-name {
+    @apply text-primary-content/60 font-semibold;
+}
+
+.detail-card-field-value {
+    @apply text-primary-content font-medium;
+}
+
+.detail-action-card {
+    @apply card bg-base-200 shadow-xl hover:shadow-2xl transition-shadow duration-300 text-base-content mt-6;
+}
+
+.detail-action-card-title {
+    @apply card-title text-base-content lg:text-xl text-lg mb-4;
+}
+
+.detail-action-card-body {
+    @apply card-body px-6 py-4;
 }

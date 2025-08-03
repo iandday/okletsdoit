@@ -28,6 +28,8 @@ This project utilizes django 5.2 or higher, daisyUI5 and enforces CSP via the dj
 * Use {% include %} for reusable components
 * Keep template logic minimal, use view context instead
 * All template block tags must have the block name in the endblock tag
+* The project utilizes the UV package manager, all commands are run with uv instead of python
+
 
 # daisyUI 5
 daisyUI 5 is a CSS library for Tailwind CSS 4

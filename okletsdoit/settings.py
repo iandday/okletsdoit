@@ -74,6 +74,7 @@ INSTALLED_APPS = [
     "contacts",
     "list",
     "deadline",
+    "guestlist",
 ]
 
 if DEBUG:

@@ -141,6 +141,7 @@ def site_vars(request):
             {"view_name": "expenses:summary", "icon": "fa-dollar-sign", "text": "Budget"},
             {"view_name": "contacts:list", "icon": "fa-address-book", "text": "Contacts"},
             {"view_name": "list:summary", "icon": "fa-list-check", "text": "Lists"},
+            {"view_name": "guestlist:guestlist_summary", "icon": "fa-users", "text": "Guest List"},
         ],
         "sidebar_app_links": [
             {"view_name": "settings", "icon": "fa-gear", "text": "Settings"},
