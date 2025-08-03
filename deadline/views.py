@@ -200,7 +200,7 @@ def deadline_list_edit(request: HttpRequest, deadline_list_slug: str) -> HttpRes
         return redirect("deadline:deadline_summary")
 
     if request.method == "POST":
-        form = DeadlineListForm(request.POST)
+        form = DeadlineListForm(request.POST, instance=deadline_list)
         if form.is_valid():
             deadline_list = form.save(commit=False)
             deadline_list.created_by = request.user

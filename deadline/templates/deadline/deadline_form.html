@@ -51,7 +51,7 @@
         </div>
         <!-- Form Card -->
         <div class="edit-card">
-            <div class="card-body">
+            <div class="edit-card-body">
                 <form method="post" class="space-y-6">
                     {% csrf_token %}
                     <!-- Display non-field errors -->
@@ -72,7 +72,7 @@
                     <!-- Deadline Name -->
                     <div class="form-control w-full">
                         <label class="label">
-                            <span class="label-text font-semibold">{{ form.name.label }}</span>
+                            <span class="edit-card-field-name">{{ form.name.label }}</span>
                             <span class="label-text-alt text-error">Required</span>
                         </label>
                         {{ form.name }}
@@ -87,7 +87,7 @@
                     <!-- Description -->
                     <div class="form-control w-full">
                         <label class="label">
-                            <span class="label-text font-semibold">{{ form.description.label }}</span>
+                            <span class="edit-card-field-name">{{ form.description.label }}</span>
                             <span class="label-text-alt">Optional</span>
                         </label>
                         {{ form.description }}
@@ -104,7 +104,7 @@
                         <!-- Deadline List -->
                         <div class="form-control w-full">
                             <label class="label">
-                                <span class="label-text font-semibold">{{ form.deadline_list.label }}</span>
+                                <span class="edit-card-field-name">{{ form.deadline_list.label }}</span>
                                 <span class="label-text-alt text-error">Required</span>
                             </label>
                             {{ form.deadline_list }}
@@ -125,7 +125,7 @@
                         <!-- Due Date -->
                         <div class="form-control w-full">
                             <label class="label">
-                                <span class="label-text font-semibold">{{ form.due_date.label }}</span>
+                                <span class="edit-card-field-name">{{ form.due_date.label }}</span>
                                 <span class="label-text-alt">Optional</span>
                             </label>
                             {{ form.due_date }}
@@ -146,7 +146,7 @@
                     <!-- Assigned To -->
                     <div class="form-control w-full">
                         <label class="label">
-                            <span class="label-text font-semibold">{{ form.assigned_to.label }}</span>
+                            <span class="edit-card-field-name">{{ form.assigned_to.label }}</span>
                             <span class="label-text-alt">Optional</span>
                         </label>
                         {{ form.assigned_to }}
@@ -162,7 +162,7 @@
                     <div class="form-control">
                         <label class="label cursor-pointer justify-start gap-4">
                             {{ form.completed }}
-                            <span class="label-text font-semibold">{{ form.completed.label }}</span>
+                            <span class="edit-card-field-name">{{ form.completed.label }}</span>
                         </label>
                         {% if form.completed.errors %}
                             <label class="label">
@@ -175,7 +175,7 @@
                     <!-- Completion Notes (shown only if completed is checked) -->
                     <div class="form-control w-full" id="completion-notes-field">
                         <label class="label">
-                            <span class="label-text font-semibold">{{ form.completed_note.label }}</span>
+                            <span class="edit-card-field-name">{{ form.completed_note.label }}</span>
                             <span class="label-text-alt">Optional</span>
                         </label>
                         {{ form.completed_note }}

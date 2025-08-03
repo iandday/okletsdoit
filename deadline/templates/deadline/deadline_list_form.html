@@ -4,12 +4,12 @@
 
 {% block content %}
     <div class="max-w-xl mx-auto mt-8">
-        <div class="card bg-base-100 shadow-lg">
-            <div class="card-body">
+        <div class="edit-card">
+            <div class="edit-card-body">
                 {% if deadline_list %}
-                    <h2 class="card-title">Edit Deadline List</h2>
+                    <h2 class="edit-card-title">Edit Deadline List</h2>
                 {% else %}
-                    <h2 class="card-title">Create Deadline List</h2>
+                    <h2 class="edit-card-title">Create Deadline List</h2>
                 {% endif %}
                 <form method="post" novalidate>
                     {% csrf_token %} {{ form.non_field_errors }}
