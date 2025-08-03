@@ -37,4 +37,13 @@ class SocialAccountAdapter(DefaultSocialAccountAdapter):
 
         See: https://docs.allauth.org/en/latest/socialaccount/advanced.html#creating-and-populating-user-instances
         """
-        return super().populate_user(request, sociallogin, data)
+        user = sociallogin.user
+        # Extract full name from OIDC data (adjust 'name' based on your OIDC provider's claims)
+        full_name = data.get("name")
+        if full_name:
+            parts = full_name.split(" ", 1)  # Split into at most two parts
+            user.first_name = parts[0]
+            if len(parts) > 1:
+                user.last_name = parts[1]
+        # You can also handle other fields here if needed
+        return user
