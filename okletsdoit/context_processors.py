@@ -142,6 +142,7 @@ def site_vars(request):
             {"view_name": "contacts:list", "icon": "fa-address-book", "text": "Contacts"},
             {"view_name": "list:summary", "icon": "fa-list-check", "text": "Lists"},
             {"view_name": "guestlist:guestlist_summary", "icon": "fa-users", "text": "Guest List"},
+            {"view_name": "core:timeline_summary", "icon": "fa-users", "text": "Timeline"},
         ],
         "sidebar_app_links": [
             {"view_name": "settings", "icon": "fa-gear", "text": "Settings"},
@@ -168,7 +169,7 @@ def site_vars(request):
                 "content": [
                     "Steph picked the place, a bar in Easton called The Beeline, not knowing that Ian lived across town, all the way in Galloway. Obviously she beat him there! So, she waited and waited and waited.",
                     'When Ian finally strolled up, he skipped the small talk and opened with, "Huh. I thought your hair would be brighter."',
-                    "The audacity of this man, we hadn’t even walked inside yet! Surprisingly, but true to character, Steph laughed it off and didn’t toss a drink in his face later. And that’s when Ian knew he’d said something dumb, but maybe to the right person.",
+                    "The audacity of this man, we hadn’t even walked inside yet! Surprisingly, Steph laughed it off and didn’t toss a drink in his face later. And that’s when Ian knew he’d said something dumb, but maybe to the right person.",
                 ],
             },
             {

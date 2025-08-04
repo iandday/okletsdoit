@@ -6848,6 +6848,9 @@
   .progress-warning {
     color: var(--color-warning);
   }
+  .text-accent {
+    color: var(--color-accent);
+  }
   .text-base-100 {
     color: var(--color-base-100);
   }

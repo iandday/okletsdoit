@@ -14,7 +14,7 @@
                  width="300">
         </div>
         <!-- Hero Section -->
-        <div class="hero min-h-[60vh] mb-12 relative">
+        <div class="hero min-h-[60vh] mb-8 relative">
             <img src="{% static 'core/img/timberframeExterior.webp' %}"
                  alt="{{ wedding_data.location }}"
                  class="absolute inset-0 w-full h-full object-cover rounded-2xl">
@@ -24,18 +24,7 @@
                     <p class="text-xl lg:text-2xl text-primary-content/90 mb-6">
                         Join us at {{ wedding_data.location }}, tucked away in the Hocking Hills region of southeastern Ohio.
                     </p>
-                    <div class="flex flex-wrap justify-center gap-4">
-                        <a href="{{ wedding_data.google_maps_url }}">
-                            <img src="{% static 'core/img/googleMaps.svg' %}"
-                                 alt="Google Maps"
-                                 class="h-10 w-10 mr-2" />
-                        </a>
-                        <a href="{{ wedding_data.apple_maps_url }}">
-                            <img src="{% static 'core/img/appleMaps.png' %}"
-                                 alt="Apple Maps"
-                                 class="h-10 w-10 mr-2" />
-                        </a>
-                    </div>
+                    <div class="flex flex-wrap justify-center gap-4"></div>
                 </div>
             </div>
         </div>
@@ -121,7 +110,7 @@
                         </div>
                         <div>
                             <h3 class="font-semibold">Directions</h3>
-                            <p>Look for the balloons once you're on Kreashbaum Road, follow the gravel drive down to the venue entrance.</p>
+                            <p>Look for the sign once you're on Kreashbaum Road, follow the gravel drive down to the venue entrance.</p>
                         </div>
                         <div class="flex flex-wrap justify-center gap-4">
                             <a href="{{ wedding_data.google_maps_url }}">

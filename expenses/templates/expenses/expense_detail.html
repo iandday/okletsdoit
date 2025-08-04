@@ -82,7 +82,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {% if list_entries %}
                 <div class="lg:col-span-1">
-                    <div class="card bg-base-100 shadow-xl">
+                    <div class="detail-card">
                         <div class="card-body">
                             {% with first_entry=list_entries.first %}
                                 <a class="link link-primary"
@@ -100,9 +100,9 @@
             {% else %}
                 <!-- Expense Details Card -->
                 <div class="lg:col-span-2">
-                    <div class="card bg-base-100 shadow-xl">
-                        <div class="card-body">
-                            <h2 class="card-title text-primary mb-4">
+                    <div class="detail-card">
+                        <div class="detail-card-body">
+                            <h2 class="detail-card-title">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                      class="h-6 w-6"
                                      fill="none"

@@ -1,0 +1,131 @@
+{% extends "components/base.html" %}
+
+{% load static %}
+
+{% block title %}
+    {% if timeline_event %}
+        Edit {{ timeline_event.name }}
+    {% else %}
+        Create Timeline Event
+    {% endif %}
+{% endblock title %}
+{% block content %}
+    <div class="max-w-2xl mx-auto px-4 py-8">
+        <!-- Header Section -->
+        <div class="breadcrumbs mb-4">
+            <ul>
+                <li>
+                    <a href="{% url 'core:timeline_summary' %}" class="link">Timeline</a>
+                </li>
+                {% if timeline_event %}
+                    <li>
+                        <a href="{% url 'core:timeline_detail' timeline_event.slug %}"
+                           class="link">{{ timeline_event.name }}</a>
+                    </li>
+                    <li>Edit</li>
+                {% else %}
+                    <li>Create Event</li>
+                {% endif %}
+            </ul>
+        </div>
+        <div class="flex items-center gap-4 mb-8">
+            <div>
+                <h1 class="text-4xl font-bold text-base-content mb-2">
+                    {% if timeline_event %}
+                        Edit {{ timeline_event.name }}
+                    {% else %}
+                        Create Timeline Event
+                    {% endif %}
+                </h1>
+                <p class="text-lg text-base-content/70">
+                    {% if timeline_event %}
+                        Update timeline event details
+                    {% else %}
+                        Add a new event to your wedding timeline
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+        <!-- Form -->
+        <div class="card bg-base-100 shadow-xl">
+            <div class="card-body">
+                <form method="post"
+                      action="{% if timeline_event %}{% url 'core:timeline_edit' timeline_event.slug %}{% else %}{% url 'core:timeline_create' %}{% endif %}">
+                    {% csrf_token %}
+                    <!-- Event Name Field -->
+                    <div class="form-control mb-4">
+                        <label class="label" for="{{ form.name.id_for_label }}">
+                            <span class="label-text font-medium">{{ form.name.label }}</span>
+                            <span class="label-text-alt text-error">*</span>
+                        </label>
+                        {{ form.name }}
+                        {% if form.name.errors %}
+                            <div class="label">
+                                {% for error in form.name.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <!-- Start Date/Time Field -->
+                    <div class="form-control mb-4">
+                        <label class="label" for="{{ form.start.id_for_label }}">
+                            <span class="label-text font-medium">{{ form.start.label }}</span>
+                            <span class="label-text-alt text-error">*</span>
+                        </label>
+                        {{ form.start }}
+                        {% if form.start.errors %}
+                            <div class="label">
+                                {% for error in form.start.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <!-- End Date/Time Field -->
+                    <div class="form-control mb-4">
+                        <label class="label" for="{{ form.end.id_for_label }}">
+                            <span class="label-text font-medium">{{ form.end.label }}</span>
+                            <span class="label-text-alt text-error">*</span>
+                        </label>
+                        {{ form.end }}
+                        {% if form.end.errors %}
+                            <div class="label">
+                                {% for error in form.end.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <!-- Description Field -->
+                    <div class="form-control mb-6">
+                        <label class="label" for="{{ form.description.id_for_label }}">
+                            <span class="label-text font-medium">{{ form.description.label }}</span>
+                        </label>
+                        {{ form.description }}
+                        {% if form.description.errors %}
+                            <div class="label">
+                                {% for error in form.description.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
+                            </div>
+                        {% endif %}
+                        <div class="label">
+                            <span class="label-text-alt">Add any additional details about this event</span>
+                        </div>
+                    </div>
+                    <!-- Form Actions -->
+                    <div class="card-actions justify-end">
+                        <a href="{% url 'core:timeline_summary' %}" class="btn btn-ghost">Cancel</a>
+                        <button type="submit" class="btn btn-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 class="h-5 w-5"
+                                 fill="none"
+                                 viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            {% if timeline_event %}
+                                Update Event
+                            {% else %}
+                                Create Event
+                            {% endif %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

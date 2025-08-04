@@ -1,21 +1,23 @@
 import io
 import json
 import logging
+import datetime
 
 import polars as pl
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import HttpRequest
-from django.http import HttpResponse
-from django.shortcuts import redirect
-from django.shortcuts import render
+from django.http import HttpRequest, HttpResponse
+from django.shortcuts import redirect, render, get_object_or_404
+from django.utils import timezone
 from django.utils.text import slugify
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
 from core.forms import IdeaForm
 from core.forms import IdeaImportForm
+from core.forms import TimelineForm
 from core.models import Idea
+from .models import Timeline
 
 logger = logging.getLogger(__name__)
 
@@ -286,3 +288,95 @@ def csp_report(request):
         logger.error(f"Failed to parse CSP report: {e}")
 
     return HttpResponse(status=204)
+
+
+@login_required
+def timeline_summary(request: HttpRequest) -> HttpResponse:
+    """
+    Displays the summary of timeline events.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        HttpResponse: Rendered template with timeline events summary.
+    """
+    timeline_events = Timeline.objects.filter(is_deleted=False).order_by("start")
+
+    # Separate upcoming and past events
+    now = timezone.now()
+    upcoming_events = timeline_events.filter(start__gte=now)
+    past_events = timeline_events.filter(start__lt=now)
+
+    context = {
+        "timeline_events": timeline_events,
+        "upcoming_events": upcoming_events,
+        "past_events": past_events,
+        "total_events": timeline_events.count(),
+        "confirmed_events": timeline_events.filter(confirmed=True).count(),
+        "published_events": timeline_events.filter(published=True).count(),
+    }
+
+    return render(request, "core/timeline_summary.html", context)
+
+
+@login_required
+def timeline_create(request: HttpRequest) -> HttpResponse:
+    """
+    Create a new timeline event.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        HttpResponse: Rendered template or redirect response.
+    """
+    if request.method == "POST":
+        form = TimelineForm(request.POST)
+        if form.is_valid():
+            timeline_event = form.save(commit=False)
+            timeline_event.created_by = request.user
+            timeline_event.updated_by = request.user
+            timeline_event.save()
+            messages.success(request, "Timeline event created successfully.")
+            return redirect("core:timeline_detail", timeline_slug=timeline_event.slug)
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field}: {error}")
+    else:
+        form = TimelineForm()
+
+    return render(request, "core/timeline_form.html", {"form": form})
+
+
+@login_required
+def timeline_edit(request: HttpRequest, timeline_slug: str) -> HttpResponse:
+    """
+    Edit an existing timeline event.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        timeline_slug (str): The slug of the timeline event to edit.
+
+    Returns:
+        HttpResponse: Rendered template or redirect response.
+    """
+    timeline_event = get_object_or_404(Timeline, slug=timeline_slug, is_deleted=False)
+
+    if request.method == "POST":
+        form = TimelineForm(request.POST, instance=timeline_event)
+        if form.is_valid():
+            timeline_event = form.save(commit=False)
+            timeline_event.updated_by = request.user
+            timeline_event.save()
+            messages.success(request, "Timeline event updated successfully.")
+            return redirect("core:timeline_detail", timeline_slug=timeline_event.slug)
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field}: {error}")
+    else:
+        form = TimelineForm(instance=timeline_event)
+
+    return render(request, "core/timeline_form.html", {"form": form, "timeline_event": timeline_event})
