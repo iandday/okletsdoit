@@ -378,8 +378,14 @@ def expense_import(request):
 def detail(request, slug: str):
     """View for expense detail"""
     expense = get_object_or_404(Expense, slug=slug, is_deleted=False)
+    if expense.actual_amount and expense.estimated_amount:
+        variance = expense.actual_amount - expense.estimated_amount
+    else:
+        variance = None
+
     context = {
         "expense": expense,
+        "variance": variance,
         "form": ExpenseForm(instance=expense),
         "list_entries": expense.list_entries.filter(is_deleted=False).order_by("order"),  # type: ignore
     }
