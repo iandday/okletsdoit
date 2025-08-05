@@ -72,6 +72,10 @@
     @apply card-title text-primary lg:text-xl text-lg
 }
 
+.list-card-body {
+    @apply card-body px-6 py-4;
+}
+
 .list-add-btn {
     @apply btn btn-primary
 }
@@ -87,6 +91,10 @@
 
 .associated-card-title {
     @apply card-title text-base-content lg:text-xl text-lg;
+}
+
+.associated-card-body {
+    @apply card-body px-6 py-4;
 }
 
 .associated-table {
@@ -106,6 +114,33 @@
 }
 
 /* end table listing items from associated models */
+/* start object stats */
+.stats-card {
+    @apply mb-8;
+}
+
+.stats-card-stats {
+    @apply stats shadow bg-base-200;
+}
+
+.stats-card-stat {
+    @apply stat bg-base-200 text-base-content;
+}
+
+.stats-card-stat-title {
+    @apply stat-title text-base-content lg:text-xl text-lg;
+}
+
+.stats-card-stat-value {
+    @apply stat-value text-base-content text-center
+}
+
+.stats-card-stat-desc {
+    @apply stat-desc text-base-content/70;
+}
+
+/* end object stats */
+
 .upload-card {
     @apply card bg-neutral shadow-xl hover:shadow-2xl transition-shadow duration-300;
 }

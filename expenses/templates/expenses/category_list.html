@@ -36,10 +36,10 @@
         {% if categories %}
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {% for category in categories %}
-                    <div class="card bg-base-100 shadow-xl">
-                        <div class="card-body">
+                    <div class="list-card">
+                        <div class="list-card-body">
                             <div class="flex items-start justify-between">
-                                <h2 class="card-title text-xl mt-4">{{ category.name }}</h2>
+                                <h2 class="list-card-title">{{ category.name }} ({{ category.expense_set.count }} Expenses)</h2>
                                 <div class="dropdown dropdown-end">
                                     <div tabindex="0" role="button" class="btn btn-ghost btn-circle btn-sm">
                                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -79,18 +79,7 @@
                                     </ul>
                                 </div>
                             </div>
-                            {% if category.description %}
-                                <p class="text-base-content/70 text-sm">{{ category.description|truncatechars:100 }}</p>
-                            {% else %}
-                                <p class="text-base-content/50 text-sm italic">No description provided</p>
-                            {% endif %}
-                            <!-- Category Stats -->
-                            <div class="stats stats-vertical shadow-sm bg-base-200 mt-4">
-                                <div class="stat py-2">
-                                    <div class="stat-title text-xs">Total Expenses</div>
-                                    <div class="stat-value text-lg">{{ category.expense_set.count }}</div>
-                                </div>
-                            </div>
+                            {% if category.description %}<p class="text-sm">{{ category.description|truncatechars:100 }}</p>{% endif %}
                             <div class="card-actions justify-end mt-4">
                                 <a href="{% url 'expenses:list' %}?category={{ category.slug }}"
                                    class="btn btn-outline btn-sm">
@@ -106,7 +95,7 @@
                                 </a>
                             </div>
                             <!-- Meta Information -->
-                            <div class="text-xs text-base-content/50 mt-2">Created {{ category.created_at|date:"M j, Y" }}</div>
+                            <div class="text-xs mt-2">Created {{ category.created_at|date:"M j, Y" }}</div>
                         </div>
                     </div>
                 {% endfor %}

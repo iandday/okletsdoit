@@ -52,21 +52,23 @@
             </div>
         </div>
         <!-- Stats Overview -->
-        <div class="stats stats-horizontal shadow w-full mb-8">
-            <div class="stat">
-                <div class="stat-title">Total Expenses</div>
-                <div class="stat-value">{{ expenses.count }}</div>
-                <div class="stat-desc">in this category</div>
-            </div>
-            <div class="stat">
-                <div class="stat-title">Total Estimated</div>
-                <div class="stat-value text-info">{{ total_estimated|floatformat:2 }}</div>
-                <div class="stat-desc">estimated amount</div>
-            </div>
-            <div class="stat">
-                <div class="stat-title">Total Actual</div>
-                <div class="stat-value text-success">{{ total_actual|floatformat:2 }}</div>
-                <div class="stat-desc">actual amount</div>
+        <div class="stats-card">
+            <div class="stats-card-stats">
+                <div class="stats-card-stat">
+                    <div class="stats-card-stat-title">Total Expenses</div>
+                    <div class="stats-card-stat-value">{{ expenses.count }}</div>
+                    <div class="stats-card-stat-desc">in this category</div>
+                </div>
+                <div class="stats-card-stat">
+                    <div class="stats-card-stat-title">Total Estimated</div>
+                    <div class="stats-card-stat-value">{{ total_estimated|floatformat:2 }}</div>
+                    <div class="stats-card-stat-desc">estimated amount</div>
+                </div>
+                <div class="stats-card-stat">
+                    <div class="stats-card-stat-title">Total Actual</div>
+                    <div class="stats-card-stat-value">{{ total_actual|floatformat:2 }}</div>
+                    <div class="stats-card-stat-desc">actual amount</div>
+                </div>
             </div>
         </div>
         <!-- Main Content -->
@@ -101,8 +103,8 @@
                         {% if expenses %}
                             <div class="space-y-4">
                                 {% for expense in expenses %}
-                                    <div class="card bg-base-200">
-                                        <div class="card-body p-4">
+                                    <div class="detail-card">
+                                        <div class="detail-card-body">
                                             <div class="flex items-center justify-between">
                                                 <div class="flex-1">
                                                     <div class="flex items-center gap-2 mb-1">
@@ -135,21 +137,21 @@
                                                         {% endif %}
                                                     </div>
                                                     {% if expense.description %}
-                                                        <p class="text-sm text-base-content/70 mb-2">{{ expense.description|truncatechars:50 }}</p>
+                                                        <p class="detail-card-field-value">{{ expense.description|truncatechars:50 }}</p>
                                                     {% endif %}
                                                     <div class="flex items-center gap-4 text-sm">
                                                         {% if expense.list_entries.exists %}
-                                                            <span class="text-info">
+                                                            <span class="tdetail-card-field-value">
                                                                 {{ expense.list_entries.count }} List Entry{{ expense.list_entries.count|pluralize }}: {{ expense.calculated_price }}
                                                             </span>
                                                         {% else %}
-                                                            {% if expense.date %}<span class="text-base-content/60">{{ expense.date|date:"M j, Y" }}</span>{% endif %}
+                                                            {% if expense.date %}<span class="tdetail-card-field-value">{{ expense.date|date:"M j, Y" }}</span>{% endif %}
                                                             {% if expense.quantity > 1 %}<span class="badge badge-outline badge-sm">Qty: {{ expense.quantity }}</span>{% endif %}
                                                             {% if expense.estimated_amount %}
-                                                                <span class="text-info">Est: ${{ expense.estimated_amount|floatformat:2 }}</span>
+                                                                <span class="detail-card-field-value">Est: ${{ expense.estimated_amount|floatformat:2 }}</span>
                                                             {% endif %}
                                                             {% if expense.actual_amount %}
-                                                                <span class="text-success font-semibold">Actual: ${{ expense.actual_amount|floatformat:2 }}</span>
+                                                                <span class="tdetail-card-field-value">Actual: ${{ expense.actual_amount|floatformat:2 }}</span>
                                                             {% endif %}
                                                         {% endif %}
                                                     </div>
@@ -185,7 +187,7 @@
                         {% else %}
                             <div class="text-center py-8">
                                 <div class="text-4xl mb-4">💰</div>
-                                <p class="text-base-content/70 mb-4">No expenses in this category yet.</p>
+                                <p class="detail-card-field-value">No expenses in this category yet.</p>
                                 <a href="{% url 'expenses:create' %}?category={{ category.slug }}"
                                    class="btn btn-primary">
                                     <svg xmlns="http://www.w3.org/2000/svg"
