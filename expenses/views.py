@@ -112,8 +112,6 @@ def create(request):
             expense.save()
     return redirect("expenses:list")
 
-    return render(request, "expenses/create.html")
-
 
 @login_required
 def list(request: HttpRequest):
