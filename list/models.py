@@ -1,3 +1,4 @@
+from datetime import datetime
 import uuid
 
 from django.db import models
@@ -143,7 +144,7 @@ class ListEntry(models.Model):
 
         # update completed_at if is_completed is True
         if self.is_completed and not self.completed_at:
-            self.completed_at = self.updated_at.date()
+            self.completed_at = datetime.today()
         elif not self.is_completed:
             self.completed_at = None
 
