@@ -339,7 +339,7 @@ def timeline_create(request: HttpRequest) -> HttpResponse:
             timeline_event.updated_by = request.user
             timeline_event.save()
             messages.success(request, "Timeline event created successfully.")
-            return redirect("core:timeline_detail", timeline_slug=timeline_event.slug)
+            return redirect("core:timeline_summary")
         else:
             for field, errors in form.errors.items():
                 for error in errors:

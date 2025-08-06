@@ -43,12 +43,18 @@ class TimelineForm(ModelForm):
         model = Timeline
         fields = ["name", "start", "end", "description"]
         widgets = {
-            "name": forms.TextInput(attrs={"class": "input input-bordered w-full", "placeholder": "Enter event name"}),
-            "start": forms.DateTimeInput(attrs={"class": "input input-bordered w-full", "type": "datetime-local"}),
-            "end": forms.DateTimeInput(attrs={"class": "input input-bordered w-full", "type": "datetime-local"}),
+            "name": forms.TextInput(
+                attrs={"class": "input input-bordered edit-card-field-value", "placeholder": "Enter event name"}
+            ),
+            "start": forms.DateTimeInput(
+                attrs={"class": "input input-bordered edit-card-field-value", "type": "datetime-local"}
+            ),
+            "end": forms.DateTimeInput(
+                attrs={"class": "input input-bordered edit-card-field-value", "type": "datetime-local"}
+            ),
             "description": forms.Textarea(
                 attrs={
-                    "class": "textarea textarea-bordered w-full h-100",
+                    "class": "textarea textarea-bordered edit-card-field-value",
                     "rows": 3,
                     "placeholder": "Enter event description",
                 }
