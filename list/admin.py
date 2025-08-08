@@ -88,7 +88,7 @@ class ListEntryAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
     ordering = ["list", "order", "item"]
 
     fieldsets = (
-        ("Basic Information", {"fields": ("item", "slug", "description", "list", "order")}),
+        ("Basic Information", {"fields": ("item", "slug", "description", "list", "order", "url", "image")}),
         ("Pricing", {"fields": ("quantity", "unit_price", "additional_price", "total_price")}),
         ("Expense Integration", {"fields": ("purchased", "associated_expense")}),
         ("Completion Status", {"fields": ("is_completed", "completed_at")}),

@@ -189,9 +189,9 @@ def list_entry_create(request: HttpRequest, list_slug: str):
         return redirect("list:summary")
 
     if request.method == "POST":
-        form = ListEntryForm(request.POST)
+        form = ListEntryForm(request.POST, request.FILES)
         if form.is_valid():
-            entry = form.save(commit=False)
+            entry: ListEntry = form.save(commit=False)
             entry.list = list_obj
             entry.created_by = request.user
             entry.save()
@@ -202,8 +202,8 @@ def list_entry_create(request: HttpRequest, list_slug: str):
                 for error in errors:
                     messages.error(request, f"{field}: {error}")
             return redirect("list:detail", list_slug=list_slug)
-    else:
-        return render(request, "list/list_entry_create.html", {"form": ListEntryForm(), "list": list_obj})
+    # else:
+    # return render(request, "list/list_entry_create.html", {"form": ListEntryForm(), "list": list_obj})
 
 
 @login_required
@@ -233,9 +233,9 @@ def list_entry_edit(request: HttpRequest, entry_slug: str):
         return redirect("list:summary")
 
     if request.method == "POST":
-        form = ListEntryForm(request.POST, instance=entry)
+        form = ListEntryForm(request.POST, request.FILES, instance=entry)
         if form.is_valid():
-            entry = form.save(commit=False)
+            entry: ListEntry = form.save(commit=False)
             entry.updated_by = request.user
             entry.save()
             messages.success(request, "List entry updated successfully.")

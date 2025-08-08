@@ -31,7 +31,7 @@
                     </svg>
                     Edit {{ entry.list.name }} Item
                 </h1>
-                <form method="post">
+                <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <!-- Item Name -->
                     <div class="form-control mb-4">
@@ -66,6 +66,18 @@
                         {% if form.url.errors %}
                             <div class="label">
                                 {% for error in form.url.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <!-- Image Upload -->
+                    <div class="form-control mb-4">
+                        <label class="label" for="{{ form.image.id_for_label }}">
+                            <span class="label-text font-medium">{{ form.image.label }}</span>
+                        </label>
+                        {{ form.image }}
+                        {% if form.image.errors %}
+                            <div class="label">
+                                {% for error in form.image.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
                             </div>
                         {% endif %}
                     </div>

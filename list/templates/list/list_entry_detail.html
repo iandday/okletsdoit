@@ -179,6 +179,16 @@
                                 <p>{{ entry.order }}</p>
                             </div>
                         </div>
+                        {% if entry.image %}
+                            <div class="mb-6">
+                                <h3 class="font-semibold text-primary mb-2">Image</h3>
+                                <div class="p-4">
+                                    <img src="{{ entry.image.url }}"
+                                         alt="{{ entry.item }}"
+                                         class="max-w-xs rounded-lg shadow-md">
+                                </div>
+                            </div>
+                        {% endif %}
                         <!-- Completion Status -->
                         {% if entry.completed_at %}
                             <div class="alert alert-success">

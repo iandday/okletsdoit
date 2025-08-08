@@ -35,6 +35,7 @@ class ListEntryForm(forms.ModelForm):
             "vendor",
             "url",
             "order",
+            "image",
         ]
         widgets = {
             "item": forms.TextInput(
@@ -76,6 +77,13 @@ class ListEntryForm(forms.ModelForm):
             "vendor": forms.Select(attrs={"class": "input-form-color select select-bordered w-full"}),
             "url": forms.URLInput(
                 attrs={"class": "input input-form-color input-bordered w-full", "placeholder": "Enter URL (optional)"}
+            ),
+            "image": forms.ClearableFileInput(
+                attrs={
+                    "class": "file-input file-input-bordered file-input-primary w-full",
+                    "accept": "image/*",
+                    "help_text": "Upload an image for this item (optional). Recommended size: 300x300px.",
+                }
             ),
             "order": forms.NumberInput(
                 attrs={

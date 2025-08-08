@@ -141,6 +141,7 @@
             <h3 class="font-bold text-lg mb-6">Add New Item</h3>
             <form method="post"
                   action="{% url 'list:entry_create' list.slug %}"
+                  enctype="multipart/form-data"
                   id="entryForm">
                 {% csrf_token %}
                 {% if entry_form.non_field_errors %}

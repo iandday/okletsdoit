@@ -120,6 +120,12 @@ class ListEntry(models.Model):
         max_length=1000,
         help_text="URL for this item, e.g., a link to an online store or product page",
     )
+    image = models.ImageField(
+        upload_to="list_entries/images/",
+        blank=True,
+        null=True,
+        help_text="Image associated with this list entry",
+    )
     history = HistoricalRecords()
 
     class Meta:
