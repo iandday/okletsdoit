@@ -23,32 +23,6 @@ def site_vars(request):
             "google_maps_url": f"https://maps.google.com/?q={urllib_quote(f'{address},{city},{state},{zipcode}')}",
             "apple_maps_url": f"https://maps.apple.com/?address={urllib_quote(f'{address},{city},{state},{zipcode}')}",
             "rsvp_deadline": "2024-04-30",
-            "schedule": [
-                {
-                    "start_time": datetime.strptime("18:00:00", "%H:%M:%S").time(),
-                    "end_time": datetime.strptime("18:30:00", "%H:%M:%S").time(),
-                    "event": "Ceremony",
-                    "description": "Join us for the wedding ceremony.",
-                },
-                {
-                    "start_time": datetime.strptime("19:00:00", "%H:%M:%S").time(),
-                    "end_time": datetime.strptime("20:00:00", "%H:%M:%S").time(),
-                    "event": "Cocktail Hour",
-                    "description": "Enjoy drinks and appetizers.",
-                },
-                {
-                    "start_time": datetime.strptime("20:00:00", "%H:%M:%S").time(),
-                    "end_time": datetime.strptime("21:00:00", "%H:%M:%S").time(),
-                    "event": "Photos",
-                    "description": "Capture memories with the couple.",
-                },
-                {
-                    "start_time": datetime.strptime("20:00:00", "%H:%M:%S").time(),
-                    "end_time": datetime.strptime("23:00:00", "%H:%M:%S").time(),
-                    "event": "Reception",
-                    "description": "Dinner and activities to follow.",
-                },
-            ],
         },
         "lodging_info": [
             {

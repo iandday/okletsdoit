@@ -36,12 +36,20 @@ class IdeaImportForm(forms.Form):
     )
 
 
+class TimelineImportForm(forms.Form):
+    excel_file = forms.FileField(
+        label="Excel File",
+        help_text="Upload an Excel file (.xlsx) with timeline data",
+        widget=forms.FileInput(attrs={"class": "file-input file-input-bordered w-full", "accept": ".xlsx"}),
+    )
+
+
 class TimelineForm(ModelForm):
     """Form for creating and editing timeline events."""
 
     class Meta:
         model = Timeline
-        fields = ["name", "start", "end", "description"]
+        fields = ["name", "start", "end", "description", "confirmed", "published"]
         widgets = {
             "name": forms.TextInput(
                 attrs={"class": "input input-bordered edit-card-field-value", "placeholder": "Enter event name"}
@@ -59,4 +67,6 @@ class TimelineForm(ModelForm):
                     "placeholder": "Enter event description",
                 }
             ),
+            "confirmed": forms.CheckboxInput(attrs={"class": "checkbox checkbox-primary edit-card-field-toggle"}),
+            "published": forms.CheckboxInput(attrs={"class": "checkbox checkbox-primary edit-card-field-toggle"}),
         }

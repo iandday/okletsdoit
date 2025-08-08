@@ -6,13 +6,12 @@
     Venue - {{ wedding_data.location }}
 {% endblock title %}
 {% block content %}
-    <div class="max-w-6xl mx-auto px-4 py-8">
-        <div class="flex flex-col items-center justify-center mx-auto px-4 py-8">
-            <img src="{% static 'core/img/timberframeLodge.png' %}"
-                 alt="rsvp"
-                 height="300"
-                 width="300">
-        </div>
+    <div class="flex flex-col items-center justify-center mx-auto px-4 py-8">
+        <img src="{% static 'core/img/timberframeLodge.png' %}"
+             class="rounded-lg"
+             alt="rsvp"
+             height="300"
+             width="300">
         <!-- Hero Section -->
         <div class="hero min-h-[60vh] mb-8 relative">
             <img src="{% static 'core/img/timberframeExterior.webp' %}"
@@ -140,10 +139,21 @@
                         Event Timeline
                     </h2>
                     <div class="space-y-3">
-                        {% for event in wedding_data.schedule %}
+                        {% for event in timeline %}
                             <div>
-                                <h3 class="font-semibold">{{ event.event }}: {{ event.start_time|naturaltime }} - {{ event.end_time|naturaltime }}</h3>
-                                <p>{{ event.description }}</p>
+                                {% if event.end %}
+                                    <div class="flex flex-row gap-2">
+                                        <h3 class="font-semibold">{{ event.name }}:</h3>
+                                        <span class="text-sm">{{ event.start|time:"g:i A" }} - {{ event.end|time:"g:i A" }}</span>
+                                        <span class="text-xs">{{ event.start|date:"M d, Y" }}</span>
+                                    </div>
+                                {% else %}
+                                    <div class="flex flex-row gap-2">
+                                        <h3 class="font-semibold">{{ event.name }}:</h3>
+                                        <span class="text-sm">{{ event.start|time:"g:i A" }}</span>
+                                        <span class="text-xs">{{ event.start|date:"M d, Y" }}</span>
+                                    </div>
+                                {% endif %}
                             </div>
                         {% endfor %}
                     </div>

@@ -12,6 +12,7 @@
         "Contacts",
         "List",
         "Deadline",
-        "GuestList"
+        "GuestList",
+        "Timeline"
     ]
 }

@@ -141,9 +141,19 @@ LOGGING = {
             "class": "logging.StreamHandler",
         },
     },
-    "root": {
-        "handlers": ["console"],
-        "level": env.str("DJANGO_LOG_LEVEL"),
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": env.str("DJANGO_LOG_LEVEL"),
+            "propagate": True,
+        },
+    },
+    "formatters": {
+        "json": {
+            "()": JsonFormatter,
+            "datefmt": "%Y-%m-%dT%H:%M:%S%z",
+            "json_default": "django.utils.timezone.localtime",
+        },
     },
 }
 

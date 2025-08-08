@@ -2,7 +2,7 @@ import io
 import json
 import logging
 import datetime
-
+from io import BytesIO
 import polars as pl
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -16,6 +16,7 @@ from django.views.decorators.http import require_POST
 from core.forms import IdeaForm
 from core.forms import IdeaImportForm
 from core.forms import TimelineForm
+from core.forms import TimelineImportForm
 from core.models import Idea
 from .models import Timeline
 
@@ -33,7 +34,8 @@ def venue(request: HttpRequest):
     """
     Render the venues page of the application.
     """
-    return render(request, "core/venue.html")
+    timeline = Timeline.objects.filter(is_deleted=False, published=True).order_by("start")
+    return render(request, "core/venue.html", {"timeline": timeline})
 
 
 def our_story(request: HttpRequest):
@@ -321,6 +323,37 @@ def timeline_summary(request: HttpRequest) -> HttpResponse:
 
 
 @login_required
+def timeline_detail(request: HttpRequest, timeline_slug: str) -> HttpResponse:
+    """
+    Display the details of a specific timeline event.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        timeline_slug (str): The slug of the timeline event to display.
+
+    Returns:
+        HttpResponse: Rendered template with timeline event details.
+    """
+    timeline_event = get_object_or_404(Timeline, slug=timeline_slug, is_deleted=False)
+
+    # Calculate duration if both start and end dates exist
+    duration = None
+    if timeline_event.start and timeline_event.end:
+        duration = timeline_event.end - timeline_event.start
+
+    context = {
+        "timeline_event": timeline_event,
+        "duration_days": duration.days if duration else None,
+        "duration_hours": duration.seconds // 3600 if duration else None,
+        "duration_minutes": (duration.seconds // 60) % 60 if duration else None,
+        "duration_seconds": duration.seconds % 60 if duration else None,
+        "duration": duration,
+    }
+
+    return render(request, "core/timeline_detail.html", context)
+
+
+@login_required
 def timeline_create(request: HttpRequest) -> HttpResponse:
     """
     Create a new timeline event.
@@ -339,7 +372,7 @@ def timeline_create(request: HttpRequest) -> HttpResponse:
             timeline_event.updated_by = request.user
             timeline_event.save()
             messages.success(request, "Timeline event created successfully.")
-            return redirect("core:timeline_summary")
+            return redirect("core:timeline_detail", timeline_slug=timeline_event.slug)
         else:
             for field, errors in form.errors.items():
                 for error in errors:
@@ -380,3 +413,153 @@ def timeline_edit(request: HttpRequest, timeline_slug: str) -> HttpResponse:
         form = TimelineForm(instance=timeline_event)
 
     return render(request, "core/timeline_form.html", {"form": form, "timeline_event": timeline_event})
+
+
+@login_required
+def timeline_delete(request: HttpRequest, timeline_slug: str) -> HttpResponse:
+    """
+    Delete a timeline event by marking it as deleted.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        timeline_slug (str): The slug of the timeline event to delete.
+
+    Returns:
+        HttpResponse: Rendered confirmation template or redirect response.
+    """
+    timeline_event = get_object_or_404(Timeline, slug=timeline_slug, is_deleted=False)
+
+    if request.method == "POST":
+        timeline_event.is_deleted = True
+        timeline_event.updated_by = request.user
+        timeline_event.save()
+        messages.success(request, f"Timeline event '{timeline_event.name}' deleted successfully.")
+        return redirect("core:timeline_summary")
+
+    return render(request, "core/timeline_delete.html", {"timeline_event": timeline_event})
+
+
+@login_required
+def timeline_import(request: HttpRequest) -> HttpResponse:
+    """
+    Handle timeline import via Excel file upload.
+    On GET: returns a template spreadsheet for import.
+    On POST: processes uploaded Excel file and creates timeline events.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        HttpResponse: Excel file download (GET) or redirect after processing (POST).
+    """
+
+    if request.method == "POST":
+        form = TimelineImportForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            uploaded_file = request.FILES.get("excel_file")
+            if uploaded_file:
+                try:
+                    df = pl.read_excel(io.BytesIO(uploaded_file.read()))
+
+                    # Validate required columns
+                    required_columns = [
+                        "name",
+                        "description",
+                        "start",
+                    ]
+                    missing_columns = [col for col in required_columns if col not in df.columns]
+
+                    if missing_columns:
+                        messages.error(request, f"Missing required columns: {', '.join(missing_columns)}")
+                        return redirect("core:timeline_summary")
+
+                    created_count = 0
+
+                    # Process each row
+                    for row in df.iter_rows(named=True):
+                        logger.error(f"Processing row: {row}")
+
+                        try:
+                            # Parse dates and times
+
+                            start = datetime.datetime.strptime(row["start"], "%Y-%m-%dT%H:%M")
+                            logger.error(f"Parsed start time: {row['start']}")
+                            if row.get("end", False):
+                                end = datetime.datetime.strptime(row["end"], "%Y-%m-%dT%H:%M")
+                            else:
+                                end = None
+
+                            # Create timeline event
+                            timeline_event, created = Timeline.objects.get_or_create(
+                                name=str(row["name"]),
+                                defaults={
+                                    "description": str(row["description"]) if row["description"] else "",
+                                    "start": start,
+                                    "end": end,
+                                    "published": bool(row["published"]) if row["published"] is not None else False,
+                                    "confirmed": bool(row["confirmed"]) if row["confirmed"] is not None else False,
+                                    "created_by": request.user,
+                                    "updated_by": request.user,
+                                },
+                            )
+                            if created:
+                                created_count += 1
+                            else:
+                                # If not created, update existing event
+                                timeline_event.description = str(row["description"]) if row["description"] else ""
+                                timeline_event.start = start
+                                timeline_event.end = end
+                                timeline_event.published = (
+                                    bool(row["published"]) if row["published"] is not None else False
+                                )
+                                timeline_event.confirmed = (
+                                    bool(row["confirmed"]) if row["confirmed"] is not None else False
+                                )
+                                timeline_event.updated_by = request.user
+                                timeline_event.save()
+
+                        except Exception as e:
+                            messages.warning(
+                                request, f"Failed to import row with name '{row.get('name', 'Unknown')}': {str(e)}"
+                            )
+                            continue
+
+                    if created_count > 0:
+                        messages.success(request, f"Successfully imported {created_count} timeline events.")
+                    else:
+                        messages.warning(request, "No timeline events were imported.")
+
+                except Exception as e:
+                    messages.error(request, f"Error processing file: {str(e)}")
+            else:
+                messages.error(request, "Please select an Excel file to upload.")
+                return redirect("core:timeline_summary")
+        else:
+            messages.error(request, "Invalid form submission. Please try again.")
+
+        return redirect("core:timeline_summary")
+
+    # Create template DataFrame with required columns
+    template_data = {
+        "name": ["Sample Event"],
+        "description": ["Sample description for the event"],
+        "start": ["2024-01-01T10:00"],
+        "end": ["2024-01-01T12:00"],
+        "published": [False],
+        "confirmed": [True],
+    }
+
+    df = pl.DataFrame(template_data)
+
+    # Create Excel file in memory
+    buffer = BytesIO()
+    df.write_excel(buffer)
+    buffer.seek(0)
+
+    # Return as downloadable file
+    response = HttpResponse(
+        buffer.getvalue(), content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
+    response["Content-Disposition"] = 'attachment; filename="timeline_import_template.xlsx"'
+    return response

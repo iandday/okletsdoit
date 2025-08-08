@@ -1,0 +1,111 @@
+{% extends "components/base.html" %}
+
+{% load static %}
+
+{% block title %}
+    Delete Timeline Event
+{% endblock title %}
+{% block content %}
+    <div class="max-w-2xl mx-auto px-4 py-8">
+        <!-- Header Section -->
+        <div class="breadcrumbs mb-4">
+            <ul>
+                <li>
+                    <a href="{% url 'core:timeline_summary' %}" class="link">Timeline</a>
+                </li>
+                <li>
+                    <a href="{% url 'core:timeline_detail' timeline_event.slug %}"
+                       class="link">{{ timeline_event.name }}</a>
+                </li>
+                <li>Delete</li>
+            </ul>
+        </div>
+        <div class="flex items-center gap-4 mb-8">
+            <div>
+                <h1 class="text-4xl font-bold text-base-content mb-2">Delete Timeline Event</h1>
+                <p class="text-lg text-base-content/70">This action cannot be undone</p>
+            </div>
+        </div>
+        <!-- Confirmation Card -->
+        <div class="delete-confirmation-card">
+            <div class="delete-confirmation-card-body">
+                <div class="alert alert-error mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         class="h-6 w-6"
+                         fill="none"
+                         viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                    </svg>
+                    <div>
+                        <h3 class="font-bold">Are you sure you want to delete this timeline event?</h3>
+                        <div class="text-xs">This action will permanently remove the event from your timeline.</div>
+                    </div>
+                </div>
+                <!-- Event Details -->
+                <h3 class="text-lg font-semibold mb-3">Event Details</h3>
+                <div class="grid grid-cols-1 gap-3">
+                    <div>
+                        <span class="delete-confirmation-card-field-name">Event Name:</span>
+                        <span class="delete-confirmation-card-field-value ">{{ timeline_event.name }}</span>
+                    </div>
+                    <div>
+                        <span class="delete-confirmation-card-field-name">Start:</span>
+                        <span class="delete-confirmation-card-field-value">{{ timeline_event.start|date:"M d, Y g:i A" }}</span>
+                    </div>
+                    <div>
+                        <span class="delete-confirmation-card-field-name">End:</span>
+                        <span class="delete-confirmation-card-field-value">{{ timeline_event.end|date:"M d, Y g:i A" }}</span>
+                    </div>
+                    {% if timeline_event.description %}
+                        <div>
+                            <span class="delete-confirmation-card-field-name">Description:</span>
+                            <div class="delete-confirmation-card-field-value">{{ timeline_event.description|truncatechars:200 }}</div>
+                        </div>
+                    {% endif %}
+                    <span class="delete-confirmation-card-field-name">Status:</span>
+                    <span class="ml-2">
+                        {% if timeline_event.confirmed %}
+                            <div class="badge badge-success badge-sm">Confirmed</div>
+                        {% else %}
+                            <div class="badge badge-warning badge-sm">Pending</div>
+                        {% endif %}
+                        {% if timeline_event.published %}
+                            <div class="badge badge-success badge-sm ml-1">Published</div>
+                        {% else %}
+                            <div class="badge badge-warning badge-sm ml-1">Draft</div>
+                        {% endif %}
+                    </span>
+                </div>
+                <!-- Confirmation Form -->
+                <form method="post"
+                      action="{% url 'core:timeline_delete' timeline_event.slug %}">
+                    {% csrf_token %}
+                    <div class="delete-confirmation-card-actions">
+                        <a href="{% url 'core:timeline_detail' timeline_event.slug %}"
+                           class="delete-confirmation-card-button-cancel">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 class="h-4 w-4"
+                                 fill="none"
+                                 viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                            Cancel
+                        </a>
+                        <button type="submit" class="delete-confirmation-card-button-delete">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 class="h-4 w-4"
+                                 fill="none"
+                                 viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                            Delete Event
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

@@ -91,6 +91,36 @@
                             </div>
                         {% endif %}
                     </div>
+                    <!-- Confirmation Status Field -->
+                    <div class="form-control mb-4">
+                        <label class="label" for="{{ form.confirmed.id_for_label }}">
+                            <span class="label-text font-medium">{{ form.confirmed.label }}</span>
+                        </label>
+                        {{ form.confirmed }}
+                        {% if form.confirmed.errors %}
+                            <div class="label">
+                                {% for error in form.confirmed.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
+                            </div>
+                        {% endif %}
+                        <div class="label">
+                            <span class="label-text-alt">Is this event confirmed?</span>
+                        </div>
+                    </div>
+                    <!-- Publication Status Field -->
+                    <div class="form-control mb-6">
+                        <label class="label" for="{{ form.published.id_for_label }}">
+                            <span class="label-text font-medium">{{ form.published.label }}</span>
+                        </label>
+                        {{ form.published }}
+                        {% if form.published.errors %}
+                            <div class="label">
+                                {% for error in form.published.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
+                            </div>
+                        {% endif %}
+                        <div class="label">
+                            <span class="label-text-alt">Add this event to the venue page's timeline</span>
+                        </div>
+                    </div>
                     <!-- Description Field -->
                     <div class="form-control mb-6">
                         <label class="label" for="{{ form.description.id_for_label }}">

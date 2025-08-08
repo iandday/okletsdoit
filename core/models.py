@@ -50,7 +50,7 @@ class Timeline(models.Model):
     slug = models.SlugField(max_length=250, null=True, blank=True, unique=True)
     name = models.CharField(max_length=100)
     start = models.DateTimeField(default=datetime.datetime.now)
-    end = models.DateTimeField(default=datetime.datetime.now)
+    end = models.DateTimeField(null=True, blank=True)
     published = models.BooleanField(default=False, help_text="Indicates if the event is published to the venue page")
     confirmed = models.BooleanField(default=False, help_text="Indicates if the event is confirmed")
     description = models.TextField(blank=True, null=True)
