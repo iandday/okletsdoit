@@ -21,13 +21,13 @@ echo "Collecting static files..."
 python manage.py collectstatic --noinput --clear
 
 # Create superuser if it doesn't exist (optional, for production setup)
-if [ "$DJANGO_SUPERUSER_USERNAME" ] && [ "$DJANGO_SUPERUSER_EMAIL" ] && [ "$DJANGO_SUPERUSER_PASSWORD" ]; then
+if [ "$DJANGO_SUPERUSER_EMAIL" ] && [ "$DJANGO_SUPERUSER_PASSWORD" ]; then
     echo "Creating superuser..."
     python manage.py shell -c "
-from django.contrib.auth.models import User
-if not User.objects.filter(username='$DJANGO_SUPERUSER_USERNAME').exists():
+from django.contrib.auth import get_user_model
+User = get_user_model()
+if not User.objects.filter(email='$DJANGO_SUPERUSER_EMAIL').exists():
     User.objects.create_superuser(
-        username='$DJANGO_SUPERUSER_USERNAME',
         email='$DJANGO_SUPERUSER_EMAIL',
         password='$DJANGO_SUPERUSER_PASSWORD'
     )

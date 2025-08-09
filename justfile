@@ -13,15 +13,12 @@ setup:
 #----Development commands----#
 up:
     @echo "Starting the development environment"
-    docker compose -f docker/docker-compose.yml up
+    docker compose -f docker/docker-compose.yml build && docker compose -f docker/docker-compose.yml up
 
 css:
     @echo "Building CSS with Tailwind and daisyUI 5"
     npm run build-css
 
-dev:
-    @echo "Starting django server"
-    uv run --group dev manage.py runserver_plus 127.0.0.1:8000
 
 makemigrations:
     @echo "Running Django makemigrations..."

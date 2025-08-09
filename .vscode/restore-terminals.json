@@ -17,16 +17,6 @@
       "splitTerminals": [
         {
           "commands": [
-            "just dev"
-          ],
-          "name": "DjangoServer"
-        }
-      ]
-    },
-    {
-      "splitTerminals": [
-        {
-          "commands": [
             "just css"
           ],
           "name": "CssBuilder"
