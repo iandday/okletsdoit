@@ -88,9 +88,9 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <!-- Item Details Card -->
             <div class="lg:col-span-2">
-                <div class="list-card shadow-xl">
-                    <div class="card-body">
-                        <h2 class="list-card-title mb-4">
+                <div class="detail-card">
+                    <div class="detail-card-body">
+                        <h2 class="detail-card-title mb-4">
                             <svg xmlns="http://www.w3.org/2000/svg"
                                  class="h-6 w-6"
                                  fill="none"
@@ -103,9 +103,9 @@
                         <!-- Description -->
                         {% if entry.description %}
                             <div class="mb-6">
-                                <h3 class="font-semibold text-primary mb-2">Description</h3>
+                                <h3 class="detail-card-field-title">Description</h3>
                                 <div class="p-4">
-                                    <p>{{ entry.description }}</p>
+                                    <p class="detail-card-field-value">{{ entry.description }}</p>
                                 </div>
                             </div>
                         {% endif %}
@@ -127,61 +127,54 @@
                         {% endif %}
                         <!-- Pricing Information -->
                         {% if entry.unit_price > 0 or entry.additional_price > 0 %}
-                            <div class="mb-6">
-                                <h3 class="font-semibold text-primary mb-2">Pricing Details</h3>
-                                <div class="bg-info/10 border border-info/20 rounded-lg p-4">
-                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                                        <div>
-                                            <div class="text-sm font-medium text-primary/60">Quantity</div>
-                                            <div class="text-lg font-semibold text-primary">{{ entry.quantity }}</div>
-                                        </div>
-                                        {% if entry.unit_price > 0 %}
-                                            <div>
-                                                <div class="text-sm font-medium text-primary/60">Unit Price</div>
-                                                <div class="text-lg font-semibold text-primary">${{ entry.unit_price|floatformat:2 }}</div>
-                                            </div>
-                                        {% endif %}
-                                        {% if entry.additional_price > 0 %}
-                                            <div>
-                                                <div class="text-sm font-medium text-primary/60">Additional Price</div>
-                                                <div class="text-lg font-semibold text-primary">${{ entry.additional_price|floatformat:2 }}</div>
-                                            </div>
-                                        {% endif %}
-                                        {% if entry.total_price > 0 %}
-                                            <div>
-                                                <div class="text-sm font-medium text-primary/60">Total Price</div>
-                                                <div class="text-xl font-bold text-primary">${{ entry.total_price|floatformat:2 }}</div>
-                                            </div>
-                                        {% endif %}
-                                    </div>
-                                    <div class="flex items-center gap-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                             class="h-5 w-5 {% if entry.purchased %}text-success{% else %}text-primary/40{% endif %}"
-                                             fill="none"
-                                             viewBox="0 0 24 24"
-                                             stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                                        </svg>
-                                        <span class="{% if entry.purchased %}text-success font-semibold{% else %}text-primary/60{% endif %}">
-                                            {% if entry.purchased %}
-                                                Already Purchased
-                                            {% else %}
-                                                Not Yet Purchased
-                                            {% endif %}
-                                        </span>
-                                    </div>
+                            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-8 mb-4">
+                                <div>
+                                    <div class="detail-card-field-name">Quantity</div>
+                                    <div class="detail-card-field-value">{{ entry.quantity }}</div>
                                 </div>
+                                {% if entry.unit_price > 0 %}
+                                    <div>
+                                        <div class="detail-card-field-name">Unit Price</div>
+                                        <div class="detail-card-field-value">${{ entry.unit_price|floatformat:2 }}</div>
+                                    </div>
+                                {% endif %}
+                                {% if entry.additional_price > 0 %}
+                                    <div>
+                                        <div class="detail-card-field-name">Additional Price</div>
+                                        <div class="detail-card-field-value">${{ entry.additional_price|floatformat:2 }}</div>
+                                    </div>
+                                {% endif %}
+                                {% if entry.total_price > 0 %}
+                                    <div>
+                                        <div class="detail-card-field-name">Total Price</div>
+                                        <div class="detail-card-field-value">${{ entry.total_price|floatformat:2 }}</div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     class="h-5 w-5 {% if entry.purchased %}text-success{% else %}text-primary/40{% endif %}"
+                                     fill="none"
+                                     viewBox="0 0 24 24"
+                                     stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                                </svg>
+                                <span class="{% if entry.purchased %}text-success font-semibold{% else %}text-primary/60{% endif %}">
+                                    {% if entry.purchased %}
+                                        Already Purchased
+                                    {% else %}
+                                        Not Yet Purchased
+                                    {% endif %}
+                                </span>
                             </div>
                         {% endif %}
-                        <div class="mb-6">
-                            <h3 class="font-semibold text-primary mb-2">Order</h3>
-                            <div class="rounded-lg p-4">
-                                <p>{{ entry.order }}</p>
-                            </div>
+                        <div>
+                            <div class="detail-card-field-title">Order</div>
+                            <div class="detail-card-field-value">{{ entry.order }}</div>
                         </div>
                         {% if entry.image %}
                             <div class="mb-6">
-                                <h3 class="font-semibold text-primary mb-2">Image</h3>
+                                <h3 class="detail-card-field-title">Image</h3>
                                 <div class="p-4">
                                     <img src="{{ entry.image.url }}"
                                          alt="{{ entry.item }}"
@@ -211,8 +204,8 @@
             <!-- Sidebar -->
             <div class="space-y-6">
                 <!-- Item Metadata -->
-                <div class="list-card  shadow-xl">
-                    <div class="card-body">
+                <div class="detail-card">
+                    <div class="detail-card-body">
                         <h3 class="card-title text-primary mb-4">
                             <svg xmlns="http://www.w3.org/2000/svg"
                                  class="h-5 w-5"
@@ -225,26 +218,26 @@
                         </h3>
                         <div class="space-y-3">
                             <div>
-                                <div class="text-sm font-medium text-primary/60">Created by</div>
-                                <div class="text-primary">{{ entry.created_by.get_full_name|default:entry.created_by.email }}</div>
+                                <div class="detail-card-field-name">Created by</div>
+                                <div class="detail-card-field-value">{{ entry.created_by.get_full_name|default:entry.created_by.email }}</div>
                             </div>
                             <div>
-                                <div class="text-sm font-medium text-primary/60">Created on</div>
-                                <div class="text-primary">{{ entry.created_at|date:"F j, Y \a\t g:i A" }}</div>
+                                <div class="detail-card-field-name">Created on</div>
+                                <div class="detail-card-field-value">{{ entry.created_at|date:"F j, Y \a\t g:i A" }}</div>
                             </div>
                             {% if entry.updated_by and entry.updated_at != entry.created_at %}
                                 <div>
-                                    <div class="text-sm font-medium text-primary/60">Last updated by</div>
-                                    <div class="text-primary">{{ entry.updated_by.get_full_name|default:entry.updated_by.email }}</div>
+                                    <div class="detail-card-field-name">Last updated by</div>
+                                    <div class="detail-card-field-value">{{ entry.updated_by.get_full_name|default:entry.updated_by.email }}</div>
                                 </div>
                                 <div>
-                                    <div class="text-sm font-medium text-primary/60">Updated on</div>
-                                    <div class="text-primary">{{ entry.updated_at|date:"F j, Y \a\t g:i A" }}</div>
+                                    <div class="detail-card-field-name">Updated on</div>
+                                    <div class="detail-card-field-value">{{ entry.updated_at|date:"F j, Y \a\t g:i A" }}</div>
                                 </div>
                             {% endif %}
                             <div>
-                                <div class="text-sm font-medium text-primary/60">Completion Status</div>
-                                <div class="text-primary">
+                                <div class="detail-card-field-name">Completion Status</div>
+                                <div class="detail-card-field-value">
                                     {% if entry.is_completed %}
                                         <span class="badge badge-success">Completed</span>
                                     {% else %}
@@ -254,13 +247,13 @@
                             </div>
                             {% if entry.completed_at %}
                                 <div>
-                                    <div class="text-sm font-medium text-primary/60">Completed on</div>
-                                    <div class="text-primary">{{ entry.completed_at|date:"F j, Y" }}</div>
+                                    <div class="detail-card-field-name">Completed on</div>
+                                    <div class="detail-card-field-value">{{ entry.completed_at|date:"F j, Y" }}</div>
                                 </div>
                             {% endif %}
                             <div>
-                                <div class="text-sm font-medium text-primary/60">Purchase Status</div>
-                                <div class="text-primary">
+                                <div class="detail-card-field-name">Purchase Status</div>
+                                <div class="detail-card-field-value">
                                     {% if entry.purchased %}
                                         <span class="badge badge-success">Purchased</span>
                                     {% else %}
@@ -271,8 +264,8 @@
                             <!-- Vendor Information -->
                             {% if entry.vendor %}
                                 <div>
-                                    <div class="text-sm font-medium text-primary/60">Vendor</div>
-                                    <div class="text-primary">
+                                    <div class="detail-card-field-name">Vendor</div>
+                                    <div class="detail-card-field-value">
                                         <a href="{% url 'contacts:detail' entry.vendor.slug %}"
                                            class="badge badge-success">{{ entry.vendor }}</a>
                                     </div>
@@ -281,8 +274,8 @@
                             <!-- Associated Expense -->
                             {% if entry.associated_expense %}
                                 <div>
-                                    <div class="text-sm font-medium text-primary/60">Expense</div>
-                                    <div class="text-primary">
+                                    <div class="detail-card-field-name">Expense</div>
+                                    <div class="detail-card-field-value">
                                         <a href="{% url 'expenses:detail' entry.associated_expense.slug %}"
                                            class="badge badge-success">{{ entry.associated_expense.item }}</a>
                                     </div>

@@ -1,16 +1,13 @@
 import logging
 import io
-from operator import index
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
-from django.db.models import Count, Q, Exists, OuterRef
+from django.db.models import Exists, OuterRef
 from django.contrib import messages
 from django.http import HttpResponse
 from django.utils.text import slugify
 import polars as pl
-from datetime import datetime
 from django.http import HttpRequest
-from io import BytesIO
 from django.utils import timezone
 
 from expenses.models import Category, Expense
@@ -202,8 +199,9 @@ def list_entry_create(request: HttpRequest, list_slug: str):
                 for error in errors:
                     messages.error(request, f"{field}: {error}")
             return redirect("list:detail", list_slug=list_slug)
-    # else:
-    # return render(request, "list/list_entry_create.html", {"form": ListEntryForm(), "list": list_obj})
+    else:
+        # GET is not used (form shown in modal on list_detail); redirect back
+        return redirect("list:detail", list_slug=list_slug)
 
 
 @login_required
@@ -243,7 +241,7 @@ def list_entry_edit(request: HttpRequest, entry_slug: str):
             for field, errors in form.errors.items():
                 for error in errors:
                     messages.error(request, f"{field}: {error}")
-        return redirect("list:detail", list_slug=entry.list.slug)
+        return redirect("list:entry_detail", entry_slug=entry.slug)
     else:
         form = ListEntryForm(instance=entry)
         return render(request, "list/list_entry_form.html", {"form": form, "entry": entry})

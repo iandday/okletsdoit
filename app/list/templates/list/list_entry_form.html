@@ -19,8 +19,8 @@
                 <li>Edit {{ entry.item }}</li>
             </ul>
         </div>
-        <div class="list-card ">
-            <div class="card-body">
+        <div class="edit-card">
+            <div class="edit-card-body">
                 <h1 class="list-card-title text-2xl mb-6">
                     <svg xmlns="http://www.w3.org/2000/svg"
                          class="h-6 w-6"
@@ -36,7 +36,7 @@
                     <!-- Item Name -->
                     <div class="form-control mb-4">
                         <label class="label" for="{{ form.item.id_for_label }}">
-                            <span class="label-text font-medium">{{ form.item.label }}</span>
+                            <span class="edit-card-field-name">{{ form.item.label }}</span>
                         </label>
                         {{ form.item }}
                         {% if form.item.errors %}
@@ -48,7 +48,7 @@
                     <!-- Description -->
                     <div class="form-control mb-4">
                         <label class="label" for="{{ form.description.id_for_label }}">
-                            <span class="label-text font-medium">{{ form.description.label }}</span>
+                            <span class="edit-card-field-name">{{ form.description.label }}</span>
                         </label>
                         {{ form.description }}
                         {% if form.description.errors %}
@@ -60,7 +60,7 @@
                     <!-- URL -->
                     <div class="form-control mb-4">
                         <label class="label" for="{{ form.url.id_for_label }}">
-                            <span class="label-text font-medium">{{ form.url.label }}</span>
+                            <span class="edit-card-field-name">{{ form.url.label }}</span>
                         </label>
                         {{ form.url }}
                         {% if form.url.errors %}
@@ -72,7 +72,7 @@
                     <!-- Image Upload -->
                     <div class="form-control mb-4">
                         <label class="label" for="{{ form.image.id_for_label }}">
-                            <span class="label-text font-medium">{{ form.image.label }}</span>
+                            <span class="edit-card-field-name">{{ form.image.label }}</span>
                         </label>
                         {{ form.image }}
                         {% if form.image.errors %}
@@ -86,7 +86,7 @@
                         <!-- Quantity -->
                         <div class="form-control">
                             <label class="label" for="{{ form.quantity.id_for_label }}">
-                                <span class="label-text font-medium">{{ form.quantity.label }}</span>
+                                <span class="edit-card-field-name">{{ form.quantity.label }}</span>
                             </label>
                             {{ form.quantity }}
                             {% if form.quantity.errors %}
@@ -98,33 +98,19 @@
                         <!-- Unit Price -->
                         <div class="form-control">
                             <label class="label" for="{{ form.unit_price.id_for_label }}">
-                                <span class="label-text font-medium">{{ form.unit_price.label }}</span>
-                            </label>
-                            {{ form.unit_price }}
-                            {% if form.unit_price.errors %}
-                                <div class="label">
-                                    {% for error in form.unit_price.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
-                                </div>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <!-- Additional Price -->
-                    <div class="form-control mb-4">
-                        <label class="label" for="{{ form.additional_price.id_for_label }}">
-                            <span class="label-text font-medium">{{ form.additional_price.label }}</span>
-                        </label>
-                        {{ form.additional_price }}
-                        {% if form.additional_price.errors %}
-                            <div class="label">
-                                {% for error in form.additional_price.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
-                            </div>
-                        {% endif %}
-                    </div>
-                    <!-- Purchased Checkbox -->
-                    <div class="form-control mb-4">
-                        <label class="cursor-pointer label">
-                            <span class="label-text font-medium">{{ form.purchased.label }}</span>
-                            {{ form.purchased }}
+                                <span class="edit-card-field-name"">{{ form.unit_price.label }}</span> </label> {{ form.unit_price }}
+                                    {% if form.unit_price.errors %}
+                                        <div class="label">
+                                            {% for error in form.unit_price.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div> </div> <!-- Additional Price --> <div class="form-control mb-4"> <label class="label" for="{{ form.additional_price.id_for_label }}"> <span class="edit-card-field-name">{{ form.additional_price.label }}</span> </label> {{ form.additional_price }}
+                                {% if form.additional_price.errors %}
+                                    <div class="label">
+                                        {% for error in form.additional_price.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div> <!-- Purchased Checkbox --> <div class="form-control mb-4"> <label class="cursor-pointer label"> <span class="edit-card-field-name"">{{ form.purchased.label }}</span> {{ form.purchased }}
                         </label>
                         {% if form.purchased.errors %}
                             <div class="label">
@@ -135,7 +121,7 @@
                     <!-- Associated Expense -->
                     <div class="form-control mb-4">
                         <label class="label" for="{{ form.associated_expense.id_for_label }}">
-                            <span class="label-text font-medium">{{ form.associated_expense.label }}</span>
+                            <span class="edit-card-field-name">{{ form.associated_expense.label }}</span>
                         </label>
                         {{ form.associated_expense }}
                         {% if form.associated_expense.errors %}
@@ -149,69 +135,57 @@
                     <!-- Vendor Selection -->
                     <div class="form-control mb-4">
                         <label class="label" for="{{ form.vendor.id_for_label }}">
-                            <span class="label-text font-medium">{{ form.vendor.label }}</span>
-                        </label>
-                        {{ form.vendor }}
-                        {% if form.vendor.errors %}
-                            <div class="label">
-                                {% for error in form.vendor.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
-                            </div>
-                        {% endif %}
-                    </div>
-                    <!-- Order Number -->
-                    <div class="form-control mb-4">
-                        <label class="label" for="{{ form.order.id_for_label }}">
-                            <span class="label-text font-medium">{{ form.order.label }}</span>
-                        </label>
-                        {{ form.order }}
-                        {% if form.order.errors %}
-                            <div class="label">
-                                {% for error in form.order.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
-                            </div>
-                        {% endif %}
-                    </div>
-                    <!-- Completion Status -->
-                    <div class="form-control mb-6">
-                        <label class="cursor-pointer label">
-                            <span class="label-text font-medium">Completion Status</span>
-                            {{ form.is_completed }}
-                            <span class="label-text">Mark as completed</span>
-                        </label>
-                        {% if form.is_completed.errors %}
-                            <div class="label">
-                                {% for error in form.is_completed.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
-                            </div>
-                        {% endif %}
-                    </div>
-                    {% if entry.completed_at %}
-                        <div class="alert alert-success mb-6">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                 class="h-6 w-6"
-                                 fill="none"
-                                 viewBox="0 0 24 24"
-                                 stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            <span>Completed on {{ entry.completed_at|date:"F j, Y" }}</span>
+                            <span class="edit-card-field-name"">{{ form.vendor.label }}</span> </label> {{ form.vendor }}
+                                {% if form.vendor.errors %}
+                                    <div class="label">
+                                        {% for error in form.vendor.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div> <!-- Order Number --> <div class="form-control mb-4"> <label class="label" for="{{ form.order.id_for_label }}"> <span class="edit-card-field-name">{{ form.order.label }}</span> </label> {{ form.order }}
+                            {% if form.order.errors %}
+                                <div class="label">
+                                    {% for error in form.order.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
+                                </div>
+                            {% endif %}
+                        </div> <!-- Completion Status --> <div class="form-control mb-6"> <label class="cursor-pointer label"> <span class="edit-card-field-name"">Completion Status</span>
+                        {{ form.is_completed }}
+                        <span class="label-text">Mark as completed</span>
+                    </label>
+                    {% if form.is_completed.errors %}
+                        <div class="label">
+                            {% for error in form.is_completed.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
                         </div>
                     {% endif %}
-                    <div class="card-actions justify-end">
-                        <a href="{% url 'list:detail' entry.list.slug %}" class="btn btn-ghost">Cancel</a>
-                        <button type="submit" class="btn btn-primary">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                 class="h-5 w-5"
-                                 fill="none"
-                                 viewBox="0 0 24 24"
-                                 stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                            </svg>
-                            Update Item
-                        </button>
+                </div>
+                {% if entry.completed_at %}
+                    <div class="alert alert-success mb-6">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             class="h-6 w-6"
+                             fill="none"
+                             viewBox="0 0 24 24"
+                             stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span>Completed on {{ entry.completed_at|date:"F j, Y" }}</span>
                     </div>
-                </form>
-            </div>
+                {% endif %}
+                <div class="card-actions justify-end">
+                    <a href="{% url 'list:detail' entry.list.slug %}" class="btn btn-ghost">Cancel</a>
+                    <button type="submit" class="btn btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             class="h-5 w-5"
+                             fill="none"
+                             viewBox="0 0 24 24"
+                             stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                        Update Item
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
+</div>
 {% endblock content %}
 {% block extra_script %}
     <script nonce="{{ request.csp_nonce }}">
