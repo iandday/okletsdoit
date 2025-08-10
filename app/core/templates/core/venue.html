@@ -6,12 +6,10 @@
     Venue - {{ wedding_data.location }}
 {% endblock title %}
 {% block content %}
+    <img src="{% static 'core/img/timberframeLodge.png' %}"
+         alt="Venue"
+         class="max-w-sm rounded-lg justify-self-center" />
     <div class="flex flex-col items-center justify-center mx-auto px-4 py-8">
-        <img src="{% static 'core/img/timberframeLodge.png' %}"
-             alt="Venue"
-             class="rounded-lg"
-             height="300"
-             width="300">
         <!-- Hero Section -->
         <div class="hero min-h-[60vh] mb-8 relative">
             <img src="{% static 'core/img/timberframeExterior.webp' %}"

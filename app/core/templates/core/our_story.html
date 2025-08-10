@@ -6,12 +6,10 @@
     Our Story
 {% endblock title %}
 {% block content %}
+    <img src="{% static 'core/img/ourStory.png' %}"
+         alt="Our Story Banner"
+         class="max-w-sm rounded-lg justify-self-center" />
     <div class="flex flex-col items-center justify-center mx-auto px-4 py-8">
-        <img src="{% static 'core/img/ourStory.png' %}"
-             alt="Our Story Banner"
-             class="rounded-lg"
-             height="300"
-             width="300">
         <p class="text-lg italic text-base-content/80 pb-8">How a swipe right and a hot take on a first date led to forever</p>
         <!-- Timeline -->
         <div class="grid grid-cols-1 gap-6">
