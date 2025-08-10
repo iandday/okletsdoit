@@ -84,6 +84,7 @@
     @apply btn btn-primary
 }
 
+
 /* start table listing items from associated models */
 .associated-card {
     @apply card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow duration-300 text-base-content;

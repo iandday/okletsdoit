@@ -8,15 +8,15 @@
 {% block content %}
     <div class="flex flex-col items-center justify-center mx-auto px-4 py-8">
         <img src="{% static 'core/img/timberframeLodge.png' %}"
+             alt="Venue"
              class="rounded-lg"
-             alt="rsvp"
              height="300"
              width="300">
         <!-- Hero Section -->
         <div class="hero min-h-[60vh] mb-8 relative">
             <img src="{% static 'core/img/timberframeExterior.webp' %}"
                  alt="{{ wedding_data.location }}"
-                 class="absolute inset-0 w-full h-full object-cover rounded-2xl">
+                 class="absolute inset-0 w-full h-full object-cover ">
             <div class="hero-overlay bg-black/60 rounded-2xl"></div>
             <div class="hero-content text-center relative z-10 h-full w-full">
                 <div class="flex flex-col justify-end h-full w-full max-w-4xl">

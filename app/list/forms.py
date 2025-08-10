@@ -10,11 +10,11 @@ class ListForm(forms.ModelForm):
         fields = ["name", "description"]
         widgets = {
             "name": forms.TextInput(
-                attrs={"class": "input input-form-color input-bordered w-full", "placeholder": "Enter list name"}
+                attrs={"class": "input input-bordered edit-card-field-value", "placeholder": "Enter list name"}
             ),
             "description": forms.Textarea(
                 attrs={
-                    "class": "textarea input-form-color textarea-bordered w-full",
+                    "class": "textarea input-bordered edit-card-field-value w-full",
                     "placeholder": "Enter list description (optional)",
                     "rows": 3,
                 }

@@ -5654,9 +5654,6 @@
   .grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .grid-cols-4 {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
   .flex-col {
     flex-direction: column;
   }
@@ -5995,12 +5992,6 @@
       border-color: color-mix(in oklab, var(--color-error) 20%, transparent);
     }
   }
-  .border-info\/20 {
-    border-color: var(--color-info);
-    @supports (color: color-mix(in lab, red, red)) {
-      border-color: color-mix(in oklab, var(--color-info) 20%, transparent);
-    }
-  }
   .chat-bubble-accent {
     background-color: var(--color-accent);
     color: var(--color-accent-content);
@@ -6115,12 +6106,6 @@
   }
   .bg-info {
     background-color: var(--color-info);
-  }
-  .bg-info\/10 {
-    background-color: var(--color-info);
-    @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklab, var(--color-info) 10%, transparent);
-    }
   }
   .bg-neutral {
     background-color: var(--color-neutral);
@@ -7719,11 +7704,6 @@
   .sm\:grid-cols-2 {
     @media (width >= 40rem) {
       grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-  .sm\:grid-cols-3 {
-    @media (width >= 40rem) {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
   }
   .sm\:flex-row {

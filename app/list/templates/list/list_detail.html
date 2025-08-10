@@ -135,98 +135,104 @@
     <!-- Add Entry Modal -->
     <dialog id="add_entry_modal" class="modal">
         <div class="modal-box">
-            <form method="dialog">
-                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-            </form>
-            <h3 class="font-bold text-lg mb-6">Add New Item</h3>
-            <form method="post"
-                  action="{% url 'list:entry_create' list.slug %}"
-                  enctype="multipart/form-data"
-                  id="entryForm">
-                {% csrf_token %}
-                {% if entry_form.non_field_errors %}
-                    <div class="alert alert-error mb-4">
-                        {% for error in entry_form.non_field_errors %}<span>{{ error }}</span>{% endfor %}
-                    </div>
-                {% endif %}
-                {% for field in entry_form %}
-                    <div class="form-control mb-4">
-                        {{ field.label_tag }}
-                        {{ field }}
-                        {% if field.errors %}
-                            <div class="text-error mt-1">
-                                {% for error in field.errors %}<span>{{ error }}</span>{% endfor %}
-                            </div>
-                        {% endif %}
-                    </div>
-                {% endfor %}
-                <div class="modal-action">
-                    <button type="button" class="btn btn-ghost" id="cancel-add-entry">Cancel</button>
-                    <button type="submit" class="btn btn-primary">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             class="h-5 w-5"
-                             fill="none"
-                             viewBox="0 0 24 24"
-                             stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                        </svg>
-                        Add Item
-                    </button>
+            <div class="edit-card">
+                <div class="edit-card-header">
+                    <h2 class="edit-card-title">Add New Item</h2>
                 </div>
+                <form method="dialog">
+                    <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                </form>
+                <h3 class="font-bold text-lg mb-6">Add New Itemd</h3>
+                <form method="post"
+                      action="{% url 'list:entry_create' list.slug %}"
+                      enctype="multipart/form-data"
+                      id="entryForm">
+                    {% csrf_token %}
+                    {% if entry_form.non_field_errors %}
+                        <div class="alert alert-error mb-4">
+                            {% for error in entry_form.non_field_errors %}<span>{{ error }}</span>{% endfor %}
+                        </div>
+                    {% endif %}
+                    {% for field in entry_form %}
+                        <div class="form-control">
+                            <label class="label" for="{{ field.id_for_label }}">
+                                <span class="edit-card-field-name">{{ field.label }}</span>
+                            </label>
+                            {{ field }}
+                            {% if field.errors %}
+                                <div class="label">
+                                    {% for error in field.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    <div class="modal-action">
+                        <button type="button" class="btn btn-ghost" id="cancel-add-entry">Cancel</button>
+                        <button type="submit" class="btn btn-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 class="h-5 w-5"
+                                 fill="none"
+                                 viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            Add Item
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <form method="dialog" class="modal-backdrop">
+                <button>close</button>
             </form>
-        </div>
-        <form method="dialog" class="modal-backdrop">
-            <button>close</button>
-        </form>
-    </dialog>
-{% endblock content %}
-{% block extra_script %}
-    <script nonce="{{ request.csp_nonce }}">
-      document.addEventListener('DOMContentLoaded', function() {
-        // Modal functionality
-        const showAddModal = document.getElementById('show-add-entry-modal');
-        const showAddModalEmpty = document.getElementById('show-add-entry-modal-empty');
-        const addModal = document.getElementById('add_entry_modal');
-        const cancelAddBtn = document.getElementById('cancel-add-entry');
+        </dialog>
+    {% endblock content %}
+    {% block extra_script %}
+        <script nonce="{{ request.csp_nonce }}">
+          document.addEventListener('DOMContentLoaded', function() {
+            // Modal functionality
+            const showAddModal = document.getElementById('show-add-entry-modal');
+            const showAddModalEmpty = document.getElementById('show-add-entry-modal-empty');
+            const addModal = document.getElementById('add_entry_modal');
+            const cancelAddBtn = document.getElementById('cancel-add-entry');
 
-        function openModal() {
-          addModal.showModal();
-          setTimeout(() => {
-            const itemField = document.querySelector('input[name="item"]');
-            if (itemField) {
-              itemField.focus();
+            function openModal() {
+              addModal.showModal();
+              setTimeout(() => {
+                const itemField = document.querySelector('input[name="item"]');
+                if (itemField) {
+                  itemField.focus();
+                }
+              }, 100);
             }
-          }, 100);
-        }
 
-        if (showAddModal) {
-          showAddModal.addEventListener('click', openModal);
-        }
+            if (showAddModal) {
+              showAddModal.addEventListener('click', openModal);
+            }
 
-        if (showAddModalEmpty) {
-          showAddModalEmpty.addEventListener('click', openModal);
-        }
+            if (showAddModalEmpty) {
+              showAddModalEmpty.addEventListener('click', openModal);
+            }
 
-        if (cancelAddBtn && addModal) {
-          cancelAddBtn.addEventListener('click', function() {
-            addModal.close();
-          });
-        }
+            if (cancelAddBtn && addModal) {
+              cancelAddBtn.addEventListener('click', function() {
+                addModal.close();
+              });
+            }
 
-        // Handle form submission
-        const form = document.getElementById('entryForm');
-        if (form) {
-          form.addEventListener('submit', function(e) {
-            const submitBtn = form.querySelector('button[type="submit"]');
-            if (submitBtn) {
-              submitBtn.disabled = true;
-              submitBtn.innerHTML = `
+            // Handle form submission
+            const form = document.getElementById('entryForm');
+            if (form) {
+              form.addEventListener('submit', function(e) {
+                const submitBtn = form.querySelector('button[type="submit"]');
+                if (submitBtn) {
+                  submitBtn.disabled = true;
+                  submitBtn.innerHTML = `
                         <span class="loading loading-spinner loading-sm"></span>
                         Adding...
                     `;
+                }
+              });
             }
           });
-        }
-      });
-    </script>
-{% endblock extra_script %}
+        </script>
+    {% endblock extra_script %}
