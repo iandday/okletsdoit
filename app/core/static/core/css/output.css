@@ -5314,6 +5314,9 @@
   .h-300 {
     height: calc(var(--spacing) * 300);
   }
+  .h-auto {
+    height: auto;
+  }
   .h-full {
     height: 100%;
   }
@@ -5500,6 +5503,9 @@
   }
   .max-w-7xl {
     max-width: var(--container-7xl);
+  }
+  .max-w-full {
+    max-width: 100%;
   }
   .max-w-md {
     max-width: var(--container-md);

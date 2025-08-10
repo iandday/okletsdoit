@@ -14,24 +14,28 @@
     <img src="{% static 'core/img/logo.png' %}"
          alt="Wedding Logo"
          class="max-w-sm rounded-lg justify-self-center " />
-    <div class="md:flex-row flex flex-col items-center gap-8 px-10">
+    <div class="flex md:flex-row flex-col items-center gap-8 px-10 py-4">
       <a href="{% static 'core/img/cover-1.jpg' %}"
          target="_blank"
          rel="noopener">
-        <img src="{% static 'core/img/cover-1-small.webp' %}"
-             alt="us cover 1"
-             width="320"
-             height="320"
-             class="w-80 h-80 object-contain bg-base-200 rounded-lg shadow-2xl justify-self-center " />
+        <div class="overflow-hidden">
+          <img src="{% static 'core/img/cover-1-small.webp' %}"
+               alt="us cover 1"
+               width="320"
+               height="320"
+               class="max-w-full h-auto shrink-0 object-contain bg-base-100 rounded-lg shadow-2xl justify-self-center " />
+        </div>
       </a>
       <a href="{% static 'core/img/cover-2.jpg' %}"
          target="_blank"
          rel="noopener">
-        <img src="{% static 'core/img/cover-2-small.webp' %}"
-             alt="us cover 2"
-             width="320"
-             height="320"
-             class="w-80 h-80 object-contain bg-base-200 rounded-lg shadow-2xl justify-self-center " />
+        <div class="overflow-hidden">
+          <img src="{% static 'core/img/cover-2-small.webp' %}"
+               alt="us cover 2"
+               width="320"
+               height="320"
+               class="max-w-full h-auto shrink-0 object-contain bg-base-100 rounded-lg shadow-2xl justify-self-center " />
+        </div>
       </a>
       <div>
         <div class="text-center lg:text-left text-black p-8">
