@@ -1,0 +1,1 @@
+* support setting social accounts to `is_staff` and `is_admin`

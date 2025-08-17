@@ -17,7 +17,7 @@ class UserAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
     fieldsets = (
         (None, {"fields": ("email", "password")}),
         ("Personal info", {"fields": ("first_name", "last_name", "photo")}),
-        ("Permissions", {"fields": ("is_active", "is_admin")}),
+        ("Permissions", {"fields": ("is_active", "is_admin", "is_staff")}),
     )
     add_fieldsets = (
         (None, {"classes": ("wide",), "fields": ("email", "password1", "password2")}),

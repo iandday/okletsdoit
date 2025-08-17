@@ -24,7 +24,17 @@
                     </svg>
                     Import Deadlines
                 </button>
-                <a href="{% url 'deadline:deadline_create' %}" class="btn btn-primary">
+                <a href="{% url 'deadline:deadline_list_create' %}" class="list-add-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         class="h-5 w-5"
+                         fill="none"
+                         viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                    New List
+                </a>
+                <a href="{% url 'deadline:deadline_create' %}" class="list-add-btn">
                     <svg xmlns="http://www.w3.org/2000/svg"
                          class="h-5 w-5"
                          fill="none"
@@ -34,6 +44,17 @@
                     </svg>
                     New Deadline
                 </a>
+                <a href="{% url 'deadline:list' %}" class="btn btn-secondary">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         class="h-5 w-5"
+                         fill="none"
+                         viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    View All
+                </a>
             </div>
         </div>
         <!-- Deadline Lists Grid -->
@@ -41,9 +62,9 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {% for deadline_list in deadline_lists %}
                     <div class="list-card">
-                        <div class="card-body">
+                        <div class="list-card-body">
                             <a class="list-card-title"
-                               href="{% url 'deadline:deadline_list_detail' deadline_list.slug %}">
+                               href="{% url 'deadline:list' %}?list={{ deadline_list.slug }}">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                      class="h-5 w-5"
                                      fill="none"
@@ -89,9 +110,9 @@
                                 </div>
                             {% endif %}
                             <!-- Action Buttons -->
-                            <div class="card-actions justify-end">
-                                <a href="{% url 'deadline:deadline_list_detail' deadline_list.slug %}"
-                                   class="btn btn-primary btn-sm">
+                            <div class="flex justify-end">
+                                <a href="{% url 'deadline:list' %}?list={{ deadline_list.slug }}"
+                                   class="btn btn-secondary btn-sm">
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                          class="h-4 w-4"
                                          fill="none"
@@ -103,7 +124,7 @@
                                     View Details
                                 </a>
                                 <a href="{% url 'deadline:deadline_list_edit' deadline_list.slug %}"
-                                   class="btn btn-primary btn-sm">
+                                   class="btn btn-secondary btn-sm">
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                          class="h-4 w-4"
                                          fill="none"

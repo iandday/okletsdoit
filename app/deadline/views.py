@@ -1,6 +1,7 @@
-from django.http import HttpRequest
+from django.http import HttpRequest, JsonResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse
 import polars as pl
 import io
 from django.http import HttpResponse
@@ -39,16 +40,30 @@ def deadline_summary(request: HttpRequest) -> HttpResponse:
 
 
 @login_required
+def deadline_detail(request: HttpRequest, deadline_slug: str) -> HttpResponse:
+    """Display details for a single deadline."""
+    try:
+        deadline = Deadline.objects.select_related("deadline_list", "assigned_to").get(
+            slug=deadline_slug, is_deleted=False
+        )
+    except Deadline.DoesNotExist:
+        messages.error(request, "Deadline not found.")
+        return redirect("deadline:deadline_summary")
+    context = {"deadline": deadline}
+    return render(request, "deadline/deadline_detail.html", context)
+
+
+@login_required
 def deadline_create(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
         form = DeadlineForm(request.POST, user=request.user)
         if form.is_valid():
-            deadline = form.save(commit=False)
+            deadline: Deadline = form.save(commit=False)
             deadline.created_by = request.user
             deadline.updated_by = request.user
             deadline.save()
             messages.success(request, "Deadline created successfully.")
-            return redirect("deadline:deadline_list_detail", deadline_list_slug=deadline.deadline_list.slug)
+            return redirect(f"{reverse('deadline:list')}?list={deadline.deadline_list.slug}")
         else:
             messages.error(request, "Please correct the errors below.")
             return render(
@@ -73,9 +88,12 @@ def deadline_edit(request: HttpRequest, deadline_slug: str) -> HttpResponse:
     if request.method == "POST" and deadline:
         form = DeadlineForm(request.POST, instance=deadline)
         if form.is_valid():
-            form.save()
+            # set the updated_by field and save
+            deadline: Deadline = form.save(commit=False)
+            deadline.updated_by = request.user
+            deadline.save()
             messages.success(request, "Deadline updated successfully.")
-            return redirect("deadline:deadline_list_detail", deadline_list_slug=deadline.deadline_list.slug)
+            return redirect("deadline:deadline_detail", deadline_slug=deadline.slug)
     else:
         form = DeadlineForm(instance=deadline)
 
@@ -97,7 +115,7 @@ def deadline_delete(request: HttpRequest, deadline_slug: str) -> HttpResponse:
         deadline.is_deleted = True
         deadline.save()
         messages.success(request, "Deadline deleted successfully.")
-        return redirect("deadline:deadline_list_detail", deadline_list_slug=deadline.deadline_list.slug)
+        return redirect(f"{reverse('deadline:list')}?list={deadline.deadline_list.slug}")
     else:
         messages.error(request, "Invalid request method.")
         return redirect("deadline:deadline_summary")
@@ -121,7 +139,125 @@ def deadline_toggle_complete(request: HttpRequest, deadline_slug: str) -> HttpRe
     deadline.save()
     status = "completed" if deadline.completed else "pending"
     messages.success(request, f"Deadline marked as {status}.")
-    return redirect("deadline:deadline_list_detail", deadline_list_slug=deadline.deadline_list.slug)
+    return redirect(f"{reverse('deadline:list')}?list={deadline.deadline_list.slug}")
+
+
+@login_required
+def deadline_data(request):
+    """JSON endpoint for DataTables"""
+
+    list_slug = request.GET.get("list")
+
+    # Get DataTables parameters
+    draw = int(request.GET.get("draw", 1))
+    start = int(request.GET.get("start", 0))
+    length = int(request.GET.get("length", 10))
+    search_value = request.GET.get("search[value]", "")
+
+    # Handle sorting
+    order_column_index = request.GET.get("order[0][column]")
+    order_direction = request.GET.get("order[0][dir]")
+    order_column_name = request.GET.get(f"columns[{order_column_index}][name]")
+
+    if list_slug:
+        queryset = Deadline.objects.filter(deadline_list__slug=list_slug, is_deleted=False).select_related(
+            "deadline_list"
+        )
+    else:
+        queryset = Deadline.objects.filter(is_deleted=False).select_related("deadline_list")
+
+    records_total = queryset.count()
+
+    # Apply search filter if provided
+    if search_value:
+        queryset = queryset.filter(
+            Q(name__icontains=search_value)
+            | Q(description__icontains=search_value)
+            | Q(assigned_to__first_name__icontains=search_value)
+        )
+    records_filtered = queryset.count()
+
+    # sort the queryset if order_column_name is provided
+    if order_column_name:
+        if order_direction == "desc":
+            order_by = f"-{order_column_name}"
+        else:
+            order_by = order_column_name
+        queryset = queryset.order_by(order_by)
+
+    # Apply pagination
+    queryset = queryset[start : start + length]
+
+    # Prepare data for DataTables
+    data = []
+    for deadline in queryset:
+        # add link to the associated list in the drop-down menu
+        detail_action = reverse("deadline:deadline_detail", args=[deadline.slug])
+        update_action = reverse("deadline:deadline_edit", args=[deadline.slug])
+        delete_action = reverse("deadline:deadline_delete", args=[deadline.slug])
+
+        # Added icons (eye, pencil, trash) to action buttons
+        menu_content = f"""
+            <div class="flex flex-row gap-1">
+                <a class="btn btn-sm btn-primary" href="{detail_action}">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg> 
+                </a>
+                <a class="btn btn-sm btn-secondary" href="{update_action}">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M16.862 3.487l2.651 2.651a1.875 1.875 0 010 2.652L8.288 20.015a4.5 4.5 0 01-1.897 1.13l-3.38.96a.75.75 0 01-.926-.926l.96-3.38a4.5 4.5 0 011.13-1.897L16.862 3.487z" />'
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M19.5 7.125L16.862 4.487" />
+                    </svg>
+                </a>
+                <a class="btn btn-sm btn-error" href="{delete_action}">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                    d="M3 6h18M9 6V4h6v2m2 0v12a2 2 0 01-2 2H7a2 2 0 01-2-2V6h14z" />
+                    </svg> 
+                </a>
+            </div>
+        """
+
+        data.append(
+            {
+                "name": f'<a href="{detail_action}">{deadline.name}</a>',
+                "description": deadline.description or "-",
+                "due_date": deadline.due_date.strftime("%Y-%m-%d") if deadline.due_date else None,
+                "assigned_to": deadline.assigned_to.first_name if deadline.assigned_to else "Unassigned",
+                "status": "Completed" if deadline.completed else "Pending",
+                "menu_content": menu_content,
+            }
+        )
+
+    return JsonResponse(
+        {
+            "draw": draw,
+            "recordsTotal": records_total,
+            "recordsFiltered": records_filtered,
+            "data": data,
+        }
+    )
+
+
+@login_required
+def list(request: HttpRequest):
+    # check if list is in parameters
+    list_slug = request.GET.get("list")
+    context = {}
+    context["form"] = DeadlineForm()
+    if list_slug:
+        deadline_list = DeadlineList.objects.get(slug=list_slug, is_deleted=False)
+        if not deadline_list:
+            return redirect("deadline:list")
+        context["list"] = deadline_list  # type: ignore[assignment]
+
+    return render(request, "deadline/deadlines.html", context)
 
 
 @login_required
@@ -129,7 +265,7 @@ def deadline_list_create(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
         form = DeadlineForm(request.POST, user=request.user)
         if form.is_valid():
-            deadline_list = form.save(commit=False)
+            deadline_list: DeadlineList = form.save(commit=False)
             deadline_list.created_by = request.user
             deadline_list.updated_by = request.user
             deadline_list.save()
@@ -147,25 +283,6 @@ def deadline_list_create(request: HttpRequest) -> HttpResponse:
             "form": DeadlineForm(),
         }
         return render(request, "deadline/deadline_list_form.html", context)
-
-
-@login_required
-def deadline_list_detail(request: HttpRequest, deadline_list_slug: str) -> HttpResponse:
-    """
-    View to display details of a specific deadline list.
-    """
-    try:
-        deadline_list = DeadlineList.objects.get(slug=deadline_list_slug, is_deleted=False)
-
-    except DeadlineList.DoesNotExist:
-        messages.error(request, "Deadline list not found.")
-        return redirect("deadline:deadline_summary")
-
-    context = {
-        "deadline_list": deadline_list,
-        "deadlines": deadline_list.deadline_set.filter(is_deleted=False).order_by("due_date"),
-    }
-    return render(request, "deadline/deadline_list_detail.html", context)
 
 
 @login_required
@@ -202,8 +319,7 @@ def deadline_list_edit(request: HttpRequest, deadline_list_slug: str) -> HttpRes
     if request.method == "POST":
         form = DeadlineListForm(request.POST, instance=deadline_list)
         if form.is_valid():
-            deadline_list = form.save(commit=False)
-            deadline_list.created_by = request.user
+            deadline_list: DeadlineList = form.save(commit=False)
             deadline_list.updated_by = request.user
             deadline_list.save()
             messages.success(request, "Deadline list updated successfully.")
@@ -311,7 +427,7 @@ def deadline_import(request: HttpRequest) -> HttpResponse:
                                         due_date = (
                                             due_date_val.date() if hasattr(due_date_val, "date") else due_date_val
                                         )
-                                except:
+                                except Exception:
                                     errors.append(f"Row {index + 2}: Invalid due date format")
                                     error_count += 1
                                     continue

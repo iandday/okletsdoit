@@ -176,7 +176,7 @@
 }
 
 
-/* end object edit page */
+/* end object edit/create page */
 /* start detail object view */
 .detail-card {
     @apply card bg-base-300 shadow-xl hover:shadow-2xl transition-shadow duration-300 text-primary-content;

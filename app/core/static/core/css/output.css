@@ -5229,10 +5229,6 @@
     width: var(--size);
     height: var(--size);
   }
-  .size-80 {
-    width: calc(var(--spacing) * 80);
-    height: calc(var(--spacing) * 80);
-  }
   .status-lg {
     width: calc(0.25rem * 3);
     height: calc(0.25rem * 3);
@@ -5287,32 +5283,17 @@
   .h-24 {
     height: calc(var(--spacing) * 24);
   }
-  .h-36 {
-    height: calc(var(--spacing) * 36);
-  }
   .h-48 {
     height: calc(var(--spacing) * 48);
   }
-  .h-60 {
-    height: calc(var(--spacing) * 60);
-  }
   .h-64 {
     height: calc(var(--spacing) * 64);
-  }
-  .h-72 {
-    height: calc(var(--spacing) * 72);
-  }
-  .h-80 {
-    height: calc(var(--spacing) * 80);
   }
   .h-96 {
     height: calc(var(--spacing) * 96);
   }
   .h-100 {
     height: calc(var(--spacing) * 100);
-  }
-  .h-300 {
-    height: calc(var(--spacing) * 300);
   }
   .h-auto {
     height: auto;
@@ -5465,26 +5446,11 @@
   .w-32 {
     width: calc(var(--spacing) * 32);
   }
-  .w-36 {
-    width: calc(var(--spacing) * 36);
-  }
   .w-52 {
     width: calc(var(--spacing) * 52);
   }
-  .w-60 {
-    width: calc(var(--spacing) * 60);
-  }
-  .w-72 {
-    width: calc(var(--spacing) * 72);
-  }
   .w-80 {
     width: calc(var(--spacing) * 80);
-  }
-  .w-100 {
-    width: calc(var(--spacing) * 100);
-  }
-  .w-300 {
-    width: calc(var(--spacing) * 300);
   }
   .w-full {
     width: 100%;
@@ -6020,12 +5986,6 @@
   .border-base-300 {
     border-color: var(--color-base-300);
   }
-  .border-base-content\/5 {
-    border-color: var(--color-base-content);
-    @supports (color: color-mix(in lab, red, red)) {
-      border-color: color-mix(in oklab, var(--color-base-content) 5%, transparent);
-    }
-  }
   .border-error\/20 {
     border-color: var(--color-error);
     @supports (color: color-mix(in lab, red, red)) {
@@ -6146,9 +6106,6 @@
   }
   .bg-info {
     background-color: var(--color-info);
-  }
-  .bg-neutral {
-    background-color: var(--color-neutral);
   }
   .bg-primary {
     background-color: var(--color-primary);
@@ -6874,9 +6831,6 @@
   .progress-warning {
     color: var(--color-warning);
   }
-  .text-base-100 {
-    color: var(--color-base-100);
-  }
   .text-base-content {
     color: var(--color-base-content);
   }
@@ -6944,12 +6898,6 @@
     color: var(--color-primary);
     @supports (color: color-mix(in lab, red, red)) {
       color: color-mix(in oklab, var(--color-primary) 40%, transparent);
-    }
-  }
-  .text-primary\/50 {
-    color: var(--color-primary);
-    @supports (color: color-mix(in lab, red, red)) {
-      color: color-mix(in oklab, var(--color-primary) 50%, transparent);
     }
   }
   .text-primary\/60 {

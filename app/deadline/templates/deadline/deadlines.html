@@ -1,0 +1,250 @@
+{% extends "components/base.html" %}
+
+{% load static %}
+
+{% block title %}
+  {% if list %}
+    {{ list.first.name }} Deadlines
+  {% else %}
+    All Deadlines
+  {% endif %}
+{% endblock title %}
+{% block content %}
+  <div class="max-w-7xl mx-auto px-4 py-8">
+    <!-- Header Section -->
+    <div class="breadcrumbs mb-4">
+      <ul>
+        <li>
+          <a href="{% url 'deadline:deadline_summary' %}" class="link">Deadlines</a>
+        </li>
+        {% if list %}
+          <li>
+            <a href="{% url 'deadline:list' %}" class="link">All Deadlines</a>
+          </li>
+          <li>{{ list.name }}</li>
+        {% else %}
+          <li>All Deadlines</li>
+        {% endif %}
+      </ul>
+    </div>
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+      <div>
+        <h1 class="text-4xl font-bold text-base-content mb-2">
+          {% if list %}
+            {{ list.name }} Deadlines
+          {% else %}
+            All Deadlines
+          {% endif %}
+        </h1>
+      </div>
+      <div class="flex gap-2">
+        {% if list %}
+          <a href="{% url 'deadline:deadline_list_edit' list.slug %}"
+             class="btn btn-secondary">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 class="h-5 w-5"
+                 fill="none"
+                 viewBox="0 0 24 24"
+                 stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+            </svg>
+            Edit List
+          </a>
+        {% endif %}
+        <button class="btn btn-primary" id="show-add-deadline-modal">
+          <svg xmlns="http://www.w3.org/2000/svg"
+               class="h-5 w-5"
+               fill="none"
+               viewBox="0 0 24 24"
+               stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+          Add Deadline
+        </button>
+        <a href="{% url 'deadline:deadline_summary' %}"
+           class="btn btn-secondary">
+          <svg xmlns="http://www.w3.org/2000/svg"
+               class="h-5 w-5"
+               fill="none"
+               viewBox="0 0 24 24"
+               stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+          </svg>
+          Summary
+        </a>
+      </div>
+    </div>
+    <!-- DataTable -->
+    <div class="associated-card">
+      <div class="card-body">
+        <div class="overflow-x-auto">
+          <table id="deadlinesTable" class="associated-table">
+            <thead>
+              <tr>
+                <th class="associated-table-header">Deadline</th>
+                <th class="associated-table-header">Description</th>
+                <th class="associated-table-header">Due Date</th>
+                <th class="associated-table-header">Assignee</th>
+                <th class="associated-table-header">Status</th>
+                <th class="associated-table-header noExport">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- DataTables will populate this -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <!-- Quick Actions -->
+  </div>
+  <!-- Add Deadline Modal -->
+  {% url 'deadline:deadline_create' as url %}
+  {% with modal_id="add_deadline_modal" form_action=url form=form object_type="Deadline" %}
+
+    {% include "components/modal_create.html" %}
+
+  {% endwith %}
+{% endblock content %}
+{% block extra_script %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"
+          integrity="sha384-VFQrHzqBh5qiJIU0uGU5CIW3+OWpdGGJM9LBnGbuIH2mkICcFZ7lPd/AAtI7SNf7"
+          crossorigin="anonymous"
+          nonce="{{ request.csp_nonce }}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"
+          integrity="sha384-/RlQG9uf0M2vcTw3CX7fbqgbj/h8wKxw7C3zu9/GxcBPRKOEcESxaxufwRXqzq6n"
+          crossorigin="anonymous"
+          nonce="{{ request.csp_nonce }}"></script>
+  <script src="https://cdn.datatables.net/v/dt/jszip-3.10.1/dt-2.3.2/b-3.2.4/b-colvis-3.2.4/b-html5-3.2.4/b-print-3.2.4/cc-1.0.7/r-3.0.5/sb-1.8.3/sp-2.3.4/datatables.min.js"
+          integrity="sha384-ClBycBUR/cwmd/aQPGi04VlFGjfW0LLkerJcipL1vcvlLd44Vdsg2c5jkUCuutiQ"
+          crossorigin="anonymous"
+          nonce="{{ request.csp_nonce }}"></script>
+  <script nonce="{{ request.csp_nonce }}">
+    $(document).ready(function() {
+      const listSlug = new URLSearchParams(window.location.search).get('list');
+      let ajaxUrl = '{% url "deadline:deadline_data" %}';
+
+      if (listSlug) {
+        ajaxUrl += `?list=${listSlug}`;
+      }
+
+      $('#deadlinesTable').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: ajaxUrl,
+
+        columns: [{
+          data: 'name',
+          name: 'name',
+          render: function(data, type, row) {
+            return `<div class="font-semibold">${data}</div>`;
+          }
+        }, {
+          data: 'description',
+          name: 'description',
+
+        }, {
+          data: 'due_date',
+          name: 'due_date',
+          render: function(data) {
+            return data ? new Date(data).toLocaleDateString() : '<span class="text-base-content/50">-</span>';
+          }
+        }, {
+          data: 'assigned_to',
+          name: 'assigned_to',
+          render: function(data) {
+            return `<div class="font-semibold">${data}</div>`;
+          }
+        }, {
+          data: 'status',
+          name: 'status',
+          render: function(data) {
+            return `<div class="font-semibold">${data}</div>`;
+          }
+        }, {
+          data: 'menu_content',
+          name: 'menu_content',
+          orderable: false,
+          render: function(data) {
+            return data;
+          }
+        }],
+        pageLength: 25,
+        responsive: true,
+        fixedHeader: true,
+        language: {
+          search: "Search Deadlines:",
+          lengthMenu: "Show _MENU_ deadlines per page",
+          info: "Showing _START_ to _END_ of _TOTAL_ deadlines",
+          infoEmpty: "No deadlines found",
+          infoFiltered: "(filtered from _MAX_ total deadlines)",
+          emptyTable: "No deadlines available",
+          zeroRecords: "No matching deadlines found"
+        },
+        layout: {
+          topStart: {
+            search: {
+              placeholder: 'Search'
+            },
+          },
+          topEnd: 'buttons',
+          bottomStart: {
+            pageLength: {},
+            paging: {}
+          }
+        },
+
+        buttons: [{
+          extend: 'searchBuilder',
+          config: {
+            columns: [0, 1, 3, 4],
+
+          }
+        }, {
+          extend: 'copy',
+          exportOptions: {
+            columns: ':not(.noExport)'
+          }
+        }, {
+          extend: 'excelHtml5',
+          exportOptions: {
+            columns: ':not(.noExport)'
+          }
+        }, {
+          extend: 'pdfHtml5',
+          exportOptions: {
+            columns: ':not(.noExport)'
+          }
+        }, {
+          extend: 'csvHtml5',
+          exportOptions: {
+            columns: ':not(.noExport)'
+          }
+        }],
+
+        initComplete: function() {
+          // Style the search input
+          $('.dataTables_filter input').addClass('input input-bordered input-sm');
+          $('.dataTables_filter label').addClass('flex items-center gap-2');
+
+          // Style the length select
+          $('.dataTables_length select').addClass('select select-bordered select-sm');
+          $('.dataTables_length label').addClass('flex items-center gap-2');
+
+          // Style pagination
+          $('.dataTables_paginate .paginate_button').addClass('btn btn-sm');
+          $('.dataTables_paginate .paginate_button.current').addClass('btn-primary');
+        }
+      });
+
+
+
+
+    });
+  </script>
+  {% with show_id="add_deadline_modal" modal_id="add_deadline_modal" focus_id=form.name.id_for_label date_id=form.due_date.id_for_label %}
+
+    {% include "components/modal_create_script.html" %}
+
+  {% endwith %}
+{% endblock extra_script %}

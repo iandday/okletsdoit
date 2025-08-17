@@ -30,6 +30,8 @@ env = environ.Env(
     TIME_ZONE=(str, "UTC"),
     ALLOWED_HOSTS=(list, []),
     DJANGO_LOG_LEVEL=(str, "DEBUG"),
+    DJANGO_ACCOUNT_ALLOW_REGISTRATION=(bool, True),
+    DJANGO_ACCOUNT_ALLOW_SOCIAL_REGISTRATION=(bool, True),
 )
 env.read_env(BASE_DIR / ".env", overwrite=True)
 
@@ -176,11 +178,8 @@ LOGIN_URL = "account_login"
 
 # django-allauth
 # https://docs.allauth.org/en/latest/account/configuration.html
-ACCOUNT_ALLOW_REGISTRATION = env.bool("DJANGO_ACCOUNT_ALLOW_REGISTRATION", True)  # type: ignore[arg-type]
-ACCOUNT_ALLOW_SOCIAL_REGISTRATION = env.bool(
-    "DJANGO_ACCOUNT_ALLOW_SOCIAL_REGISTRATION",
-    True,  # type: ignore[arg-type]
-)
+ACCOUNT_ALLOW_REGISTRATION = env("DJANGO_ACCOUNT_ALLOW_REGISTRATION")
+ACCOUNT_ALLOW_SOCIAL_REGISTRATION = env("DJANGO_ACCOUNT_ALLOW_SOCIAL_REGISTRATION")
 ACCOUNT_LOGIN_METHODS = {"email"}
 ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*", "password2*"]
 ACCOUNT_UNIQUE_EMAIL = True
@@ -209,10 +208,6 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 # ADMIN
 ADMIN_URL = "admin/"
-# https://cookiecutter-django.readthedocs.io/en/latest/settings.html#other-environment-settings
-# Force the `admin` sign in process to go through the `django-allauth` workflow
-DJANGO_ADMIN_FORCE_ALLAUTH = env.bool("DJANGO_ADMIN_FORCE_ALLAUTH", default=False)  # type: ignore[arg-type]
-
 
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = env("TIMEZONE")

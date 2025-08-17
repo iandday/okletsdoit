@@ -1,0 +1,23 @@
+<div class="detail-card" id="metadata">
+    <div class="detail-card-body">
+        <h2 class="detail-card-title">Record Information</h2>
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <div class="detail-card-field-name">Created By</div>
+                <div class="detail-card-field-value">{{ object.created_by.get_full_name|default:'Unassigned' }}</div>
+            </div>
+            <div>
+                <div class="detail-card-field-name">Created At</div>
+                <div class="detail-card-field-value">{{ object.created_at|date:'Y-m-d H:i'|default:'—' }}</div>
+            </div>
+            <div>
+                <div class="detail-card-field-name">Last Updated By</div>
+                <div class="detail-card-field-value">{{ object.updated_by.get_full_name|default:'Unassigned' }}</div>
+            </div>
+            <div>
+                <div class="detail-card-field-name">Last Updated At</div>
+                <div class="detail-card-field-value">{{ object.updated_at|date:'Y-m-d H:i'|default:'—' }}</div>
+            </div>
+        </div>
+    </div>
+</div>

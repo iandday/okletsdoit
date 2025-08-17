@@ -3,8 +3,13 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include
 from django.urls import path
+# from allauth.account.decorators import secure_admin_login
 
 app_name = "okletsdoit"
+
+# authentik login
+# admin.autodiscover()
+# admin.site.login = secure_admin_login(admin.site.login)
 
 urlpatterns = [
     path("admin/doc/", include("django.contrib.admindocs.urls")),

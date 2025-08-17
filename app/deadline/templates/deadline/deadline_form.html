@@ -21,7 +21,7 @@
                         </li>
                         {% if deadline.deadline_list %}
                             <li>
-                                <a href="{% url 'deadline:deadline_list_detail' deadline.deadline_list.slug %}">{{ deadline.deadline_list.name }}</a>
+                                <a href="{% url 'deadline:list' %}?list={{ deadline.deadline_list.slug }}&">{{ deadline.deadline_list.name }}</a>
                             </li>
                         {% endif %}
                         <li>
@@ -189,7 +189,7 @@
                     </div>
                     <!-- Form Actions -->
                     <div class="card-actions justify-end pt-6">
-                        <a href="{% if form.instance.deadline_list %}{% url 'deadline:deadline_list_detail' form.instance.deadline_list.slug %}{% else %}{% url 'deadline:deadline_summary' %}{% endif %}"
+                        <a href="{% if form.instance.deadline_list %}{% url 'deadline:list' %}?list={{ form.instance.deadline_list.slug }}{% else %}{% url 'deadline:deadline_summary' %}{% endif %}"
                            class="btn btn-ghost">Cancel</a>
                         <button type="submit" class="btn btn-primary">
                             <svg xmlns="http://www.w3.org/2000/svg"
