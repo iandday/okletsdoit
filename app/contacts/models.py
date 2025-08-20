@@ -53,3 +53,21 @@ class Contact(models.Model):
             slug_base = self.name or self.company
             self.slug = slugify(slug_base)
         super().save(*args, **kwargs)
+
+
+class File(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=255, blank=True, null=True)
+    slug = models.SlugField(max_length=250, null=True, blank=True, unique=True)
+    description = models.TextField(blank=True, null=True)
+    contact = models.ForeignKey(Contact, related_name="files", on_delete=models.CASCADE)
+    file = models.FileField(upload_to="contact_files/")
+    uploaded_by = models.ForeignKey(User, related_name="files_uploaded_by", on_delete=models.CASCADE)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.file.name} ({self.contact.name})"
+
+    class Meta:
+        verbose_name_plural = "Contact Files"
+        ordering = ["-uploaded_at"]

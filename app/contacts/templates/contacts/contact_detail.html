@@ -20,14 +20,6 @@
             <div class="flex items-start justify-between mb-6">
                 <div>
                     <h1 class="text-4xl font-bold text-content mb-2">{{ contact }}</h1>
-                    {% if contact.category %}<div class="badge badge-primary badge-lg mt-2">{{ contact.category }}</div>{% endif %}
-                    <div class="flex items-center gap-4 text-sm text-base-content/70 mt-2">
-                        <span>Created {{ contact.created_at|date:"M d, Y" }} by {{ contact.created_by.email }}</span>
-                        {% if contact.updated_at != contact.created_at %}
-                            <span>•</span>
-                            <span>Updated {{ contact.updated_at|date:"M d, Y" }} by {{ contact.updated_by.email }}</span>
-                        {% endif %}
-                    </div>
                 </div>
                 <div class="flex items-center gap-2">
                     <!-- Edit Button -->
@@ -58,11 +50,11 @@
             </div>
         </div>
         <!-- Contact Information -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <!-- Contact Details Card -->
-            <div class="list-card ">
-                <div class="card-body">
-                    <h2 class="list-card-title">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Main Information -->
+            <div class="detail-card" id="main-info">
+                <div class="detail-card-body">
+                    <h2 class="detail-card-title">
                         <svg xmlns="http://www.w3.org/2000/svg"
                              class="h-6 w-6"
                              fill="none"
@@ -72,40 +64,23 @@
                         </svg>
                         Contact Information
                     </h2>
-                    <div class="space-y-4">
+                    <div class="grid grid-cols-1 gap-4">
+                        <div>
+                            <div class="detail-card-field-name">Category</div>
+                            <div class="detail-card-field-value">{{ contact.category }}</div>
+                        </div>
                         <!-- Email -->
                         {% if contact.email %}
-                            <div class="flex items-center gap-3">
-                                <div class="badge badge-primary">Email</div>
-                                <a href="mailto:{{ contact.email }}"
-                                   class="link link-hover text-success text-lg">{{ contact.email }}</a>
+                            <div>
+                                <div class="detail-card-field-name">Email</div>
+                                <div class="detail-card-field-value">{{ contact.email }}</div>
                             </div>
                         {% endif %}
                         <!-- Phone -->
                         {% if contact.phone %}
-                            <div class="flex items-center gap-3">
-                                <div class="badge badge-primary">Phone</div>
-                                <a href="tel:{{ contact.phone }}"
-                                   class="link link-hover text-success text-lg">{{ contact.phone }}</a>
-                            </div>
-                        {% endif %}
-                        <!-- Website -->
-                        {% if contact.website %}
-                            <div class="flex items-center gap-3">
-                                <div class="badge badge-primary">Website</div>
-                                <a href="{{ contact.website }}"
-                                   target="_blank"
-                                   rel="noopener noreferrer"
-                                   class="link link-hover text-success text-lg">
-                                    Visit
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                         class="h-6 w-6 inline ml-1"
-                                         fill="none"
-                                         viewBox="0 0 24 24"
-                                         stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                                    </svg>
-                                </a>
+                            <div>
+                                <div class="detail-card-field-name">Phone</div>
+                                <div class="detail-card-field-value">{{ contact.phone }}</div>
                             </div>
                         {% endif %}
                         {% if contact.notes %}
@@ -113,18 +88,18 @@
                                 <p class="text-base-primary whitespace-pre-wrap">{{ contact.notes|safe }}</p>
                             </div>
                         {% else %}
-                            <div class="text-center py-8">
+                            <div class="text-center py-2">
                                 <div class="text-4xl mb-4">📝</div>
                                 <p class="text-base-primary/60">No notes added yet</p>
                                 <a href="{% url 'contacts:update' contact.slug %}"
-                                   class="btn btn-outline btn-sm mt-4">Add Notes</a>
+                                   class="btn btn-sm mt-4">Add Notes</a>
                             </div>
                         {% endif %}
                     </div>
                     <!-- Quick Actions -->
-                    <div class="card-actions justify-start mt-6">
+                    <div class="detail-card-actions">
                         {% if contact.email %}
-                            <a href="mailto:{{ contact.email }}" class="btn btn-outline btn-sm">
+                            <a href="mailto:{{ contact.email }}" class="btn btn-sm">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                      class="h-4 w-4"
                                      fill="none"
@@ -136,7 +111,7 @@
                             </a>
                         {% endif %}
                         {% if contact.phone %}
-                            <a href="tel:{{ contact.phone }}" class="btn btn-outline btn-sm">
+                            <a href="tel:{{ contact.phone }}" class="btn btn-sm">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                      class="h-4 w-4"
                                      fill="none"
@@ -151,7 +126,7 @@
                             <a href="{{ contact.website }}"
                                target="_blank"
                                rel="noopener noreferrer"
-                               class="btn btn-outline btn-sm">
+                               class="btn btn-sm">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                      class="h-4 w-4"
                                      fill="none"
@@ -165,28 +140,56 @@
                     </div>
                 </div>
             </div>
-            <!-- Shopping list -->
-            <div class="list-card">
-                <div class="card-body">
-                    <h2 class="list-card-title">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             class="h-6 w-6"
-                             fill="none"
-                             viewBox="0 0 24 24"
-                             stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
-                        Shopping List
-                    </h2>
-                    <ul class="list-disc pl-5">
-                        {% for item in shopping_list %}
-                            <li>{{ item.item }} - {{ item.quantity }}</li>
-                        {% empty %}
-                            <li>No items in shopping list.</li>
-                        {% endfor %}
-                    </ul>
+            {% if shopping_list.exists %}
+                <!-- Shopping list -->
+                <div class="list-card">
+                    <div class="card-body">
+                        <h2 class="list-card-title">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 class="h-6 w-6"
+                                 fill="none"
+                                 viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            Shopping List
+                        </h2>
+                        <ul class="list-disc pl-5">
+                            {% for item in shopping_list %}
+                                <li>{{ item.item }} - {{ item.quantity }}</li>
+                            {% empty %}
+                                <li>No items in shopping list.</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            {% endif %}
+            <!-- Files -->
+            <div class="detail-card" id="associated-files">
+                <div class="detail-card-body">
+                    <h2 class="detail-card-title">Associated Files</h2>
+                    {% if contact.files.exists %}
+                        <ul class="list-disc pl-5">
+                            {% for file in contact.files.all %}
+                                <li>
+                                    <a href="{{ file.file.url }}" target="_blank" class="link link-hover">{{ file.name }}</a>
+                                    {% if file.description %}<span class="text-sm">{{ file.description }}</span>{% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="detail-card-field-value">No files uploaded yet.</p>
+                    {% endif %}
+                    <!-- Quick Actions -->
+                    <div class="detail-card-actions">
+                        <button type="submit" class="btn btn-primary">Upload</button>
+                    </div>
                 </div>
             </div>
+            <!-- Metadata-->
+
+            {% include "components/detail_metadata.html" with object=contact %}
+
         </div>
         <!-- Back to List -->
         <div class="text-center mt-12">
@@ -201,5 +204,28 @@
                 Back to Contacts
             </a>
         </div>
+        <!-- Modal for File Upload -->
+        {% url 'contacts:upload_file' contact.slug as upload_url %}
+
+        {% include "components/modal/modal_file_upload.html" with modal_id="fileUploadModal" form=form form_action=upload_url %}
+
     </div>
 {% endblock content %}
+{% block extra_script %}
+    <script nonce="{{ request.csp_nonce }}">
+      document.addEventListener('DOMContentLoaded', function() {
+        const fileUploadModal = document.getElementById('fileUploadModal');
+        const cancelButton = document.getElementById('cancel_add_button');
+
+        // Open modal on button click
+        document.querySelector('.detail-card-actions .btn-primary').addEventListener('click', function() {
+          fileUploadModal.showModal();
+        });
+
+        // Close modal on cancel button click
+        cancelButton.addEventListener('click', function() {
+          fileUploadModal.close();
+        });
+      });
+    </script>
+{% endblock extra_script %}

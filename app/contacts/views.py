@@ -11,8 +11,8 @@ from io import BytesIO
 import logging
 
 from list.models import ListEntry
-from .models import Contact
-from .forms import ContactForm
+from .models import Contact, File
+from .forms import ContactForm, FileUploadForm
 
 logger = logging.getLogger(__name__)
 
@@ -56,9 +56,14 @@ def contact_detail(request, slug):
     # get related list entries to form a shopping list
     shopping_list = ListEntry.objects.filter(vendor=contact, purchased=False, is_deleted=False).order_by("item")
 
+    # get associated files
+    files = File.objects.filter(contact=contact).order_by("-uploaded_at")
+
     context = {
         "contact": contact,
         "shopping_list": shopping_list,
+        "files": files,
+        "form": FileUploadForm(),
     }
 
     return render(request, "contacts/contact_detail.html", context)
@@ -70,7 +75,7 @@ def contact_create(request):
     if request.method == "POST":
         form = ContactForm(request.POST)
         if form.is_valid():
-            contact = form.save(commit=False)
+            contact: Contact = form.save(commit=False)
             contact.created_by = request.user
             contact.save()
             messages.success(request, f'Contact "{contact.name}" was created successfully.')
@@ -94,7 +99,7 @@ def contact_update(request, slug):
     if request.method == "POST":
         form = ContactForm(request.POST, instance=contact)
         if form.is_valid():
-            contact = form.save(commit=False)
+            contact: Contact = form.save(commit=False)
             contact.updated_by = request.user
             contact.save()
             messages.success(request, f'Contact "{contact.name}" was updated successfully.')
@@ -309,3 +314,26 @@ def template_download(request):
     response["Content-Disposition"] = 'attachment; filename="contacts_template.xlsx"'
 
     return response
+
+
+@login_required
+def upload_file(request, slug):
+    """Handle file uploads for a contact"""
+    contact = get_object_or_404(Contact, slug=slug, is_deleted=False)
+
+    if request.method == "POST":
+        uploaded_file = request.FILES.get("file")
+
+        if uploaded_file:
+            File.objects.create(
+                contact=contact,
+                file=uploaded_file,
+                uploaded_by=request.user,
+                name=request.POST.get("name", uploaded_file.name if uploaded_file else ""),
+                description=request.POST.get("description", ""),
+            )
+            messages.success(request, "File uploaded successfully.")
+        else:
+            messages.error(request, "No file selected.")
+
+    return redirect("contacts:detail", slug=contact.slug)

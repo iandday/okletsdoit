@@ -9377,6 +9377,14 @@
     color: color-mix(in oklab, var(--color-primary-content) 50%, transparent);
   }
 }
+.detail-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: calc(0.25rem * 2);
+  justify-content: center;
+  padding-block: calc(var(--spacing) * 2);
+}
 .detail-action-card {
   position: relative;
   display: flex;
