@@ -1,407 +1,407 @@
-{% extends "components/base.html" %}
+{% extends "components/layout/base.html" %}
 
 {% load static humanize %}
 
 {% block title %}
-    Expense Summary
+  Expense Summary
 {% endblock title %}
 {% block content %}
-    <div class="max-w-7xl mx-auto px-4 py-8">
-        <!-- Header Section -->
-        <div class="text-center mb-8">
-            <h1 class="text-4xl font-bold text-base-content mb-4">Expense Summary</h1>
-            <p class="text-lg text-base-content/70">Overview of estimated vs actual wedding expenses by category</p>
-        </div>
-        <!-- Quick Actions -->
-        <div class="flex justify-center flex-wrap">
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-2 mb-8">
-                <a href="{% url 'expenses:list' %}"
-                   class="btn btn-primary btn-sm lg:btn-md">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                         class="h-4 w-4 lg:h-5 lg:w-5"
-                         fill="none"
-                         viewBox="0 0 24 24"
-                         stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-                    </svg>
-                    <span class="hidden sm:inline">View All</span>Expenses
-                </a>
-                <a href="{% url 'expenses:create' %}"
-                   class="btn btn-primary btn-sm lg:btn-md">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                         class="h-4 w-4 lg:h-5 lg:w-5"
-                         fill="none"
-                         viewBox="0 0 24 24"
-                         stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                    </svg>
-                    <span class="hidden sm:inline">Add New</span>Expense
-                </a>
-                <a href="{% url 'expenses:category_list' %}"
-                   class="btn btn-primary btn-sm lg:btn-md">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                         class="h-4 w-4 lg:h-5 lg:w-5"
-                         fill="none"
-                         viewBox="0 0 24 24"
-                         stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-                    </svg>
-                    <span class="hidden sm:inline">Manage</span>Categories
-                </a>
-                <button class="btn btn-primary btn-sm lg:btn-md" id="show-import-modal">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                         class="h-4 w-4 lg:h-5 lg:w-5"
-                         fill="none"
-                         viewBox="0 0 24 24"
-                         stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                    </svg>
-                    Import
-                </button>
-            </div>
-        </div>
-        <!-- Charts Section -->
-        <div class="tabs tabs-lift text-primary sm:tabs-xs tabs-lg mb-6">
-            <label class="tab">
-                <input type="radio" name="my_tabs_4" checked="checked" />
-                Categories
-            </label>
-            <div class="tab-content bg-base-100 border-base-300 p-2">
-                <div class="list-card">
-                    <div class="list-body">
-                        <h3 class="list-title text-center px-4">Expenses by Category</h3>
-                        <div class="overflow-x-auto">
-                            <table id="categoryBreakdownTable" class="table table-zebra w-full">
-                                <thead>
-                                    <tr>
-                                        <th>Category</th>
-                                        <th>Estimated</th>
-                                        <th>Actual</th>
-                                        <th>Percentage</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for data in categories %}
-                                        <tr>
-                                            <td>
-                                                <a href="{% url 'expenses:list' %}?category={{ data.category.slug }}">{{ data.category.name }}</a>
-                                            </td>
-                                            <td>${{ data.total_estimated|default:"0"|floatformat:2|intcomma }}</td>
-                                            <td>${{ data.total_actual|default:"0"|floatformat:2|intcomma }}</td>
-                                            <td>{{ data.percentage|default:"0"|floatformat:1 }}%</td>
-                                        </tr>
-                                    {% endfor %}
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <td>Total</td>
-                                        <td>${{ overall_estimated|floatformat:2|intcomma }}</td>
-                                        <td>${{ overall_actual|floatformat:2|intcomma }}</td>
-                                        <td>-</td>
-                                    </tr>
-                                </tfoot>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <label class="tab">
-                <input type="radio" name="my_tabs_4" />
-                <svg xmlns="http://www.w3.org/2000/svg"
-                     class="h-8 w-8"
-                     fill="none"
-                     viewBox="0 0 24 24"
-                     stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
-                </svg>
-                Estimated
-            </label>
-            <div class="tab-content bg-base-100 border-base-300 p-2">
-                <div class="list-card">
-                    <div class="list-body">
-                        <h3 class="list-title text-center">${{ overall_estimated|floatformat:2|intcomma }}</h3>
-                        <div class="h-96">
-                            <canvas id="estimatedPieChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <label class="tab">
-                <input type="radio" name="my_tabs_4" />
-                <svg xmlns="http://www.w3.org/2000/svg"
-                     class="h-8 w-8"
-                     fill="none"
-                     viewBox="0 0 24 24"
-                     stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-                Actual
-            </label>
-            <div class="tab-content bg-base-100 border-base-300 p-2">
-                <div class="list-card">
-                    <div class="list-body">
-                        <h3 class="list-title text-center">${{ overall_actual|floatformat:2|intcomma }}</h3>
-                        <div class="h-96">
-                            <canvas id="actualPieChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {{ estimate_labels|json_script:"chart_estimate_labels" }}
-        {{ estimate_data|json_script:"chart_estimate_data" }}
-        {{ actual_labels|json_script:"chart_actual_labels" }}
-        {{ actual_data|json_script:"chart_actual_data" }}
-        <!-- Category Breakdown -->
+  <div class="max-w-7xl mx-auto px-4 py-8">
+    <!-- Header Section -->
+    <div class="text-center mb-8">
+      <h1 class="text-4xl font-bold text-base-content mb-4">Expense Summary</h1>
+      <p class="text-lg text-base-content/70">Overview of estimated vs actual wedding expenses by category</p>
     </div>
-    <!-- Import Modal -->
-    <dialog id="importModal" class="modal">
-        <div class="modal-box">
-            <h3 class="text-lg font-bold text-primary mb-4">Import Expenses</h3>
-            <p class="text-base-content/70 mb-6">
-                Upload an Excel file with expense information. Download the template first to see the required format.
-            </p>
-            <form method="post"
-                  action="{% url 'expenses:import' %}"
-                  enctype="multipart/form-data"
-                  class="space-y-4">
-                {% csrf_token %}
-                <div class="form-control">
-                    <label class="label">
-                        <span class="label-text font-medium">Excel File</span>
-                    </label>
-                    <input type="file"
-                           name="excel_file"
-                           accept=".xlsx,.xls"
-                           class="file-input file-input-bordered w-full"
-                           required>
-                    <div class="label">
-                        <span class="label-text-alt">Accepted formats: .xlsx, .xls</span>
-                    </div>
-                </div>
-                <div class="alert alert-info">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                         class="h-6 w-6"
-                         fill="none"
-                         viewBox="0 0 24 24"
-                         stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <div>
-                        <h4 class="font-bold">Required columns:</h4>
-                        <p class="text-sm">
-                            item (required), description, date (YYYY-MM-DD), category, quantity, estimated_amount, actual_amount
-                        </p>
-                        <a href="{% url 'expenses:template_download' %}"
-                           class="btn btn-outline btn-sm mt-2">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                 class="h-4 w-4"
-                                 fill="none"
-                                 viewBox="0 0 24 24"
-                                 stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                            </svg>
-                            Download Template
-                        </a>
-                    </div>
-                </div>
-                <div class="modal-action">
-                    <button type="button" class="btn btn-ghost" id="close-import-modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             class="h-5 w-5"
-                             fill="none"
-                             viewBox="0 0 24 24"
-                             stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                        </svg>
-                        Import Expenses
-                    </button>
-                </div>
-            </form>
+    <!-- Quick Actions -->
+    <div class="flex justify-center flex-wrap">
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-2 mb-8">
+        <a href="{% url 'expenses:list' %}"
+           class="btn btn-primary btn-sm lg:btn-md">
+          <svg xmlns="http://www.w3.org/2000/svg"
+               class="h-4 w-4 lg:h-5 lg:w-5"
+               fill="none"
+               viewBox="0 0 24 24"
+               stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+          </svg>
+          <span class="hidden sm:inline">View All</span>Expenses
+        </a>
+        <a href="{% url 'expenses:create' %}"
+           class="btn btn-primary btn-sm lg:btn-md">
+          <svg xmlns="http://www.w3.org/2000/svg"
+               class="h-4 w-4 lg:h-5 lg:w-5"
+               fill="none"
+               viewBox="0 0 24 24"
+               stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+          <span class="hidden sm:inline">Add New</span>Expense
+        </a>
+        <a href="{% url 'expenses:category_list' %}"
+           class="btn btn-primary btn-sm lg:btn-md">
+          <svg xmlns="http://www.w3.org/2000/svg"
+               class="h-4 w-4 lg:h-5 lg:w-5"
+               fill="none"
+               viewBox="0 0 24 24"
+               stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+          </svg>
+          <span class="hidden sm:inline">Manage</span>Categories
+        </a>
+        <button class="btn btn-primary btn-sm lg:btn-md" id="show-import-modal">
+          <svg xmlns="http://www.w3.org/2000/svg"
+               class="h-4 w-4 lg:h-5 lg:w-5"
+               fill="none"
+               viewBox="0 0 24 24"
+               stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+          </svg>
+          Import
+        </button>
+      </div>
+    </div>
+    <!-- Charts Section -->
+    <div class="tabs tabs-lift text-primary sm:tabs-xs tabs-lg mb-6">
+      <label class="tab">
+        <input type="radio" name="my_tabs_4" checked="checked" />
+        Categories
+      </label>
+      <div class="tab-content bg-base-100 border-base-300 p-2">
+        <div class="list-card">
+          <div class="list-body">
+            <h3 class="list-title text-center px-4">Expenses by Category</h3>
+            <div class="overflow-x-auto">
+              <table id="categoryBreakdownTable" class="table table-zebra w-full">
+                <thead>
+                  <tr>
+                    <th>Category</th>
+                    <th>Estimated</th>
+                    <th>Actual</th>
+                    <th>Percentage</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for data in categories %}
+                    <tr>
+                      <td>
+                        <a href="{% url 'expenses:list' %}?category={{ data.category.slug }}">{{ data.category.name }}</a>
+                      </td>
+                      <td>${{ data.total_estimated|default:"0"|floatformat:2|intcomma }}</td>
+                      <td>${{ data.total_actual|default:"0"|floatformat:2|intcomma }}</td>
+                      <td>{{ data.percentage|default:"0"|floatformat:1 }}%</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td>Total</td>
+                    <td>${{ overall_estimated|floatformat:2|intcomma }}</td>
+                    <td>${{ overall_actual|floatformat:2|intcomma }}</td>
+                    <td>-</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
         </div>
-        <form method="dialog" class="modal-backdrop">
-            <button>close</button>
-        </form>
-    </dialog>
+      </div>
+      <label class="tab">
+        <input type="radio" name="my_tabs_4" />
+        <svg xmlns="http://www.w3.org/2000/svg"
+             class="h-8 w-8"
+             fill="none"
+             viewBox="0 0 24 24"
+             stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+        </svg>
+        Estimated
+      </label>
+      <div class="tab-content bg-base-100 border-base-300 p-2">
+        <div class="list-card">
+          <div class="list-body">
+            <h3 class="list-title text-center">${{ overall_estimated|floatformat:2|intcomma }}</h3>
+            <div class="h-96">
+              <canvas id="estimatedPieChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+      <label class="tab">
+        <input type="radio" name="my_tabs_4" />
+        <svg xmlns="http://www.w3.org/2000/svg"
+             class="h-8 w-8"
+             fill="none"
+             viewBox="0 0 24 24"
+             stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+        </svg>
+        Actual
+      </label>
+      <div class="tab-content bg-base-100 border-base-300 p-2">
+        <div class="list-card">
+          <div class="list-body">
+            <h3 class="list-title text-center">${{ overall_actual|floatformat:2|intcomma }}</h3>
+            <div class="h-96">
+              <canvas id="actualPieChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {{ estimate_labels|json_script:"chart_estimate_labels" }}
+    {{ estimate_data|json_script:"chart_estimate_data" }}
+    {{ actual_labels|json_script:"chart_actual_labels" }}
+    {{ actual_data|json_script:"chart_actual_data" }}
+    <!-- Category Breakdown -->
+  </div>
+  <!-- Import Modal -->
+  <dialog id="importModal" class="modal">
+    <div class="modal-box">
+      <h3 class="text-lg font-bold text-primary mb-4">Import Expenses</h3>
+      <p class="text-base-content/70 mb-6">
+        Upload an Excel file with expense information. Download the template first to see the required format.
+      </p>
+      <form method="post"
+            action="{% url 'expenses:import' %}"
+            enctype="multipart/form-data"
+            class="space-y-4">
+        {% csrf_token %}
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text font-medium">Excel File</span>
+          </label>
+          <input type="file"
+                 name="excel_file"
+                 accept=".xlsx,.xls"
+                 class="file-input file-input-bordered w-full"
+                 required>
+          <div class="label">
+            <span class="label-text-alt">Accepted formats: .xlsx, .xls</span>
+          </div>
+        </div>
+        <div class="alert alert-info">
+          <svg xmlns="http://www.w3.org/2000/svg"
+               class="h-6 w-6"
+               fill="none"
+               viewBox="0 0 24 24"
+               stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <div>
+            <h4 class="font-bold">Required columns:</h4>
+            <p class="text-sm">
+              item (required), description, date (YYYY-MM-DD), category, quantity, estimated_amount, actual_amount
+            </p>
+            <a href="{% url 'expenses:template_download' %}"
+               class="btn btn-outline btn-sm mt-2">
+              <svg xmlns="http://www.w3.org/2000/svg"
+                   class="h-4 w-4"
+                   fill="none"
+                   viewBox="0 0 24 24"
+                   stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              Download Template
+            </a>
+          </div>
+        </div>
+        <div class="modal-action">
+          <button type="button" class="btn btn-ghost" id="close-import-modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 class="h-5 w-5"
+                 fill="none"
+                 viewBox="0 0 24 24"
+                 stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+            </svg>
+            Import Expenses
+          </button>
+        </div>
+      </form>
+    </div>
+    <form method="dialog" class="modal-backdrop">
+      <button>close</button>
+    </form>
+  </dialog>
 {% endblock content %}
 {% block extra_script %}
-    <script nonce="{{ request.csp_nonce }}"
-            src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script nonce="{{ request.csp_nonce }}"
-            src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script nonce="{{ request.csp_nonce }}"
-            src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-    <script nonce="{{ request.csp_nonce }}">
-      document.addEventListener('DOMContentLoaded', function() {
-        // Parse data
-        const estimateLabels = JSON.parse(document.getElementById('chart_estimate_labels').textContent);
-        const estimateData = JSON.parse(document.getElementById('chart_estimate_data').textContent);
-        const actualLabels = JSON.parse(document.getElementById('chart_actual_labels').textContent);
-        const actualData = JSON.parse(document.getElementById('chart_actual_data').textContent);
+  <script nonce="{{ request.csp_nonce }}"
+          src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script nonce="{{ request.csp_nonce }}"
+          src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script nonce="{{ request.csp_nonce }}"
+          src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+  <script nonce="{{ request.csp_nonce }}">
+    document.addEventListener('DOMContentLoaded', function() {
+      // Parse data
+      const estimateLabels = JSON.parse(document.getElementById('chart_estimate_labels').textContent);
+      const estimateData = JSON.parse(document.getElementById('chart_estimate_data').textContent);
+      const actualLabels = JSON.parse(document.getElementById('chart_actual_labels').textContent);
+      const actualData = JSON.parse(document.getElementById('chart_actual_data').textContent);
 
-        // Get the primary color from DaisyUI theme
-        const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--color-primary').trim();
+      // Get the primary color from DaisyUI theme
+      const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--color-primary').trim();
 
-        // Generate colors for the charts
-        const colors = [
-          'rgba(255, 99, 132, 0.8)',
-          'rgba(54, 162, 235, 0.8)',
-          'rgba(255, 206, 86, 0.8)',
-          'rgba(75, 192, 192, 0.8)',
-          'rgba(153, 102, 255, 0.8)',
-          'rgba(255, 159, 64, 0.8)',
-          'rgba(199, 199, 199, 0.8)',
-          'rgba(83, 102, 255, 0.8)'
-        ];
+      // Generate colors for the charts
+      const colors = [
+        'rgba(255, 99, 132, 0.8)',
+        'rgba(54, 162, 235, 0.8)',
+        'rgba(255, 206, 86, 0.8)',
+        'rgba(75, 192, 192, 0.8)',
+        'rgba(153, 102, 255, 0.8)',
+        'rgba(255, 159, 64, 0.8)',
+        'rgba(199, 199, 199, 0.8)',
+        'rgba(83, 102, 255, 0.8)'
+      ];
 
-        const borderColors = [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(153, 102, 255, 1)',
-          'rgba(255, 159, 64, 1)',
-          'rgba(199, 199, 199, 1)',
-          'rgba(83, 102, 255, 1)'
-        ];
+      const borderColors = [
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)',
+        'rgba(199, 199, 199, 1)',
+        'rgba(83, 102, 255, 1)'
+      ];
 
-        // Initialize charts
-        function initializeCharts() {
-          // Estimated Expenses Chart
-          const estimatedCtx = document.getElementById('estimatedPieChart').getContext('2d');
-          const estimatedChart = new Chart(estimatedCtx, {
-            type: 'pie',
-            data: {
-              labels: estimateLabels,
-              datasets: [{
-                data: estimateData,
-                backgroundColor: colors.slice(0, estimateLabels.length),
-                borderColor: borderColors.slice(0, estimateLabels.length),
-                borderWidth: 2
-              }]
-            },
-            options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              animation: false,
-              plugins: {
-                legend: {
-                  position: 'bottom',
-                  labels: {
-                    color: primaryColor
-                  }
-                },
-                title: {
-                  display: false,
-                  text: 'Estimated Expenses by Category'
+      // Initialize charts
+      function initializeCharts() {
+        // Estimated Expenses Chart
+        const estimatedCtx = document.getElementById('estimatedPieChart').getContext('2d');
+        const estimatedChart = new Chart(estimatedCtx, {
+          type: 'pie',
+          data: {
+            labels: estimateLabels,
+            datasets: [{
+              data: estimateData,
+              backgroundColor: colors.slice(0, estimateLabels.length),
+              borderColor: borderColors.slice(0, estimateLabels.length),
+              borderWidth: 2
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: false,
+            plugins: {
+              legend: {
+                position: 'bottom',
+                labels: {
+                  color: primaryColor
                 }
+              },
+              title: {
+                display: false,
+                text: 'Estimated Expenses by Category'
               }
             }
-          });
+          }
+        });
 
-          // Actual Expenses Chart
-          const actualCtx = document.getElementById('actualPieChart').getContext('2d');
-          const actualChart = new Chart(actualCtx, {
-            type: 'pie',
-            data: {
-              labels: actualLabels,
-              datasets: [{
-                data: actualData,
-                backgroundColor: colors.slice(0, actualLabels.length),
-                borderColor: borderColors.slice(0, actualLabels.length),
-                borderWidth: 2
-              }]
-            },
-            options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              animation: false,
-              plugins: {
-                legend: {
-                  position: 'bottom',
-                  labels: {
-                    color: primaryColor
-                  }
-                },
-                title: {
-                  display: true,
-                  text: 'Actual Expenses by Category'
+        // Actual Expenses Chart
+        const actualCtx = document.getElementById('actualPieChart').getContext('2d');
+        const actualChart = new Chart(actualCtx, {
+          type: 'pie',
+          data: {
+            labels: actualLabels,
+            datasets: [{
+              data: actualData,
+              backgroundColor: colors.slice(0, actualLabels.length),
+              borderColor: borderColors.slice(0, actualLabels.length),
+              borderWidth: 2
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: false,
+            plugins: {
+              legend: {
+                position: 'bottom',
+                labels: {
+                  color: primaryColor
                 }
+              },
+              title: {
+                display: true,
+                text: 'Actual Expenses by Category'
               }
             }
-          });
-        }
-
-        // Initialize DataTable
-        function initializeDataTable() {
-          $('#categoryBreakdownTable').DataTable({
-            paging: false,
-            searching: false,
-            ordering: true,
-            info: false,
-            responsive: {
-              details: false
-            },
-            columnDefs: [{
-              targets: [1, 2],
-              type: 'currency'
-            }, {
-              targets: [3],
-              type: 'num-fmt',
-              responsivePriority: 10001
-            }],
-            order: [
-              [3, 'desc']
-            ],
-            language: {
-              emptyTable: "No categories found"
-            },
-            dom: '<"flex flex-col lg:flex-row justify-between items-start lg:items-center mb-4"<"flex-1 mr-4"f>>' +
-              '<"overflow-x-auto"t>',
-            initComplete: function() {
-              $('.dataTables_filter input').addClass('input input-bordered input-sm');
-              $('.dataTables_filter label').addClass('flex items-center gap-2');
-            }
-          });
-        }
-
-        // Initialize modal handlers
-        function initializeModalHandlers() {
-          const showImportModal = document.getElementById('show-import-modal');
-          const importModal = document.getElementById('importModal');
-          const closeImportModal = document.getElementById('close-import-modal');
-
-          if (showImportModal && importModal) {
-            showImportModal.addEventListener('click', function() {
-              importModal.showModal();
-            });
           }
+        });
+      }
 
-          if (closeImportModal && importModal) {
-            closeImportModal.addEventListener('click', function() {
-              importModal.close();
-            });
-          }
-        }
-
-        // Use requestIdleCallback or setTimeout to defer heavy operations
-        if (window.requestIdleCallback) {
-          requestIdleCallback(function() {
-            initializeCharts();
-            initializeDataTable();
+      // Initialize DataTable
+      function initializeDataTable() {
+        $('#categoryBreakdownTable').DataTable({
+          paging: false,
+          searching: false,
+          ordering: true,
+          info: false,
+          responsive: {
+            details: false
+          },
+          columnDefs: [{
+            targets: [1, 2],
+            type: 'currency'
           }, {
-            timeout: 2000
+            targets: [3],
+            type: 'num-fmt',
+            responsivePriority: 10001
+          }],
+          order: [
+            [3, 'desc']
+          ],
+          language: {
+            emptyTable: "No categories found"
+          },
+          dom: '<"flex flex-col lg:flex-row justify-between items-start lg:items-center mb-4"<"flex-1 mr-4"f>>' +
+            '<"overflow-x-auto"t>',
+          initComplete: function() {
+            $('.dataTables_filter input').addClass('input input-bordered input-sm');
+            $('.dataTables_filter label').addClass('flex items-center gap-2');
+          }
+        });
+      }
+
+      // Initialize modal handlers
+      function initializeModalHandlers() {
+        const showImportModal = document.getElementById('show-import-modal');
+        const importModal = document.getElementById('importModal');
+        const closeImportModal = document.getElementById('close-import-modal');
+
+        if (showImportModal && importModal) {
+          showImportModal.addEventListener('click', function() {
+            importModal.showModal();
           });
-        } else {
-          setTimeout(function() {
-            initializeCharts();
-            initializeDataTable();
-          }, 100);
         }
 
-        // Initialize modal handlers immediately (lightweight)
-        initializeModalHandlers();
-      });
-    </script>
+        if (closeImportModal && importModal) {
+          closeImportModal.addEventListener('click', function() {
+            importModal.close();
+          });
+        }
+      }
+
+      // Use requestIdleCallback or setTimeout to defer heavy operations
+      if (window.requestIdleCallback) {
+        requestIdleCallback(function() {
+          initializeCharts();
+          initializeDataTable();
+        }, {
+          timeout: 2000
+        });
+      } else {
+        setTimeout(function() {
+          initializeCharts();
+          initializeDataTable();
+        }, 100);
+      }
+
+      // Initialize modal handlers immediately (lightweight)
+      initializeModalHandlers();
+    });
+  </script>
 {% endblock extra_script %}

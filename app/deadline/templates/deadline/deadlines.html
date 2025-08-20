@@ -1,4 +1,4 @@
-{% extends "components/base.html" %}
+{% extends "components/layout/base.html" %}
 
 {% load static %}
 
@@ -102,7 +102,7 @@
   {% url 'deadline:deadline_create' as url %}
   {% with modal_id="add_deadline_modal" form_action=url form=form object_type="Deadline" %}
 
-    {% include "components/modal_create.html" %}
+    {% include "components/modal/modal_create.html" %}
 
   {% endwith %}
 {% endblock content %}
@@ -244,7 +244,7 @@
   </script>
   {% with show_id="add_deadline_modal" modal_id="add_deadline_modal" focus_id=form.name.id_for_label date_id=form.due_date.id_for_label %}
 
-    {% include "components/modal_create_script.html" %}
+    {% include "components/modal/modal_create_script.html" %}
 
   {% endwith %}
 {% endblock extra_script %}
