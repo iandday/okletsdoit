@@ -1,0 +1,115 @@
+{% extends "components/layout/base.html" %}
+
+{% load static %}
+
+{% block title %}
+    Inspiration
+{% endblock title %}
+{% block content %}
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <!-- Page Header -->
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
+            <div>
+                <h1 class="text-3xl font-bold text-base-content mb-2">Inspiration</h1>
+                <p class="text-base-content/70">Manage your wedding inspiration and ideas</p>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-2 mt-4 sm:mt-0">
+                <button class="btn btn-secondary" id="upload-modal-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         class="h-5 w-5"
+                         fill="none"
+                         viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Add Inspiration
+                </button>
+            </div>
+        </div>
+        <!-- Main Content -->
+        <div class="grid grid-cols-1  gap-6">
+            <!-- Timeline Events -->
+            {% if inspirations %}
+                <div class="list-card shadow-xl mb-12">
+                    <div class="card-body">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {% for inspo in inspirations %}
+                                <figure class="relative group overflow-hidden rounded-lg">
+                                    <img src="{{ inspo.image.url }}"
+                                         alt="{{ inspo.name }}"
+                                         class="w-full h-48 object-cover transition-transform group-hover:scale-105">
+                                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                        <span class="text-sm text-white mt-2">
+                                            {% if inspo.description %}
+                                                {{ inspo.name }}: {{ inspo.description }}
+                                            {% else %}
+                                                {{ inspo.name }}
+                                            {% endif %}
+                                        </span>
+                                    </div>
+                                </figure>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% else %}
+                    <!-- Empty State -->
+                    <div class="hero min-h-96">
+                        <div class="hero-content text-center">
+                            <div class="max-w-md">
+                                <div class="mb-8">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         class="h-24 w-24 mx-auto text-base-content/30"
+                                         fill="none"
+                                         viewBox="0 0 24 24"
+                                         stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                </div>
+                                <h2 class="text-2xl font-bold text-base-content mb-4">No Inspiration Photos Yet</h2>
+                                <p class="text-base-content/70 mb-6">Start planning your wedding by adding insipiring photos</p>
+                                <button class="btn btn-secondary" id="upload-modal-btn-two">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         class="h-5 w-5"
+                                         fill="none"
+                                         viewBox="0 0 24 24"
+                                         stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg>
+                                    Add Inspiration
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <!-- Import Modal -->
+        {% url 'core:inspiration_summary' as create_url %}
+
+        {% include "components/modal/modal_file_upload.html" with modal_id="inspiration-upload-modal" form_action=create_url %}
+
+    {% endblock content %}
+    {% block extra_script %}
+        <script nonce="{{ request.csp_nonce }}">
+          document.addEventListener('DOMContentLoaded', function() {
+            const fileUploadModal = document.getElementById('inspiration-upload-modal');
+            const cancelButton = document.getElementById('cancel_add_button');
+
+            // Open modal on upload-modal-btn button click
+            document.getElementById('upload-modal-btn').addEventListener('click', function() {
+              fileUploadModal.showModal();
+            });
+
+            // Open modal on upload-modal-btn button click
+            document.getElementById('upload-modal-btn-two').addEventListener('click', function() {
+              fileUploadModal.showModal();
+            });
+
+            // Close modal on cancel button click
+            cancelButton.addEventListener('click', function() {
+              fileUploadModal.close();
+            });
+
+          });
+        </script>
+    {% endblock extra_script %}

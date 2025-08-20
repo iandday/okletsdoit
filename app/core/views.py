@@ -13,12 +13,12 @@ from django.utils.text import slugify
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
-from core.forms import IdeaForm
+from core.forms import IdeaForm, InspirationForm
 from core.forms import IdeaImportForm
 from core.forms import TimelineForm
 from core.forms import TimelineImportForm
 from core.models import Idea
-from .models import Timeline
+from .models import Inspiration, Timeline
 
 logger = logging.getLogger(__name__)
 
@@ -171,6 +171,7 @@ def idea_edit(request: HttpRequest, idea_slug: str):
         return render(request, "core/idea_form.html", {"form": form, "idea": idea})
 
 
+@login_required
 def idea_import(request: HttpRequest):
     if request.method == "POST":
         form = IdeaImportForm(request.POST, request.FILES)
@@ -243,6 +244,7 @@ def idea_import(request: HttpRequest):
     return render(request, "core/idea_import.html", {"form": form})
 
 
+@login_required
 def idea_template_download(request: HttpRequest):
     """
     Generates and returns an Excel file template for idea import.
@@ -563,3 +565,23 @@ def timeline_import(request: HttpRequest) -> HttpResponse:
     )
     response["Content-Disposition"] = 'attachment; filename="timeline_import_template.xlsx"'
     return response
+
+
+@login_required
+def inspiration_summary(request: HttpRequest):
+    """
+    Render the 'Inspiration Summary' page of the application.
+    """
+    if request.method == "POST":
+        form = InspirationForm(request.POST, request.FILES)
+        if form.is_valid():
+            inspiration: Inspiration = form.save(commit=False)
+            inspiration.created_by = request.user
+            inspiration.updated_by = request.user
+            inspiration.save()
+            messages.success(request, "Inspiration created successfully.")
+        return redirect("core:inspiration_summary")
+    else:
+        inspirations = Inspiration.objects.filter(is_deleted=False).order_by("created_at")
+        context = {"inspirations": inspirations, "form": InspirationForm()}
+        return render(request, "core/inspiration_summary.html", context)

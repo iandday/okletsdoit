@@ -1,7 +1,9 @@
+import importlib
 from django import forms
 from django.forms import ModelForm
-from .models import Idea, Timeline
+from .models import Idea, Timeline, Inspiration
 from users.models import User
+from django.core.files.base import ContentFile
 
 
 class IdeaForm(ModelForm):
@@ -70,3 +72,95 @@ class TimelineForm(ModelForm):
             "confirmed": forms.CheckboxInput(attrs={"class": "checkbox checkbox-primary edit-card-field-toggle"}),
             "published": forms.CheckboxInput(attrs={"class": "checkbox checkbox-primary edit-card-field-toggle"}),
         }
+
+
+class InspirationForm(ModelForm):
+    """Form for creating and editing inspirations."""
+
+    # Override model ImageField with FileField to bypass default Pillow validation
+    image = forms.FileField(
+        required=False,
+        widget=forms.ClearableFileInput(
+            attrs={
+                "class": "file-input file-input-bordered edit-card-field-value",
+                "accept": ".jpg,.jpeg,.png,.webp,.gif,.heic,.heif,image/*",
+                "help_text": "Upload an image (HEIC supported; will be converted to JPEG).",
+            }
+        ),
+        label="Image",
+    )
+
+    class Meta:
+        model = Inspiration
+        fields = ["name", "description", "image"]
+        widgets = {
+            "name": forms.TextInput(
+                attrs={"class": "input input-bordered edit-card-field-value", "placeholder": "Enter inspiration name"}
+            ),
+            "description": forms.Textarea(
+                attrs={
+                    "class": "textarea textarea-bordered edit-card-field-value",
+                    "rows": 3,
+                    "placeholder": "Enter inspiration description (optional)",
+                }
+            ),
+            "image": forms.ClearableFileInput(
+                attrs={
+                    "class": "file-input file-input-bordered edit-card-field-value",
+                    "accept": ".jpg,.jpeg,.png,.webp,.gif,.heic,.heif,image/*",
+                    "help_text": "Upload an image (HEIC supported; will be converted to JPEG).",
+                }
+            ),
+        }
+
+    def clean_image(self):
+        image_file = self.cleaned_data.get("image")
+        if not image_file:
+            return image_file
+
+        content_type = getattr(image_file, "content_type", "") or ""
+        name_lower = (getattr(image_file, "name", "") or "").lower()
+        is_heic = content_type in ("image/heic", "image/heif") or name_lower.endswith((".heic", ".heif"))
+        if not is_heic:
+            return image_file
+
+        raw_bytes = None
+        try:
+            from io import BytesIO
+            from PIL import Image
+
+            try:
+                pillow_heif = importlib.import_module("pillow_heif")
+                if hasattr(pillow_heif, "register_heif_opener"):
+                    pillow_heif.register_heif_opener()
+            except Exception:
+                pass
+
+            raw_bytes = image_file.read()
+            pil_img = Image.open(BytesIO(raw_bytes))
+            if pil_img.mode in ("P", "LA"):
+                pil_img = pil_img.convert("RGBA")
+            if pil_img.mode in ("RGBA", "LA"):
+                from PIL import Image as PILImage
+
+                bg = PILImage.new("RGB", pil_img.size, (255, 255, 255))
+                bg.paste(pil_img, mask=pil_img.split()[-1])
+                pil_img = bg
+            elif pil_img.mode != "RGB":
+                pil_img = pil_img.convert("RGB")
+
+            out = BytesIO()
+            pil_img.save(out, format="JPEG", quality=85, optimize=True)
+            out.seek(0)
+
+            new_name = (name_lower.rsplit(".", 1)[0] if "." in name_lower else name_lower) + ".jpg"
+            return ContentFile(out.read(), name=new_name)
+        except Exception:
+            # Reset pointer or return original bytes if read already
+            try:
+                if raw_bytes is not None:
+                    return ContentFile(raw_bytes, name=getattr(image_file, "name", "upload.heic"))
+                image_file.seek(0)
+            except Exception:
+                pass
+            return image_file

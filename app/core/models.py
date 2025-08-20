@@ -84,3 +84,46 @@ class Timeline(models.Model):
             self.slug = slug
 
         super().save(*args, **kwargs)
+
+
+class Inspiration(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(max_length=250, null=True, blank=True, unique=True)
+    description = models.TextField(blank=True, null=True)
+    image = models.ImageField(
+        upload_to="inspirations/",
+        blank=True,
+        null=True,
+        help_text="Upload an image related to the inspiration board (optional)",
+    )
+    created_by = models.ForeignKey(User, related_name="created_by_inspiration", on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_by = models.ForeignKey(
+        User, related_name="updated_by_inspiration", on_delete=models.CASCADE, null=True, blank=True
+    )
+    updated_at = models.DateTimeField(auto_now=True)
+    is_deleted = models.BooleanField(default=False)
+    history = HistoricalRecords()
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ["name"]
+        verbose_name_plural = "Inspirations"
+        constraints = [models.UniqueConstraint(fields=["name"], name="unique_inspiration")]
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base_slug = slugify(self.name)
+            slug = base_slug
+            counter = 1
+
+            while Inspiration.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+
+            self.slug = slug
+
+        super().save(*args, **kwargs)

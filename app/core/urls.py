@@ -23,5 +23,6 @@ urlpatterns = [
     path("idea/<slug:idea_slug>/edit/", views.idea_edit, name="idea_edit"),
     path("idea/<slug:idea_slug>/delete/", views.idea_delete, name="idea_delete"),
     path("idea_create/", views.idea_create, name="idea_create"),
+    path("inspiration/", views.inspiration_summary, name="inspiration_summary"),
     path("csp-report/", views.csp_report, name="csp_report"),
 ]

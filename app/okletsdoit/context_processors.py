@@ -117,6 +117,7 @@ def site_vars(request):
             {"view_name": "list:summary", "icon": "fa-list-check", "text": "Lists"},
             {"view_name": "guestlist:guestlist_summary", "icon": "fa-users", "text": "Guest List"},
             {"view_name": "core:timeline_summary", "icon": "fa-users", "text": "Timeline"},
+            {"view_name": "core:inspiration_summary", "icon": "fa-users", "text": "Inspiration"},
         ],
         "sidebar_app_links": [
             {"view_name": "settings", "icon": "fa-gear", "text": "Settings"},
