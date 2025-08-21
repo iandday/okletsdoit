@@ -114,6 +114,10 @@
     @apply toggle border-neutral bg-base-100 checked:text-accent-content;
 }
 
+.associated-table-footer {
+    @apply font-bold text-blue-500
+}
+
 /* end table listing items from associated models */
 /* start object stats */
 .stats-card {

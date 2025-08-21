@@ -8,6 +8,7 @@
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
       "Courier New", monospace;
     --color-red-500: oklch(63.7% 0.237 25.331);
+    --color-blue-500: oklch(62.3% 0.214 259.815);
     --color-gray-800: oklch(27.8% 0.033 256.848);
     --color-black: #000;
     --color-white: #fff;
@@ -3818,9 +3819,6 @@
     width: 390px;
     height: 845px;
   }
-  .col-span-2 {
-    grid-column: span 2 / span 2;
-  }
   .col-span-full {
     grid-column: 1 / -1;
   }
@@ -5455,9 +5453,6 @@
   .w-80 {
     width: calc(var(--spacing) * 80);
   }
-  .w-96 {
-    width: calc(var(--spacing) * 96);
-  }
   .w-full {
     width: 100%;
   }
@@ -6872,6 +6867,9 @@
   }
   .text-black {
     color: var(--color-black);
+  }
+  .text-blue-500 {
+    color: var(--color-blue-500);
   }
   .text-error {
     color: var(--color-error);
@@ -8737,6 +8735,11 @@
   &:checked {
     color: var(--color-accent-content);
   }
+}
+.associated-table-footer {
+  --tw-font-weight: var(--font-weight-bold);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-blue-500);
 }
 .stats-card {
   margin-bottom: calc(var(--spacing) * 8);

@@ -10,6 +10,7 @@ urlpatterns = [
     path("import/", views.deadline_import, name="deadline_import"),
     path("list", views.list, name="list"),
     path("deadline_data/", views.deadline_data, name="deadline_data"),
+    path("deadline_delete_modal/", views.deadline_delete_modal, name="deadline_delete_modal"),
     path("<slug:deadline_slug>/", views.deadline_detail, name="deadline_detail"),
     path("<slug:deadline_slug>/edit", views.deadline_edit, name="deadline_edit"),
     path("<slug:deadline_slug>/delete", views.deadline_delete, name="deadline_delete"),
