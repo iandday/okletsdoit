@@ -35,18 +35,20 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                             {% for inspo in inspirations %}
                                 <figure class="relative group overflow-hidden rounded-lg">
-                                    <img src="{{ inspo.image.url }}"
-                                         alt="{{ inspo.name }}"
-                                         class="w-full h-48 object-cover transition-transform group-hover:scale-105">
-                                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                        <span class="text-sm text-white mt-2">
-                                            {% if inspo.description %}
-                                                {{ inspo.name }}: {{ inspo.description }}
-                                            {% else %}
-                                                {{ inspo.name }}
-                                            {% endif %}
-                                        </span>
-                                    </div>
+                                    <a href="{% url 'core:inspiration_detail' inspo.slug %}">
+                                        <img src="{{ inspo.image.url }}"
+                                             alt="{{ inspo.name }}"
+                                             class="w-full h-48 object-cover transition-transform group-hover:scale-105">
+                                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                            <span class="text-sm text-white mt-2">
+                                                {% if inspo.description %}
+                                                    {{ inspo.name }}: {{ inspo.description }}
+                                                {% else %}
+                                                    {{ inspo.name }}
+                                                {% endif %}
+                                            </span>
+                                        </div>
+                                    </a>
                                 </figure>
                             {% endfor %}
                         </div>

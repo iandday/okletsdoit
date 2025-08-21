@@ -585,3 +585,106 @@ def inspiration_summary(request: HttpRequest):
         inspirations = Inspiration.objects.filter(is_deleted=False).order_by("created_at")
         context = {"inspirations": inspirations, "form": InspirationForm()}
         return render(request, "core/inspiration_summary.html", context)
+
+
+@login_required
+def inspiration_create(request: HttpRequest):
+    """
+    Create a new inspiration.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        HttpResponse: Rendered template or redirect response.
+    """
+    if request.method == "POST":
+        form = InspirationForm(request.POST, request.FILES)
+        if form.is_valid():
+            inspiration: Inspiration = form.save(commit=False)
+            inspiration.created_by = request.user
+            inspiration.updated_by = request.user
+            inspiration.save()
+            messages.success(request, "Inspiration created successfully.")
+            return redirect("core:inspiration_detail", inspiration_slug=inspiration.slug)
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field}: {error}")
+    else:
+        form = InspirationForm()
+
+    return render(request, "core/inspiration_form.html", {"form": form})
+
+
+@login_required
+def inspiration_detail(request: HttpRequest, inspiration_slug: str):
+    """
+    Display the details of a specific inspiration.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        inspiration_slug (str): The slug of the inspiration to display.
+
+    Returns:
+        HttpResponse: Rendered template with inspiration details.
+    """
+    inspiration = get_object_or_404(Inspiration, slug=inspiration_slug, is_deleted=False)
+    return render(request, "core/inspiration_detail.html", {"inspiration": inspiration})
+
+
+@login_required
+def inspiration_edit(request: HttpRequest, inspiration_slug: str):
+    """
+    Edit an existing inspiration.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        inspiration_slug (str): The slug of the inspiration to edit.
+
+    Returns:
+        HttpResponse: Rendered template or redirect response.
+    """
+    inspiration = get_object_or_404(Inspiration, slug=inspiration_slug, is_deleted=False)
+
+    if request.method == "POST":
+        form = InspirationForm(request.POST, request.FILES, instance=inspiration)
+        if form.is_valid():
+            inspiration = form.save(commit=False)
+            inspiration.updated_by = request.user
+            inspiration.save()
+            messages.success(request, "Inspiration updated successfully.")
+            return redirect("core:inspiration_detail", inspiration_slug=inspiration.slug)
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field}: {error}")
+    else:
+        form = InspirationForm(instance=inspiration)
+
+    return render(request, "core/inspiration_form.html", {"form": form, "inspiration": inspiration})
+
+
+@login_required
+def inspiration_delete(request: HttpRequest, inspiration_slug: str):
+    """
+    Deletes an inspiration by marking it as deleted.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        inspiration_slug (str): The slug of the inspiration to delete.
+
+    Returns:
+        HttpResponse: Redirects to the inspiration summary page with a success message.
+    """
+    inspiration = get_object_or_404(Inspiration, slug=inspiration_slug, is_deleted=False)
+
+    if request.method == "POST":
+        inspiration.is_deleted = True
+        inspiration.updated_by = request.user
+        inspiration.save()
+        messages.success(request, f"Inspiration '{inspiration.name}' deleted successfully.")
+        return redirect("core:inspiration_summary")
+    else:
+        messages.error(request, "Invalid request method. Please use POST to delete an inspiration.")
+        return redirect("core:inspiration_detail", inspiration_slug=inspiration.slug)

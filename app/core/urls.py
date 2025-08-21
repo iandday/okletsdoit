@@ -24,5 +24,9 @@ urlpatterns = [
     path("idea/<slug:idea_slug>/delete/", views.idea_delete, name="idea_delete"),
     path("idea_create/", views.idea_create, name="idea_create"),
     path("inspiration/", views.inspiration_summary, name="inspiration_summary"),
+    path("inspiration/create/", views.inspiration_create, name="inspiration_create"),
+    path("inspiration/<slug:inspiration_slug>/", views.inspiration_detail, name="inspiration_detail"),
+    path("inspiration/<slug:inspiration_slug>/edit/", views.inspiration_edit, name="inspiration_edit"),
+    path("inspiration/<slug:inspiration_slug>/delete/", views.inspiration_delete, name="inspiration_delete"),
     path("csp-report/", views.csp_report, name="csp_report"),
 ]

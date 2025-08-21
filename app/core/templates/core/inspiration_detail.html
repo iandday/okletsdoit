@@ -1,0 +1,66 @@
+{% extends "components/layout/base.html" %}
+
+{% load static %}
+
+{% block title %}
+    Inspiration Detail
+{% endblock title %}
+{% block content %}
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header Section -->
+        <div class="breadcrumbs mb-4">
+            <ul>
+                <li>
+                    <a href="{% url 'core:inspiration_summary' %}" class="link">Inspiration Summary</a>
+                </li>
+                <li>
+                    <span class="link">{{ inspiration.name }}</span>
+                </li>
+            </ul>
+        </div>
+        <!-- Title -->
+        <div class="mb-6 flex items-center justify-between">
+            <h1 class="text-3xl font-bold text-base-content">{{ inspiration.name }}</h1>
+            <div class="flex gap-2">
+                <a href="{% url 'core:inspiration_edit' inspiration.slug %}"
+                   class="btn btn-primary btn-sm">Edit</a>
+                <btn class="btn btn-danger btn-sm" id="show-delete-modal-{{ inspiration.id }}">Delete</btn>
+            </div>
+        </div>
+        <img src="{{ inspiration.image.url }}"
+             alt="{{ inspiration.name }}"
+             class="object-cover rounded-lg mb-4" />
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Main Information-->
+            <div class="detail-card" id="main-info">
+                <div class="detail-card-body">
+                    <h2 class="detail-card-title">Inspiration Information</h2>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <div class="detail-card-field-name">Name</div>
+                            <div class="detail-card-field-value">{{ inspiration.name }}</div>
+                            <div>
+                                <div class="detail-card-field-name">Description</div>
+                                <div class="detail-card-field-value">{{ inspiration.description }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Metadata -->
+
+            {% include "components/detail_metadata.html" with object=inspiration %}
+
+        </div>
+        <!-- Delete Modal -->
+        {% url 'core:inspiration_delete' inspiration.slug as url %}
+
+        {% include "components/modal/modal_delete_object.html" with id=inspiration.id item="Inspiration" name=inspiration.name action=url %}
+
+    </div>
+{% endblock content %}
+{% block extra_script %}
+
+    {% include "components/modal/modal_delete_object_script.html" with id=inspiration.id %}
+
+{% endblock extra_script %}
