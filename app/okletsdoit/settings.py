@@ -29,7 +29,7 @@ env = environ.Env(
     MEDIA_ROOT=(Path, "/app/media"),
     TIME_ZONE=(str, "UTC"),
     ALLOWED_HOSTS=(list, []),
-    DJANGO_LOG_LEVEL=(str, "DEBUG"),
+    DJANGO_LOG_LEVEL=(str, "INFO"),
     DJANGO_ACCOUNT_ALLOW_REGISTRATION=(bool, True),
     DJANGO_ACCOUNT_ALLOW_SOCIAL_REGISTRATION=(bool, True),
 )
@@ -145,17 +145,15 @@ LOGGING = {
         },
     },
     "loggers": {
+        "": {
+            "handlers": ["console"],
+            "level": env("DJANGO_LOG_LEVEL"),
+            "propagate": False,
+        },
         "django": {
             "handlers": ["console"],
-            "level": env.str("DJANGO_LOG_LEVEL"),
-            "propagate": True,
-        },
-    },
-    "formatters": {
-        "json": {
-            "()": JsonFormatter,
-            "datefmt": "%Y-%m-%dT%H:%M:%S%z",
-            "json_default": "django.utils.timezone.localtime",
+            "level": env("DJANGO_LOG_LEVEL"),
+            "propagate": False,
         },
     },
 }
