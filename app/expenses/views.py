@@ -13,6 +13,8 @@ import openpyxl
 from io import BytesIO
 from datetime import datetime
 from decimal import Decimal, InvalidOperation
+
+from shared_helpers.table_helpers import format_row_action_cell
 from expenses.forms import CategoryForm, ExpenseForm
 from list.models import ListEntry
 from .models import Category, Expense
@@ -22,7 +24,7 @@ logger = logging.getLogger(__name__)
 
 
 @login_required
-def summary(request):
+def summary(request) -> HttpResponse:
     # Get all categories with their expense totals and calculations
     categories = (
         Category.objects.filter(is_deleted=False)
@@ -103,18 +105,21 @@ def summary(request):
 
 
 @login_required
-def create(request):
+def create(request) -> HttpResponse:
     if request.method == "POST":
         form = ExpenseForm(request.POST)
         if form.is_valid():
             expense = form.save(commit=False)
             expense.created_by = request.user
             expense.save()
-    return redirect("expenses:list")
+        return redirect("expenses:list")
+    else:
+        form = ExpenseForm()
+        return render(request, "expenses/expense_form.html", {"form": form})
 
 
 @login_required
-def list(request: HttpRequest):
+def list(request: HttpRequest) -> HttpResponse:
     # check if category is in parameters
     category_slug = request.GET.get("category")
     context = {}
@@ -130,7 +135,7 @@ def list(request: HttpRequest):
 
 
 @login_required
-def expense_edit(request, slug: str):
+def expense_edit(request, slug: str) -> HttpResponse:
     """Edit an existing expense"""
     expense = get_object_or_404(Expense, slug=slug, is_deleted=False)
 
@@ -155,43 +160,100 @@ def expense_edit(request, slug: str):
 
 
 @login_required
-def expense_data(request):
+def expense_delete_modal(request: HttpRequest) -> HttpResponse:
+    """
+    Render the modal content for deleting an expense.
+    """
+    expense_slug = request.GET.get("slug")
+    if not expense_slug:
+        return JsonResponse({"error": "Expense slug is required"}, status=400)
+    try:
+        expense = Expense.objects.get(slug=expense_slug, is_deleted=False)
+    except Expense.DoesNotExist:
+        return JsonResponse({"error": "Expense not found"}, status=404)
+
+    context = {
+        "object": expense,
+        "object_type": "Expense",
+        "action_url": reverse("expenses:expense_delete", args=[expense.slug]),
+    }
+    return render(request, "shared_helpers/modal/object_delete_body.html", context)
+
+
+@login_required
+def expense_delete(request, slug: str) -> HttpResponse:
+    """Delete an expense"""
+    expense = get_object_or_404(Expense, slug=slug, is_deleted=False)
+
+    if request.method == "POST":
+        expense.is_deleted = True
+        expense.save()
+        messages.success(request, f"Expense '{expense.item}' deleted successfully.")
+        return redirect("expenses:list")
+    else:
+        messages.warning(request, "Method not allowed. Please use POST to delete an expense.")
+        return redirect("expenses:detail", slug=expense.slug)
+
+
+@login_required
+def expense_data(request) -> JsonResponse:
     """JSON endpoint for DataTables"""
     category_slug = request.GET.get("category")
 
-    if category_slug:
-        expenses = Expense.objects.filter(category__slug=category_slug, is_deleted=False).select_related("category")
-    else:
-        expenses = Expense.objects.filter(is_deleted=False).select_related("category")
+    # Get DataTables parameters
+    draw = int(request.GET.get("draw", 1))
+    start = int(request.GET.get("start", 0))
+    length = int(request.GET.get("length", 10))
+    search_value = request.GET.get("search[value]", "")
 
+    # Handle sorting
+    order_column_index = request.GET.get("order[0][column]")
+    order_direction = request.GET.get("order[0][dir]")
+    order_column_name = request.GET.get(f"columns[{order_column_index}][name]")
+
+    if category_slug:
+        queryset = Expense.objects.filter(category__slug=category_slug, is_deleted=False).select_related("category")
+    else:
+        queryset = Expense.objects.filter(is_deleted=False).select_related("category")
+
+    records_total = queryset.count()
+
+    # Apply search filter if provided
+    if search_value:
+        queryset = queryset.filter(Q(item__icontains=search_value) | Q(description__icontains=search_value))
+    records_filtered = queryset.count()
+
+    # sort the queryset if order_column_name is provided
+    if order_column_name:
+        if order_direction == "desc":
+            order_by = f"-{order_column_name}"
+        else:
+            order_by = order_column_name
+        queryset = queryset.order_by(order_by)
+
+    # Apply pagination
+    queryset = queryset[start : start + length]
+
+    # Prepare data for DataTables
     data = []
-    for expense in expenses:
+
+    for expense in queryset:
+        detail_url = reverse("expenses:detail", args=[expense.slug])
+
+        menu_content = format_row_action_cell(
+            detail_url=detail_url,
+            update_url=reverse("expenses:expense_edit", args=[expense.slug]),
+            slug=expense.slug,
+        )
+
         if expense.list_entries.exists():
             est_amount = float(expense.calculated_estimated_amount())
             actual_amount = float(expense.calculated_actual_amount())
-            item = f'<a href="{reverse("expenses:detail", args=[expense.slug])}" class="link link-primary"><span class="italic">{expense.item}</span></a>'
+            item = f'<a href="{detail_url}" class="link link-primary"><span class="italic">{expense.item}</span></a>'
         else:
             est_amount = float(expense.estimated_amount) if expense.estimated_amount else 0
             actual_amount = float(expense.actual_amount) if expense.actual_amount else 0
-            item = f'<a href="{reverse("expenses:detail", args=[expense.slug])}" class="link link-primary">{expense.item}</a>'
-
-        # add link to the associated list in the drop-down menu
-        menu_content = """
-            <div class="dropdown dropdown-end">
-                <div tabindex="0" role="button" class="btn btn-ghost btn-sm">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01" />
-                    </svg>
-                </div>
-                <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-32 p-2 shadow">
-        """
-        if expense.list_entries.exists():
-            menu_content += f'<li><a href="{reverse("list:detail", args=[expense.list_entries.first().list.slug])}" class="link link-primary">List</a></li>'
-        menu_content += f"""
-                    <li><a href="{reverse("expenses:expense_edit", args=[expense.slug])}" class="text-sm">Edit</a></li>
-                </ul>
-            </div>
-        """
+            item = f'<a href="{detail_url}" class="link link-primary">{expense.item}</a>'
 
         data.append(
             {
@@ -205,11 +267,18 @@ def expense_data(request):
                 "menu_content": menu_content,
             }
         )
-    return JsonResponse({"data": data})
+    return JsonResponse(
+        {
+            "draw": draw,
+            "recordsTotal": records_total,
+            "recordsFiltered": records_filtered,
+            "data": data,
+        }
+    )
 
 
 @login_required
-def expense_import(request):
+def expense_import(request) -> HttpResponse:
     """Import expenses from Excel file"""
     if request.method == "POST":
         excel_file = request.FILES.get("excel_file")
@@ -373,7 +442,7 @@ def expense_import(request):
 
 
 @login_required
-def detail(request, slug: str):
+def detail(request, slug: str) -> HttpResponse:
     """View for expense detail"""
     expense = get_object_or_404(Expense, slug=slug, is_deleted=False)
     if expense.actual_amount and expense.estimated_amount:
@@ -391,7 +460,7 @@ def detail(request, slug: str):
 
 
 @login_required
-def template_download(request):
+def template_download(request) -> HttpResponse:
     """Download Excel template for expense import"""
     # Create a workbook and worksheet
     wb = openpyxl.Workbook()
@@ -493,7 +562,7 @@ def template_download(request):
 
 
 @login_required
-def category_detail(request, slug: str):
+def category_detail(request, slug: str) -> HttpResponse:
     category = get_object_or_404(Category, slug=slug, is_deleted=False)
     expenses = Expense.objects.filter(category=category, is_deleted=False)
     context = {
@@ -510,7 +579,7 @@ def category_detail(request, slug: str):
 
 
 @login_required
-def category_list(request):
+def category_list(request) -> HttpResponse:
     categories = (
         Category.objects.filter(is_deleted=False)
         .prefetch_related("expense_set")
@@ -539,17 +608,20 @@ def category_list(request):
     )
 
 
-def category_create(request):
+def category_create(request) -> HttpResponse:
     if request.method == "POST":
         form = CategoryForm(request.POST)
         if form.is_valid():
             category: Category = form.save(commit=False)
             category.created_by = request.user
             category.save()
-    return redirect("expenses:category_list")
+        return redirect("expenses:category_list")
+    else:
+        form = CategoryForm()
+        return render(request, "expenses/category_form.html", {"form": form})
 
 
-def category_edit(request, slug: str):
+def category_edit(request, slug: str) -> HttpResponse:
     category = Category.objects.get(slug=slug, is_deleted=False)
     if request.method == "POST":
         form = CategoryForm(request.POST, instance=category)
@@ -557,12 +629,36 @@ def category_edit(request, slug: str):
             category = form.save(commit=False)
             category.updated_by = request.user
             category.save()
-    return redirect("expenses:category_list")
+        return redirect("expenses:category_detail", slug=category.slug)
+    else:
+        form = CategoryForm(instance=category)
+        return render(request, "expenses/category_form.html", {"form": form, "category": category})
 
 
-def category_delete(request, slug: str):
+def category_delete(request, slug: str) -> HttpResponse:
     category = Category.objects.get(slug=slug, is_deleted=False)
     if request.method == "POST":
         category.is_deleted = True
         category.save()
     return redirect("expenses:category_list")
+
+
+@login_required
+def category_delete_modal(request: HttpRequest) -> HttpResponse:
+    """
+    Render the modal content for deleting a category.
+    """
+    category_slug = request.GET.get("slug")
+    if not category_slug:
+        return JsonResponse({"error": "Category slug is required"}, status=400)
+    try:
+        category = Category.objects.get(slug=category_slug, is_deleted=False)
+    except Category.DoesNotExist:
+        return JsonResponse({"error": "Category not found"}, status=404)
+
+    context = {
+        "object": category,
+        "object_type": "Category",
+        "action_url": reverse("expenses:category_delete", args=[category.slug]),
+    }
+    return render(request, "shared_helpers/modal/object_delete_body.html", context)

@@ -7,7 +7,9 @@ from django.db.models import F
 from django.db.models import Sum
 from django.utils.text import slugify
 from simple_history.models import HistoricalRecords
+from django_stubs_ext.db.models.manager import RelatedManager
 
+from list.models import ListEntry
 from users.models import User
 
 
@@ -63,6 +65,7 @@ class Expense(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     is_deleted = models.BooleanField(default=False)
     history = HistoricalRecords()
+    list_entries: RelatedManager[ListEntry]
 
     @property
     def completed(self):

@@ -26,7 +26,7 @@
                         {% endif %}
                         <li>
                             {% if deadline %}
-                                Edit Deadline
+                                Edit {{ deadline }}
                             {% else %}
                                 New Deadline
                             {% endif %}
@@ -42,7 +42,7 @@
                 </h1>
                 <p class="text-base-content/70">
                     {% if deadline.name %}
-                        Update the details for this deadline
+                        Update the details for the "{{ deadline.name }}" deadline
                     {% else %}
                         Add a new deadline to track your progress
                     {% endif %}
@@ -50,211 +50,21 @@
             </div>
         </div>
         <!-- Form Card -->
-        <div class="edit-card">
-            <div class="edit-card-body">
-                <form method="post" class="space-y-6">
-                    {% csrf_token %}
-                    <!-- Display non-field errors -->
-                    {% if form.non_field_errors %}
-                        <div class="alert alert-error">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                 class="h-5 w-5"
-                                 fill="none"
-                                 viewBox="0 0 24 24"
-                                 stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            <div>
-                                {% for error in form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
-                            </div>
-                        </div>
-                    {% endif %}
-                    <!-- Deadline Name -->
-                    <div class="form-control w-full">
-                        <label class="label">
-                            <span class="edit-card-field-name">{{ form.name.label }}</span>
-                            <span class="label-text-alt text-error">Required</span>
-                        </label>
-                        {{ form.name }}
-                        {% if form.name.errors %}
-                            <label class="label">
-                                <span class="label-text-alt text-error">
-                                    {% for error in form.name.errors %}{{ error }}{% endfor %}
-                                </span>
-                            </label>
-                        {% endif %}
-                    </div>
-                    <!-- Description -->
-                    <div class="form-control w-full">
-                        <label class="label">
-                            <span class="edit-card-field-name">{{ form.description.label }}</span>
-                            <span class="label-text-alt">Optional</span>
-                        </label>
-                        {{ form.description }}
-                        {% if form.description.errors %}
-                            <label class="label">
-                                <span class="label-text-alt text-error">
-                                    {% for error in form.description.errors %}{{ error }}{% endfor %}
-                                </span>
-                            </label>
-                        {% endif %}
-                    </div>
-                    <!-- Deadline List and Due Date Row -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <!-- Deadline List -->
-                        <div class="form-control w-full">
-                            <label class="label">
-                                <span class="edit-card-field-name">{{ form.deadline_list.label }}</span>
-                                <span class="label-text-alt text-error">Required</span>
-                            </label>
-                            {{ form.deadline_list }}
-                            {% if form.deadline_list.errors %}
-                                <label class="label">
-                                    <span class="label-text-alt text-error">
-                                        {% for error in form.deadline_list.errors %}{{ error }}{% endfor %}
-                                    </span>
-                                </label>
-                            {% endif %}
-                            <label class="label">
-                                <span class="label-text-alt">
-                                    <a href="{% url 'deadline:deadline_list_create' %}"
-                                       class="link link-primary">Create new list</a>
-                                </span>
-                            </label>
-                        </div>
-                        <!-- Due Date -->
-                        <div class="form-control w-full">
-                            <label class="label">
-                                <span class="edit-card-field-name">{{ form.due_date.label }}</span>
-                                <span class="label-text-alt">Optional</span>
-                            </label>
-                            {{ form.due_date }}
-                            {% if form.due_date.errors %}
-                                <label class="label">
-                                    <span class="label-text-alt text-error">
-                                        {% for error in form.due_date.errors %}{{ error }}{% endfor %}
-                                    </span>
-                                </label>
-                            {% endif %}
-                            {% if form.instance.due_date and form.instance.due_date < today %}
-                                <label class="label">
-                                    <span class="label-text-alt text-warning">This date is in the past</span>
-                                </label>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <!-- Assigned To -->
-                    <div class="form-control w-full">
-                        <label class="label">
-                            <span class="edit-card-field-name">{{ form.assigned_to.label }}</span>
-                            <span class="label-text-alt">Optional</span>
-                        </label>
-                        {{ form.assigned_to }}
-                        {% if form.assigned_to.errors %}
-                            <label class="label">
-                                <span class="label-text-alt text-error">
-                                    {% for error in form.assigned_to.errors %}{{ error }}{% endfor %}
-                                </span>
-                            </label>
-                        {% endif %}
-                    </div>
-                    <!-- Completion Status -->
-                    <div class="form-control">
-                        <label class="label cursor-pointer justify-start gap-4">
-                            {{ form.completed }}
-                            <span class="edit-card-field-name">{{ form.completed.label }}</span>
-                        </label>
-                        {% if form.completed.errors %}
-                            <label class="label">
-                                <span class="label-text-alt text-error">
-                                    {% for error in form.completed.errors %}{{ error }}{% endfor %}
-                                </span>
-                            </label>
-                        {% endif %}
-                    </div>
-                    <!-- Completion Notes (shown only if completed is checked) -->
-                    <div class="form-control w-full" id="completion-notes-field">
-                        <label class="label">
-                            <span class="edit-card-field-name">{{ form.completed_note.label }}</span>
-                            <span class="label-text-alt">Optional</span>
-                        </label>
-                        {{ form.completed_note }}
-                        {% if form.completed_note.errors %}
-                            <label class="label">
-                                <span class="label-text-alt text-error">
-                                    {% for error in form.completed_note.errors %}{{ error }}{% endfor %}
-                                </span>
-                            </label>
-                        {% endif %}
-                    </div>
-                    <!-- Form Actions -->
-                    <div class="card-actions justify-end pt-6">
-                        <a href="{% if form.instance.deadline_list %}{% url 'deadline:list' %}?list={{ form.instance.deadline_list.slug }}{% else %}{% url 'deadline:deadline_summary' %}{% endif %}"
-                           class="btn btn-ghost">Cancel</a>
-                        <button type="submit" class="btn btn-primary">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                 class="h-5 w-5"
-                                 fill="none"
-                                 viewBox="0 0 24 24"
-                                 stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                            </svg>
-                            {% if form.instance.pk %}
-                                Update Deadline
-                            {% else %}
-                                Create Deadline
-                            {% endif %}
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
+        {% if deadline %}
+            {% url 'deadline:deadline_detail' deadline.slug as cancel_url %}
+
+            {% include "shared_helpers/object_form.html" with object=deadline %}
+
+        {% else %}
+            {% url 'deadline:deadline_summary' as cancel_url %}
+
+            {% include "shared_helpers/object_form.html" %}
+
+        {% endif %}
     </div>
 {% endblock content %}
 {% block extra_script %}
-    <script nonce="{{ request.csp_nonce }}">
-      document.addEventListener('DOMContentLoaded', function() {
 
+    {% include "shared_helpers/script/object_form.html" with first_field="name" %}
 
-        // Auto-resize textareas
-        const textareas = document.querySelectorAll('textarea');
-        textareas.forEach(textarea => {
-          textarea.addEventListener('input', function() {
-            this.style.height = 'auto';
-            this.style.height = this.scrollHeight + 'px';
-          });
-        });
-
-        // Form validation feedback
-        const form = document.querySelector('form');
-        if (form) {
-          form.addEventListener('submit', function(e) {
-            const requiredFields = form.querySelectorAll('input[required], select[required]');
-            let isValid = true;
-
-            requiredFields.forEach(field => {
-              if (!field.value.trim()) {
-                isValid = false;
-                field.classList.add('input-error');
-              } else {
-                field.classList.remove('input-error');
-              }
-            });
-
-            if (!isValid) {
-              e.preventDefault();
-              // Scroll to first error
-              const firstError = form.querySelector('.input-error');
-              if (firstError) {
-                firstError.scrollIntoView({
-                  behavior: 'smooth',
-                  block: 'center'
-                });
-                firstError.focus();
-              }
-            }
-          });
-        }
-      });
-    </script>
 {% endblock extra_script %}

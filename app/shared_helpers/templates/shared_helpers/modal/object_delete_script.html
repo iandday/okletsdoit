@@ -6,8 +6,11 @@
     var slug = $(this).data('id');
     // Make an AJAX request to a Django view to get data for the modal
     $.ajax({
-      url: '{% url "deadline:deadline_delete_modal" %}?slug=' + slug,
+      url: '{{ delete_modal_url }}?slug=' + slug,
+
       success: function(data) {
+        console.log('Requesting URL:', '{{ delete_modal_url }}?slug=' + slug);
+        console.log('Data received:', data);
         $('#delete-modal-body').html(data);
         deleteModal.showModal();
       }

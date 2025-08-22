@@ -1,0 +1,64 @@
+{% extends "components/layout/base.html" %}
+
+{% load static %}
+
+{% block title %}
+    Deadline List Detail
+{% endblock title %}
+{% block content %}
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header Section -->
+        <div class="breadcrumbs mb-4">
+            <ul>
+                <li>
+                    <a href="{% url 'deadline:deadline_summary' %}" class="link">Deadline Summary</a>
+                </li>
+                <li>
+                    <a href="{% url 'deadline:list' %}" class="link">All Deadlines</a>
+                </li>
+                <li>
+                    <a href="{% url 'deadline:list' %}?list={{ deadline_list.slug }}"
+                       class="link">{{ deadline_list }}</a>
+                </li>
+            </ul>
+        </div>
+        <!-- Title -->
+        <div class="mb-6 flex items-center justify-between">
+            <h1 class="text-3xl font-bold text-base-content">{{ deadline_list }}</h1>
+            <div class="flex gap-2">
+                <button class="btn btn-sm btn-error delete-btn"
+                        data-id="{{ deadline_list.slug }}">Delete</button>
+                <a href="{% url 'deadline:deadline_list_edit' deadline_list.slug %}"
+                   class="btn btn-primary btn-sm">Edit</a>
+            </div>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Main Information-->
+            <div class="detail-card" id="main-info">
+                <div class="detail-card-body">
+                    <h2 class="detail-card-title">Deadline List Information</h2>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <div class="detail-card-field-name">Name</div>
+                            <div class="detail-card-field-value">{{ deadline_list.name }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Metadata -->
+
+            {% include "components/detail_metadata.html" with object=deadline_list %}
+
+        </div>
+        <!-- Delete Deadline List Modal-->
+
+        {% include "shared_helpers/modal/object_delete_shell.html" %}
+
+    </div>
+{% endblock content %}
+{% block extra_script %}
+    {% url "deadline:deadline_list_delete_modal" as delete_modal_url %}
+
+    {% include "shared_helpers/modal/object_delete_script.html" %}
+
+{% endblock extra_script %}

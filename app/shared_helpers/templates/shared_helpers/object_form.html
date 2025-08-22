@@ -1,0 +1,48 @@
+<!-- New/Edit Object form
+   form: form for creating or editing an object
+   cancel_url: URL to redirect to when canceling
+   object: the object being edited (optional)
+   object_type: type of object being edited or created
+-->
+<div class="edit-card">
+    <div class="edit-card-body">
+        <form method="post" id="objectForm">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="form-control w-full py-2">
+                    <label class="label">
+                        <span class="edit-card-field-name">{{ field.label }}</span>
+                        <!-- if the field is required-->
+                        {% if field.required %}<span class="label-text-alt text-error">Required</span>{% endif %}
+                    </label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <label class="label">
+                            <span class="label-text-alt text-error">
+                                {% for error in field.errors %}{{ error }}{% endfor %}
+                            </span>
+                        </label>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <!-- Form Actions -->
+            <div class="card-actions justify-end py-2">
+                <a href="{{ cancel_url }}" class="btn">Cancel</a>
+                <button type="submit" class="btn btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         class="h-5 w-5"
+                         fill="none"
+                         viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    {% if object %}
+                        Update {{ object_type }}
+                    {% else %}
+                        Add {{ object_type }}
+                    {% endif %}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

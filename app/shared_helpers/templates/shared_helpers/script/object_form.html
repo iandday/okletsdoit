@@ -1,0 +1,66 @@
+<!-- script to be used with object_form.html 
+    Focus on the first input field and add basic validation
+    vars:
+       first_field: name of field to auto-focus on
+ -->
+<script nonce="{{ request.csp_nonce }}">
+  document.addEventListener('DOMContentLoaded', function() {
+    // Auto-focus on the first input field
+    const firstInput = document.querySelector('input[name="{{first_field}}"]');
+    if (firstInput) {
+      firstInput.focus();
+    }
+
+    // Auto-resize textareas
+    const textareas = document.querySelectorAll('textarea');
+    textareas.forEach(textarea => {
+      textarea.addEventListener('input', function() {
+        this.style.height = 'auto';
+        this.style.height = this.scrollHeight + 'px';
+      });
+    });
+
+    // Add form validation feedback
+    const form = document.querySelector('#objectForm');
+    if (form) {
+      form.addEventListener('submit', function(e) {
+        const requiredFields = form.querySelectorAll('input[required], select[required], textarea[required]');
+        let isValid = true;
+
+        requiredFields.forEach(field => {
+          if (!field.value.trim()) {
+            isValid = false;
+            field.classList.add('input-error');
+          } else {
+            field.classList.remove('input-error');
+          }
+        });
+
+        if (!isValid) {
+          e.preventDefault();
+          // Show error message
+          const errorAlert = document.createElement('div');
+          errorAlert.className = 'alert alert-error mb-4';
+          errorAlert.innerHTML = `
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.99-.833-2.76 0L4.054 15.5c-.77.833.192 2.5 1.732 2.5z" />
+                            </svg>
+                            <span>Please fill in all required fields.</span>
+                        `;
+
+          const existingAlert = form.querySelector('.alert-error');
+          if (existingAlert) {
+            existingAlert.remove();
+          }
+
+          form.insertBefore(errorAlert, form.firstChild);
+
+          // Remove error after 5 seconds
+          setTimeout(() => {
+            errorAlert.remove();
+          }, 5000);
+        }
+      });
+    }
+  });
+</script>

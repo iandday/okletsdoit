@@ -183,7 +183,6 @@
             paging: {}
           }
         },
-
         buttons: [{
           extend: 'searchBuilder',
           config: {
@@ -229,6 +228,7 @@
     });
   </script>
   <!-- Delete Modal Functionality-->
+  {% url "deadline:deadline_delete_modal" as delete_modal_url %}
 
   {% include "shared_helpers/modal/object_delete_script.html" %}
 

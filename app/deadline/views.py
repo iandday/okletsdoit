@@ -14,7 +14,9 @@ from django.db.models import Count, Q
 from users.models import User
 import logging
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("__name__")
+
+logger.error("Deadline views loaded")
 
 
 @login_required
@@ -165,7 +167,7 @@ def deadline_toggle_complete(request: HttpRequest, deadline_slug: str) -> HttpRe
 
 
 @login_required
-def deadline_data(request):
+def deadline_data(request) -> JsonResponse:
     """JSON endpoint for DataTables"""
 
     list_slug = request.GET.get("list")
@@ -252,13 +254,13 @@ def list(request: HttpRequest):
             return redirect("deadline:list")
         context["list"] = deadline_list  # type: ignore[assignment]
 
-    return render(request, "deadline/deadlines.html", context)
+    return render(request, "deadline/deadline_all.html", context)
 
 
 @login_required
 def deadline_list_create(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
-        form = DeadlineForm(request.POST, user=request.user)
+        form = DeadlineListForm(request.POST)
         if form.is_valid():
             deadline_list: DeadlineList = form.save(commit=False)
             deadline_list.created_by = request.user
@@ -275,29 +277,65 @@ def deadline_list_create(request: HttpRequest) -> HttpResponse:
             )
     else:
         context = {
-            "form": DeadlineForm(),
+            "form": DeadlineListForm(),
         }
         return render(request, "deadline/deadline_list_form.html", context)
 
 
 @login_required
-def deadline_list_delete(request: HttpRequest) -> HttpResponse:
+def deadline_list_detail(request: HttpRequest, deadline_list_slug: str) -> HttpResponse:
+    try:
+        deadline_list = DeadlineList.objects.get(slug=deadline_list_slug, is_deleted=False)
+    except DeadlineList.DoesNotExist:
+        messages.error(request, "Deadline list not found.")
+        return redirect("deadline:deadline_summary")
+
+    context = {
+        "deadline_list": deadline_list,
+        "form": DeadlineForm(),
+    }
+    return render(request, "deadline/deadline_list_detail.html", context)
+
+
+@login_required
+def deadline_list_delete_modal(request: HttpRequest) -> HttpResponse | JsonResponse:
+    """
+    Render the modal content for deleting a deadline.
+    """
+
+    deadline_list_slug = request.GET.get("slug")
+    if not deadline_list_slug:
+        return JsonResponse({"error": "Deadline list slug is required"}, status=400)
+    try:
+        deadline_list = DeadlineList.objects.get(slug=deadline_list_slug, is_deleted=False)
+    except DeadlineList.DoesNotExist:
+        return JsonResponse({"error": "Deadline list not found"}, status=404)
+
+    deadline_list = DeadlineList.objects.get(slug=deadline_list_slug, is_deleted=False)
+
+    context = {
+        "object": deadline_list,
+        "object_type": "Deadline List",
+        "action_url": reverse("deadline:deadline_list_delete", args=[deadline_list.slug]),
+    }
+
+    return render(request, "shared_helpers/modal/object_delete_body.html", context)
+
+
+@login_required
+def deadline_list_delete(request: HttpRequest, deadline_list_slug: str) -> HttpResponse:
     if request.method == "POST":
-        form = DeadlineForm(request.POST)
-        if form.is_valid():
-            deadline_list = form.save(commit=False)
-            deadline_list.is_deleted = True
-            deadline_list.updated_by = request.user
-            deadline_list.save()
-            messages.success(request, "Deadline list deleted successfully.")
+        try:
+            deadline_list = DeadlineList.objects.get(slug=deadline_list_slug, is_deleted=False)
+        except DeadlineList.DoesNotExist:
+            messages.error(request, "Deadline list not found.")
             return redirect("deadline:deadline_summary")
-        else:
-            messages.error(request, "Please correct the errors below.")
-            return render(
-                request,
-                "deadline/deadline_list_form.html",
-                {"form": DeadlineForm(user=request.user, object=form.instance)},
-            )
+        deadline_list.is_deleted = True
+        deadline_list.save()
+
+        messages.success(request, "Deadline list deleted successfully.")
+        return redirect("deadline:deadline_summary")
+
     else:
         messages.error(request, "Invalid request method.")
         return redirect("deadline:deadline_summary")

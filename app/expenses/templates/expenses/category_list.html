@@ -21,7 +21,7 @@
                 <h1 class="text-4xl font-bold text-base-content mb-2">Expense Categories</h1>
                 <p class="text-lg text-base-content/70">Manage your wedding expense categories</p>
             </div>
-            <button class="btn btn-primary" id="show-add-category-modal">
+            <a href="{% url 'expenses:category_create' %}" class="btn btn-primary">
                 <svg xmlns="http://www.w3.org/2000/svg"
                      class="h-5 w-5"
                      fill="none"
@@ -30,7 +30,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                 </svg>
                 Add Category
-            </button>
+            </a>
         </div>
         <!-- Categories Grid -->
         {% if categories %}
@@ -41,44 +41,12 @@
                             <div class="flex items-start justify-between">
                                 <a class="list-card-title"
                                    href="{% url 'expenses:category_detail' category.slug %}">{{ category.name }} ({{ category.expense_set.count }} Expenses)</a>
-                                <div class="dropdown dropdown-end">
-                                    <div tabindex="0" role="button" class="btn btn-ghost btn-circle btn-sm">
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                             class="h-5 w-5"
-                                             fill="none"
-                                             viewBox="0 0 24 24"
-                                             stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01" />
-                                        </svg>
-                                    </div>
-                                    <ul tabindex="0"
-                                        class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
-                                        <li>
-                                            <button class="w-full text-left" id="show-edit-modal-{{ category.id }}">
-                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                     class="h-4 w-4"
-                                                     fill="none"
-                                                     viewBox="0 0 24 24"
-                                                     stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                                </svg>
-                                                Edit
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <button class="w-full text-left" id="show-delete-modal-{{ category.id }}">
-                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                     class="h-4 w-4"
-                                                     fill="none"
-                                                     viewBox="0 0 24 24"
-                                                     stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                </svg>
-                                                Delete
-                                            </button>
-                                        </li>
-                                    </ul>
-                                </div>
+                                <!-- list card options menu-->
+                                {% url "expenses:category_detail" category.slug as detail_action %}
+                                {% url 'expenses:category_edit' category.slug as update_action %}
+
+                                {% include "shared_helpers/card/list_card_options.html" with slug=category.slug %}
+
                             </div>
                             {% if category.description %}<p class="text-sm">{{ category.description|truncatechars:100 }}</p>{% endif %}
                             <div class="card-actions justify-end mt-4">
@@ -109,7 +77,8 @@
                 <p class="text-lg text-base-content/70 mb-8">
                     Create your first expense category to get started organizing your wedding expenses
                 </p>
-                <button class="btn btn-primary btn-lg" id="show-add-category-modal">
+                <a href="{% url 'expenses:category_create' %}"
+                   class="btn btn-primary btn-lg">
                     <svg xmlns="http://www.w3.org/2000/svg"
                          class="h-6 w-6"
                          fill="none"
@@ -118,7 +87,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                     </svg>
                     Create First Category
-                </button>
+                </a>
             </div>
         {% endif %}
         <!-- Quick Actions -->
@@ -146,105 +115,15 @@
                 </a>
             </div>
         </div>
+        <!-- Delete Category Modal-->
+
+        {% include "shared_helpers/modal/object_delete_shell.html" %}
+
     </div>
-    <!-- Add Category Modal -->
-    <dialog id="add_category_modal" class="modal">
-        <div class="modal-box">
-            <form method="dialog">
-                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-            </form>
-            <h3 class="font-bold text-lg mb-6">
-                <svg xmlns="http://www.w3.org/2000/svg"
-                     class="h-6 w-6 inline mr-2"
-                     fill="none"
-                     viewBox="0 0 24 24"
-                     stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                </svg>
-                Create New Category
-            </h3>
-            <form method="post"
-                  action="{% url 'expenses:category_create' %}"
-                  id="categoryForm">
-                {% csrf_token %}
-                <div class="form-control mb-4">
-                    <label class="label" for="{{ form.name.id_for_label }}">
-                        <span class="label-text font-medium">{{ form.name.label }}</span>
-                    </label>
-                    {{ form.name }}
-                    {% if form.name.errors %}
-                        <div class="label">
-                            {% for error in form.name.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
-                        </div>
-                    {% endif %}
-                </div>
-                <div class="form-control mb-6">
-                    <label class="label" for="{{ form.description.id_for_label }}">
-                        <span class="label-text font-medium">{{ form.description.label }}</span>
-                    </label>
-                    {{ form.description }}
-                    {% if form.description.errors %}
-                        <div class="label">
-                            {% for error in form.description.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
-                        </div>
-                    {% endif %}
-                </div>
-                <div class="modal-action">
-                    <button type="button" class="btn btn-ghost" id="cancel-add-category">Cancel</button>
-                    <button type="submit" class="btn btn-primary">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             class="h-5 w-5"
-                             fill="none"
-                             viewBox="0 0 24 24"
-                             stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                        </svg>
-                        Create Category
-                    </button>
-                </div>
-            </form>
-        </div>
-        <form method="dialog" class="modal-backdrop">
-            <button>close</button>
-        </form>
-    </dialog>
-    <!-- Edit and Delete Modals for each category -->
-    {% for category in categories %}
-        {% url 'expenses:category_delete' category.slug as delete_action %}
-        {% url 'expenses:category_edit' category.slug as edit_action %}
-
-        {% include "components/modal_delete.html" with id=category.id action=delete_action name=category.name item="Category" %}
-        {% include "components/modal_edit_expense_category.html" with id=category.id action=edit_action form=category_forms|get_item:category.id item="Category" %}
-
-    {% endfor %}
 {% endblock content %}
 {% block extra_script %}
     <script nonce="{{ request.csp_nonce }}">
       document.addEventListener('DOMContentLoaded', function() {
-        // Add Category Modal
-        const showAddModal = document.getElementById('show-add-category-modal');
-        const addModal = document.getElementById('add_category_modal');
-        const cancelAddBtn = document.getElementById('cancel-add-category');
-
-        if (showAddModal && addModal) {
-          showAddModal.addEventListener('click', function() {
-            addModal.showModal();
-            const nameField = document.getElementById('{{ form.name.id_for_label }}');
-            if (nameField) {
-              setTimeout(() => nameField.focus(), 100);
-            }
-          });
-        }
-
-        if (cancelAddBtn && addModal) {
-          cancelAddBtn.addEventListener('click', function() {
-            addModal.close();
-          });
-        }
-
-
-
-
 
         // Close dropdowns when clicking outside
         document.addEventListener('click', function(e) {
@@ -260,4 +139,9 @@
         });
       });
     </script>
-{% endblock %}
+    <!-- Delete Modal Functionality-->
+    {% url "expenses:category_delete_modal" as delete_modal_url %}
+
+    {% include "shared_helpers/modal/object_delete_script.html" %}
+
+{% endblock extra_script %}

@@ -3,35 +3,56 @@
 {% load static %}
 
 {% block content %}
-    <div class="max-w-xl mx-auto mt-8">
-        <div class="edit-card">
-            <div class="edit-card-body">
-                {% if deadline_list %}
-                    <h2 class="edit-card-title">Edit Deadline List</h2>
-                {% else %}
-                    <h2 class="edit-card-title">Create Deadline List</h2>
-                {% endif %}
-                <form method="post" novalidate>
-                    {% csrf_token %} {{ form.non_field_errors }}
-                    <div class="mb-4">
-                        {{ form.name.label_tag }} {{ form.name }}
-                        {% if form.name.errors %}
-                            <div class="text-error mt-1">
-                                {% for error in form.name.errors %}<span>{{ error }}</span>{% endfor %}
-                            </div>
-                        {% endif %}
-                    </div>
-                    <div class="card-actions justify-end">
-                        {% if deadline_list %}
-                            <button type="submit" class="btn btn-primary">Save</button>
-                        {% else %}
-                            <button type="submit" class="btn btn-primary">Create</button>
-                        {% endif %}
-                        <a href="{% url 'deadline:list' %}?list={{ deadline_list.slug }}"
-                           class="btn btn-ghost">Cancel</a>
-                    </div>
-                </form>
+    <div class="max-w-4xl mx-auto px-4 py-8">
+        <!-- Page Header -->
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
+            <div>
+                <div class="breadcrumbs mb-2">
+                    <ul>
+                        <li>
+                            <a href="{% url 'deadline:deadline_summary' %}">Deadlines</a>
+                        </li>
+                        <li>
+                            {% if deadline_list %}
+                                Edit {{ deadline_list }}
+                            {% else %}
+                                New Deadline List
+                            {% endif %}
+                        </li>
+                    </ul>
+                </div>
+                <h1 class="text-3xl font-bold text-base-content mb-2">
+                    {% if deadline_list %}
+                        Edit Deadline List
+                    {% else %}
+                        Create New Deadline List
+                    {% endif %}
+                </h1>
+                <p class="text-base-content/70">
+                    {% if deadline_list.name %}
+                        Update the details for the "{{ deadline_list.name }}" deadline list
+                    {% else %}
+                        Add a new deadline list to track your progress
+                    {% endif %}
+                </p>
             </div>
         </div>
+        <!-- Form Card -->
+        {% if deadline_list %}
+            {% url 'deadline:deadline_list_detail' deadline_list.slug as cancel_url %}
+
+            {% include "shared_helpers/object_form.html" with object=deadline_list %}
+
+        {% else %}
+            {% url 'deadline:deadline_summary' as cancel_url %}
+
+            {% include "shared_helpers/object_form.html" %}
+
+        {% endif %}
     </div>
 {% endblock content %}
+{% block extra_script %}
+
+    {% include "shared_helpers/script/object_form.html" with first_field="name" %}
+
+{% endblock extra_script %}

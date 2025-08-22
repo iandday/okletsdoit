@@ -1,0 +1,69 @@
+{% extends "components/layout/base.html" %}
+
+{% load static %}
+
+{% block title %}
+    {% if category %}
+        Edit Category - {{ category.name }}
+    {% else %}
+        Create New Category
+    {% endif %}
+{% endblock title %}
+{% block content %}
+    <div class="max-w-4xl mx-auto px-4 py-8">
+        <!-- Breadcrumbs -->
+        <div class="breadcrumbs mb-6">
+            <ul>
+                <li>
+                    <a href="{% url 'expenses:summary' %}" class="link">Expenses</a>
+                </li>
+                <li>
+                    <a href="{% url 'expenses:category_list' %}" class="link">Categories</a>
+                </li>
+                {% if category %}
+                    <li>
+                        <a href="{% url 'expenses:category_detail' category.slug %}"
+                           class="link">{{ category.name }}</a>
+                    </li>
+                    <li>Edit</li>
+                {% else %}
+                    <li>Create New Category</li>
+                {% endif %}
+            </ul>
+        </div>
+        <!-- Header -->
+        <div class="mb-8">
+            <h1 class="text-4xl font-bold text-base-content mb-2">
+                {% if category %}
+                    Edit Category
+                {% else %}
+                    Create New Category
+                {% endif %}
+            </h1>
+            <p class="text-base-content/70">
+                {% if category %}
+                    Update the details for "{{ category.name }}"
+                {% else %}
+                    Add a new expense category to track your spending
+                {% endif %}
+            </p>
+        </div>
+        <!-- Form -->
+        {% if category %}
+            {% url 'expenses:category_detail' category.slug as cancel_url %}
+
+            {% include "shared_helpers/object_form.html" with object=category %}
+
+        {% else %}
+            {% url 'expenses:category_list' as cancel_url %}
+
+            {% include "shared_helpers/object_form.html" %}
+
+        {% endif %}
+    </div>
+{% endblock content %}
+{% block extra_script %}
+
+    {% include "shared_helpers/script/object_form.html" with first_field="name" %}
+
+{% endblock extra_script %}

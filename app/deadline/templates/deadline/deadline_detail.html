@@ -17,7 +17,7 @@
                     <a href="{% url 'deadline:list' %}" class="link">All Deadlines</a>
                 </li>
                 <li>
-                    <a href="{% url 'deadline:list' %}?list={{ deadline.deadline_list.slug }}"
+                    <a href="{% url 'deadline:deadline_list_detail' deadline.deadline_list.slug %}"
                        class="link">{{ deadline.deadline_list.name }}</a>
                 </li>
             </ul>
@@ -28,6 +28,7 @@
             <div class="flex gap-2">
                 <a href="{% url 'deadline:deadline_edit' deadline.slug %}"
                    class="btn btn-primary btn-sm">Edit</a>
+                <button class="btn btn-sm btn-error delete-btn" data-id="{{ deadline.slug }}">Delete</button>
                 <form method="post"
                       action="{% url 'deadline:deadline_toggle_complete' deadline.slug %}">
                     {% csrf_token %}
@@ -82,7 +83,15 @@
             {% include "components/detail_metadata.html" with object=deadline %}
 
         </div>
+        <!-- Delete Deadline Modal-->
+
+        {% include "shared_helpers/modal/object_delete_shell.html" %}
+
     </div>
 {% endblock content %}
 {% block extra_script %}
+    {% url "deadline:deadline_delete_modal" as delete_modal_url %}
+
+    {% include "shared_helpers/modal/object_delete_script.html" %}
+
 {% endblock extra_script %}
