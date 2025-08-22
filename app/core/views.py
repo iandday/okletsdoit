@@ -3,10 +3,11 @@ import json
 import logging
 import datetime
 from io import BytesIO
+from django.urls import reverse
 import polars as pl
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from django.utils import timezone
 from django.utils.text import slugify
@@ -663,6 +664,24 @@ def inspiration_edit(request: HttpRequest, inspiration_slug: str):
         form = InspirationForm(instance=inspiration)
 
     return render(request, "core/inspiration_form.html", {"form": form, "inspiration": inspiration})
+
+
+@login_required
+def inspiration_delete_modal(request: HttpRequest) -> HttpResponse | JsonResponse:
+    inspiration_slug = request.GET.get("slug")
+    if not inspiration_slug:
+        return JsonResponse({"error": "Inspiration slug is required"}, status=400)
+    try:
+        inspiration = Inspiration.objects.get(slug=inspiration_slug, is_deleted=False)
+    except Inspiration.DoesNotExist:
+        return JsonResponse({"error": "Inspiration not found"}, status=404)
+
+    context = {
+        "object": inspiration,
+        "object_type": "Inspiration",
+        "action_url": reverse("core:inspiration_delete", args=[inspiration.slug]),
+    }
+    return render(request, "shared_helpers/modal/object_delete_body.html", context)
 
 
 @login_required

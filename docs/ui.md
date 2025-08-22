@@ -17,6 +17,7 @@ Shared Helpers
   * Deadlines: Deadline List Detail
   * Expense:Category List
   * Expense:Expense List
+  * Core:Inspiration Deiail
 
 * Object Form
     * Expense:Category

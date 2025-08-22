@@ -23,6 +23,7 @@ urlpatterns = [
     path("idea/<slug:idea_slug>/edit/", views.idea_edit, name="idea_edit"),
     path("idea/<slug:idea_slug>/delete/", views.idea_delete, name="idea_delete"),
     path("idea_create/", views.idea_create, name="idea_create"),
+    path("inpiration_delete_modal/", views.inspiration_delete_modal, name="inspiration_delete_modal"),
     path("inspiration/", views.inspiration_summary, name="inspiration_summary"),
     path("inspiration/create/", views.inspiration_create, name="inspiration_create"),
     path("inspiration/<slug:inspiration_slug>/", views.inspiration_detail, name="inspiration_detail"),

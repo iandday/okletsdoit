@@ -1,8 +1,0 @@
-<!-- Script to handle delete modal 
-id: Unique identifier for the modal instance 
--->
-<script nonce="{{ request.csp_nonce }}">
-  document.getElementById('show-delete-modal-{{ id }}').onclick = function() {
-    document.getElementById('deleteModal-{{ id }}').showModal()
-  };
-</script>

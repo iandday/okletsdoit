@@ -24,7 +24,8 @@
             <div class="flex gap-2">
                 <a href="{% url 'core:inspiration_edit' inspiration.slug %}"
                    class="btn btn-primary btn-sm">Edit</a>
-                <btn class="btn btn-danger btn-sm" id="show-delete-modal-{{ inspiration.id }}">Delete</btn>
+                <button class="btn btn-sm btn-error delete-btn"
+                        data-id="{{ inspiration.slug }}">Delete</button>
             </div>
         </div>
         <img src="{{ inspiration.image.url }}"
@@ -53,14 +54,14 @@
 
         </div>
         <!-- Delete Modal -->
-        {% url 'core:inspiration_delete' inspiration.slug as url %}
 
-        {% include "components/modal/modal_delete_object.html" with id=inspiration.id item="Inspiration" name=inspiration.name action=url %}
+        {% include "shared_helpers/modal/object_delete_shell.html" %}
 
     </div>
 {% endblock content %}
 {% block extra_script %}
+    {% url "core:inspiration_delete_modal" as delete_modal_url %}
 
-    {% include "components/modal/modal_delete_object_script.html" with id=inspiration.id %}
+    {% include "shared_helpers/modal/object_delete_script.html" %}
 
 {% endblock extra_script %}
