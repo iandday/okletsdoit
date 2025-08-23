@@ -1,25 +1,35 @@
+import datetime
 import io
 import json
 import logging
-import datetime
 from io import BytesIO
-from django.urls import reverse
+
 import polars as pl
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import HttpRequest, HttpResponse, JsonResponse
-from django.shortcuts import redirect, render, get_object_or_404
+from django.http import HttpRequest
+from django.http import HttpResponse
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
+from django.shortcuts import redirect
+from django.shortcuts import render
+from django.db.models import Q
+from django.urls import reverse
 from django.utils import timezone
 from django.utils.text import slugify
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
+from shared_helpers.table_helpers import format_row_action_cell
 
-from core.forms import IdeaForm, InspirationForm
+from core.forms import IdeaForm
 from core.forms import IdeaImportForm
+from core.forms import InspirationForm
 from core.forms import TimelineForm
 from core.forms import TimelineImportForm
 from core.models import Idea
-from .models import Inspiration, Timeline
+
+from .models import Inspiration
+from .models import Timeline
 
 logger = logging.getLogger(__name__)
 
@@ -306,23 +316,81 @@ def timeline_summary(request: HttpRequest) -> HttpResponse:
     Returns:
         HttpResponse: Rendered template with timeline events summary.
     """
-    timeline_events = Timeline.objects.filter(is_deleted=False).order_by("start")
 
-    # Separate upcoming and past events
-    now = timezone.now()
-    upcoming_events = timeline_events.filter(start__gte=now)
-    past_events = timeline_events.filter(start__lt=now)
-
-    context = {
-        "timeline_events": timeline_events,
-        "upcoming_events": upcoming_events,
-        "past_events": past_events,
-        "total_events": timeline_events.count(),
-        "confirmed_events": timeline_events.filter(confirmed=True).count(),
-        "published_events": timeline_events.filter(published=True).count(),
-    }
+    context = {"timeline_events": True if Timeline.objects.filter(is_deleted=False) else False}
 
     return render(request, "core/timeline_summary.html", context)
+
+
+@login_required
+def timeline_data(request) -> JsonResponse:
+    """
+    Provides timeline events data in JSON format for frontend consumption.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        JsonResponse: JSON response containing timeline events data.
+    """
+    # Get DataTables parameters
+    draw = int(request.GET.get("draw", 1))
+    start = int(request.GET.get("start", 0))
+    length = int(request.GET.get("length", 10))
+    search_value = request.GET.get("search[value]", "")
+
+    # Handle sorting
+    order_column_index = request.GET.get("order[0][column]")
+    order_direction = request.GET.get("order[0][dir]")
+    order_column_name = request.GET.get(f"columns[{order_column_index}][name]")
+
+    queryset = Timeline.objects.filter(is_deleted=False)
+
+    records_total = queryset.count()
+
+    # Apply search filter if provided
+    if search_value:
+        queryset = queryset.filter(Q(name__icontains=search_value) | Q(description__icontains=search_value))
+    records_filtered = queryset.count()
+
+    # sort the queryset if order_column_name is provided
+    if order_column_name:
+        if order_direction == "desc":
+            order_by = f"-{order_column_name}"
+        else:
+            order_by = order_column_name
+        queryset = queryset.order_by(order_by)
+
+    # Apply pagination
+    queryset = queryset[start : start + length]
+
+    data = []
+    for event in queryset:
+        menu_content = format_row_action_cell(
+            detail_url=reverse("core:timeline_detail", args=[event.slug]),
+            update_url=reverse("core:timeline_edit", args=[event.slug]),
+            slug=event.slug,
+        )
+
+        data.append(
+            {
+                "name": event.name,
+                "start": event.start,
+                "end": event.end,
+                "status": "Confirmed" if event.confirmed else "Pending",
+                "published": "Published" if event.published else "Draft",
+                "menu_content": menu_content,
+            }
+        )
+
+    return JsonResponse(
+        {
+            "draw": draw,
+            "recordsTotal": records_total,
+            "recordsFiltered": records_filtered,
+            "data": data,
+        }
+    )
 
 
 @login_required
@@ -419,6 +487,24 @@ def timeline_edit(request: HttpRequest, timeline_slug: str) -> HttpResponse:
 
 
 @login_required
+def timeline_delete_modal(request: HttpRequest) -> HttpResponse | JsonResponse:
+    timeline_slug = request.GET.get("slug")
+    if not timeline_slug:
+        return JsonResponse({"error": "Timeline slug is required"}, status=400)
+    try:
+        timeline_event = Timeline.objects.get(slug=timeline_slug, is_deleted=False)
+    except Timeline.DoesNotExist:
+        return JsonResponse({"error": "Timeline not found"}, status=404)
+
+    context = {
+        "object": timeline_event,
+        "object_type": "Timeline entry",
+        "action_url": reverse("core:timeline_delete", args=[timeline_event.slug]),
+    }
+    return render(request, "shared_helpers/modal/object_delete_body.html", context)
+
+
+@login_required
 def timeline_delete(request: HttpRequest, timeline_slug: str) -> HttpResponse:
     """
     Delete a timeline event by marking it as deleted.
@@ -437,9 +523,10 @@ def timeline_delete(request: HttpRequest, timeline_slug: str) -> HttpResponse:
         timeline_event.updated_by = request.user
         timeline_event.save()
         messages.success(request, f"Timeline event '{timeline_event.name}' deleted successfully.")
-        return redirect("core:timeline_summary")
+    else:
+        messages.error(request, "Invalid request method.")
 
-    return render(request, "core/timeline_delete.html", {"timeline_event": timeline_event})
+    return redirect("core:timeline_summary")
 
 
 @login_required

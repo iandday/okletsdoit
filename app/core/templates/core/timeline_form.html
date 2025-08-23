@@ -10,27 +10,27 @@
     {% endif %}
 {% endblock title %}
 {% block content %}
-    <div class="max-w-2xl mx-auto px-4 py-8">
+    <div class="max-w-4xl mx-auto px-4 py-8">
         <!-- Header Section -->
-        <div class="breadcrumbs mb-4">
-            <ul>
-                <li>
-                    <a href="{% url 'core:timeline_summary' %}" class="link">Timeline</a>
-                </li>
-                {% if timeline_event %}
-                    <li>
-                        <a href="{% url 'core:timeline_detail' timeline_event.slug %}"
-                           class="link">{{ timeline_event.name }}</a>
-                    </li>
-                    <li>Edit</li>
-                {% else %}
-                    <li>Create Event</li>
-                {% endif %}
-            </ul>
-        </div>
-        <div class="flex items-center gap-4 mb-8">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
             <div>
-                <h1 class="text-4xl font-bold text-base-content mb-2">
+                <div class="breadcrumbs mb-2">
+                    <ul>
+                        <li>
+                            <a href="{% url 'core:timeline_summary' %}" class="link">Timeline</a>
+                        </li>
+                        {% if timeline_event %}
+                            <li>
+                                <a href="{% url 'core:timeline_detail' timeline_event.slug %}"
+                                   class="link">{{ timeline_event.name }}</a>
+                            </li>
+                            <li>Edit</li>
+                        {% else %}
+                            <li>Create Event</li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <h1 class="text-3xl font-bold text-base-content mb-2">
                     {% if timeline_event %}
                         Edit {{ timeline_event.name }}
                     {% else %}
@@ -47,115 +47,16 @@
             </div>
         </div>
         <!-- Form -->
-        <div class="edit-card">
-            <div class="edit-card-body">
-                <form method="post"
-                      action="{% if timeline_event %}{% url 'core:timeline_edit' timeline_event.slug %}{% else %}{% url 'core:timeline_create' %}{% endif %}">
-                    {% csrf_token %}
-                    <!-- Event Name Field -->
-                    <div class="form-control mb-4">
-                        <label class="edit-card-field-name" for="{{ form.name.id_for_label }}">
-                            <span class="edit-card-field-name">{{ form.name.label }}</span>
-                            <span class="label-text-alt text-error">*</span>
-                        </label>
-                        {{ form.name }}
-                        {% if form.name.errors %}
-                            <div class="label">
-                                {% for error in form.name.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
-                            </div>
-                        {% endif %}
-                    </div>
-                    <!-- Start Date/Time Field -->
-                    <div class="form-control mb-4">
-                        <label class="label" for="{{ form.start.id_for_label }}">
-                            <span class="label-text font-medium">{{ form.start.label }}</span>
-                            <span class="label-text-alt text-error">*</span>
-                        </label>
-                        {{ form.start }}
-                        {% if form.start.errors %}
-                            <div class="label">
-                                {% for error in form.start.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
-                            </div>
-                        {% endif %}
-                    </div>
-                    <!-- End Date/Time Field -->
-                    <div class="form-control mb-4">
-                        <label class="label" for="{{ form.end.id_for_label }}">
-                            <span class="label-text font-medium">{{ form.end.label }}</span>
-                            <span class="label-text-alt text-error">*</span>
-                        </label>
-                        {{ form.end }}
-                        {% if form.end.errors %}
-                            <div class="label">
-                                {% for error in form.end.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
-                            </div>
-                        {% endif %}
-                    </div>
-                    <!-- Confirmation Status Field -->
-                    <div class="form-control mb-4">
-                        <label class="label" for="{{ form.confirmed.id_for_label }}">
-                            <span class="label-text font-medium">{{ form.confirmed.label }}</span>
-                        </label>
-                        {{ form.confirmed }}
-                        {% if form.confirmed.errors %}
-                            <div class="label">
-                                {% for error in form.confirmed.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
-                            </div>
-                        {% endif %}
-                        <div class="label">
-                            <span class="label-text-alt">Is this event confirmed?</span>
-                        </div>
-                    </div>
-                    <!-- Publication Status Field -->
-                    <div class="form-control mb-6">
-                        <label class="label" for="{{ form.published.id_for_label }}">
-                            <span class="label-text font-medium">{{ form.published.label }}</span>
-                        </label>
-                        {{ form.published }}
-                        {% if form.published.errors %}
-                            <div class="label">
-                                {% for error in form.published.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
-                            </div>
-                        {% endif %}
-                        <div class="label">
-                            <span class="label-text-alt">Add this event to the venue page's timeline</span>
-                        </div>
-                    </div>
-                    <!-- Description Field -->
-                    <div class="form-control mb-6">
-                        <label class="label" for="{{ form.description.id_for_label }}">
-                            <span class="label-text font-medium">{{ form.description.label }}</span>
-                        </label>
-                        {{ form.description }}
-                        {% if form.description.errors %}
-                            <div class="label">
-                                {% for error in form.description.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
-                            </div>
-                        {% endif %}
-                        <div class="label">
-                            <span class="label-text-alt">Add any additional details about this event</span>
-                        </div>
-                    </div>
-                    <!-- Form Actions -->
-                    <div class="card-actions justify-end">
-                        <a href="{% url 'core:timeline_summary' %}" class="btn btn-ghost">Cancel</a>
-                        <button type="submit" class="btn btn-primary">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                 class="h-5 w-5"
-                                 fill="none"
-                                 viewBox="0 0 24 24"
-                                 stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                            </svg>
-                            {% if timeline_event %}
-                                Update Event
-                            {% else %}
-                                Create Event
-                            {% endif %}
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
+        {% if timeline_event %}
+            {% url 'core:timeline_detail' timeline_event.slug as cancel_url %}
+
+            {% include "shared_helpers/object_form.html" with object=timeline_event %}
+
+        {% else %}
+            {% url 'core:timeline_summary' as cancel_url %}
+
+            {% include "shared_helpers/object_form.html" with object=timeline_event %}
+
+        {% endif %}
     </div>
 {% endblock content %}
