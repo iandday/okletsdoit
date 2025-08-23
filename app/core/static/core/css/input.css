@@ -223,37 +223,3 @@
 }
 
 /* end detail object view */
-/* start delete confirmation */
-.delete-confirmation-card {
-    @apply card bg-base-200 shadow-xl hover:shadow-2xl transition-shadow duration-300 text-error-content m-6;
-}
-
-.delete-confirmation-card-title {
-    @apply card-title text-error-content lg:text-xl text-lg mb-4;
-}
-
-.delete-confirmation-card-body {
-    @apply card-body px-6 py-4;
-}
-
-.delete-confirmation-card-field-name {
-    @apply text-error-content/60 font-semibold;
-}
-
-.delete-confirmation-card-field-value {
-    @apply text-error-content font-medium;
-}
-
-.delete-confirmation-card-actions {
-    @apply card-actions justify-end gap-1;
-}
-
-.delete-confirmation-card-button-cancel {
-    @apply btn bg-primary mr-4
-}
-
-.delete-confirmation-card-button-delete {
-    @apply btn btn-error
-}
-
-/* end delete confirmation */
