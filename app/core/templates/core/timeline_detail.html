@@ -6,7 +6,7 @@
     {{ timeline_event.name }} - Timeline Event
 {% endblock title %}
 {% block content %}
-    <div class="max-w-4xl mx-auto px-4 py-8">
+    <div class="container mx-auto px-4 py-8">
         <!-- Header Section -->
         <div class="breadcrumbs mb-4">
             <ul>
@@ -16,97 +16,82 @@
                 <li>{{ timeline_event.name }}</li>
             </ul>
         </div>
-        <div class="flex items-start gap-4 mb-8">
-            <div class="flex-1">
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-2">
-                    <h1 class="text-4xl font-bold text-base-content">{{ timeline_event.name }}</h1>
-                    <div class="flex gap-2 mt-2 sm:mt-0">
-                        <!-- Action Buttons -->
-                        <a href="{% url 'core:timeline_edit' timeline_event.slug %}"
-                           class="btn btn-primary">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                 class="h-4 w-4"
-                                 fill="none"
-                                 viewBox="0 0 24 24"
-                                 stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                            </svg>
-                            Edit Event
-                        </a>
-                        <button class="btn btn-error delete-btn" data-id="{{ timeline_event.slug }}">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                 class="h-4 w-4"
-                                 fill="none"
-                                 viewBox="0 0 24 24"
-                                 stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                            </svg>
-                            Delete Event
-                        </button>
-                    </div>
-                </div>
+        <!-- Title -->
+        <div class="mb-6 flex items-center justify-between">
+            <h1 class="text-4xl font-bold text-base-content">{{ timeline_event.name }}</h1>
+            <!-- Action Buttons -->
+            <div class="flex gap-2">
+                <a href="{% url 'core:timeline_edit' timeline_event.slug %}"
+                   class="btn btn-primary btn-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         class="h-4 w-4"
+                         fill="none"
+                         viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                    Edit Event
+                </a>
+                <button class="btn btn-error delete-btn" data-id="{{ timeline_event.slug }}">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         class="h-4 w-4"
+                         fill="none"
+                         viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                    Delete Event
+                </button>
             </div>
         </div>
         <!-- Event Details -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <!-- Left Column - Basic Information -->
+            <!-- Main Information-->
             <div class="detail-card">
                 <div class="detail-card-body">
                     <h2 class="detail-card-title">Event Information</h2>
-                    <div>
-                        <span class="detail-card-field-name">Start Date & Time</span>
-                        <p class="detail-card-field-value">
-                            {{ timeline_event.start|date:"l, F d, Y" }} at {{ timeline_event.start|time:"g:i A" }}
-                        </p>
-                    </div>
-                    {% if timeline_event.end %}
-                        <div class="mt-2">
-                            <span class="detail-card-field-name">End Date & Time</span>
-                            <p class="detail-card-field-value">
-                                {{ timeline_event.end|date:"l, F d, Y" }} at {{ timeline_event.end|time:"g:i A" }}
-                            </p>
-                        </div>
+                    <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <span class="detail-card-field-name">End Date & Time</span>
-                            <p class="detail-card-field-value">
-                                {{ timeline_event.end|date:"l, F d, Y" }} at {{ timeline_event.end|time:"g:i A" }}
-                            </p>
+                            <div class="detail-card-field-name">Start Date & Time</div>
+                            <div class="detail-card-field-value">
+                                {{ timeline_event.start|date:"l, F d, Y" }} at {{ timeline_event.start|time:"g:i A" }}
+                            </div>
                         </div>
+                        {% if timeline_event.end %}
+                            <div>
+                                <div class="detail-card-field-name">End Date & Time</div>
+                                <div class="detail-card-field-value">
+                                    {{ timeline_event.end|date:"l, F d, Y" }} at {{ timeline_event.end|time:"g:i A" }}
+                                </div>
+                            </div>
+                            <div>
+                                <div class="detail-card-field-name">Duration</div>
+                                <div class="detail-card-field-value">
+                                    {% if duration_days %}
+                                        {{ duration_days }} day{{ duration_days|pluralize }}
+                                        {% if duration.seconds > 0 %},{% endif %}
+                                    {% endif %}
+                                    {% if duration_hours %}
+                                        {{ duration_hours }} hour{{ duration_hours|pluralize }}
+                                        {% if duration.minutes > 0 %},{% endif %}
+                                    {% endif %}
+                                    {% if duration_minutes %}
+                                        {{ duration_minutes }} minute{{ duration_minutes|pluralize }}
+                                        {% if duration_seconds > 0 %},{% endif %}
+                                    {% endif %}
+                                    {% if duration_seconds %}{{ duration_seconds }} second{{ duration_seconds|pluralize }}{% endif %}
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% if timeline_event.description %}
+                            <div>
+                                <div class="detail-card-field-name">Description</div>
+                                <div class="detail-card-field-value">{{ timeline_event.description|linebreaksbr }}</div>
+                            </div>
+                        {% endif %}
                         <div>
-                            <span class="detail-card-field-name">Duration</span>
-                            <p class="detail-card-field-value">
-                                {% if duration_days %}
-                                    {{ duration_days }} day{{ duration_days|pluralize }}
-                                    {% if duration.seconds > 0 %},{% endif %}
-                                {% endif %}
-                                {% if duration_hours %}
-                                    {{ duration_hours }} hour{{ duration_hours|pluralize }}
-                                    {% if duration.minutes > 0 %},{% endif %}
-                                {% endif %}
-                                {% if duration_minutes %}
-                                    {{ duration_minutes }} minute{{ duration_minutes|pluralize }}
-                                    {% if duration_seconds > 0 %},{% endif %}
-                                {% endif %}
-                                {% if duration_seconds %}{{ duration_seconds }} second{{ duration_seconds|pluralize }}{% endif %}
-                            </p>
-                        </div>
-                    {% endif %}
-                    {% if timeline_event.description %}
-                        <div>
-                            <span class="detail-card-field-name">Description</span>
-                            <p class="detail-card-field-value">{{ timeline_event.description|linebreaksbr }}</p>
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-            <!-- Right Column - Status & Details -->
-            <div class="detail-card">
-                <div class="detail-card-body">
-                    <h2 class="detail-card-title">Status & Details</h2>
-                    <div class="space-y-4">
-                        <div>
-                            <span class="detail-card-field-name">Confirmation Status</span>
-                            <p>
+                            <div class="detail-card-field-name">Confirmation Status</div>
+                            <div class="detail-card-field-value">
                                 {% if timeline_event.confirmed %}
                                     <div class="badge badge-success">
                                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -130,11 +115,9 @@
                                         Pending Confirmation
                                     </div>
                                 {% endif %}
-                            </p>
-                        </div>
-                        <div>
-                            <span class="detail-card-field-name">Publication Status</span>
-                            <p>
+                            </div>
+                            <div class="detail-card-field-name">Publication Status</div>
+                            <div class="detail-card-field-value">
                                 {% if timeline_event.published %}
                                     <div class="badge badge-success">
                                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -159,27 +142,15 @@
                                         Draft
                                     </div>
                                 {% endif %}
-                            </p>
-                        </div>
-                        <div>
-                            <span class="detail-card-field-name">Created By</span>
-                            <p class="detail-card-field-value">
-                                {{ timeline_event.created_by.get_first_name|default:timeline_event.created_by.email }}
-                            </p>
-                            <p class="detail-card-field-value-secondary">{{ timeline_event.created_at|date:"M d, Y g:i A" }}</p>
-                        </div>
-                        {% if timeline_event.updated_by %}
-                            <div>
-                                <span class="detail-card-field-name">Last Updated By</span>
-                                <p class="detail-card-field-value">
-                                    {{ timeline_event.updated_by.get_first_name|default:timeline_event.updated_by.email }}
-                                </p>
-                                <p class="detail-card-field-value-secondary">{{ timeline_event.updated_at|date:"M d, Y g:i A" }}</p>
                             </div>
-                        {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>
+            <!-- Metadata -->
+
+            {% include "components/detail_metadata.html" with object=timeline_event %}
+
         </div>
         <!-- Delete Deadline Modal-->
 
