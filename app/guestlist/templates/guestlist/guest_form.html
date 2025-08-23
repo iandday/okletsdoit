@@ -3,326 +3,95 @@
 {% load static %}
 
 {% block title %}
-    {{ title }} - Guest List
+    {% if form.instance.pk %}
+        Edit Guest
+    {% else %}
+        Add New Guest
+    {% endif %}
 {% endblock title %}
 {% block content %}
-    <div class="container mx-auto px-4 py-8">
-        <div class="max-w-4xl mx-auto">
-            <!-- Header -->
-            <div class="mb-8">
-                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-                    <div>
-                        <nav class="text-sm breadcrumbs mb-2">
-                            <ul>
-                                <li>
-                                    <a href="{% url 'guestlist:guestlist_summary' %}"
-                                       class="link link-hover">Guest Lists</a>
-                                </li>
-                                {% if guest_group %}
-                                    <li>
-                                        <a href="{% url 'guestlist:guestgroup_detail' guest_group.slug %}"
-                                           class="link link-hover">{{ guest_group.name }}</a>
-                                    </li>
-                                {% endif %}
-                                <li class="text-base-content">{{ title }}</li>
-                            </ul>
-                        </nav>
-                        <h1 class="text-3xl font-bold text-base-content">{{ title }}</h1>
-                        <p class="text-base-content/60 mt-2">
-                            {% if is_edit %}
-                                Update the details for this guest.
-                            {% else %}
-                                Add a new guest
-                                {% if guest_group %}to {{ guest_group.name }}{% endif %}
-                                .
-                            {% endif %}
-                        </p>
-                    </div>
-                    <div class="flex gap-2">
-                        {% if guest_group %}
-                            <a href="{% url 'guestlist:guestgroup_detail' guest_group.slug %}"
-                               class="btn btn-outline">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     class="h-5 w-5"
-                                     fill="none"
-                                     viewBox="0 0 24 24"
-                                     stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                                </svg>
-                                Back to Group
-                            </a>
-                        {% else %}
+    <div class="max-w-4xl mx-auto px-4 py-8">
+        <!-- Page Header -->
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
+            <div>
+                <div class="text-sm breadcrumbs mb-2">
+                    <ul>
+                        <li>
                             <a href="{% url 'guestlist:guestlist_summary' %}"
-                               class="btn btn-outline">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     class="h-5 w-5"
-                                     fill="none"
-                                     viewBox="0 0 24 24"
-                                     stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                                </svg>
-                                Back to Summary
-                            </a>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-            <!-- Form -->
-            <div class="edit-card">
-                <div class="edit-card-body">
-                    <form method="post" novalidate>
-                        {% csrf_token %}
-                        <!-- Basic Information -->
-                        <div class="mb-8">
-                            <h2 class="edit-card-title">Guest Information</h2>
-                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                                <div class="form-control">
-                                    <label class="label" for="{{ form.first_name.id_for_label }}">
-                                        <span class="edit-card-field-name">First Name <span class="text-error">*</span></span>
-                                    </label>
-                                    {{ form.first_name }}
-                                    {% if form.first_name.errors %}
-                                        <div class="label">
-                                            {% for error in form.first_name.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
-                                        </div>
-                                    {% endif %}
-                                </div>
-                                <div class="form-control">
-                                    <label class="label" for="{{ form.last_name.id_for_label }}">
-                                        <span class="edit-card-field-name">Last Name <span class="text-error">*</span></span>
-                                    </label>
-                                    {{ form.last_name }}
-                                    {% if form.last_name.errors %}
-                                        <div class="label">
-                                            {% for error in form.last_name.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
-                                        </div>
-                                    {% endif %}
-                                </div>
-                                <div class="form-control lg:col-span-2">
-                                    <label class="label" for="{{ form.group.id_for_label }}">
-                                        <span class="edit-card-field-name">Guest Group</span>
-                                    </label>
-                                    {{ form.group }}
-                                    {% if form.group.errors %}
-                                        <div class="label">
-                                            {% for error in form.group.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
-                                        </div>
-                                    {% endif %}
-                                    <div class="label">
-                                        <span class="label-text-alt">Select which guest group this person belongs to</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Guest Status -->
-                        <div class="mb-8">
-                            <h2 class="edit-card-title">Guest Status</h2>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                                <div class="form-control">
-                                    <label class="label cursor-pointer">
-                                        <span class="edit-card-field-name">Plus One</span>
-                                        {{ form.plus_one }}
-                                    </label>
-                                    {% if form.plus_one.errors %}
-                                        <div class="label">
-                                            {% for error in form.plus_one.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
-                                        </div>
-                                    {% endif %}
-                                    <div class="label">
-                                        <span class="label-text-alt">Mark if this is a plus one guest</span>
-                                    </div>
-                                </div>
-                                <div class="form-control">
-                                    <label class="label cursor-pointer">
-                                        <span class="edit-card-field-name">Invited</span>
-                                        {{ form.is_invited }}
-                                    </label>
-                                    {% if form.is_invited.errors %}
-                                        <div class="label">
-                                            {% for error in form.is_invited.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
-                                        </div>
-                                    {% endif %}
-                                    <div class="label">
-                                        <span class="label-text-alt">Has this guest been invited?</span>
-                                    </div>
-                                </div>
-                                <div class="form-control">
-                                    <label class="label cursor-pointer">
-                                        <span class="edit-card-field-name">Responded</span>
-                                        {{ form.responded }}
-                                    </label>
-                                    {% if form.responded.errors %}
-                                        <div class="label">
-                                            {% for error in form.responded.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
-                                        </div>
-                                    {% endif %}
-                                    <div class="label">
-                                        <span class="label-text-alt">Has this guest responded?</span>
-                                    </div>
-                                </div>
-                                <div class="form-control">
-                                    <label class="label cursor-pointer">
-                                        <span class="edit-card-field-name">Attending</span>
-                                        {{ form.is_attending }}
-                                    </label>
-                                    {% if form.is_attending.errors %}
-                                        <div class="label">
-                                            {% for error in form.is_attending.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
-                                        </div>
-                                    {% endif %}
-                                    <div class="label">
-                                        <span class="label-text-alt">Is this guest attending?</span>
-                                    </div>
-                                </div>
-                                <div class="form-control">
-                                    <label class="label cursor-pointer">
-                                        <span class="edit-card-field-name">Overnight</span>
-                                        {{ form.overnight }}
-                                    </label>
-                                    {% if form.overnight.errors %}
-                                        <div class="label">
-                                            {% for error in form.overnight.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
-                                        </div>
-                                    {% endif %}
-                                    <div class="label">
-                                        <span class="label-text-alt">Will this guest stay overnight?</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Notes Section -->
-                        <div class="mb-8">
-                            <h2 class="edit-card-title">Notes</h2>
-                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                                <div class="form-control">
-                                    <label class="label" for="{{ form.notes.id_for_label }}">
-                                        <span class="edit-card-field-name">General Notes</span>
-                                    </label>
-                                    {{ form.notes }}
-                                    {% if form.notes.errors %}
-                                        <div class="label">
-                                            {% for error in form.notes.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
-                                        </div>
-                                    {% endif %}
-                                    <div class="label">
-                                        <span class="label-text-alt">Any additional information about this guest</span>
-                                    </div>
-                                </div>
-                                <div class="form-control">
-                                    <label class="label" for="{{ form.response_notes.id_for_label }}">
-                                        <span class="edit-card-field-name">Response Notes</span>
-                                    </label>
-                                    {{ form.response_notes }}
-                                    {% if form.response_notes.errors %}
-                                        <div class="label">
-                                            {% for error in form.response_notes.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
-                                        </div>
-                                    {% endif %}
-                                    <div class="label">
-                                        <span class="label-text-alt">Notes about their RSVP response</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Form Actions -->
-                        <div class="card-actions justify-end pt-6 border-t border-base-300">
-                            {% if guest_group %}
+                               class="link link-hover">Guest List</a>
+                        </li>
+                        {% if guest_group %}
+                            <li>
                                 <a href="{% url 'guestlist:guestgroup_detail' guest_group.slug %}"
-                                   class="btn btn-outline">Cancel</a>
-                            {% else %}
-                                <a href="{% url 'guestlist:guestlist_summary' %}"
-                                   class="btn btn-outline">Cancel</a>
-                            {% endif %}
-                            <button type="submit" class="btn btn-primary">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     class="h-5 w-5"
-                                     fill="none"
-                                     viewBox="0 0 24 24"
-                                     stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                </svg>
-                                {{ submit_text }}
-                            </button>
-                        </div>
-                    </form>
+                                   class="link link-hover">{{ guest_group }}</a>
+                            </li>
+                            <li class="text-base-content">{{ guest }}</li>
+                        {% else %}
+                            <li class="text-base-content">New Guest</li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <h1 class="text-3xl font-bold text-base-content mb-2">
+                    {% if form.instance.pk %}
+                        Edit {{ guest }}
+                    {% else %}
+                        Add New Guest
+                    {% endif %}
+                </h1>
+                <p class="text-base-content/60 mt-2">
+                    {% if form.instance.pk %}
+                        Update the details for this guest.
+                    {% else %}
+                        Add a new guest
+                        {% if guest_group %}to {{ guest_group.name }}{% endif %}
+                        .
+                    {% endif %}
+                </p>
+                <div class="flex gap-2">
+                    {% if guest_group %}
+                        <a href="{% url 'guestlist:guestgroup_detail' guest_group.slug %}"
+                           class="btn btn-outline">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 class="h-5 w-5"
+                                 fill="none"
+                                 viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                            </svg>
+                            Back to Group
+                        </a>
+                    {% else %}
+                        <a href="{% url 'guestlist:guestlist_summary' %}"
+                           class="btn btn-outline">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 class="h-5 w-5"
+                                 fill="none"
+                                 viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                            </svg>
+                            Back to Summary
+                        </a>
+                    {% endif %}
                 </div>
             </div>
         </div>
+        <!-- Form Card -->
+        {% if guest %}
+            {% url 'guestlist:guest_detail' guest.slug as cancel_url %}
+
+            {% include "shared_helpers/object_form.html" with object=guest %}
+
+        {% else %}
+            {% url 'guestlist:guest_summary' as cancel_url %}
+
+            {% include "shared_helpers/object_form.html" %}
+
+        {% endif %}
     </div>
-    <script nonce="{{request.csp_nonce}}">
-      document.addEventListener('DOMContentLoaded', function() {
-        // Handle plus one toggle
-        const plusOneToggle = document.querySelector('input[name="plus_one"]');
-        const firstNameField = document.querySelector('input[name="first_name"]');
-        const lastNameField = document.querySelector('input[name="last_name"]');
-
-        function toggleNameFields() {
-          if (plusOneToggle && plusOneToggle.checked) {
-            if (firstNameField) firstNameField.disabled = false;
-            if (lastNameField) lastNameField.disabled = false;
-          }
-        }
-
-        if (plusOneToggle) {
-          plusOneToggle.addEventListener('change', toggleNameFields);
-          toggleNameFields(); // Run on page load
-        }
-
-        // Add form validation feedback
-        const form = document.querySelector('form');
-        const inputs = form.querySelectorAll('input[type="text"], input[type="email"], select, textarea');
-
-        inputs.forEach(input => {
-          input.addEventListener('blur', function() {
-            if (this.hasAttribute('required') && !this.value.trim()) {
-              this.classList.add('input-error');
-            } else {
-              this.classList.remove('input-error');
-            }
-          });
-
-          input.addEventListener('input', function() {
-            this.classList.remove('input-error');
-          });
-        });
-
-        // Form submission handling
-        form.addEventListener('submit', function(e) {
-          let hasErrors = false;
-
-          // Check required fields
-          const requiredFields = form.querySelectorAll('input[required], select[required]');
-          requiredFields.forEach(field => {
-            if (!field.value.trim()) {
-              field.classList.add('input-error');
-              hasErrors = true;
-            }
-          });
-
-          // Check first and last name if not plus one
-          if (!plusOneToggle.checked) {
-            if (!firstNameField.value.trim()) {
-              firstNameField.classList.add('input-error');
-              hasErrors = true;
-            }
-            if (!lastNameField.value.trim()) {
-              lastNameField.classList.add('input-error');
-              hasErrors = true;
-            }
-          }
-
-          if (hasErrors) {
-            e.preventDefault();
-            const firstError = form.querySelector('.input-error');
-            if (firstError) {
-              firstError.focus();
-              firstError.scrollIntoView({
-                behavior: 'smooth',
-                block: 'center'
-              });
-            }
-          }
-        });
-      });
-    </script>
 {% endblock content %}
+{% block extra_script %}
+
+    {% include "shared_helpers/script/object_form.html" with first_field="first_name" %}
+
+{% endblock extra_script %}

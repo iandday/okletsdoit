@@ -69,6 +69,12 @@ class GuestForm(forms.ModelForm):
             "notes",
             "response_notes",
         ]
+
+        labels = {
+            "is_invited": "Invited",
+            "is_attending": "Attending",
+        }
+
         widgets = {
             "first_name": forms.TextInput(
                 attrs={"class": "input input-bordered edit-card-field-value", "placeholder": "Enter first name"}

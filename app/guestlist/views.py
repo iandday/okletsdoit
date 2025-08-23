@@ -1,14 +1,25 @@
 import io
 import logging
+
+from django.urls import reverse
 import polars as pl
-from django.http import HttpRequest, HttpResponse
-from django.shortcuts import get_object_or_404, redirect, render
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.utils.text import slugify
-from .forms import GuestlistImportForm, GuestGroupForm, GuestForm
-from .models import GuestGroup, Guest
+from django.contrib.auth.decorators import login_required
+from django.db.models import Q
+from django.http import HttpRequest
+from django.http import HttpResponse
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
+from django.shortcuts import redirect
+from django.shortcuts import render
+from shared_helpers.table_helpers import format_row_action_cell
 from users.models import User
+
+from .forms import GuestForm
+from .forms import GuestGroupForm
+from .forms import GuestlistImportForm
+from .models import Guest
+from .models import GuestGroup
 
 logger = logging.getLogger(__name__)
 
@@ -368,7 +379,7 @@ def all_guests(request: HttpRequest) -> HttpResponse:
         "total_declined": Guest.objects.filter(is_deleted=False, is_attending=False, responded=True).count(),
         "total_pending": Guest.objects.filter(is_deleted=False, responded=False, is_invited=True).count(),
     }
-    return render(request, "guestlist/all_guests.html", context)
+    return render(request, "guestlist/guest_all.html", context)
 
 
 @login_required
@@ -462,6 +473,148 @@ def guestgroup_edit(request: HttpRequest, group_slug: str) -> HttpResponse:
 
 
 @login_required
+def guestgroup_delete(request: HttpRequest, group_slug: str) -> HttpResponse:
+    """
+    Deletes an existing guest group (soft delete).
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        group_slug (str): The slug of the guest group to delete.
+
+    Returns:
+        HttpResponse: Redirects to the guest list summary page.
+    """
+    guest_group = get_object_or_404(GuestGroup, slug=group_slug)
+
+    if request.method == "POST":
+        # Soft delete the guest group and all its guests
+        guest_group.is_deleted = True
+        guest_group.updated_by = request.user
+        guest_group.save()
+
+        # Also soft delete all guests in this group
+        for guest in guest_group.guests.all():
+            guest.is_deleted = True
+            guest.updated_by = request.user
+            guest.save()
+
+        messages.success(request, f"Guest group '{guest_group.name}' and all its guests have been deleted.")
+        return redirect("guestlist:guestlist_summary")
+
+    # For GET requests, show a confirmation page
+    context = {
+        "guest_group": guest_group,
+        "guest_count": guest_group.guests.count(),
+    }
+    return render(request, "guestlist/guestgroup_confirm_delete.html", context)
+
+
+@login_required
+def guest_data(request: HttpRequest) -> HttpResponse | JsonResponse:
+    """Fetch guest data for DataTables.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        HttpResponse | JsonResponse: The response containing guest data.
+    """
+    # optional filtering by group
+    group_slug = request.GET.get("group")
+
+    # Get DataTables parameters
+    draw = int(request.GET.get("draw", 1))
+    start = int(request.GET.get("start", 0))
+    length = int(request.GET.get("length", 10))
+    search_value = request.GET.get("search[value]", "")
+
+    # optional filtering by group
+    group_slug = request.GET.get("group")
+
+    # Get DataTables parameters
+    draw = int(request.GET.get("draw", 1))
+    start = int(request.GET.get("start", 0))
+    length = int(request.GET.get("length", 10))
+    search_value = request.GET.get("search[value]", "")
+
+    # Handle sorting
+    order_column_index = request.GET.get("order[0][column]")
+    order_direction = request.GET.get("order[0][dir]")
+    order_column_name = request.GET.get(f"columns[{order_column_index}][name]")
+
+    if group_slug:
+        queryset = Guest.objects.filter(is_deleted=False, group__slug=group_slug).select_related("group")
+    else:
+        queryset = Guest.objects.filter(is_deleted=False)
+
+    records_total = queryset.count()
+
+    # Apply search filter if provided
+    if search_value:
+        queryset = queryset.filter(
+            Q(first_name__icontains=search_value)
+            | Q(last_name__icontains=search_value)
+            | Q(group__name__icontains=search_value),
+        )
+    records_filtered = queryset.count()
+
+    # sort the queryset if order_column_name is provided
+    if order_column_name:
+        if order_direction == "desc":
+            order_by = f"-{order_column_name}"
+        else:
+            order_by = order_column_name
+        queryset = queryset.order_by(order_by)
+
+    # Apply pagination
+    queryset = queryset[start : start + length]
+
+    data = []
+    for guest in queryset:
+        menu_content = format_row_action_cell(
+            detail_url=reverse("guestlist:guest_detail", args=[guest.slug]),
+            update_url=reverse("guestlist:guest_edit", args=[guest.slug]),
+            slug=guest.slug,
+        )
+
+        if guest.is_invited:
+            if guest.responded:
+                attending_status = "Attending" if guest.is_attending else "Declined"
+            else:
+                attending_status = "Pending"
+        else:
+            attending_status = "Not Invited"
+
+        if guest.group.associated_with:
+            association = guest.group.associated_with.get_full_name()
+        else:
+            association = "Unknown"
+
+        data.append(
+            {
+                "first_name": guest.first_name,
+                "last_name": guest.last_name,
+                "group": guest.group.name,
+                "relationship": guest.group.get_relationship_display(),
+                "plus_one": "Yes" if guest.plus_one else "No",
+                "overnight": "Yes" if guest.overnight else "No",
+                "rsvp": attending_status,
+                "association": association,
+                "menu_content": menu_content,
+            }
+        )
+
+    return JsonResponse(
+        {
+            "draw": draw,
+            "recordsTotal": records_total,
+            "recordsFiltered": records_filtered,
+            "data": data,
+        }
+    )
+
+
+@login_required
 def guest_create(request: HttpRequest, group_slug: str | None = None) -> HttpResponse:
     """
     Creates a new guest.
@@ -512,86 +665,6 @@ def guest_create(request: HttpRequest, group_slug: str | None = None) -> HttpRes
 
 
 @login_required
-def guest_edit(request: HttpRequest, guest_slug: str) -> HttpResponse:
-    """
-    Edits an existing guest.
-
-    Args:
-        request (HttpRequest): The HTTP request object.
-        guest_slug (str): The slug of the guest to edit.
-
-    Returns:
-        HttpResponse: Rendered template with the guest form for editing.
-    """
-    guest = get_object_or_404(Guest, slug=guest_slug)
-
-    if request.method == "POST":
-        form = GuestForm(request.POST, instance=guest)
-        if form.is_valid():
-            guest = form.save(commit=False)
-            guest.updated_by = request.user
-            guest.save()
-
-            if guest.group:
-                messages.success(request, f"Guest '{guest.first_name} {guest.last_name}' was updated successfully.")
-                return redirect("guestlist:guestgroup_detail", group_slug=guest.group.slug)
-            else:
-                messages.success(request, f"Guest '{guest.first_name} {guest.last_name}' was updated successfully.")
-                return redirect("guestlist:guestlist_summary")
-        else:
-            messages.error(request, "Please correct the errors below.")
-    else:
-        form = GuestForm(instance=guest)
-
-    context = {
-        "form": form,
-        "guest": guest,
-        "guest_group": guest.group,
-        "title": f"Edit {guest.first_name} {guest.last_name}",
-        "submit_text": "Update Guest",
-        "is_edit": True,
-    }
-    return render(request, "guestlist/guest_form.html", context)
-
-
-@login_required
-def guestgroup_delete(request: HttpRequest, group_slug: str) -> HttpResponse:
-    """
-    Deletes an existing guest group (soft delete).
-
-    Args:
-        request (HttpRequest): The HTTP request object.
-        group_slug (str): The slug of the guest group to delete.
-
-    Returns:
-        HttpResponse: Redirects to the guest list summary page.
-    """
-    guest_group = get_object_or_404(GuestGroup, slug=group_slug)
-
-    if request.method == "POST":
-        # Soft delete the guest group and all its guests
-        guest_group.is_deleted = True
-        guest_group.updated_by = request.user
-        guest_group.save()
-
-        # Also soft delete all guests in this group
-        for guest in guest_group.guests.all():
-            guest.is_deleted = True
-            guest.updated_by = request.user
-            guest.save()
-
-        messages.success(request, f"Guest group '{guest_group.name}' and all its guests have been deleted.")
-        return redirect("guestlist:guestlist_summary")
-
-    # For GET requests, show a confirmation page
-    context = {
-        "guest_group": guest_group,
-        "guest_count": guest_group.guests.count(),
-    }
-    return render(request, "guestlist/guestgroup_confirm_delete.html", context)
-
-
-@login_required
 def guest_detail(request: HttpRequest, guest_slug: str) -> HttpResponse:
     """
     Displays the details of a specific guest.
@@ -611,6 +684,68 @@ def guest_detail(request: HttpRequest, guest_slug: str) -> HttpResponse:
 
 
 @login_required
+def guest_edit(request: HttpRequest, guest_slug: str) -> HttpResponse:
+    """
+    Edits an existing guest.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        guest_slug (str): The slug of the guest to edit.
+
+    Returns:
+        HttpResponse: Rendered template with the guest form for editing.
+    """
+    guest = get_object_or_404(Guest, slug=guest_slug)
+
+    if request.method == "POST":
+        form = GuestForm(request.POST, instance=guest)
+        if form.is_valid():
+            guest: Guest = form.save(commit=False)
+            guest.updated_by = request.user
+            guest.save()
+            messages.success(request, f"Guest '{guest.first_name} {guest.last_name}' was updated successfully.")
+
+            return redirect("guestlist:guest_detail", guest_slug=guest.slug)
+
+    else:
+        form = GuestForm(instance=guest)
+
+    context = {
+        "form": form,
+        "guest": guest,
+        "guest_group": guest.group,
+    }
+    return render(request, "guestlist/guest_form.html", context)
+
+
+@login_required
+def guest_delete_modal(request: HttpRequest) -> HttpResponse:
+    """Renders a modal confirmation dialog for deleting a guest.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        HttpResponse: Rendered modal template for guest deletion confirmation.
+    """
+
+    guest_slug = request.GET.get("slug")
+    if not guest_slug:
+        return JsonResponse({"error": "Guest slug is required"}, status=400)
+    try:
+        guest = Guest.objects.get(slug=guest_slug, is_deleted=False)
+    except Guest.DoesNotExist:
+        return JsonResponse({"error": "Guest not found"}, status=404)
+
+    context = {
+        "object": guest,
+        "object_type": "Guest",
+        "action_url": reverse("guestlist:guest_delete", args=[guest.slug]),
+    }
+    return render(request, "shared_helpers/modal/object_delete_body.html", context)
+
+
+@login_required
 def guest_delete(request: HttpRequest, guest_slug: str) -> HttpResponse:
     """
     Deletes an existing guest (soft delete).
@@ -623,7 +758,7 @@ def guest_delete(request: HttpRequest, guest_slug: str) -> HttpResponse:
         HttpResponse: Redirects to the appropriate page after deletion.
     """
     guest = get_object_or_404(Guest, slug=guest_slug)
-    guest_group = guest.group
+    guest_group: GuestGroup = guest.group
 
     if request.method == "POST":
         # Soft delete the guest
@@ -633,15 +768,11 @@ def guest_delete(request: HttpRequest, guest_slug: str) -> HttpResponse:
 
         messages.success(request, f"Guest '{guest.first_name} {guest.last_name}' has been deleted.")
 
-        # Redirect to group detail if guest belongs to a group, otherwise to summary
-        if guest_group:
-            return redirect("guestlist:guestgroup_detail", group_slug=guest_group.slug)
-        else:
-            return redirect("guestlist:guestlist_summary")
+    else:
+        messages.error(request, "Invalid request method.")
 
-    # For GET requests, show a confirmation page
-    context = {
-        "guest": guest,
-        "guest_group": guest_group,
-    }
-    return render(request, "guestlist/guest_confirm_delete.html", context)
+    # Redirect to group detail if guest belongs to a group, otherwise to summary
+    if guest_group:
+        return redirect("guestlist:guestgroup_detail", group_slug=guest_group.slug)
+    else:
+        return redirect("guestlist:guestlist_summary")
