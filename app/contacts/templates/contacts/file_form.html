@@ -43,12 +43,12 @@
     {% if file %}
       {% url 'contacts:file_detail' file.slug as cancel_url %}
 
-      {% include "shared_helpers/object_form.html" with object=file %}
+      {% include "shared_helpers/object_form.html" with object=file file=True %}
 
     {% else %}
       {% url 'contacts:detail' contact.slug as cancel_url %}
 
-      {% include "shared_helpers/object_form.html" with object=file %}
+      {% include "shared_helpers/object_form.html" with object=file file=True %}
 
     {% endif %}
   </div>

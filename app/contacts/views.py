@@ -318,26 +318,23 @@ def template_download(request):
 
 
 @login_required
-def upload_file(request, slug):
+def file_upload(request, slug):
     """Handle file uploads for a contact"""
     contact = get_object_or_404(Contact, slug=slug, is_deleted=False)
 
     if request.method == "POST":
-        uploaded_file = request.FILES.get("file")
-
-        if uploaded_file:
-            File.objects.create(
-                contact=contact,
-                file=uploaded_file,
-                uploaded_by=request.user,
-                name=request.POST.get("name", uploaded_file.name if uploaded_file else ""),
-                description=request.POST.get("description", ""),
-            )
+        form = FileUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            file: File = form.save(commit=False)
+            file.contact = contact
+            file.uploaded_by = request.user
+            file.save()
             messages.success(request, "File uploaded successfully.")
+            return redirect("contacts:file_detail", slug=file.slug)
         else:
             messages.error(request, "No file selected.")
-
-    return redirect("contacts:detail", slug=contact.slug)
+    form = FileUploadForm(initial={"contact": contact})
+    return render(request, "contacts/file_form.html", {"form": form, "contact": contact})
 
 
 @login_required

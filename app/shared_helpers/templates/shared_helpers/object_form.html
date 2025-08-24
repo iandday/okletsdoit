@@ -6,7 +6,9 @@
 -->
 <div class="edit-card">
     <div class="edit-card-body">
-        <form method="post" id="objectForm">
+        <form method="post"
+              id="objectForm"
+              {% if file %}enctype="multipart/form-data"{% endif %}>
             {% csrf_token %}
             {% for field in form %}
                 <div class="form-control w-full py-2">

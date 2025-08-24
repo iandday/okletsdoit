@@ -224,7 +224,8 @@
                     {% endif %}
                     <!-- Quick Actions -->
                     <div class="detail-card-actions">
-                        <button type="submit" class="btn btn-primary">Upload</button>
+                        <a href="{% url 'contacts:file_upload' contact.slug %}"
+                           class="btn btn-primary">Upload</a>
                     </div>
                 </div>
             </div>
@@ -246,28 +247,7 @@
                 Back to Contacts
             </a>
         </div>
-        <!-- Modal for File Upload -->
-        {% url 'contacts:upload_file' contact.slug as upload_url %}
-
-        {% include "components/modal/modal_file_upload.html" with modal_id="fileUploadModal" form=form form_action=upload_url %}
-
     </div>
 {% endblock content %}
 {% block extra_script %}
-    <script nonce="{{ request.csp_nonce }}">
-      document.addEventListener('DOMContentLoaded', function() {
-        const fileUploadModal = document.getElementById('fileUploadModal');
-        const cancelButton = document.getElementById('cancel_add_button');
-
-        // Open modal on button click
-        document.querySelector('.detail-card-actions .btn-primary').addEventListener('click', function() {
-          fileUploadModal.showModal();
-        });
-
-        // Close modal on cancel button click
-        cancelButton.addEventListener('click', function() {
-          fileUploadModal.close();
-        });
-      });
-    </script>
 {% endblock extra_script %}
