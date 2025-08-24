@@ -35,8 +35,7 @@
                         Edit
                     </a>
                     <!-- Delete Button -->
-                    <a href="{% url 'contacts:delete' contact.slug %}"
-                       class="btn btn-error btn-sm">
+                    <button class="btn btn-sm btn-error delete-btn" data-id="{{ contact.slug }}">
                         <svg xmlns="http://www.w3.org/2000/svg"
                              class="h-4 w-4"
                              fill="none"
@@ -45,7 +44,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1-1H8a1 1 0 00-1 1v3M4 7h16" />
                         </svg>
                         Delete
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>
@@ -234,20 +233,15 @@
             {% include "components/detail_metadata.html" with object=contact %}
 
         </div>
-        <!-- Back to List -->
-        <div class="text-center mt-12">
-            <a href="{% url 'contacts:list' %}" class="btn btn-outline">
-                <svg xmlns="http://www.w3.org/2000/svg"
-                     class="h-5 w-5"
-                     fill="none"
-                     viewBox="0 0 24 24"
-                     stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-                Back to Contacts
-            </a>
-        </div>
+        <!-- Delete File Modal-->
+
+        {% include "shared_helpers/modal/object_delete_shell.html" %}
+
     </div>
 {% endblock content %}
 {% block extra_script %}
+    {% url "contacts:contact_delete_modal" as delete_modal_url %}
+
+    {% include "shared_helpers/modal/object_delete_script.html" %}
+
 {% endblock extra_script %}

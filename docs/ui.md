@@ -46,6 +46,7 @@ Shared Helpers
   * Guestlist:All Guests
   * Guestlist:Guest Detail
   * Contacts:File
+  * Contacts:Contact
 
 * Object Form
     * Expense:Category

@@ -5,4 +5,5 @@
 * Deadline
   * Delete deadline list 
   * Pre-populate new deadline form with list value
-  
+* Guestlist
+  * Add delete modal for guests in the guest group detail view

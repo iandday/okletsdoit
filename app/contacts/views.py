@@ -118,22 +118,38 @@ def contact_update(request, slug):
 
 
 @login_required
-def contact_delete(request, slug):
-    """Soft delete a contact"""
-    contact = get_object_or_404(Contact, slug=slug, is_deleted=False)
-
-    if request.method == "POST":
-        contact.is_deleted = True
-        contact.updated_by = request.user
-        contact.save()
-        messages.success(request, f'Contact "{contact.name}" was deleted successfully.')
-        return redirect("contacts:list")
+def contact_delete_modal(request):
+    slug = request.GET.get("slug")
+    if not slug:
+        return JsonResponse({"error": "Contact slug is required"}, status=400)
+    try:
+        contact = Contact.objects.get(slug=slug, is_deleted=False)
+    except Contact.DoesNotExist:
+        return JsonResponse({"error": "Contact not found"}, status=404)
 
     context = {
-        "contact": contact,
+        "object": contact,
+        "object_type": "Contact",
+        "action_url": reverse("contacts:contact_delete", args=[contact.slug]),
     }
+    return render(request, "shared_helpers/modal/object_delete_body.html", context)
 
-    return render(request, "contacts/contact_confirm_delete.html", context)
+
+@login_required
+def contact_delete(request, slug):
+    if request.method == "POST":
+        try:
+            contact_obj = Contact.objects.get(slug=slug, is_deleted=False)
+        except Contact.DoesNotExist:
+            messages.error(request, "Contact not found.")
+            return redirect("contacts:list")
+        contact_obj.is_deleted = True
+        contact_obj.save()
+        messages.success(request, "Contact deleted successfully.")
+        return redirect(f"{reverse('contacts:list')}")
+    else:
+        messages.error(request, "Invalid request method.")
+        return redirect("contacts:list")
 
 
 @login_required
