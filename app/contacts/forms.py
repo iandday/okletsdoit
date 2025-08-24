@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Contact
+from .models import Contact, File
 
 
 class ContactForm(ModelForm):
@@ -60,28 +60,22 @@ class ContactForm(ModelForm):
         self.fields["notes"].required = False
 
 
-class FileUploadForm(forms.Form):
+class FileUploadForm(ModelForm):
     """Form for uploading files associated with a contact."""
 
-    file = forms.FileField(
-        widget=forms.ClearableFileInput(attrs={"class": "file-input file-input-bordered edit-card-field-value"}),
-        help_text="Upload a file related to this contact",
-    )
-    name = forms.CharField(
-        max_length=255,
-        widget=forms.TextInput(
-            attrs={"class": "input input-bordered edit-card-field-value", "placeholder": "Enter file name"}
-        ),
-        help_text="Enter a name for the uploaded file",
-    )
-    description = forms.CharField(
-        max_length=500,
-        required=False,
-        widget=forms.Textarea(
-            attrs={"class": "input input-bordered edit-card-field-value", "placeholder": "Enter file description"}
-        ),
-        help_text="Enter a description for the uploaded file",
-    )
+    class Meta:
+        model = File
+        fields = ["file", "name", "description", "contact"]
+        widgets = {
+            "file": forms.ClearableFileInput(attrs={"class": "file-input file-input-bordered edit-card-field-value"}),
+            "name": forms.TextInput(
+                attrs={"class": "input input-bordered edit-card-field-value", "placeholder": "Enter file name"}
+            ),
+            "description": forms.Textarea(
+                attrs={"class": "input input-bordered edit-card-field-value", "placeholder": "Enter file description"}
+            ),
+            "contact": forms.Select(attrs={"class": "input input-bordered edit-card-field-value"}),
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

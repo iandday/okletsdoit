@@ -45,6 +45,7 @@ Shared Helpers
   * Core:Timeline
   * Guestlist:All Guests
   * Guestlist:Guest Detail
+  * Contacts:File
 
 * Object Form
     * Expense:Category
@@ -54,6 +55,7 @@ Shared Helpers
     * Core:Timeline
     * Core:Inspiration
     * Guestlist:Guest
+    * Contacts:File
 * List Card Options
   * Expense:Category List
   * Deadline:Deadline Summary

@@ -64,10 +64,30 @@ class File(models.Model):
     file = models.FileField(upload_to="contact_files/")
     uploaded_by = models.ForeignKey(User, related_name="files_uploaded_by", on_delete=models.CASCADE)
     uploaded_at = models.DateTimeField(auto_now_add=True)
+    updated_by = models.ForeignKey(
+        User, related_name="updated_by_file", on_delete=models.CASCADE, null=True, blank=True
+    )
+    updated_at = models.DateTimeField(auto_now=True)
+    is_deleted = models.BooleanField(default=False)
+    history = HistoricalRecords()
 
     def __str__(self):
-        return f"{self.file.name} ({self.contact.name})"
+        return self.name or self.file.name
 
     class Meta:
         verbose_name_plural = "Contact Files"
         ordering = ["-uploaded_at"]
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base_slug = slugify(self.name)
+            slug = base_slug
+            counter = 1
+
+            while File.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+
+            self.slug = slug
+
+        super().save(*args, **kwargs)

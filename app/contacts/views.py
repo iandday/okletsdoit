@@ -4,7 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db.models import Q
 from django.core.paginator import Paginator
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
+from django.urls import reverse
 import polars as pl
 import openpyxl
 from io import BytesIO
@@ -57,7 +58,7 @@ def contact_detail(request, slug):
     shopping_list = ListEntry.objects.filter(vendor=contact, purchased=False, is_deleted=False).order_by("item")
 
     # get associated files
-    files = File.objects.filter(contact=contact).order_by("-uploaded_at")
+    files = File.objects.filter(contact=contact, is_deleted=False).order_by("-uploaded_at")
 
     context = {
         "contact": contact,
@@ -65,7 +66,7 @@ def contact_detail(request, slug):
         "files": files,
         "form": FileUploadForm(),
     }
-
+    logger.error(files)
     return render(request, "contacts/contact_detail.html", context)
 
 
@@ -337,3 +338,68 @@ def upload_file(request, slug):
             messages.error(request, "No file selected.")
 
     return redirect("contacts:detail", slug=contact.slug)
+
+
+@login_required
+def file_edit(request, slug):
+    """Edit an uploaded file for a contact"""
+    file_obj = get_object_or_404(File, slug=slug, is_deleted=False)
+    contact = get_object_or_404(Contact, slug=file_obj.contact.slug, is_deleted=False)
+
+    if request.method == "POST":
+        form = FileUploadForm(request.POST, request.FILES, instance=file_obj)
+        if form.is_valid():
+            file: File = form.save(commit=False)
+            file.uploaded_by = request.user
+            file.save()
+            messages.success(request, f'File "{file.name}" was updated successfully.')
+            return redirect("contacts:file_detail", slug=file.slug)
+    form = FileUploadForm(instance=file_obj)
+
+    return render(request, "contacts/file_form.html", {"form": form, "file": file_obj, "contact": contact})
+
+
+@login_required
+def file_detail(request, slug):
+    file = get_object_or_404(
+        File,
+        slug=slug,
+        is_deleted=False,
+    )
+    contact = get_object_or_404(Contact, slug=file.contact.slug, is_deleted=False)
+    return render(request, "contacts/file_detail.html", {"file": file, "contact": contact})
+
+
+@login_required
+def file_delete_modal(request):
+    slug = request.GET.get("slug")
+    if not slug:
+        return JsonResponse({"error": "File slug is required"}, status=400)
+    try:
+        file = File.objects.get(slug=slug, is_deleted=False)
+    except File.DoesNotExist:
+        return JsonResponse({"error": "File not found"}, status=404)
+
+    context = {
+        "object": file,
+        "object_type": "File",
+        "action_url": reverse("contacts:file_delete", args=[file.slug]),
+    }
+    return render(request, "shared_helpers/modal/object_delete_body.html", context)
+
+
+@login_required
+def file_delete(request, slug):
+    if request.method == "POST":
+        try:
+            file_obj = File.objects.get(slug=slug, is_deleted=False)
+        except File.DoesNotExist:
+            messages.error(request, "File not found.")
+            return redirect("contacts:list")
+        file_obj.is_deleted = True
+        file_obj.save()
+        messages.success(request, "File deleted successfully.")
+        return redirect(f"{reverse('contacts:detail', args=[file_obj.contact.slug])}")
+    else:
+        messages.error(request, "Invalid request method.")
+        return redirect("contacts:list")

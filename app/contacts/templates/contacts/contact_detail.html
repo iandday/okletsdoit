@@ -168,15 +168,57 @@
             <div class="detail-card" id="associated-files">
                 <div class="detail-card-body">
                     <h2 class="detail-card-title">Associated Files</h2>
-                    {% if contact.files.exists %}
-                        <ul class="list-disc pl-5">
-                            {% for file in contact.files.all %}
-                                <li>
-                                    <a href="{{ file.file.url }}" target="_blank" class="link link-hover">{{ file.name }}</a>
-                                    {% if file.description %}<span class="text-sm">{{ file.description }}</span>{% endif %}
-                                </li>
-                            {% endfor %}
-                        </ul>
+                    {% if files %}
+                        <grid class="grid grid-cols-1 gap-4">
+                        {% for file in files %}
+                            <div class="flex sm:flex-row flex-col">
+                                <div class="detail-card-field-name">Name:</div>
+                                <div class="detail-card-field-value">{{ file.name }}</div>
+                            </div>
+                            {% if file.description %}
+                                <div class="flex sm:flex-row flex-col">
+                                    <div class="detail-card-field-name">Description</div>
+                                    <div class="detail-card-field-value">{{ file.description }}</div>
+                                </div>
+                            {% endif %}
+                            <div>
+                                <a class="btn btn-sm btn-primary bg-base-200"
+                                   href="{{ file.file.url }}"
+                                   target="_blank">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         class="h-4 w-4"
+                                         fill="none"
+                                         viewBox="0 0 24 24"
+                                         stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v12m0 0l-3-3m3 3l3-3m-6 3h6" />
+                                    </svg>
+                                </a>
+                                <a class="btn btn-sm btn-primary"
+                                   href="{% url 'contacts:file_detail' file.slug %}">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         class="h-4 w-4"
+                                         fill="none"
+                                         viewBox="0 0 24 24"
+                                         stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
+                                </a>
+                                <a class="btn btn-sm btn-secondary"
+                                   href="{% url 'contacts:file_edit' file.slug %}">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         class="h-4 w-4"
+                                         fill="none"
+                                         viewBox="0 0 24 24"
+                                         stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.862 3.487l2.651 2.651a1.875 1.875 0 010 2.652L8.288 20.015a4.5 4.5 0 01-1.897 1.13l-3.38.96a.75.75 0 01-.926-.926l.96-3.38a4.5 4.5 0 011.13-1.897L16.862 3.487z" />
+                                        '
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.5 7.125L16.862 4.487" />
+                                    </svg>
+                                </a>
+                            </div>
+                        {% endfor %}
+                        </grid>
                     {% else %}
                         <p class="detail-card-field-value">No files uploaded yet.</p>
                     {% endif %}
