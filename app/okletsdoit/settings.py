@@ -235,11 +235,12 @@ CONTENT_SECURITY_POLICY = {
         "script-src": [SELF, NONCE, "code.jquery.com", "cdn.jsdelivr.net"],
         "style-src": [
             SELF,
-            NONCE,
+            # NONCE,
             "cdnjs.cloudflare.com",
             "cdn.ckeditor.com",
             "fonts.googleapis.com",
             "cdn.datatables.net",
+            "cdn.jsdelivr.net",
             "'unsafe-inline'",  # Required for daisyUI 5 theme switching
         ],
         "font-src": [

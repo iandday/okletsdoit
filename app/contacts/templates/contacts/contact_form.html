@@ -94,6 +94,6 @@
 {% endblock content %}
 {% block extra_script %}
 
-  {% include "components/ckeditor_script.html" with form="contactForm" initial_data=form.notes.value placeholder="Enter additional notes about this contact..." element_id=form.notes.id_for_label focus_field=form.name.id_for_label %}
+  {% include "shared_helpers/script/hugerte.html" with selector=form.notes.id_for_label %}
 
 {% endblock extra_script %}
