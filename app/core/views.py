@@ -450,8 +450,24 @@ def timeline_create(request: HttpRequest) -> HttpResponse:
                     messages.error(request, f"{field}: {error}")
     else:
         form = TimelineForm()
-
-    return render(request, "core/timeline_form.html", {"form": form})
+    intro = "Create a new timeline event"
+    breadcrumbs = [
+        {"title": "Timeline", "url": reverse("core:timeline_summary")},
+        {"title": "Create Event", "url": None},
+    ]
+    cancel_url = reverse("core:timeline_summary")
+    context = {
+        "block_title": "Create Event",
+        "breadcrumbs": breadcrumbs,
+        "title": "Create Event",
+        "intro": intro,
+        "form": form,
+        "object": None,
+        "submit_text": "Create Event",
+        "cancel_url": cancel_url,
+        "first_field": "name",
+    }
+    return render(request, "shared_helpers/form/object.html", context)
 
 
 @login_required
@@ -483,7 +499,24 @@ def timeline_edit(request: HttpRequest, timeline_slug: str) -> HttpResponse:
     else:
         form = TimelineForm(instance=timeline_event)
 
-    return render(request, "core/timeline_form.html", {"form": form, "timeline_event": timeline_event})
+    intro = "Edit an existing timeline event"
+    breadcrumbs = [
+        {"title": "Timeline", "url": reverse("core:timeline_summary")},
+        {"title": timeline_event, "url": reverse("core:timeline_detail", args=[timeline_event.slug])},
+    ]
+    cancel_url = reverse("core:timeline_detail", args=[timeline_event.slug])
+    context = {
+        "block_title": "Edit Event",
+        "breadcrumbs": breadcrumbs,
+        "title": "Edit Event",
+        "intro": intro,
+        "form": form,
+        "object": None,
+        "submit_text": "Update Event",
+        "cancel_url": cancel_url,
+        "first_field": "name",
+    }
+    return render(request, "shared_helpers/form/object.html", context)
 
 
 @login_required
