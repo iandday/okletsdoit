@@ -1,0 +1,126 @@
+{% extends "components/layout/base.html" %}
+
+{% load static %}
+
+{% block title %}
+    {{ block_title }}
+{% endblock title %}
+{% block content %}
+    <div class="max-w-4xl mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
+            <div>
+                <!--<Breadcrumbs -->
+
+                {% include "shared_helpers/components/breadcrumbs.html" with breadcrumbs=breadcrumbs %}
+
+                <h1 class="text-3xl font-bold text-base-content">{{ title }}</h1>
+                <p class="text-base-content/60 mt-2">{{ intro }}</p>
+            </div>
+        </div>
+        <!-- Form Card -->
+        <div class="edit-card">
+            <div class="edit-card-body">
+                <form method="post"
+                      id="objectForm"
+                      {% if file %}enctype="multipart/form-data"{% endif %}>
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="form-control w-full py-2">
+                            <label class="label">
+                                <span class="edit-card-field-name">{{ field.label }}</span>
+                                <!-- if the field is required-->
+                                {% if field.required %}<span class="label-text-alt text-error">Required</span>{% endif %}
+                            </label>
+                            {{ field }}
+                            {% if field.errors %}
+                                <label class="label">
+                                    <span class="label-text-alt text-error">
+                                        {% for error in field.errors %}{{ error }}{% endfor %}
+                                    </span>
+                                </label>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    <!-- Form Actions -->
+                    <div class="card-actions justify-end py-2">
+                        <a href="{{ cancel_url }}" class="btn">Cancel</a>
+                        <button type="submit" class="btn btn-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 class="h-5 w-5"
+                                 fill="none"
+                                 viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            {{ submit_text }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+{% block extra_script %}
+    <script nonce="{{ request.csp_nonce }}">
+      document.addEventListener('DOMContentLoaded', function() {
+        // Auto-focus on the first input field
+        const firstInput = document.querySelector('input[name="{{first_field}}"]');
+        if (firstInput) {
+          firstInput.focus();
+        }
+
+        // Auto-resize textareas
+        const textareas = document.querySelectorAll('textarea');
+        textareas.forEach(textarea => {
+          textarea.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = this.scrollHeight + 'px';
+          });
+        });
+
+        // Add form validation feedback
+        const form = document.querySelector('#objectForm');
+        if (form) {
+          form.addEventListener('submit', function(e) {
+            const requiredFields = form.querySelectorAll('input[required], select[required], textarea[required]');
+            let isValid = true;
+
+            requiredFields.forEach(field => {
+              if (!field.value.trim()) {
+                isValid = false;
+                field.classList.add('input-error');
+              } else {
+                field.classList.remove('input-error');
+              }
+            });
+
+            if (!isValid) {
+              e.preventDefault();
+              // Show error message
+              const errorAlert = document.createElement('div');
+              errorAlert.className = 'alert alert-error mb-4';
+              errorAlert.innerHTML = `
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.99-.833-2.76 0L4.054 15.5c-.77.833.192 2.5 1.732 2.5z" />
+                                </svg>
+                                <span>Please fill in all required fields.</span>
+                            `;
+
+              const existingAlert = form.querySelector('.alert-error');
+              if (existingAlert) {
+                existingAlert.remove();
+              }
+
+              form.insertBefore(errorAlert, form.firstChild);
+
+              // Remove error after 5 seconds
+              setTimeout(() => {
+                errorAlert.remove();
+              }, 5000);
+            }
+          });
+        }
+      });
+    </script>
+{% endblock extra_script %}

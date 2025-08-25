@@ -81,11 +81,11 @@
                                         </svg>
                                         {{ guest_group.name }}
                                     </a>
+                                    <!-- list card options menu-->
                                     {% url 'guestlist:guestgroup_detail' guest_group.slug as detail_action %}
                                     {% url 'guestlist:guestgroup_edit' guest_group.slug as update_action %}
-                                    {% url 'guestlist:guestgroup_delete' guest_group.slug as delete_action %}
 
-                                    {% include "components/card_options.html" with detail_action=detail_action update_action=update_action delete_action=delete_action %}
+                                    {% include "shared_helpers/card/list_card_options.html" with slug=guest_group.slug %}
 
                                 </div>
                                 <!-- Relationship Badge -->
@@ -226,72 +226,76 @@
                 </div>
             </div>
         {% endif %}
-    </div>
-    <!-- Import Modal -->
-    <dialog id="import_modal" class="modal">
-        <div class="modal-box">
-            <form method="dialog">
-                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-            </form>
-            <h3 class="text-lg font-bold mb-4">Import Guests from Excel</h3>
-            <form method="post"
-                  enctype="multipart/form-data"
-                  action="{% url 'guestlist:guestlist_import' %}">
-                {% csrf_token %}
-                <div class="form-control w-full mb-4">
-                    <label class="label">
-                        <span class="label-text">Select Excel File</span>
-                    </label>
-                    {{ form.excel_file }}
-                    <label class="label">
-                        <span class="label-text-alt">Supported formats: .xlsx, .xls</span>
-                    </label>
-                </div>
-                <div class="alert alert-info mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                         class="h-4 w-4"
-                         fill="none"
-                         viewBox="0 0 24 24"
-                         stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <div>
-                        <p class="text-sm">
-                            Required columns: <strong>group_name</strong>, <strong>first_name</strong>, <strong>last_name</strong>
-                        </p>
-                        <p class="text-sm">
-                            Optional columns: group_email, group_phone, relationship, priority, plus_one, is_invited, is_attending, guest_notes, response_notes
-                        </p>
+        <!-- Delete Deadline Modal-->
+
+        {% include "shared_helpers/modal/object_delete_shell.html" %}
+
+        <!-- Import Modal -->
+        <dialog id="import_modal" class="modal">
+            <div class="modal-box">
+                <form method="dialog">
+                    <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                </form>
+                <h3 class="text-lg font-bold mb-4">Import Guests from Excel</h3>
+                <form method="post"
+                      enctype="multipart/form-data"
+                      action="{% url 'guestlist:guestlist_import' %}">
+                    {% csrf_token %}
+                    <div class="form-control w-full mb-4">
+                        <label class="label">
+                            <span class="label-text">Select Excel File</span>
+                        </label>
+                        {{ form.excel_file }}
+                        <label class="label">
+                            <span class="label-text-alt">Supported formats: .xlsx, .xls</span>
+                        </label>
                     </div>
-                </div>
-                <div class="modal-action">
-                    <a href="{% url 'guestlist:guestlist_import' %}" class="btn btn-ghost">
+                    <div class="alert alert-info mb-4">
                         <svg xmlns="http://www.w3.org/2000/svg"
                              class="h-4 w-4"
                              fill="none"
                              viewBox="0 0 24 24"
                              stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
-                        Download Template
-                    </a>
-                    <button type="submit" class="btn btn-primary">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             class="h-4 w-4"
-                             fill="none"
-                             viewBox="0 0 24 24"
-                             stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                        </svg>
-                        Import Guests
-                    </button>
-                </div>
+                        <div>
+                            <p class="text-sm">
+                                Required columns: <strong>group_name</strong>, <strong>first_name</strong>, <strong>last_name</strong>
+                            </p>
+                            <p class="text-sm">
+                                Optional columns: group_email, group_phone, relationship, priority, plus_one, is_invited, is_attending, guest_notes, response_notes
+                            </p>
+                        </div>
+                    </div>
+                    <div class="modal-action">
+                        <a href="{% url 'guestlist:guestlist_import' %}" class="btn btn-ghost">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 class="h-4 w-4"
+                                 fill="none"
+                                 viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            Download Template
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 class="h-4 w-4"
+                                 fill="none"
+                                 viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                            </svg>
+                            Import Guests
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <form method="dialog" class="modal-backdrop">
+                <button>close</button>
             </form>
-        </div>
-        <form method="dialog" class="modal-backdrop">
-            <button>close</button>
-        </form>
-    </dialog>
+        </dialog>
+    </div>
 {% endblock content %}
 {% block extra_script %}
     <script nonce="{{ request.csp_nonce }}">
@@ -332,4 +336,8 @@
         }
       });
     </script>
+    {% url "guestlist:guest_group_delete_modal" as delete_modal_url %}
+
+    {% include "shared_helpers/modal/object_delete_script.html" %}
+
 {% endblock extra_script %}

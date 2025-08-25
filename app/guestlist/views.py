@@ -426,13 +426,23 @@ def guestgroup_create(request: HttpRequest) -> HttpResponse:
     else:
         form = GuestGroupForm()
 
+    intro = "Create a new guest group to organize your guests."
+    breadcrumbs = [
+        {"title": "Guest List", "url": reverse("guestlist:guestlist_summary")},
+        {"title": "Create Guest Group", "url": None},
+    ]
     context = {
-        "form": form,
+        "block_title": "Create Guest Group",
+        "breadcrumbs": breadcrumbs,
         "title": "Create Guest Group",
-        "submit_text": "Create Group",
-        "is_edit": False,
+        "intro": intro,
+        "form": form,
+        "object": None,
+        "submit_text": "Create Guest Group",
+        "cancel_url": reverse("guestlist:guestlist_summary"),
+        "first_field": "name",
     }
-    return render(request, "guestlist/guestgroup_form.html", context)
+    return render(request, "shared_helpers/form/object.html", context)
 
 
 @login_required
@@ -462,28 +472,46 @@ def guestgroup_edit(request: HttpRequest, group_slug: str) -> HttpResponse:
     else:
         form = GuestGroupForm(instance=guest_group)
 
+    intro = "Edit the details of the guest group."
+    breadcrumbs = [
+        {"title": "Guest List", "url": reverse("guestlist:guestlist_summary")},
+        {"title": guest_group.name, "url": reverse("guestlist:guestgroup_detail", args=[guest_group.slug])},
+        {"title": "Edit Guest Group", "url": None},
+    ]
     context = {
+        "block_title": "Edit Guest Group",
+        "breadcrumbs": breadcrumbs,
+        "title": f"Edit Guest Group: {guest_group}",
+        "intro": intro,
         "form": form,
-        "guest_group": guest_group,
-        "title": f"Edit {guest_group.name}",
-        "submit_text": "Update Group",
-        "is_edit": True,
+        "object": guest_group,
+        "submit_text": "Update Guest Group",
+        "cancel_url": reverse("guestlist:guestlist_summary"),
+        "first_field": "name",
     }
-    return render(request, "guestlist/guestgroup_form.html", context)
+    return render(request, "shared_helpers/form/object.html", context)
 
 
 @login_required
-def guestgroup_delete(request: HttpRequest, group_slug: str) -> HttpResponse:
-    """
-    Deletes an existing guest group (soft delete).
+def guest_group_delete_modal(request: HttpRequest) -> HttpResponse | JsonResponse:
+    guest_group_slug = request.GET.get("slug")
+    if not guest_group_slug:
+        return JsonResponse({"error": "Guest group slug is required"}, status=400)
+    try:
+        guest_group = GuestGroup.objects.get(slug=guest_group_slug, is_deleted=False)
+    except GuestGroup.DoesNotExist:
+        return JsonResponse({"error": "Guest group not found"}, status=404)
 
-    Args:
-        request (HttpRequest): The HTTP request object.
-        group_slug (str): The slug of the guest group to delete.
+    context = {
+        "object": guest_group,
+        "object_type": "Guest Group",
+        "action_url": reverse("guestlist:guest_group_delete", args=[guest_group.slug]),
+    }
+    return render(request, "shared_helpers/modal/object_delete_body.html", context)
 
-    Returns:
-        HttpResponse: Redirects to the guest list summary page.
-    """
+
+@login_required
+def guest_group_delete(request: HttpRequest, group_slug: str) -> HttpResponse:
     guest_group = get_object_or_404(GuestGroup, slug=group_slug)
 
     if request.method == "POST":
@@ -501,12 +529,9 @@ def guestgroup_delete(request: HttpRequest, group_slug: str) -> HttpResponse:
         messages.success(request, f"Guest group '{guest_group.name}' and all its guests have been deleted.")
         return redirect("guestlist:guestlist_summary")
 
-    # For GET requests, show a confirmation page
-    context = {
-        "guest_group": guest_group,
-        "guest_count": guest_group.guests.count(),
-    }
-    return render(request, "guestlist/guestgroup_confirm_delete.html", context)
+    else:
+        messages.error(request, "Invalid request method.")
+        return redirect("guestlist:guestlist_summary")
 
 
 @login_required
@@ -654,14 +679,32 @@ def guest_create(request: HttpRequest, group_slug: str | None = None) -> HttpRes
         if guest_group:
             form.fields["group"].initial = guest_group
 
+    intro = "Create a new guest"
+    breadcrumbs = [
+        {"title": "Guest List", "url": reverse("guestlist:guestlist_summary")},
+        {"title": "Create Guest", "url": None},
+    ]
+    if guest_group:
+        breadcrumbs.insert(
+            1, {"title": guest_group.name, "url": reverse("guestlist:guestgroup_detail", args=[guest_group.slug])}
+        )
+        cancel_url = reverse("guestlist:guestgroup_detail", args=[guest_group.slug])
+    else:
+        cancel_url = reverse("guestlist:guestlist_summary")
+
     context = {
+        "block_title": "Create Guest",
+        "breadcrumbs": breadcrumbs,
+        "title": "Create Guest",
+        "intro": intro,
         "form": form,
-        "guest_group": guest_group,
-        "title": "Add Guest" + (f" to {guest_group.name}" if guest_group else ""),
-        "submit_text": "Add Guest",
-        "is_edit": False,
+        "object": None,
+        "submit_text": "Create Guest",
+        "cancel_url": cancel_url,
+        "first_field": "name",
     }
-    return render(request, "guestlist/guest_form.html", context)
+
+    return render(request, "shared_helpers/form/object.html", context)
 
 
 @login_required
@@ -710,12 +753,27 @@ def guest_edit(request: HttpRequest, guest_slug: str) -> HttpResponse:
     else:
         form = GuestForm(instance=guest)
 
+    # configure rest of template context
+    intro = f"Edit Guest: {guest.first_name} {guest.last_name}"
+    breadcrumbs = [
+        {"title": "Guest List", "url": reverse("guestlist:guestlist_summary")},
+        {"title": guest.group, "url": reverse("guestlist:guestgroup_detail", args=[guest.group.slug])},
+        {"title": guest, "url": None},
+    ]
+    cancel_url = reverse("guestlist:guest_detail", args=[guest.slug])
+
     context = {
+        "block_title": "Edit Guest",
+        "breadcrumbs": breadcrumbs,
+        "title": f"Edit Guest: {guest.first_name} {guest.last_name}",
+        "intro": intro,
         "form": form,
-        "guest": guest,
-        "guest_group": guest.group,
+        "object": guest,
+        "submit_text": "Save Changes",
+        "cancel_url": cancel_url,
+        "first_field": "name",
     }
-    return render(request, "guestlist/guest_form.html", context)
+    return render(request, "shared_helpers/form/object.html", context)
 
 
 @login_required

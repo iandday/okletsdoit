@@ -7905,6 +7905,16 @@
       line-height: var(--tw-leading, var(--text-xl--line-height));
     }
   }
+  .lg\:link-hover {
+    @media (width >= 64rem) {
+      text-decoration-line: none;
+      &:hover {
+        @media (hover: hover) {
+          text-decoration-line: underline;
+        }
+      }
+    }
+  }
   .lg\:btn-md {
     @media (width >= 64rem) {
       --fontsize: 0.875rem;
