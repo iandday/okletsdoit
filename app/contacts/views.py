@@ -1,4 +1,5 @@
 import io
+from click import File
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -12,7 +13,7 @@ from io import BytesIO
 import logging
 
 from list.models import ListEntry
-from .models import Contact, File
+from .models import Contact, File as ContactFile
 from .forms import ContactForm, FileUploadForm
 
 logger = logging.getLogger(__name__)
@@ -58,7 +59,7 @@ def contact_detail(request, slug):
     shopping_list = ListEntry.objects.filter(vendor=contact, purchased=False, is_deleted=False).order_by("item")
 
     # get associated files
-    files = File.objects.filter(contact=contact, is_deleted=False).order_by("-uploaded_at")
+    files = ContactFile.objects.filter(contact=contact, is_deleted=False).order_by("-uploaded_at")
 
     context = {
         "contact": contact,
@@ -84,12 +85,26 @@ def contact_create(request):
     else:
         form = ContactForm()
 
-    context = {
-        "form": form,
-        "title": "Add New Contact",
-    }
+    intro = f"Create New Contact"
+    breadcrumbs = [
+        {"title": "Contacts", "url": reverse("contacts:list")},
+        {"title": "Create New Contact", "url": None},
+    ]
+    cancel_url = reverse("contacts:list")
 
-    return render(request, "contacts/contact_form.html", context)
+    context = {
+        "block_title": "Create New Contact",
+        "breadcrumbs": breadcrumbs,
+        "title": "Create New Contact",
+        "intro": intro,
+        "form": form,
+        "object": Contact,
+        "submit_text": "Create",
+        "cancel_url": cancel_url,
+        "first_field": "name",
+        "file": False,
+    }
+    return render(request, "shared_helpers/form/object.html", context)
 
 
 @login_required
@@ -108,13 +123,27 @@ def contact_update(request, slug):
     else:
         form = ContactForm(instance=contact)
 
-    context = {
-        "form": form,
-        "contact": contact,
-        "title": f"Edit {contact.name}",
-    }
+    intro = f"Update {contact.name}"
+    breadcrumbs = [
+        {"title": "Contacts", "url": reverse("contacts:list")},
+        {"title": contact.name, "url": reverse("contacts:detail", args=[contact.slug])},
+        {"title": "Update", "url": None},
+    ]
+    cancel_url = reverse("contacts:detail", args=[contact.slug])
 
-    return render(request, "contacts/contact_form.html", context)
+    context = {
+        "block_title": "Update Contact",
+        "breadcrumbs": breadcrumbs,
+        "title": "Update Contact",
+        "intro": intro,
+        "form": form,
+        "object": Contact,
+        "submit_text": "Update",
+        "cancel_url": cancel_url,
+        "first_field": "name",
+        "file": False,
+    }
+    return render(request, "shared_helpers/form/object.html", context)
 
 
 @login_required
@@ -341,7 +370,7 @@ def file_upload(request, slug):
     if request.method == "POST":
         form = FileUploadForm(request.POST, request.FILES)
         if form.is_valid():
-            file: File = form.save(commit=False)
+            file: ContactFile = form.save(commit=False)
             file.contact = contact
             file.uploaded_by = request.user
             file.save()
@@ -349,33 +378,75 @@ def file_upload(request, slug):
             return redirect("contacts:file_detail", slug=file.slug)
         else:
             messages.error(request, "No file selected.")
-    form = FileUploadForm(initial={"contact": contact})
-    return render(request, "contacts/file_form.html", {"form": form, "contact": contact})
+    else:
+        form = FileUploadForm(initial={"contact": contact})
+    intro = f"Upload File for {contact.name}"
+    breadcrumbs = [
+        {"title": "Contacts", "url": reverse("contacts:list")},
+        {"title": contact, "url": reverse("contacts:detail", args=[contact.slug])},
+        {"title": "Upload File", "url": None},
+    ]
+    cancel_url = reverse("contacts:detail", args=[contact.slug])
+
+    context = {
+        "block_title": "Upload File",
+        "breadcrumbs": breadcrumbs,
+        "title": f"Upload File for {contact.name}",
+        "intro": intro,
+        "form": form,
+        "object": ContactFile,
+        "submit_text": "Upload",
+        "cancel_url": cancel_url,
+        "first_field": "name",
+        "file": True,
+    }
+    return render(request, "shared_helpers/form/object.html", context)
 
 
 @login_required
 def file_edit(request, slug):
     """Edit an uploaded file for a contact"""
-    file_obj = get_object_or_404(File, slug=slug, is_deleted=False)
+    file_obj = get_object_or_404(ContactFile, slug=slug, is_deleted=False)
     contact = get_object_or_404(Contact, slug=file_obj.contact.slug, is_deleted=False)
 
     if request.method == "POST":
         form = FileUploadForm(request.POST, request.FILES, instance=file_obj)
         if form.is_valid():
-            file: File = form.save(commit=False)
+            file: ContactFile = form.save(commit=False)
             file.uploaded_by = request.user
             file.save()
             messages.success(request, f'File "{file.name}" was updated successfully.')
             return redirect("contacts:file_detail", slug=file.slug)
-    form = FileUploadForm(instance=file_obj)
+    else:
+        form = FileUploadForm(instance=file_obj)
+    intro = f"Edit File for {contact.name}"
+    breadcrumbs = [
+        {"title": "Contacts", "url": reverse("contacts:list")},
+        {"title": contact, "url": reverse("contacts:detail", args=[contact.slug])},
+        {"title": file_obj, "url": reverse("contacts:file_detail", args=[file_obj.slug])},
+        {"title": "Edit File", "url": None},
+    ]
+    cancel_url = reverse("contacts:file_detail", args=[file_obj.slug])
 
-    return render(request, "contacts/file_form.html", {"form": form, "file": file_obj, "contact": contact})
+    context = {
+        "block_title": "Edit File",
+        "breadcrumbs": breadcrumbs,
+        "title": f"Edit {file_obj} File for {contact}",
+        "intro": intro,
+        "form": form,
+        "object": ContactFile,
+        "submit_text": "Update",
+        "cancel_url": cancel_url,
+        "first_field": "name",
+        "file": True,
+    }
+    return render(request, "shared_helpers/form/object.html", context)
 
 
 @login_required
 def file_detail(request, slug):
     file = get_object_or_404(
-        File,
+        ContactFile,
         slug=slug,
         is_deleted=False,
     )
@@ -389,8 +460,8 @@ def file_delete_modal(request):
     if not slug:
         return JsonResponse({"error": "File slug is required"}, status=400)
     try:
-        file = File.objects.get(slug=slug, is_deleted=False)
-    except File.DoesNotExist:
+        file = ContactFile.objects.get(slug=slug, is_deleted=False)
+    except ContactFile.DoesNotExist:
         return JsonResponse({"error": "File not found"}, status=404)
 
     context = {
@@ -405,8 +476,8 @@ def file_delete_modal(request):
 def file_delete(request, slug):
     if request.method == "POST":
         try:
-            file_obj = File.objects.get(slug=slug, is_deleted=False)
-        except File.DoesNotExist:
+            file_obj = ContactFile.objects.get(slug=slug, is_deleted=False)
+        except ContactFile.DoesNotExist:
             messages.error(request, "File not found.")
             return redirect("contacts:list")
         file_obj.is_deleted = True

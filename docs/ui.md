@@ -61,6 +61,9 @@ Shared Helpers
   * Core
       * Timeline
       * Ispiration
+  * Contacts
+      * File
+      * Contact
 * Object Form
     * Expense
       * Category
@@ -68,8 +71,7 @@ Shared Helpers
     * Deadline
       * Deadline
       * Deadline List
-    * Contacts
-      * File
+
 * List Card Options
   * Expense:Category List
   * Deadline:Deadline Summary
