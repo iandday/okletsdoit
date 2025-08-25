@@ -58,6 +58,9 @@ Shared Helpers
   * Guestlist
     * Guest Group
     * Guest
+  * Core
+      * Timeline
+      * Ispiration
 * Object Form
     * Expense
       * Category
@@ -65,9 +68,6 @@ Shared Helpers
     * Deadline
       * Deadline
       * Deadline List
-    * Core
-      * Timeline
-      * Inspiration
     * Contacts
       * File
 * List Card Options

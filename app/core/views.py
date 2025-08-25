@@ -734,8 +734,25 @@ def inspiration_create(request: HttpRequest):
                     messages.error(request, f"{field}: {error}")
     else:
         form = InspirationForm()
-
-    return render(request, "core/inspiration_form.html", {"form": form})
+    intro = "Upload an existing inspiration"
+    breadcrumbs = [
+        {"title": "Inspiration", "url": reverse("core:inspiration_summary")},
+        {"title": "New Inspiration", "url": None},
+    ]
+    cancel_url = reverse("core:inspiration_summary")
+    context = {
+        "block_title": "New Inspiration",
+        "breadcrumbs": breadcrumbs,
+        "title": "New Inspiration",
+        "intro": intro,
+        "form": form,
+        "object": None,
+        "submit_text": "Create",
+        "cancel_url": cancel_url,
+        "first_field": "name",
+        "file": True,
+    }
+    return render(request, "shared_helpers/form/object.html", context)
 
 
 @login_required
@@ -783,7 +800,25 @@ def inspiration_edit(request: HttpRequest, inspiration_slug: str):
     else:
         form = InspirationForm(instance=inspiration)
 
-    return render(request, "core/inspiration_form.html", {"form": form, "inspiration": inspiration})
+    intro = "Edit an existing inspiration"
+    breadcrumbs = [
+        {"title": "Inspiration", "url": reverse("core:inspiration_summary")},
+        {"title": inspiration.name, "url": reverse("core:inspiration_detail", args=[inspiration.slug])},
+    ]
+    cancel_url = reverse("core:inspiration_detail", args=[inspiration.slug])
+    context = {
+        "block_title": "Edit Inspiration",
+        "breadcrumbs": breadcrumbs,
+        "title": "Edit Inspiration",
+        "intro": intro,
+        "form": form,
+        "object": None,
+        "submit_text": "Update",
+        "cancel_url": cancel_url,
+        "first_field": "name",
+        "file": True,
+    }
+    return render(request, "shared_helpers/form/object.html", context)
 
 
 @login_required
