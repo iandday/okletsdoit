@@ -109,13 +109,37 @@ def create(request) -> HttpResponse:
     if request.method == "POST":
         form = ExpenseForm(request.POST)
         if form.is_valid():
-            expense = form.save(commit=False)
+            expense: Expense = form.save(commit=False)
             expense.created_by = request.user
             expense.save()
-        return redirect("expenses:list")
+            return redirect("expenses:detail", slug=expense.slug)
+        else:
+            # Add field-specific error messages
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field}: {error}")
+            messages.error(request, "Please correct the errors below.")
     else:
         form = ExpenseForm()
-        return render(request, "expenses/expense_form.html", {"form": form})
+    # configure rest of template context
+    intro = "Create Expense"
+    breadcrumbs = [
+        {"title": "Expense List", "url": reverse("expenses:list")},
+        {"title": "Create Expense", "url": None},
+    ]
+    cancel_url = reverse("expenses:list")
+
+    context = {
+        "block_title": "Create Expense",
+        "breadcrumbs": breadcrumbs,
+        "title": "Create Expense",
+        "intro": intro,
+        "form": form,
+        "submit_text": "Create",
+        "cancel_url": cancel_url,
+        "first_field": "item",
+    }
+    return render(request, "shared_helpers/form/object.html", context)
 
 
 @login_required
@@ -155,8 +179,27 @@ def expense_edit(request, slug: str) -> HttpResponse:
             messages.error(request, "Please correct the errors below.")
     else:
         form = ExpenseForm(instance=expense)
+    # configure rest of template context
+    intro = f"Edit Expense: {expense.item}"
+    breadcrumbs = [
+        {"title": "Expense List", "url": reverse("expenses:list")},
+        {"title": expense.category, "url": reverse("expenses:category_detail", args=[expense.category.slug])},
+        {"title": expense, "url": None},
+    ]
+    cancel_url = reverse("expenses:detail", args=[expense.slug])
 
-    return render(request, "expenses/expense_form.html", {"form": form, "expense": expense})
+    context = {
+        "block_title": "Edit Expense",
+        "breadcrumbs": breadcrumbs,
+        "title": f"Edit Expense: {expense.item}",
+        "intro": intro,
+        "form": form,
+        "object": expense,
+        "submit_text": "Save Changes",
+        "cancel_url": cancel_url,
+        "first_field": "item",
+    }
+    return render(request, "shared_helpers/form/object.html", context)
 
 
 @login_required
