@@ -20,7 +20,7 @@
     --color-secondary-content: oklch(94% 0.028 342.258);
     --color-accent: #61303e;
     --color-accent-content: oklch(38% 0.063 188.416);
-    --color-neutral: oklch(14% 0.005 285.823);
+    --color-neutral: #8C4417;
     --color-neutral-content: oklch(92% 0.004 286.32);
     --color-info: #303a2b;
     --color-info-content: #d2ae98;
@@ -29,7 +29,7 @@
     --color-warning: oklch(82% 0.189 84.429);
     --color-warning-content: #61303e;
     --color-error: #ED4337;
-    --color-error-content: oklch(27% 0.105 12.094);
+    --color-error-content: #8C4417;
     --radius-selector: 0.5rem;
     --radius-field: 2rem;
     --radius-box: 2rem;

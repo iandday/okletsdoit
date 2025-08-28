@@ -7,3 +7,8 @@
   * Pre-populate new deadline form with list value
 * Guestlist
   * Add delete modal for guests in the guest group detail view
+
+Future Config Options
+* Show date in timeline view on venue page
+* Show hours and minutes in countdown on home page
+* Use django-daisy or unfold for admin?

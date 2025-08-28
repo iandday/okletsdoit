@@ -64,10 +64,11 @@ Shared Helpers
   * Contacts
       * File
       * Contact
+  * Expense
+    * Expense
 * Object Form
     * Expense
       * Category
-      * Expense
     * Deadline
       * Deadline
       * Deadline List

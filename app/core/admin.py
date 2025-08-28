@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.utils.html import format_html
 from import_export.admin import ImportExportModelAdmin
 from simple_history.admin import SimpleHistoryAdmin
-
+from django.db import models
 from .models import Idea, Timeline, Inspiration
 
 
@@ -68,7 +68,7 @@ class IdeaAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
 
 @admin.register(Timeline)
 class TimelineAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
-    list_display = ("name", "start_date", "end_date", "status_badges", "created_by", "created_at", "updated_at")
+    list_display = ("name", "start_date", "end_date", "published", "confirmed", "is_deleted")
     list_filter = ("start", "end", "published", "confirmed", "is_deleted", "created_by")
     search_fields = ("name", "slug", "description")
     prepopulated_fields = {"slug": ("name",)}
@@ -82,7 +82,7 @@ class TimelineAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
         ("Timestamps", {"fields": ("id", "created_at", "updated_at"), "classes": ("collapse",)}),
     )
 
-    def start_date(self, obj):
+    def start_date(self, obj: Timeline):
         """Display formatted start date and time"""
         return format_html(
             '<div><strong>{}</strong><br><span class="text-xs text-base-content/50">{}</span></div>',
@@ -90,33 +90,16 @@ class TimelineAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
             obj.start.strftime("%I:%M %p"),
         )
 
-    start_date.short_description = "Start"
-
-    def end_date(self, obj):
+    def end_date(self, obj: Timeline):
         """Display formatted end date and time"""
-        return format_html(
-            '<div><strong>{}</strong><br><span class="text-xs text-base-content/50">{}</span></div>',
-            obj.end.strftime("%m/%d/%Y"),
-            obj.end.strftime("%I:%M %p"),
-        )
-
-    end_date.short_description = "End"
-
-    def status_badges(self, obj):
-        """Display status badges for confirmation and publication"""
-        confirmed_badge = (
-            '<span class="badge badge-success">Confirmed</span>'
-            if obj.confirmed
-            else '<span class="badge badge-warning">Pending</span>'
-        )
-        published_badge = (
-            '<span class="badge badge-accent">Published</span>'
-            if obj.published
-            else '<span class="badge badge-ghost">Draft</span>'
-        )
-        return format_html("{} {}", confirmed_badge, published_badge)
-
-    status_badges.short_description = "Status"
+        if obj.end:
+            return format_html(
+                '<div><strong>{}</strong><br><span class="text-xs text-base-content/50">{}</span></div>',
+                obj.end.strftime("%m/%d/%Y"),
+                obj.end.strftime("%I:%M %p"),
+            )
+        else:
+            return format_html('<span class="badge badge-ghost">No end</span>')
 
     def get_queryset(self, request):
         """Optimize queryset and exclude deleted timeline events by default"""
@@ -130,7 +113,7 @@ class TimelineAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
         obj.updated_by = request.user
         super().save_model(request, obj, form, change)
 
-    actions = ["mark_as_deleted", "restore_from_deleted", "mark_as_confirmed", "mark_as_published"]
+    actions = ["mark_as_deleted", "restore_from_deleted", "toggle_confirmed", "toggle_published"]
 
     def mark_as_deleted(self, request, queryset):
         """Mark selected timeline events as deleted"""
@@ -146,19 +129,19 @@ class TimelineAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
 
     restore_from_deleted.short_description = "Restore selected events from deleted"
 
-    def mark_as_confirmed(self, request, queryset):
-        """Mark selected timeline events as confirmed"""
-        updated = queryset.update(confirmed=True)
-        self.message_user(request, f"{updated} timeline events marked as confirmed.")
+    def toggle_confirmed(self, request, queryset: models.QuerySet[Timeline]):
+        """Toggle confirmation status of selected timeline events"""
+        updated = queryset.update(confirmed=~models.F("confirmed"))
+        self.message_user(request, f"Confirmation status of {updated} timeline events toggled.")
 
-    mark_as_confirmed.short_description = "Mark selected events as confirmed"
+    toggle_confirmed.short_description = "Toggle confirmation status"
 
-    def mark_as_published(self, request, queryset):
-        """Mark selected timeline events as published"""
-        updated = queryset.update(published=True)
-        self.message_user(request, f"{updated} timeline events marked as published.")
+    def toggle_published(self, request, queryset):
+        """Toggle published status of selected timeline events"""
+        updated = queryset.update(published=~models.F("published"))
+        self.message_user(request, f"Published status of {updated} timeline events toggled.")
 
-    mark_as_published.short_description = "Mark selected events as published"
+    toggle_published.short_description = "Toggle published status"
 
 
 @admin.register(Inspiration)

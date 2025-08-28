@@ -137,23 +137,34 @@
                         Event Timeline
                     </h2>
                     <div class="space-y-3">
-                        {% for event in timeline %}
-                            <div>
-                                {% if event.end %}
-                                    <div class="flex flex-row gap-2">
-                                        <h3 class="font-semibold">{{ event.name }}:</h3>
-                                        <span class="text-sm">{{ event.start|time:"g:i A" }} - {{ event.end|time:"g:i A" }}</span>
-                                        <span class="text-xs">{{ event.start|date:"M d, Y" }}</span>
+                        {% if timeline %}
+                            {% for event in timeline %}
+                                <div>
+                                    {% if event.end %}
+                                        <div class="flex flex-row gap-2">
+                                            <h3 class="font-semibold">{{ event.name }}:</h3>
+                                            <span class="text-sm">{{ event.start|time:"g:i A" }} - {{ event.end|time:"g:i A" }}</span>
+                                            <!-- <span class="text-xs">{{ event.start|date:"M d, Y" }}</span> -->
+                                        </div>
+                                    {% else %}
+                                        <div class="flex flex-row gap-2">
+                                            <h3 class="font-semibold">{{ event.name }}:</h3>
+                                            <span class="text-sm">{{ event.start|time:"g:i A" }}</span>
+                                            <!-- <span class="text-xs">{{ event.start|date:"M d, Y" }}</span> -->
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="hero min-h-screen">
+                                <div class="hero-content text-center">
+                                    <div class="max-w-md">
+                                        <h1 class="text-5xl font-bold">Coming Soon!</h1>
+                                        <p class="py-6">Good things come to those who wait. Stay tuned for our event timeline.</p>
                                     </div>
-                                {% else %}
-                                    <div class="flex flex-row gap-2">
-                                        <h3 class="font-semibold">{{ event.name }}:</h3>
-                                        <span class="text-sm">{{ event.start|time:"g:i A" }}</span>
-                                        <span class="text-xs">{{ event.start|date:"M d, Y" }}</span>
-                                    </div>
-                                {% endif %}
+                                </div>
                             </div>
-                        {% endfor %}
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -173,9 +184,9 @@
                 </h1>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {% for lodging in lodging_info %}
-                        <div class="card bg-base-200 shadow-lg">
+                        <div class="card bg-base-100 shadow-lg">
                             <div class="card-body">
-                                <h3 class="card-title text-primary-content">{{ lodging.name }}</h3>
+                                <h3 class="card-title text-base-content">{{ lodging.name }}</h3>
                                 {% if lodging.address %}<p class="text-base-content/80 text-sm">{{ lodging.address }}</p>{% endif %}
                                 {% if lodging.phone %}
                                     <p class="text-base-content/80 text-sm">
