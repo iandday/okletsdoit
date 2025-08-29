@@ -66,9 +66,8 @@ Shared Helpers
       * Contact
   * Expense
     * Expense
+    * Category
 * Object Form
-    * Expense
-      * Category
     * Deadline
       * Deadline
       * Deadline List

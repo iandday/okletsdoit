@@ -658,10 +658,27 @@ def category_create(request) -> HttpResponse:
             category: Category = form.save(commit=False)
             category.created_by = request.user
             category.save()
-        return redirect("expenses:category_list")
+            return redirect("expenses:category_list")
     else:
         form = CategoryForm()
-        return render(request, "expenses/category_form.html", {"form": form})
+    intro = f"Create Category"
+    breadcrumbs = [
+        {"title": "Category List", "url": reverse("expenses:category_list")},
+        {"title": "Create", "url": None},
+    ]
+    cancel_url = reverse("expenses:category_list")
+
+    context = {
+        "block_title": "Create Category",
+        "breadcrumbs": breadcrumbs,
+        "title": f"Create Category",
+        "intro": intro,
+        "form": form,
+        "submit_text": "Save Changes",
+        "cancel_url": cancel_url,
+        "first_field": "name",
+    }
+    return render(request, "shared_helpers/form/object.html", context)
 
 
 def category_edit(request, slug: str) -> HttpResponse:
@@ -672,10 +689,29 @@ def category_edit(request, slug: str) -> HttpResponse:
             category = form.save(commit=False)
             category.updated_by = request.user
             category.save()
-        return redirect("expenses:category_detail", slug=category.slug)
+            return redirect("expenses:category_detail", slug=category.slug)
     else:
         form = CategoryForm(instance=category)
-        return render(request, "expenses/category_form.html", {"form": form, "category": category})
+    intro = f"Edit Category: {category}"
+    breadcrumbs = [
+        {"title": "Category List", "url": reverse("expenses:category_list")},
+        {"title": category, "url": reverse("expenses:category_detail", args=[category.slug])},
+        {"title": "Edit", "url": None},
+    ]
+    cancel_url = reverse("expenses:category_detail", args=[category.slug])
+
+    context = {
+        "block_title": "Edit Category",
+        "breadcrumbs": breadcrumbs,
+        "title": f"Edit Category: {category.name}",
+        "intro": intro,
+        "form": form,
+        "object": category,
+        "submit_text": "Save Changes",
+        "cancel_url": cancel_url,
+        "first_field": "name",
+    }
+    return render(request, "shared_helpers/form/object.html", context)
 
 
 def category_delete(request, slug: str) -> HttpResponse:
