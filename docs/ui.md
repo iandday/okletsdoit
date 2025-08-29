@@ -67,10 +67,10 @@ Shared Helpers
   * Expense
     * Expense
     * Category
-* Object Form
+  * Deadline
     * Deadline
-      * Deadline
-      * Deadline List
+    * Deadline List
+
 
 * List Card Options
   * Expense:Category List

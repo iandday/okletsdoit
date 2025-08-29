@@ -66,18 +66,30 @@ def deadline_create(request: HttpRequest) -> HttpResponse:
             deadline.updated_by = request.user
             deadline.save()
             messages.success(request, "Deadline created successfully.")
-            return redirect(f"{reverse('deadline:list')}?list={deadline.deadline_list.slug}")
+            return redirect(reverse("deadline:deadline_detail", args=[deadline.slug]))
         else:
             messages.error(request, "Please correct the errors below.")
-            return render(
-                request, "deadline/deadline_form.html", {"form": DeadlineForm(user=request.user, object=form.instance)}
-            )
     else:
-        context = {
-            "form": DeadlineForm(),
-        }
+        form = DeadlineForm()
+    # configure rest of template context
+    intro = "Create Deadline"
+    breadcrumbs = [
+        {"title": "Deadline List", "url": reverse("deadline:deadline_summary")},
+        {"title": "Create Deadline", "url": None},
+    ]
+    cancel_url = reverse("deadline:deadline_summary")
 
-        return render(request, "deadline/deadline_form.html", context)
+    context = {
+        "block_title": "Create Deadline",
+        "breadcrumbs": breadcrumbs,
+        "title": "Create Deadline",
+        "intro": intro,
+        "form": form,
+        "submit_text": "Create",
+        "cancel_url": cancel_url,
+        "first_field": "item",
+    }
+    return render(request, "shared_helpers/form/object.html", context)
 
 
 @login_required
@@ -88,7 +100,7 @@ def deadline_edit(request: HttpRequest, deadline_slug: str) -> HttpResponse:
         messages.error(request, "Deadline not found.")
         return redirect("deadline:deadline_summary")
 
-    if request.method == "POST" and deadline:
+    if request.method == "POST":
         form = DeadlineForm(request.POST, instance=deadline)
         if form.is_valid():
             # set the updated_by field and save
@@ -97,14 +109,35 @@ def deadline_edit(request: HttpRequest, deadline_slug: str) -> HttpResponse:
             deadline.save()
             messages.success(request, "Deadline updated successfully.")
             return redirect("deadline:deadline_detail", deadline_slug=deadline.slug)
+        else:
+            messages.error(request, "Please correct the errors below.")
     else:
         form = DeadlineForm(instance=deadline)
 
+    # configure rest of template context
+    intro = f"Edit Deadline: {deadline}"
+    breadcrumbs = [
+        {"title": "Deadline List", "url": reverse("deadline:deadline_summary")},
+        {
+            "title": deadline.deadline_list,
+            "url": reverse("deadline:deadline_list_detail", args=[deadline.deadline_list.slug]),
+        },
+        {"title": deadline, "url": None},
+    ]
+    cancel_url = reverse("deadline:deadline_detail", args=[deadline.slug])
+
     context = {
+        "block_title": "Edit Deadline",
+        "breadcrumbs": breadcrumbs,
+        "title": f"Edit Deadline: {deadline}",
+        "intro": intro,
         "form": form,
-        "deadline": deadline,
+        "object": deadline,
+        "submit_text": "Save Changes",
+        "cancel_url": cancel_url,
+        "first_field": "item",
     }
-    return render(request, "deadline/deadline_form.html", context)
+    return render(request, "shared_helpers/form/object.html", context)
 
 
 @login_required
@@ -270,16 +303,28 @@ def deadline_list_create(request: HttpRequest) -> HttpResponse:
             return redirect("deadline:deadline_list_detail", deadline_list_slug=deadline_list.slug)
         else:
             messages.error(request, "Please correct the errors below.")
-            return render(
-                request,
-                "deadline/deadline_list_form.html",
-                {"form": DeadlineForm(user=request.user, object=form.instance)},
-            )
+
     else:
-        context = {
-            "form": DeadlineListForm(),
-        }
-        return render(request, "deadline/deadline_list_form.html", context)
+        form = DeadlineListForm()
+    # configure rest of template context
+    intro = "Create Deadline List"
+    breadcrumbs = [
+        {"title": "Deadlines", "url": reverse("deadline:deadline_summary")},
+        {"title": "Create Deadline List", "url": None},
+    ]
+    cancel_url = reverse("deadline:deadline_summary")
+
+    context = {
+        "block_title": "Create Deadline List",
+        "breadcrumbs": breadcrumbs,
+        "title": "Create Deadline List",
+        "intro": intro,
+        "form": form,
+        "submit_text": "Create",
+        "cancel_url": cancel_url,
+        "first_field": "name",
+    }
+    return render(request, "shared_helpers/form/object.html", context)
 
 
 @login_required
@@ -359,17 +404,33 @@ def deadline_list_edit(request: HttpRequest, deadline_list_slug: str) -> HttpRes
             return redirect("deadline:deadline_list_detail", deadline_list_slug=deadline_list.slug)
         else:
             messages.error(request, "Please correct the errors below.")
-            return render(
-                request,
-                "deadline/deadline_list_form.html",
-                {"form": DeadlineListForm(object=form.instance)},
-            )
     else:
-        context = {
-            "form": DeadlineListForm(instance=deadline_list),
-            "deadline_list": deadline_list,
-        }
-        return render(request, "deadline/deadline_list_form.html", context)
+        form = DeadlineListForm(instance=deadline_list)
+
+    # configure rest of template context
+    intro = f"Edit Deadline List: {deadline_list}"
+    breadcrumbs = [
+        {"title": "Deadlines", "url": reverse("deadline:deadline_summary")},
+        {
+            "title": deadline_list,
+            "url": reverse("deadline:deadline_list_detail", args=[deadline_list.slug]),
+        },
+        {"title": "Edit", "url": None},
+    ]
+    cancel_url = reverse("deadline:deadline_list_detail", args=[deadline_list.slug])
+
+    context = {
+        "block_title": "Edit Deadline List",
+        "breadcrumbs": breadcrumbs,
+        "title": f"Edit Deadline List: {deadline_list}",
+        "intro": intro,
+        "form": form,
+        "object": deadline_list,
+        "submit_text": "Save Changes",
+        "cancel_url": cancel_url,
+        "first_field": "name",
+    }
+    return render(request, "shared_helpers/form/object.html", context)
 
 
 @login_required
