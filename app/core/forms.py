@@ -13,10 +13,12 @@ class IdeaForm(ModelForm):
         model = Idea
         fields = ["name", "description"]
         widgets = {
-            "name": forms.TextInput(attrs={"class": "input input-bordered w-full", "placeholder": "Enter idea name"}),
+            "name": forms.TextInput(
+                attrs={"class": "input input-bordered edit-card-field-value", "placeholder": "Enter idea name"}
+            ),
             "description": forms.Textarea(
                 attrs={
-                    "class": "textarea textarea-bordered w-full h-100",
+                    "class": "textarea textarea-bordered edit-card-field-value",
                     "rows": 40,
                     "placeholder": "Enter idea description",
                 }

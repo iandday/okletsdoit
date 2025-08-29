@@ -98,8 +98,27 @@ def idea_create(request: HttpRequest):
             for field, errors in form.errors.items():
                 for error in errors:
                     messages.error(request, f"{field}: {error}")
-
-    return render(request, "core/idea_form.html", context={"form": IdeaForm()})
+    else:
+        form = IdeaForm()
+    intro = "Create an idea"
+    breadcrumbs = [
+        {"title": "Ideas", "url": reverse("core:idea_list")},
+        {"title": "Create", "url": reverse("core:idea_create")},
+    ]
+    cancel_url = reverse("core:idea_list")
+    context = {
+        "block_title": "Create Idea",
+        "breadcrumbs": breadcrumbs,
+        "title": "Create Idea",
+        "intro": intro,
+        "form": form,
+        "submit_text": "Create Idea",
+        "cancel_url": cancel_url,
+        "first_field": "name",
+        "hugerte_enabled": True,
+        "selector": "id_description",
+    }
+    return render(request, "shared_helpers/form/object.html", context)
 
 
 @login_required
@@ -157,29 +176,43 @@ def idea_edit(request: HttpRequest, idea_slug: str):
     Returns:
         HttpResponse: Redirects to the idea detail page with a success message.
     """
-    if request.method == "POST":
-        try:
-            idea = Idea.objects.get(slug=idea_slug, is_deleted=False)
-            form = IdeaForm(request.POST, instance=idea)
+    idea = get_object_or_404(Idea, slug=idea_slug, is_deleted=False)
 
-            if form.is_valid():
-                idea: Idea = form.save(commit=False)
-                idea.updated_by = request.user
-                idea.save()
-                messages.success(request, "Idea updated successfully.")
-            else:
-                for field, errors in form.errors.items():
-                    for error in errors:
-                        messages.error(request, f"{field}: {error}")
+    if request.method == "POST":
+        form = IdeaForm(request.POST, instance=idea)
+
+        if form.is_valid():
+            idea: Idea = form.save(commit=False)
+            idea.updated_by = request.user
+            idea.save()
+            messages.success(request, "Idea updated successfully.")
             return redirect("core:idea_detail", idea_slug=idea.slug)
-        except Idea.DoesNotExist:
-            messages.error(request, "Idea not found.")
-            return redirect("idea_list")
-    # If GET request, show the edit form
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field}: {error}")
     else:
-        idea = Idea.objects.get(slug=idea_slug, is_deleted=False)
         form = IdeaForm(instance=idea)
-        return render(request, "core/idea_form.html", {"form": form, "idea": idea})
+    intro = "Edit an idea"
+    breadcrumbs = [
+        {"title": "Ideas", "url": reverse("core:idea_list")},
+        {"title": idea.name, "url": reverse("core:idea_detail", args=[idea.slug])},
+    ]
+    cancel_url = reverse("core:idea_detail", args=[idea.slug])
+    context = {
+        "block_title": "Edit Idea",
+        "breadcrumbs": breadcrumbs,
+        "title": "Edit Idea",
+        "intro": intro,
+        "form": form,
+        "object": idea,
+        "submit_text": "Update",
+        "cancel_url": cancel_url,
+        "first_field": "name",
+        "hugerte_enabled": True,
+        "selector": "id_description",
+    }
+    return render(request, "shared_helpers/form/object.html", context)
 
 
 @login_required
