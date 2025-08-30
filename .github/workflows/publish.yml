@@ -156,4 +156,14 @@ jobs:
         with:
           sarif_file: 'trivy-results.sarif'
 
-  
+  deploy:
+    runs-on: self-hosted
+    needs: security-scan
+    if: github.event_name != 'pull_request'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: update container
+        run: /home/ansible/deliver.sh
+
