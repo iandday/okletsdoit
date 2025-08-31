@@ -10,7 +10,9 @@ Shared Helpers
     * Idea List
   * Budget
     * Category List
+    * Category Detail
     * Expense List
+    * Expense Detail
   * Contacts
     * File
     * Contact

@@ -651,6 +651,7 @@ def category_list(request) -> HttpResponse:
     )
 
 
+@login_required
 def category_create(request) -> HttpResponse:
     if request.method == "POST":
         form = CategoryForm(request.POST)
@@ -681,6 +682,7 @@ def category_create(request) -> HttpResponse:
     return render(request, "shared_helpers/form/object.html", context)
 
 
+@login_required
 def category_edit(request, slug: str) -> HttpResponse:
     category = Category.objects.get(slug=slug, is_deleted=False)
     if request.method == "POST":
@@ -714,11 +716,18 @@ def category_edit(request, slug: str) -> HttpResponse:
     return render(request, "shared_helpers/form/object.html", context)
 
 
+@login_required
 def category_delete(request, slug: str) -> HttpResponse:
-    category = Category.objects.get(slug=slug, is_deleted=False)
+    category = get_object_or_404(Category, slug=slug, is_deleted=False)
+    uncategorized = get_object_or_404(Category, name="Uncategorized", is_deleted=False)
     if request.method == "POST":
         category.is_deleted = True
         category.save()
+        # Move expenses to Uncategorized
+        expenses = Expense.objects.filter(category=category)
+        for expense in expenses:
+            expense.category = uncategorized
+            expense.save()
     return redirect("expenses:category_list")
 
 
@@ -736,8 +745,7 @@ def category_delete_modal(request: HttpRequest) -> HttpResponse:
         return JsonResponse({"error": "Category not found"}, status=404)
 
     context = {
-        "object": category,
-        "object_type": "Category",
         "action_url": reverse("expenses:category_delete", args=[category.slug]),
+        "custom_message": f"This action cannot be undone. All expenses associated to this '{category}' Category will be moved to the 'Uncategorized' category.",
     }
     return render(request, "shared_helpers/modal/object_delete_body.html", context)
