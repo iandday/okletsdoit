@@ -21,6 +21,7 @@ urlpatterns = [
     path("idea/", views.idea_list, name="idea_list"),
     path("idea/template/download/", views.idea_template_download, name="idea_template_download"),
     path("idea/import/", views.idea_import, name="idea_import"),
+    path("idea_delete_modal/", views.idea_delete_modal, name="idea_delete_modal"),
     path("idea/<slug:idea_slug>/", views.idea_detail, name="idea_detail"),
     path("idea/<slug:idea_slug>/edit/", views.idea_edit, name="idea_edit"),
     path("idea/<slug:idea_slug>/delete/", views.idea_delete, name="idea_delete"),

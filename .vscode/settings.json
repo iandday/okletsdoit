@@ -15,6 +15,7 @@
         "GuestList",
         "Timeline",
         "Inspiration",
-        "SharedHelpers"
+        "SharedHelpers",
+        "CD"
     ]
 }

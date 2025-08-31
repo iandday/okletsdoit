@@ -6,6 +6,8 @@ Shared Helpers
     * Deadline Detail
     * Deadline List Detail
   * Ideas
+    * Idea Detail
+    * Idea List
   * Budget
     * Category List
     * Expense List
@@ -32,7 +34,8 @@ Shared Helpers
     * Guest
   * Core
       * Timeline
-      * Ispiration
+      * Inspiration
+      * Idea
   * Contacts
       * File
       * Contact
@@ -47,3 +50,4 @@ Shared Helpers
 * List Card Options
   * Expense:Category List
   * Deadline:Deadline Summary
+  * Core: Idea List

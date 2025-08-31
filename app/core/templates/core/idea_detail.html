@@ -6,129 +6,63 @@
     {{ idea.name }}
 {% endblock title %}
 {% block content %}
-    <div class="max-w-4xl mx-auto px-4 py-8">
+    <div class="container mx-auto px-4 py-8">
         <!-- Header Section -->
-        <div class="mb-8">
-            <div class="breadcrumbs mb-4">
-                <ul>
-                    <li>
-                        <a href="{% url 'core:idea_list' %}" class="link">Ideas</a>
-                    </li>
-                    <li>{{ idea.name }}</li>
-                </ul>
-            </div>
-            <div class="flex items-start justify-between mb-6">
-                <div>
-                    <h1 class="text-4xl font-bold text-content mb-2">{{ idea.name }}</h1>
-                    <div class="flex items-center gap-4 text-sm text-base-content/70">
-                        <span>Created {{ idea.created_at|date:"M d, Y" }} by {{ idea.created_by.email }}</span>
-                        {% if idea.updated_at != idea.created_at %}
-                            <span>•</span>
-                            <span>Updated {{ idea.updated_at|date:"M d, Y" }} by {{ idea.updated_by.email }}</span>
-                        {% endif %}
-                    </div>
-                </div>
-                <div class="flex items-center gap-2">
-                    <!-- Edit Button -->
-                    <a href="{% url 'core:idea_edit' idea.slug %}"
-                       class="btn btn-primary btn-sm">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             class="h-4 w-4"
-                             fill="none"
-                             viewBox="0 0 24 24"
-                             stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                        </svg>
-                        Edit
-                    </a>
-                    <!-- Delete Button -->
-                    <button class="btn btn-error btn-sm" id="show-delete-modal">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             class="h-4 w-4"
-                             fill="none"
-                             viewBox="0 0 24 24"
-                             stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1-1H8a1 1 0 00-1 1v3M4 7h16" />
-                        </svg>
-                        Delete
-                    </button>
-                </div>
+        <div class="breadcrumbs mb-4">
+            <ul>
+                <li>
+                    <a href="{% url 'core:idea_list' %}" class="link">Ideas</a>
+                </li>
+                <li>{{ idea.name }}</li>
+            </ul>
+        </div>
+        <div class="mb-6 flex items-center justify-between">
+            <h1 class="text-3xl font-bold text-base-content">{{ idea.name }}</h1>
+            <div class="flex gap-2">
+                <a href="{% url 'core:idea_edit' idea.slug %}"
+                   class="btn btn-primary btn-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         class="h-4 w-4"
+                         fill="none"
+                         viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                Edit</a>
+                <button class="btn btn-sm btn-error delete-btn" data-id="{{ idea.slug }}">Delete</button>
             </div>
         </div>
-        <!-- Description Section -->
-        <div class="list-card ">
-            <div class="card-body">
-                <h2 class="list-card-title">Description</h2>
-                {% if idea.description %}
-                    <div class="prose prose-lg ckeditor-content">{{ idea.description|safe }}</div>
-                {% else %}
-                    <div class="text-center py-8">
-                        <div class="text-6xl mb-4 opacity-50">📝</div>
-                        <p class="text-base-content/60 text-lg">No description added yet</p>
-                        <button class="btn btn-primary btn-sm mt-4" id="add-description-btn">Add Description</button>
-                    </div>
-                {% endif %}
+        <!-- Main Information-->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="detail-card" id="main-info">
+                <div class="detail-card-body">
+                    <h2 class="detail-card-title">Description</h2>
+                    {% if idea.description %}
+                        <div class="prose prose-lg ckeditor-content">{{ idea.description|safe }}</div>
+                    {% else %}
+                        <div class="text-center py-8">
+                            <div class="text-6xl mb-4 opacity-50">📝</div>
+                            <p class="text-lg">No description added yet</p>
+                            <a class="btn btn-primary btn-sm mt-4"
+                               href="{% url 'core:idea_edit' idea.slug %}">Add Description</a>
+                        </div>
+                    {% endif %}
+                </div>
             </div>
+            <!-- Metadata -->
+
+            {% include "components/detail_metadata.html" with object=idea %}
+
         </div>
+        <!-- Delete Modal -->
+
+        {% include "shared_helpers/modal/object_delete_shell.html" %}
+
     </div>
-    <!-- Delete Confirmation Modal -->
-    <dialog id="deleteIdeaModal" class="modal">
-        <div class="modal-box">
-            <h3 class="text-lg font-bold text-error mb-4">Delete Idea</h3>
-            <p class="mb-6">
-                Are you sure you want to delete "<strong>{{ idea.name }}</strong>"? This action cannot be undone.
-            </p>
-            <div class="modal-action">
-                <button type="button" class="btn btn-ghost" id="close-delete-modal">Cancel</button>
-                <form method="post"
-                      action="{% url 'core:idea_delete' idea.slug %}"
-                      class="inline">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-error">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             class="h-4 w-4"
-                             fill="none"
-                             viewBox="0 0 24 24"
-                             stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1-1H8a1 1 0 00-1 1v3M4 7h16" />
-                        </svg>
-                        Delete
-                    </button>
-                </form>
-            </div>
-        </div>
-        <form method="dialog" class="modal-backdrop">
-            <button>close</button>
-        </form>
-    </dialog>
 {% endblock content %}
 {% block extra_script %}
-    <script nonce="{{ request.csp_nonce }}">
-      document.addEventListener('DOMContentLoaded', function() {
-        // Delete Modal
-        const showDeleteModal = document.getElementById('show-delete-modal');
-        const deleteModal = document.getElementById('deleteIdeaModal');
-        const closeDeleteModal = document.getElementById('close-delete-modal');
+    {% url "core:idea_delete_modal" as delete_modal_url %}
 
-        if (showDeleteModal && deleteModal) {
-          showDeleteModal.addEventListener('click', function() {
-            deleteModal.showModal();
-          });
-        }
+    {% include "shared_helpers/modal/object_delete_script.html" %}
 
-        if (closeDeleteModal && deleteModal) {
-          closeDeleteModal.addEventListener('click', function() {
-            deleteModal.close();
-          });
-        }
-
-        // Add Description Button
-        const addDescriptionBtn = document.getElementById('add-description-btn');
-        if (addDescriptionBtn) {
-          addDescriptionBtn.addEventListener('click', function() {
-            window.location.href = "{% url 'core:idea_edit' idea.slug %}";
-          });
-        }
-      });
-    </script>
 {% endblock extra_script %}

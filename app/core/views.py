@@ -142,6 +142,24 @@ def idea_detail(request: HttpRequest, idea_slug: str):
 
 
 @login_required
+def idea_delete_modal(request: HttpRequest) -> HttpResponse | JsonResponse:
+    idea_slug = request.GET.get("slug")
+    if not idea_slug:
+        return JsonResponse({"error": "Idea slug is required"}, status=400)
+    try:
+        idea = Idea.objects.get(slug=idea_slug, is_deleted=False)
+    except Idea.DoesNotExist:
+        return JsonResponse({"error": "Idea not found"}, status=404)
+
+    context = {
+        "object": idea,
+        "object_type": "Idea",
+        "action_url": reverse("core:idea_delete", args=[idea.slug]),
+    }
+    return render(request, "shared_helpers/modal/object_delete_body.html", context)
+
+
+@login_required
 def idea_delete(request: HttpRequest, idea_slug: str):
     """
     Deletes an idea.
@@ -153,14 +171,16 @@ def idea_delete(request: HttpRequest, idea_slug: str):
     Returns:
         HttpResponse: Redirects to the idea list page with a success message.
     """
-    logger.error(f"Deleting idea: {idea_slug}")
-    try:
-        idea = Idea.objects.get(slug=idea_slug, is_deleted=False)
+    idea = get_object_or_404(Idea, slug=idea_slug, is_deleted=False)
+
+    if request.method == "POST":
         idea.is_deleted = True
+        idea.updated_by = request.user
         idea.save()
-        messages.success(request, "Idea deleted successfully.")
-    except Idea.DoesNotExist:
-        messages.error(request, "Idea not found.")
+        messages.success(request, f"Idea '{idea.name}' deleted successfully.")
+    else:
+        messages.error(request, "Invalid request method.")
+
     return redirect("core:idea_list")
 
 

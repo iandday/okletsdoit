@@ -4543,9 +4543,6 @@
   .mt-12 {
     margin-top: calc(var(--spacing) * 12);
   }
-  .mt-auto {
-    margin-top: auto;
-  }
   .breadcrumbs {
     max-width: 100%;
     overflow-x: auto;
@@ -5279,9 +5276,6 @@
   .h-96 {
     height: calc(var(--spacing) * 96);
   }
-  .h-100 {
-    height: calc(var(--spacing) * 100);
-  }
   .h-auto {
     height: auto;
   }
@@ -5444,9 +5438,6 @@
   }
   .max-w-2xl {
     max-width: var(--container-2xl);
-  }
-  .max-w-3xl {
-    max-width: var(--container-3xl);
   }
   .max-w-4xl {
     max-width: var(--container-4xl);
