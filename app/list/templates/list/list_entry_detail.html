@@ -3,65 +3,48 @@
 {% load static %}
 
 {% block title %}
-    {{ entry.item }} - {{ entry.list.name }} - Wedding Lists
+    {{ entry.item }} - {{ entry.list.name }}
 {% endblock title %}
 {% block content %}
-    <div class="max-w-4xl mx-auto px-4 py-8">
-        <!-- Breadcrumbs -->
+    <div class="container mx-auto px-4 py-8">
         <div class="breadcrumbs mb-6">
             <ul>
                 <li>
                     <a href="{% url 'list:summary' %}" class="link">Lists</a>
                 </li>
                 <li>
-                    <a href="{% url 'list:detail' entry.list.slug %}" class="link">{{ entry.list.name }}</a>
+                    <a href="{% url 'list:detail' entry.list.slug %}" class="link">{{ entry.list }}</a>
                 </li>
                 <li>{{ entry.item }}</li>
             </ul>
         </div>
-        <!-- Header Section -->
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
-            <div class="flex-1">
-                <div class="flex items-center gap-4 mb-2">
-                    <h1 class="text-4xl font-bold {% if entry.is_completed %}line-through opacity-60{% endif %}">{{ entry.item }}</h1>
-                    {% if entry.is_completed %}
-                        <div class="badge badge-success badge-lg">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                 class="h-4 w-4 mr-1"
-                                 fill="none"
-                                 viewBox="0 0 24 24"
-                                 stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                            </svg>
-                            Completed
-                        </div>
-                    {% else %}
-                        <div class="badge badge-warning badge-lg">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                 class="h-4 w-4 mr-1"
-                                 fill="none"
-                                 viewBox="0 0 24 24"
-                                 stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            Pending
-                        </div>
-                    {% endif %}
-                    {% if entry.purchased %}
-                        <div class="badge badge-info badge-lg">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                 class="h-4 w-4 mr-1"
-                                 fill="none"
-                                 viewBox="0 0 24 24"
-                                 stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                            </svg>
-                            Purchased
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
+        <!-- Title -->
+        <div class="mb-6 flex items-center justify-between">
+            <h1 class="text-3xl font-bold text-base-content">{{ entry.item }}</h1>
             <div class="flex gap-2">
+                {% if entry.is_completed %}
+                    <div class="badge badge-success badge-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             class="h-4 w-4 mr-1"
+                             fill="none"
+                             viewBox="0 0 24 24"
+                             stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                        Completed
+                    </div>
+                {% else %}
+                    <div class="badge badge-warning badge-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             class="h-4 w-4 mr-1"
+                             fill="none"
+                             viewBox="0 0 24 24"
+                             stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Pending
+                    </div>
+                {% endif %}
                 <a href="{% url 'list:entry_edit' entry.slug %}" class="btn btn-outline">
                     <svg xmlns="http://www.w3.org/2000/svg"
                          class="h-5 w-5"
@@ -84,28 +67,63 @@
                 </button>
             </div>
         </div>
-        <!-- Main Content -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <!-- Item Details Card -->
-            <div class="lg:col-span-2">
-                <div class="detail-card">
-                    <div class="detail-card-body">
-                        <h2 class="detail-card-title mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                 class="h-6 w-6"
-                                 fill="none"
-                                 viewBox="0 0 24 24"
-                                 stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                            </svg>
-                            Item Details
-                        </h2>
-                        <!-- Description -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Main Content -->
+            <div class="detail-card" id="main-info">
+                <div class="detail-card-body">
+                    <h2 class="detail-card-title mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             class="h-6 w-6"
+                             fill="none"
+                             viewBox="0 0 24 24"
+                             stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        Item Details
+                    </h2>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <div class="detail-card-field-name">Purchased</div>
+                            <div class="detail-card-field-value">{{ entry.purchased|yesno:"Yes,No" }}</div>
+                        </div>
                         {% if entry.description %}
+                            <div>
+                                <div class="detail-card-field-name">Description</div>
+                                <div class="detail-card-field-value">{{ entry.description }}</div>
+                            </div>
+                        {% endif %}
+                        <!-- Pricing Information -->
+                        {% if entry.unit_price > 0 or entry.additional_price > 0 %}
+                            <div>
+                                <div class="detail-card-field-name">Quantity</div>
+                                <div class="detail-card-field-value">{{ entry.quantity }}</div>
+                            </div>
+                            {% if entry.unit_price > 0 %}
+                                <div>
+                                    <div class="detail-card-field-name">Unit Price</div>
+                                    <div class="detail-card-field-value">${{ entry.unit_price|floatformat:2 }}</div>
+                                </div>
+                            {% endif %}
+                            {% if entry.additional_price > 0 %}
+                                <div>
+                                    <div class="detail-card-field-name">Additional Price</div>
+                                    <div class="detail-card-field-value">${{ entry.additional_price|floatformat:2 }}</div>
+                                </div>
+                            {% endif %}
+                            {% if entry.total_price > 0 %}
+                                <div>
+                                    <div class="detail-card-field-name">Total Price</div>
+                                    <div class="detail-card-field-value">${{ entry.total_price|floatformat:2 }}</div>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                        {% if entry.image %}
                             <div class="mb-6">
-                                <h3 class="detail-card-field-title">Description</h3>
+                                <h3 class="detail-card-field-title">Image</h3>
                                 <div class="p-4">
-                                    <p class="detail-card-field-value">{{ entry.description }}</p>
+                                    <img src="{{ entry.image.url }}"
+                                         alt="{{ entry.item }}"
+                                         class="max-w-xs rounded-lg shadow-md">
                                 </div>
                             </div>
                         {% endif %}
@@ -124,63 +142,6 @@
                                 </svg>
                                 Visit Link
                             </a>
-                        {% endif %}
-                        <!-- Pricing Information -->
-                        {% if entry.unit_price > 0 or entry.additional_price > 0 %}
-                            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-8 mb-4">
-                                <div>
-                                    <div class="detail-card-field-name">Quantity</div>
-                                    <div class="detail-card-field-value">{{ entry.quantity }}</div>
-                                </div>
-                                {% if entry.unit_price > 0 %}
-                                    <div>
-                                        <div class="detail-card-field-name">Unit Price</div>
-                                        <div class="detail-card-field-value">${{ entry.unit_price|floatformat:2 }}</div>
-                                    </div>
-                                {% endif %}
-                                {% if entry.additional_price > 0 %}
-                                    <div>
-                                        <div class="detail-card-field-name">Additional Price</div>
-                                        <div class="detail-card-field-value">${{ entry.additional_price|floatformat:2 }}</div>
-                                    </div>
-                                {% endif %}
-                                {% if entry.total_price > 0 %}
-                                    <div>
-                                        <div class="detail-card-field-name">Total Price</div>
-                                        <div class="detail-card-field-value">${{ entry.total_price|floatformat:2 }}</div>
-                                    </div>
-                                {% endif %}
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     class="h-5 w-5 {% if entry.purchased %}text-success{% else %}text-primary/40{% endif %}"
-                                     fill="none"
-                                     viewBox="0 0 24 24"
-                                     stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                                </svg>
-                                <span class="{% if entry.purchased %}text-success font-semibold{% else %}text-primary/60{% endif %}">
-                                    {% if entry.purchased %}
-                                        Already Purchased
-                                    {% else %}
-                                        Not Yet Purchased
-                                    {% endif %}
-                                </span>
-                            </div>
-                        {% endif %}
-                        <div>
-                            <div class="detail-card-field-title">Order</div>
-                            <div class="detail-card-field-value">{{ entry.order }}</div>
-                        </div>
-                        {% if entry.image %}
-                            <div class="mb-6">
-                                <h3 class="detail-card-field-title">Image</h3>
-                                <div class="p-4">
-                                    <img src="{{ entry.image.url }}"
-                                         alt="{{ entry.item }}"
-                                         class="max-w-xs rounded-lg shadow-md">
-                                </div>
-                            </div>
                         {% endif %}
                         <!-- Completion Status -->
                         {% if entry.completed_at %}

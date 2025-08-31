@@ -4,7 +4,8 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from django.db.models import Exists, OuterRef
 from django.contrib import messages
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
+from django.urls import reverse
 from django.utils.text import slugify
 import polars as pl
 from django.http import HttpRequest
@@ -101,10 +102,28 @@ def list_create(request: HttpRequest):
             for field, errors in form.errors.items():
                 for error in errors:
                     messages.error(request, f"{field}: {error}")
-            return redirect("list:summary")
     else:
         form = ListForm()
-    return render(request, "list/list_form.html", {"form": form})
+    # configure rest of template context
+    intro = "New List"
+    breadcrumbs = [
+        {"title": "List Summary", "url": reverse("list:summary")},
+        {"title": "New List", "url": None},
+    ]
+    cancel_url = reverse("list:summary")
+
+    context = {
+        "block_title": "New List",
+        "breadcrumbs": breadcrumbs,
+        "title": "New List",
+        "intro": intro,
+        "form": form,
+        "object": list,
+        "submit_text": "Create",
+        "cancel_url": cancel_url,
+        "first_field": "name",
+    }
+    return render(request, "shared_helpers/form/object.html", context)
 
 
 @login_required
@@ -137,25 +156,42 @@ def list_edit(request: HttpRequest, list_slug: str):
     """
     Edits a list.
     """
-    try:
-        list_obj = List.objects.get(slug=list_slug, is_deleted=False)
-    except List.DoesNotExist:
-        messages.error(request, "List not found.")
-        return redirect("list:summary")
+
+    list = get_object_or_404(List, slug=list_slug, is_deleted=False)
 
     if request.method == "POST":
-        form = ListForm(request.POST, instance=list_obj)
+        form = ListForm(request.POST, instance=list)
         if form.is_valid():
-            list_obj = form.save()
-            messages.success(request, "List updated successfully.")
+            list: List = form.save(commit=False)
+            list.updated_by = request.user
+            list.save()
+            messages.success(request, f"{list} updated successfully.")
         else:
             for field, errors in form.errors.items():
                 for error in errors:
                     messages.error(request, f"{field}: {error}")
-        return redirect("list:detail", list_slug=list_obj.slug)
     else:
-        form = ListForm(instance=list_obj)
-        return render(request, "list/list_form.html", {"form": form, "list": list_obj})
+        form = ListForm(instance=list)
+    # configure rest of template context
+    intro = f"Edit List: {list}"
+    breadcrumbs = [
+        {"title": "List Summary", "url": reverse("list:summary")},
+        {"title": list, "url": None},
+    ]
+    cancel_url = reverse("list:detail", args=[list.slug])
+
+    context = {
+        "block_title": "Edit List",
+        "breadcrumbs": breadcrumbs,
+        "title": f"Edit List: {list.name}",
+        "intro": intro,
+        "form": form,
+        "object": list,
+        "submit_text": "Save Changes",
+        "cancel_url": cancel_url,
+        "first_field": "name",
+    }
+    return render(request, "shared_helpers/form/object.html", context)
 
 
 @login_required
@@ -168,10 +204,13 @@ def list_delete(request: HttpRequest, list_slug: str):
         list_obj.is_deleted = True
         list_obj.updated_by = request.user
         list_obj.save()
-        messages.success(request, "List deleted successfully.")
-        return redirect("list:summary")
 
-    return render(request, "list/list_confirm_delete.html", {"list": list_obj})
+        # delete associated entries
+        ListEntry.objects.filter(list=list_obj).update(is_deleted=True)
+        messages.success(request, "List and entries deleted successfully.")
+    else:
+        messages.error(request, "Invalid request method.")
+    return redirect("list:summary")
 
 
 @login_required
@@ -200,8 +239,27 @@ def list_entry_create(request: HttpRequest, list_slug: str):
                     messages.error(request, f"{field}: {error}")
             return redirect("list:detail", list_slug=list_slug)
     else:
-        # GET is not used (form shown in modal on list_detail); redirect back
-        return redirect("list:detail", list_slug=list_slug)
+        form = ListEntryForm()
+    # configure rest of template context
+    intro = "Create List Entry"
+    breadcrumbs = [
+        {"title": "List Summary", "url": reverse("list:summary")},
+        {"title": list_obj, "url": reverse("list:detail", args=[list_obj.slug])},
+        {"title": "New List Entry", "url": None},
+    ]
+    cancel_url = reverse("list:detail", args=[list_obj.slug])
+
+    context = {
+        "block_title": "Create List Entry",
+        "breadcrumbs": breadcrumbs,
+        "title": "Create List Entry",
+        "intro": intro,
+        "form": form,
+        "submit_text": "Create",
+        "cancel_url": cancel_url,
+        "first_field": "name",
+    }
+    return render(request, "shared_helpers/form/object.html", context)
 
 
 @login_required
@@ -244,7 +302,27 @@ def list_entry_edit(request: HttpRequest, entry_slug: str):
         return redirect("list:entry_detail", entry_slug=entry.slug)
     else:
         form = ListEntryForm(instance=entry)
-        return render(request, "list/list_entry_form.html", {"form": form, "entry": entry})
+    # configure rest of template context
+    intro = "Edit List Entry"
+    breadcrumbs = [
+        {"title": "List Summary", "url": reverse("list:summary")},
+        {"title": entry.list, "url": reverse("list:detail", args=[entry.list.slug])},
+        {"title": entry.item, "url": None},
+    ]
+    cancel_url = reverse("list:entry_detail", args=[entry.slug])
+
+    context = {
+        "block_title": "Edit List Entry",
+        "breadcrumbs": breadcrumbs,
+        "title": "Edit List Entry",
+        "intro": intro,
+        "form": form,
+        "object": entry,
+        "submit_text": "Update",
+        "cancel_url": cancel_url,
+        "first_field": "name",
+    }
+    return render(request, "shared_helpers/form/object.html", context)
 
 
 @login_required
@@ -262,6 +340,42 @@ def list_entry_delete(request: HttpRequest, entry_slug: str):
         return redirect("list:summary")
 
     return redirect("list:detail", list_slug=list_slug)
+
+
+@login_required
+def list_delete_modal(request: HttpRequest) -> HttpResponse | JsonResponse:
+    slug = request.GET.get("slug")
+    if not slug:
+        return JsonResponse({"error": "List slug is required"}, status=400)
+    try:
+        obj = List.objects.get(slug=slug, is_deleted=False)
+    except List.DoesNotExist:
+        return JsonResponse({"error": "List not found"}, status=404)
+
+    context = {
+        "object": obj,
+        "object_type": "List",
+        "action_url": reverse("list:delete", args=[obj.slug]),
+    }
+    return render(request, "shared_helpers/modal/object_delete_body.html", context)
+
+
+@login_required
+def entry_delete_modal(request: HttpRequest) -> HttpResponse | JsonResponse:
+    entry_slug = request.GET.get("slug")
+    if not entry_slug:
+        return JsonResponse({"error": "Entry slug is required"}, status=400)
+    try:
+        entry = ListEntry.objects.get(slug=entry_slug, is_deleted=False)
+    except ListEntry.DoesNotExist:
+        return JsonResponse({"error": "Entry not found"}, status=404)
+
+    context = {
+        "object": entry,
+        "object_type": "Entry",
+        "action_url": reverse("list:entry_delete", args=[entry.slug]),
+    }
+    return render(request, "shared_helpers/modal/object_delete_body.html", context)
 
 
 @login_required

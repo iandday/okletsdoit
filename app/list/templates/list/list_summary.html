@@ -14,7 +14,7 @@
                 <p class="text-lg text-base-content/70">Organize your wedding planning with these comprehensive lists</p>
             </div>
             <div class="flex gap-2">
-                <button class="btn btn-primary" id="show-add-list-modal">
+                <a class="btn btn-primary" href="{% url 'list:create' %}">
                     <svg xmlns="http://www.w3.org/2000/svg"
                          class="h-5 w-5"
                          fill="none"
@@ -23,7 +23,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                     </svg>
                     Add New List
-                </button>
+                </a>
                 <!-- Import Lists Button -->
                 <button class="btn btn-primary" id="show-import-modal">
                     <svg xmlns="http://www.w3.org/2000/svg"
@@ -96,11 +96,11 @@
                                 <a class="list-card-title" href="{% url 'list:detail' list.slug %}">{{ list.name }}</a>
                                 {% if list.has_expense_entries %}<div class="badge badge-secondary badge-sm mt-1">Has Expenses</div>{% endif %}
                             </div>
+                            <!-- list card options menu-->
                             {% url 'list:detail' list.slug as detail_action %}
                             {% url 'list:edit' list.slug as update_action %}
-                            {% url 'list:delete' list.slug as delete_action %}
 
-                            {% include "components/card_options.html" with detail_action=detail_action update_action=update_action delete_action=delete_action %}
+                            {% include "shared_helpers/card/list_card_options.html" with slug=list.slug %}
 
                         </div>
                         <!-- List Description -->
@@ -201,213 +201,89 @@
                 </div>
             {% endfor %}
         </div>
-    </div>
-    <!-- Add List Modal -->
-    <dialog id="add_list_modal" class="modal">
-        <div class="modal-box">
-            <form method="dialog">
-                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-            </form>
-            <h3 class="font-bold text-lg mb-6">
-                <svg xmlns="http://www.w3.org/2000/svg"
-                     class="h-6 w-6 inline mr-2"
-                     fill="none"
-                     viewBox="0 0 24 24"
-                     stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                </svg>
-                Add New List
-            </h3>
-            <form method="post" action="{% url 'list:create' %}" id="listForm">
-                {% csrf_token %}
-                <div class="form-control mb-4">
-                    <label class="label" for="{{ add_list_form.name.id_for_label }}">
-                        <span class="label-text font-medium">{{ add_list_form.name.label }}</span>
-                    </label>
-                    {{ add_list_form.name }}
-                    {% if add_list_form.name.errors %}
+        <!-- Delete Deadline Modal-->
+
+        {% include "shared_helpers/modal/object_delete_shell.html" %}
+
+        <!-- Import Modal -->
+        <dialog id="importModal" class="modal">
+            <div class="modal-box">
+                <h3 class="text-lg font-bold text-primary mb-4">Import Lists</h3>
+                <p class="text-base-content/70 mb-6">
+                    Upload an Excel file with list information. Download the template first to see the required format.
+                </p>
+                <form method="post"
+                      action="{% url 'list:import' %}"
+                      enctype="multipart/form-data"
+                      class="space-y-4">
+                    {% csrf_token %}
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-medium">Excel File</span>
+                        </label>
+                        <input type="file"
+                               name="excel_file"
+                               accept=".xlsx,.xls"
+                               class="file-input file-input-bordered w-full"
+                               required>
                         <div class="label">
-                            {% for error in add_list_form.name.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
+                            <span class="label-text-alt">Accepted formats: .xlsx, .xls</span>
                         </div>
-                    {% endif %}
-                </div>
-                <div class="form-control mb-6">
-                    <label class="label" for="{{ add_list_form.description.id_for_label }}">
-                        <span class="label-text font-medium">{{ add_list_form.description.label }}</span>
-                    </label>
-                    {{ add_list_form.description }}
-                    {% if add_list_form.description.errors %}
-                        <div class="label">
-                            {% for error in add_list_form.description.errors %}
-                                <span class="label-text-alt text-error">{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                </div>
-                <div class="modal-action">
-                    <button type="button" class="btn btn-ghost" id="cancel-add-list">Cancel</button>
-                    <button type="submit" class="btn btn-primary">
+                    </div>
+                    <div class="alert alert-info">
                         <svg xmlns="http://www.w3.org/2000/svg"
-                             class="h-5 w-5"
+                             class="h-6 w-6"
                              fill="none"
                              viewBox="0 0 24 24"
                              stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
-                        Create List
-                    </button>
-                </div>
-            </form>
-        </div>
-        <form method="dialog" class="modal-backdrop">
-            <button>close</button>
-        </form>
-    </dialog>
-    <!-- Import Modal -->
-    <dialog id="importModal" class="modal">
-        <div class="modal-box">
-            <h3 class="text-lg font-bold text-primary mb-4">Import Lists</h3>
-            <p class="text-base-content/70 mb-6">
-                Upload an Excel file with list information. Download the template first to see the required format.
-            </p>
-            <form method="post"
-                  action="{% url 'list:import' %}"
-                  enctype="multipart/form-data"
-                  class="space-y-4">
-                {% csrf_token %}
-                <div class="form-control">
-                    <label class="label">
-                        <span class="label-text font-medium">Excel File</span>
-                    </label>
-                    <input type="file"
-                           name="excel_file"
-                           accept=".xlsx,.xls"
-                           class="file-input file-input-bordered w-full"
-                           required>
-                    <div class="label">
-                        <span class="label-text-alt">Accepted formats: .xlsx, .xls</span>
+                        <div>
+                            <h4 class="font-bold">Required columns:</h4>
+                            <ul>
+                                {% for field, description in import_required_fields %}<li>{{ field }} - {{ description }}</li>{% endfor %}
+                            </ul>
+                            <h4 class="font-bold">Optional columns:</h4>
+                            <ul>
+                                {% for field, description in import_optional_fields %}<li>{{ field }} - {{ description }}</li>{% endfor %}
+                            </ul>
+                            <a href="{% url 'list:template_download' %}"
+                               class="btn btn-outline btn-sm mt-2">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     class="h-4 w-4"
+                                     fill="none"
+                                     viewBox="0 0 24 24"
+                                     stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                                Download Template
+                            </a>
+                        </div>
                     </div>
-                </div>
-                <div class="alert alert-info">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                         class="h-6 w-6"
-                         fill="none"
-                         viewBox="0 0 24 24"
-                         stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <div>
-                        <h4 class="font-bold">Required columns:</h4>
-                        <ul>
-                            {% for field, description in import_required_fields %}<li>{{ field }} - {{ description }}</li>{% endfor %}
-                        </ul>
-                        <h4 class="font-bold">Optional columns:</h4>
-                        <ul>
-                            {% for field, description in import_optional_fields %}<li>{{ field }} - {{ description }}</li>{% endfor %}
-                        </ul>
-                        <a href="{% url 'list:template_download' %}"
-                           class="btn btn-outline btn-sm mt-2">
+                    <div class="modal-action">
+                        <button type="button" class="btn btn-ghost" id="close-import-modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">
                             <svg xmlns="http://www.w3.org/2000/svg"
-                                 class="h-4 w-4"
+                                 class="h-5 w-5"
                                  fill="none"
                                  viewBox="0 0 24 24"
                                  stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                             </svg>
-                            Download Template
-                        </a>
+                            Import Lists
+                        </button>
                     </div>
-                </div>
-                <div class="modal-action">
-                    <button type="button" class="btn btn-ghost" id="close-import-modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             class="h-5 w-5"
-                             fill="none"
-                             viewBox="0 0 24 24"
-                             stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                        </svg>
-                        Import Lists
-                    </button>
-                </div>
+                </form>
+            </div>
+            <form method="dialog" class="modal-backdrop">
+                <button>close</button>
             </form>
-        </div>
-        <form method="dialog" class="modal-backdrop">
-            <button>close</button>
-        </form>
-    </dialog>
+        </dialog>
+    </div>
 {% endblock content %}
 {% block extra_script %}
-    <script nonce="{{ request.csp_nonce }}">
-      document.addEventListener('DOMContentLoaded', function() {
-        // Modal functionality
-        const showAddModal = document.getElementById('show-add-list-modal');
-        const showAddModalEmpty = document.getElementById('show-add-list-modal-empty');
-        const addModal = document.getElementById('add_list_modal');
-        const cancelAddBtn = document.getElementById('cancel-add-list');
+    {% url "list:list_delete_modal" as delete_modal_url %}
 
-        if (showAddModal && addModal) {
-          showAddModal.addEventListener('click', function() {
-            addModal.showModal();
-            setTimeout(() => {
-              const nameField = document.getElementById('{{ add_list_form.name.id_for_label }}');
-              if (nameField) {
-                nameField.focus();
-              }
-            }, 100);
-          });
-        }
+    {% include "shared_helpers/modal/object_delete_script.html" %}
 
-        if (showAddModalEmpty && addModal) {
-          showAddModalEmpty.addEventListener('click', function() {
-            addModal.showModal();
-            setTimeout(() => {
-              const nameField = document.getElementById('{{ add_list_form.name.id_for_label }}');
-              if (nameField) {
-                nameField.focus();
-              }
-            }, 100);
-          });
-        }
-
-        if (cancelAddBtn && addModal) {
-          cancelAddBtn.addEventListener('click', function() {
-            addModal.close();
-          });
-        }
-
-        // Import modal handlers
-        const showImportModal = document.getElementById('show-import-modal');
-        const importModal = document.getElementById('importModal');
-        const closeImportModal = document.getElementById('close-import-modal');
-
-        if (showImportModal && importModal) {
-          showImportModal.addEventListener('click', function() {
-            importModal.showModal();
-          });
-        }
-
-        if (closeImportModal && importModal) {
-          closeImportModal.addEventListener('click', function() {
-            importModal.close();
-          });
-        }
-
-        // Handle form submission
-        const form = document.getElementById('listForm');
-        if (form) {
-          form.addEventListener('submit', function(e) {
-            const submitBtn = form.querySelector('button[type="submit"]');
-            if (submitBtn) {
-              submitBtn.disabled = true;
-              submitBtn.innerHTML = `
-                        <span class="loading loading-spinner loading-sm"></span>
-                        Creating...
-                    `;
-            }
-          });
-        }
-      });
-    </script>
 {% endblock extra_script %}
