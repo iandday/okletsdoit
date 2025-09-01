@@ -33,7 +33,18 @@
                     </svg>
                     Edit List
                 </a>
-                <button class="btn btn-primary" id="show-add-entry-modal">
+                <button class="btn btn-error delete-btn" data-id="{{ list.slug }}">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         class="h-5 w-5"
+                         fill="none"
+                         viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                    Delete
+                </button>
+                <a class="btn btn-primary"
+                   href="{% url 'list:entry_create' list.slug %}">
                     <svg xmlns="http://www.w3.org/2000/svg"
                          class="h-5 w-5"
                          fill="none"
@@ -42,7 +53,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                     </svg>
                     Add Item
-                </button>
+                </a>
             </div>
         </div>
         <!-- Stats -->
@@ -131,108 +142,15 @@
                 {% endif %}
             </div>
         </div>
+        <!-- Delete Deadline Modal-->
+
+        {% include "shared_helpers/modal/object_delete_shell.html" %}
+
     </div>
-    <!-- Add Entry Modal -->
-    <dialog id="add_entry_modal" class="modal">
-        <div class="modal-box">
-            <div class="edit-card">
-                <div class="edit-card-header">
-                    <h2 class="edit-card-title">Add New Item</h2>
-                </div>
-                <form method="dialog">
-                    <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-                </form>
-                <h3 class="font-bold text-lg mb-6">Add New Itemd</h3>
-                <form method="post"
-                      action="{% url 'list:entry_create' list.slug %}"
-                      enctype="multipart/form-data"
-                      id="entryForm">
-                    {% csrf_token %}
-                    {% if entry_form.non_field_errors %}
-                        <div class="alert alert-error mb-4">
-                            {% for error in entry_form.non_field_errors %}<span>{{ error }}</span>{% endfor %}
-                        </div>
-                    {% endif %}
-                    {% for field in entry_form %}
-                        <div class="form-control">
-                            <label class="label" for="{{ field.id_for_label }}">
-                                <span class="edit-card-field-name">{{ field.label }}</span>
-                            </label>
-                            {{ field }}
-                            {% if field.errors %}
-                                <div class="label">
-                                    {% for error in field.errors %}<span class="label-text-alt text-error">{{ error }}</span>{% endfor %}
-                                </div>
-                            {% endif %}
-                        </div>
-                    {% endfor %}
-                    <div class="modal-action">
-                        <button type="button" class="btn btn-ghost" id="cancel-add-entry">Cancel</button>
-                        <button type="submit" class="btn btn-primary">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                 class="h-5 w-5"
-                                 fill="none"
-                                 viewBox="0 0 24 24"
-                                 stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                            </svg>
-                            Add Item
-                        </button>
-                    </div>
-                </form>
-            </div>
-            <form method="dialog" class="modal-backdrop">
-                <button>close</button>
-            </form>
-        </dialog>
-    {% endblock content %}
-    {% block extra_script %}
-        <script nonce="{{ request.csp_nonce }}">
-          document.addEventListener('DOMContentLoaded', function() {
-            // Modal functionality
-            const showAddModal = document.getElementById('show-add-entry-modal');
-            const showAddModalEmpty = document.getElementById('show-add-entry-modal-empty');
-            const addModal = document.getElementById('add_entry_modal');
-            const cancelAddBtn = document.getElementById('cancel-add-entry');
+{% endblock content %}
+{% block extra_script %}
+    {% url "list:list_delete_modal" as delete_modal_url %}
 
-            function openModal() {
-              addModal.showModal();
-              setTimeout(() => {
-                const itemField = document.querySelector('input[name="item"]');
-                if (itemField) {
-                  itemField.focus();
-                }
-              }, 100);
-            }
+    {% include "shared_helpers/modal/object_delete_script.html" %}
 
-            if (showAddModal) {
-              showAddModal.addEventListener('click', openModal);
-            }
-
-            if (showAddModalEmpty) {
-              showAddModalEmpty.addEventListener('click', openModal);
-            }
-
-            if (cancelAddBtn && addModal) {
-              cancelAddBtn.addEventListener('click', function() {
-                addModal.close();
-              });
-            }
-
-            // Handle form submission
-            const form = document.getElementById('entryForm');
-            if (form) {
-              form.addEventListener('submit', function(e) {
-                const submitBtn = form.querySelector('button[type="submit"]');
-                if (submitBtn) {
-                  submitBtn.disabled = true;
-                  submitBtn.innerHTML = `
-                        <span class="loading loading-spinner loading-sm"></span>
-                        Adding...
-                    `;
-                }
-              });
-            }
-          });
-        </script>
-    {% endblock extra_script %}
+{% endblock extra_script %}
