@@ -3,167 +3,74 @@
 {% load static %}
 
 {% block title %}
-    {{ entry.item }} - {{ entry.list.name }}
+    {{ block_title }}
 {% endblock title %}
 {% block content %}
-    <div class="container mx-auto px-4 py-8">
-        <div class="breadcrumbs mb-6">
-            <ul>
-                <li>
-                    <a href="{% url 'list:summary' %}" class="link">Lists</a>
-                </li>
-                <li>
-                    <a href="{% url 'list:detail' entry.list.slug %}" class="link">{{ entry.list }}</a>
-                </li>
-                <li>{{ entry.item }}</li>
-            </ul>
-        </div>
-        <!-- Title -->
-        <div class="mb-6 flex items-center justify-between">
+    <c-object-detail>
+    {% if object.description %}
+        <div class="space-y-4">
             <div>
-                <h1 class="text-3xl font-bold text-base-content">{{ entry.item }}</h1>
-
-                {% include "shared_helpers/card/detail_card_status_badge.html" with status=entry.is_completed %}
-
-            </div>
-            <div class="flex gap-2">
-                <a href="{% url 'list:entry_edit' entry.slug %}" class="btn">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                         class="h-5 w-5"
-                         fill="none"
-                         viewBox="0 0 24 24"
-                         stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                    </svg>
-                    Edit
-                </a>
-                <button class="btn btn-error delete-btn" data-id="{{ entry.slug }}">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                         class="h-5 w-5"
-                         fill="none"
-                         viewBox="0 0 24 24"
-                         stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                    </svg>
-                    Delete
-                </button>
+                <div class="detail-card-field-name">Description</div>
+                <div class="detail-card-field-value">{{ object.description }}</div>
             </div>
         </div>
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <!-- Main Content -->
-            <div class="detail-card" id="main-info">
-                <div class="detail-card-body">
-                    <h2 class="detail-card-title mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             class="h-6 w-6"
-                             fill="none"
-                             viewBox="0 0 24 24"
-                             stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
-                        Item Details
-                    </h2>
-                    {% if entry.description %}
-                        <div class="space-y-4">
-                            <div>
-                                <div class="detail-card-field-name">Description</div>
-                                <div class="detail-card-field-value">{{ entry.description }}</div>
-                            </div>
-                        </div>
-                    {% endif %}
-                    <div class="grid grid-cols-2 gap-4 mt-4">
-                        {% if entry.completed_at %}
-                            <div>
-                                <div class="detail-card-field-name">Completion Date</div>
-                                <div class="detail-card-field-value">{{ entry.completed_at|date:"F j, Y" }}</div>
-                            </div>
-                        {% endif %}
-                        <!-- Associated Expense -->
-                        {% if entry.associated_expense %}
-                            <div>
-                                <div class="detail-card-field-name">Purchased</div>
-                                <div class="detail-card-field-value">{{ entry.purchased|yesno:"Yes,No" }}</div>
-                            </div>
-                            <div>
-                                <div class="detail-card-field-name">Expense</div>
-                                <div class="detail-card-field-value">
-                                    <a href="{% url 'expenses:detail' entry.associated_expense.slug %}">{{ entry.associated_expense.item }}</a>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="detail-card-field-name">Vendor</div>
-                                <div class="detail-card-field-value">
-                                    <a href="{% url 'contacts:detail' entry.vendor.slug %}">{{ entry.vendor }}</a>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="detail-card-field-name">Quantity</div>
-                                <div class="detail-card-field-value">{{ entry.quantity }}</div>
-                            </div>
-                            {% if entry.unit_price > 0 %}
-                                <div>
-                                    <div class="detail-card-field-name">Unit Price</div>
-                                    <div class="detail-card-field-value">${{ entry.unit_price|floatformat:2 }}</div>
-                                </div>
-                            {% endif %}
-                            {% if entry.additional_price > 0 %}
-                                <div>
-                                    <div class="detail-card-field-name">Additional Price</div>
-                                    <div class="detail-card-field-value">${{ entry.additional_price|floatformat:2 }}</div>
-                                </div>
-                            {% endif %}
-                            {% if entry.total_price > 0 %}
-                                <div>
-                                    <div class="detail-card-field-name">Total Price</div>
-                                    <div class="detail-card-field-value">${{ entry.total_price|floatformat:2 }}</div>
-                                </div>
-                            {% endif %}
-                        {% endif %}
-                    </div>
-                    <!-- Item URL and Completion Status - Outside grid -->
-                    <div class="space-y-4 mt-4">
-                        <!-- Item URL -->
-                        {% if entry.url %}
-                            <a href="{{ entry.url }}"
-                               target="_blank"
-                               rel="noopener noreferrer"
-                               class="btn btn-outline btn-warning btn-sm flex-shrink-0">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     class="h-4 w-4 mr-1"
-                                     fill="none"
-                                     viewBox="0 0 24 24"
-                                     stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                                </svg>
-                                Visit Link
-                            </a>
-                        {% endif %}
-                    </div>
+    {% endif %}
+    <div class="grid grid-cols-2 gap-4 mt-4">
+        {% if object.completed_at %}
+            <div>
+                <div class="detail-card-field-name">Completion Date</div>
+                <div class="detail-card-field-value">{{ object.completed_at|date:"F j, Y" }}</div>
+            </div>
+        {% endif %}
+        <!-- Associated Expense -->
+        {% if object.associated_expense %}
+            <div>
+                <div class="detail-card-field-name">Purchased</div>
+                <div class="detail-card-field-value">{{ object.purchased|yesno:"Yes,No" }}</div>
+            </div>
+            <div>
+                <div class="detail-card-field-name">Expense</div>
+                <div class="detail-card-field-value">
+                    <a href="{% url 'expenses:detail' object.associated_expense.slug %}">{{ object.associated_expense.item }}</a>
                 </div>
             </div>
-            {% if entry.image %}
-                <div class="detail-card" id="image">
-                    <div class="detail-card-body">
-                        <h2 class="detail-card-title mb-4">Item Image</h2>
-                        <img src="{{ entry.image.url }}"
-                             alt="{{ entry.item }}"
-                             class="max-w-xs rounded-lg shadow-md">
+            {% if object.vendor %}
+                <div>
+                    <div class="detail-card-field-name">Vendor</div>
+                    <div class="detail-card-field-value">
+                        <a href="{% url 'contacts:detail' object.vendor.slug %}">{{ object.vendor }}</a>
                     </div>
                 </div>
             {% endif %}
-            <!-- Metadata -->
-
-            {% include "components/detail_metadata.html" with object=entry %}
-
-            <!-- Delete Deadline Modal-->
-
-            {% include "shared_helpers/modal/object_delete_shell.html" %}
-
-        </div>
-    {% endblock content %}
-    {% block extra_script %}
-        {% url "list:entry_delete_modal" as delete_modal_url %}
-
-        {% include "shared_helpers/modal/object_delete_script.html" %}
-
-    {% endblock extra_script %}
+            <div>
+                <div class="detail-card-field-name">Quantity</div>
+                <div class="detail-card-field-value">{{ object.quantity }}</div>
+            </div>
+            {% if object.unit_price > 0 %}
+                <div>
+                    <div class="detail-card-field-name">Unit Price</div>
+                    <div class="detail-card-field-value">${{ object.unit_price|floatformat:2 }}</div>
+                </div>
+            {% endif %}
+            {% if object.additional_price > 0 %}
+                <div>
+                    <div class="detail-card-field-name">Additional Price</div>
+                    <div class="detail-card-field-value">${{ object.additional_price|floatformat:2 }}</div>
+                </div>
+            {% endif %}
+            {% if object.total_price > 0 %}
+                <div>
+                    <div class="detail-card-field-name">Total Price</div>
+                    <div class="detail-card-field-value">${{ object.total_price|floatformat:2 }}</div>
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+    <c-slot name="detail_actions_content">
+    Toggle Complete
+    </c-slot>
+    </c-object-detail>
+{% endblock content %}
+{% block extra_script %}
+    <c-object.delete-script />
+{% endblock extra_script %}

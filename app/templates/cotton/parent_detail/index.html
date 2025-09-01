@@ -1,0 +1,140 @@
+<!-- Required Variables 
+    * breadcrumbs: (list({"title":str, "url": str|None})) Breadcrumb contents, title and url
+    * title: (str) The page's title
+    * object: (Model) Current model instance
+    * edit_url: (str) URL to edit the object's values
+    * status: (bool) Object's status
+    * status_text: (str) Status badge content
+    * link_url: (str) URL for the `view_link` component
+    * image_url: (str) URL for the `view_image` component
+    * delete_modal_url: (str) URL which provides the delete modal's context, the slug will be added by the JS
+-->
+<div class="container mx-auto px-4 py-8">
+    <div class="breadcrumbs mb-6">
+        <ul>
+            {% for crumb in breadcrumbs %}
+                <li>
+                    {% if crumb.url %}
+                        <a href="{{ crumb.url }}" class="link">{{ crumb.title }}</a>
+                    {% else %}
+                        {{ crumb.title }}
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <!-- Title -->
+    <div class="mb-6 flex items-center justify-between">
+        <div>
+            <h1 class="text-3xl font-bold text-base-content">{{ title }}</h1>
+            {% if status %}
+                <div class="badge badge-success badge-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         class="h-4 w-4 mr-1"
+                         fill="none"
+                         viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    {{ status_text }}
+                </div>
+            {% else %}
+                <div class="badge badge-warning badge-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         class="h-4 w-4 mr-1"
+                         fill="none"
+                         viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    {{ status_text }}
+                </div>
+            {% endif %}
+        </div>
+        <div class="flex gap-2">
+            <a href="{{ edit_url }}" class="btn">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     class="h-5 w-5"
+                     fill="none"
+                     viewBox="0 0 24 24"
+                     stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
+                Edit
+            </a>
+            <button class="btn btn-error delete-btn" data-id="{{ object.slug }}">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     class="h-5 w-5"
+                     fill="none"
+                     viewBox="0 0 24 24"
+                     stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+                Delete
+            </button>
+        </div>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pb-6">
+        <!-- Main Content -->
+        <div class="detail-card" id="main-info">
+            <div class="detail-card-body">
+                <h2 class="detail-card-title mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         class="h-6 w-6"
+                         fill="none"
+                         viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Item Details
+                </h2>
+                {{ slot }}
+                <c-object-detail.detail-actions>
+                {{ detail_actions_content }}
+                </c-object-detail.detail-actions>
+            </div>
+        </div>
+        <!-- Metadata -->
+        <div class="detail-card" id="metadata">
+            <div class="detail-card-body">
+                <h2 class="detail-card-title">Record Information</h2>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <div class="detail-card-field-name">Created By</div>
+                        <div class="detail-card-field-value">{{ object.created_by.get_full_name|default:'Unassigned' }}</div>
+                    </div>
+                    <div>
+                        <div class="detail-card-field-name">Created At</div>
+                        <div class="detail-card-field-value">{{ object.created_at|date:'Y-m-d H:i'|default:'—' }}</div>
+                    </div>
+                    <div>
+                        <div class="detail-card-field-name">Last Updated By</div>
+                        <div class="detail-card-field-value">{{ object.updated_by.get_full_name|default:'Unassigned' }}</div>
+                    </div>
+                    <div>
+                        <div class="detail-card-field-name">Last Updated At</div>
+                        <div class="detail-card-field-value">{{ object.updated_at|date:'Y-m-d H:i'|default:'—' }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Children Items -->
+        <div class="col-span-2 card bg-base-300 shadow-xl hover:shadow-2xl transition-shadow duration-300 text-primary-content"
+             id="children-info">
+            <div class="card-body px-6 py-4">
+                <h2 class="card-title text-primary lg:text-xl text-lg mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         class="h-6 w-6"
+                         fill="none"
+                         viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Associated Items
+                </h2>
+                {{ children_slot }}
+            </div>
+        </div>
+    </div>
+    <c-object.delete-modal />
+</div>

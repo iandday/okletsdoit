@@ -1,3 +1,53 @@
+## Cotton Templates
+
+### Buttons.View-Link
+  Standardized button to view an object's associated URL
+### Buttons.View-Image
+  Standardized button to view an object's associated image
+### Object.Delete-Script
+  Javascript to support an object's delete modal
+### Object.Delete-Modal
+  Delete modal, contents populated by AJAX call
+### Object-Detail.Detail-Actions
+  Section of an object's detail card which provides buttons for the actions related to the object
+#### Child Components
+
+  * Buttons.View-Link
+  * Buttons.View-Image
+  
+### Object Detail
+  Detail view for an object
+#### Child Components
+
+  * Object-Detail.Detail-Actions
+  * Object.Delete-Script
+  * Object.Delete-Modal
+
+  
+#### Required Context
+
+* block_title: (str) contents of `title` HTML tag
+* breadcrumbs: (list({"title":str, "url": str|None})) Breadcrumb contents, title and url
+* title: (str) The page's title
+* object: (Model) Current model instance
+* edit_url: (str) URL to edit the object's values
+* status: (bool) Object's status
+* status_text: (str) Status badge content
+* link_url: (str) URL for the `view_link` component
+* image_url: (str) URL for the `view_image` component
+* delete_modal_url: (str) URL which provides the delete modal's context, the slug will be added by the JS
+  
+
+
+## Cotton Migration
+* Core
+* Deadline
+* Expenses
+* Guestlist
+* List
+  * Entry Detail
+---
+
 
 Shared Helpers
 * Object Delete Modal
@@ -17,6 +67,9 @@ Shared Helpers
     * File
     * Contact
   * Lists
+    * List Summary
+    * List Detail
+    * List Entry Detail
   * Guestlist
     * All Guests
     * Guest Detail
@@ -47,6 +100,9 @@ Shared Helpers
   * Deadline
     * Deadline
     * Deadline List
+  * List
+    * List
+    * List Entry
 
 
 * List Card Options

@@ -3,154 +3,97 @@
 {% load static %}
 
 {% block title %}
-    {{ list.name }} - Wedding Lists
+    {{ block_title }}
 {% endblock title %}
 {% block content %}
-    <div class="max-w-7xl mx-auto px-4 py-8">
-        <!-- Breadcrumbs -->
-        <div class="breadcrumbs mb-4">
-            <ul>
-                <li>
-                    <a href="{% url 'list:summary' %}" class="link">Lists</a>
-                </li>
-                <li>{{ list.name }}</li>
-            </ul>
-        </div>
-        <!-- Header Section -->
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 px-4 gap-4">
+    <c-parent-detail>
+    {% if object.description %}
+        <div class="space-y-4">
             <div>
-                <h1 class=" text-2xl lg:text-4xl font-bold text-base-content mb-2">{{ list.name }}</h1>
-                {% if list.description %}<p class="text-lg text-base-content/70">{{ list.description }}</p>{% endif %}
-            </div>
-            <div class="flex gap-2">
-                <a href="{% url 'list:edit' list.slug %}" class="btn btn-outline">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                         class="h-5 w-5"
-                         fill="none"
-                         viewBox="0 0 24 24"
-                         stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                    </svg>
-                    Edit List
-                </a>
-                <button class="btn btn-error delete-btn" data-id="{{ list.slug }}">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                         class="h-5 w-5"
-                         fill="none"
-                         viewBox="0 0 24 24"
-                         stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                    </svg>
-                    Delete
-                </button>
-                <a class="btn btn-primary"
-                   href="{% url 'list:entry_create' list.slug %}">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                         class="h-5 w-5"
-                         fill="none"
-                         viewBox="0 0 24 24"
-                         stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                    </svg>
-                    Add Item
-                </a>
+                <div class="detail-card-field-name">Description</div>
+                <div class="detail-card-field-value">{{ object.description }}</div>
             </div>
         </div>
-        <!-- Stats -->
-        <div class="stats bg-accent text-info-content shadow w-full mb-8">
-            <div class="stat">
-                <div class="stat-title text-info-content">Total Items</div>
-                <div class="stat-value">{{ entries.count }}</div>
+        <div class="flex flex-row justify-between">
+            <div>
+                <div class="detail-card-field-name">Total</div>
+                <div class="detail-card-field-value">{{ entries|length }}</div>
             </div>
-            <div class="stat">
-                <div class="stat-title text-info-content">Completed</div>
-                <div class="stat-value text-success">{{ completed_count }}</div>
+            <div>
+                <div class="detail-card-field-name">Completed</div>
+                <div class="detail-card-field-value">{{ completed_count }}</div>
             </div>
-            <div class="stat">
-                <div class="stat-title text-info-content">Pending</div>
-                <div class="stat-value text-warning">{{ pending_count }}</div>
+            <div>
+                <div class="detail-card-field-name">Pending</div>
+                <div class="detail-card-field-value">{{ pending_count }}</div>
             </div>
         </div>
-        <!-- Entries List -->
-        <div class="list-card shadow-xl">
-            <div class="card-body">
-                <h2 class="list-card-title">List Items</h2>
-                {% if entries %}
-                    <div class="space-y-4">
-                        {% for entry in entries %}
-                            <div class="list-card {% if entry.is_completed %}opacity-60{% endif %}">
-                                <div class="card-body p-4">
-                                    <div class="flex items-center justify-between">
-                                        <div class="flex items-center gap-4 flex-1">
-                                            <div class="flex-1">
-                                                <div class="list-card-title">
-                                                    <a href="{% url 'list:entry_detail' entry.slug %}">
-                                                        <h3 class="font-semibold text-primary{% if entry.is_completed %}line-through{% endif %}">{{ entry.item }}</h3>
-                                                    </a>
-                                                </div>
-                                                {% if entry.description %}<p class="text-sm mt-1">{{ entry.description|truncatechars:50 }}</p>{% endif %}
-                                                <!-- Pricing Information -->
-                                                {% if entry.unit_price > 0 or entry.additional_price > 0 %}
-                                                    <div class="mt-2 text-sm">
-                                                        <div class="flex items-center gap-4">
-                                                            <span>Qty: {{ entry.quantity }}</span>
-                                                            {% if entry.unit_price > 0 %}<span>Unit: ${{ entry.unit_price|floatformat:2 }}</span>{% endif %}
-                                                            {% if entry.additional_price > 0 %}<span>Additional: ${{ entry.additional_price|floatformat:2 }}</span>{% endif %}
-                                                            {% if entry.total_price > 0 %}
-                                                                <span class="font-semibold ">Total: ${{ entry.total_price|floatformat:2 }}</span>
-                                                            {% endif %}
-                                                        </div>
-                                                    </div>
+    {% endif %}
+    <c-slot name="children_slot">
+    {% if entries %}
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
+            {% for entry in entries %}
+                <div class="list-card {% if entry.is_completed %}opacity-60{% endif %}">
+                    <div class="card-body p-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-4 flex-1">
+                                <div class="flex-1">
+                                    <div class="list-card-title">
+                                        <a href="{% url 'list:entry_detail' entry.slug %}">
+                                            <h3 class="font-semibold text-primary{% if entry.is_completed %}line-through{% endif %}">{{ entry.item }}</h3>
+                                        </a>
+                                    </div>
+                                    {% if entry.description %}<p class="text-sm mt-1">{{ entry.description|truncatechars:50 }}</p>{% endif %}
+                                    <!-- Pricing Information -->
+                                    {% if entry.unit_price > 0 or entry.additional_price > 0 %}
+                                        <div class="mt-2 text-sm">
+                                            <div class="flex items-center gap-4">
+                                                <span>Qty: {{ entry.quantity }}</span>
+                                                {% if entry.unit_price > 0 %}<span>Unit: ${{ entry.unit_price|floatformat:2 }}</span>{% endif %}
+                                                {% if entry.additional_price > 0 %}<span>Additional: ${{ entry.additional_price|floatformat:2 }}</span>{% endif %}
+                                                {% if entry.total_price > 0 %}
+                                                    <span class="font-semibold ">Total: ${{ entry.total_price|floatformat:2 }}</span>
                                                 {% endif %}
                                             </div>
-                                            {% if entry.url %}
-                                                <a href="{{ entry.url }}"
-                                                   target="_blank"
-                                                   rel="noopener noreferrer"
-                                                   class="btn btn-outline btn-warning btn-sm flex-shrink-0">
-                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                         class="h-4 w-4 mr-1"
-                                                         fill="none"
-                                                         viewBox="0 0 24 24"
-                                                         stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                                                    </svg>
-                                                    Visit Link
-                                                </a>
-                                            {% endif %}
                                         </div>
-                                    </div>
+                                    {% endif %}
                                 </div>
+                                {% if entry.url %}
+                                    <a href="{{ entry.url }}"
+                                       target="_blank"
+                                       rel="noopener noreferrer"
+                                       class="btn btn-outline btn-warning btn-sm flex-shrink-0">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             class="h-4 w-4 mr-1"
+                                             fill="none"
+                                             viewBox="0 0 24 24"
+                                             stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                        </svg>
+                                        Visit Link
+                                    </a>
+                                {% endif %}
                             </div>
-                        {% endfor %}
+                        </div>
                     </div>
-                {% else %}
-                    <div class="text-center py-8">
-                        <div class="text-4xl mb-4">📝</div>
-                        <p class="text-base-content/70">No items in this list yet.</p>
-                        <button class="btn btn-primary mt-4" id="show-add-entry-modal-empty">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                 class="h-5 w-5"
-                                 fill="none"
-                                 viewBox="0 0 24 24"
-                                 stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                            </svg>
-                            Add First Item
-                        </button>
-                    </div>
-                {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="space-y-4">
+            <div>
+                <div class="detail-card-field-name">Entries</div>
+                <div class="detail-card-field-value">
+                    <ul>
+                        <li>No entries found.</li>
+                    </ul>
+                </div>
             </div>
         </div>
-        <!-- Delete Deadline Modal-->
-
-        {% include "shared_helpers/modal/object_delete_shell.html" %}
-
-    </div>
+    {% endif %}
+    </c-slot>
+    </c-parent-detail>
 {% endblock content %}
 {% block extra_script %}
-    {% url "list:list_delete_modal" as delete_modal_url %}
-
-    {% include "shared_helpers/modal/object_delete_script.html" %}
-
+    <c-object.delete-script />
 {% endblock extra_script %}

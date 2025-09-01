@@ -207,7 +207,7 @@
 }
 
 .detail-card-actions {
-    @apply card-actions justify-center py-2;
+    @apply card-actions justify-center mt-4 space-x-4;
 }
 
 .detail-action-card {

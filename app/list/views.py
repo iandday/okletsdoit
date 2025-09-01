@@ -132,23 +132,34 @@ def list_detail(request: HttpRequest, list_slug: str):
     Displays the details of a specific list, including its entries.
     """
     try:
-        list_obj = List.objects.get(slug=list_slug, is_deleted=False)
-        entries = ListEntry.objects.filter(list=list_obj).select_related("created_by").order_by("created_at")
-
-        return render(
-            request,
-            "list/list_detail.html",
-            {
-                "list": list_obj,
-                "entries": entries,
-                "entry_form": ListEntryForm(),
-                "completed_count": entries.filter(is_completed=True).count(),
-                "pending_count": entries.filter(is_completed=False).count(),
-            },
-        )
+        obj = List.objects.get(slug=list_slug, is_deleted=False)
     except List.DoesNotExist:
         messages.error(request, "List not found.")
         return redirect("list:summary")
+    entries = ListEntry.objects.filter(list=obj, is_deleted=False).select_related("created_by").order_by("created_at")
+
+    breadcrumbs = [
+        {"title": "List Summary", "url": reverse("list:summary")},
+        {"title": f"{obj}", "url": None},
+    ]
+
+    context = {
+        "block_title": f"{obj}",
+        "breadcrumbs": breadcrumbs,
+        "title": f"{obj}",
+        "object": obj,
+        "edit_url": reverse("list:edit", args=[obj.slug]),
+        "status": obj.completion_percentage > 0,
+        "status_text": f"{obj.completion_percentage}% Complete" if obj.completion_percentage > 0 else "Not Started",
+        "link_url": None,
+        "image_url": None,
+        "delete_modal_url": reverse("list:list_delete_modal"),
+        "completed_count": obj.completed_entries,
+        "pending_count": obj.pending_entries,
+        "entries": entries,
+    }
+    logger.error(context)
+    return render(request, "list/list_detail.html", context)
 
 
 @login_required
@@ -166,6 +177,7 @@ def list_edit(request: HttpRequest, list_slug: str):
             list.updated_by = request.user
             list.save()
             messages.success(request, f"{list} updated successfully.")
+            return redirect("list:detail", list_slug=list.slug)
         else:
             for field, errors in form.errors.items():
                 for error in errors:
@@ -272,10 +284,30 @@ def list_entry_detail(request: HttpRequest, entry_slug: str):
         entry = ListEntry.objects.select_related("list", "created_by", "updated_by").get(
             slug=entry_slug, is_deleted=False
         )
-        return render(request, "list/list_entry_detail.html", {"entry": entry})
     except ListEntry.DoesNotExist:
         messages.error(request, "List entry not found.")
         return redirect("list:summary")
+
+    breadcrumbs = [
+        {"title": "List Summary", "url": reverse("list:summary")},
+        {"title": entry.list, "url": reverse("list:detail", args=[entry.list.slug])},
+        {"title": f"{entry}", "url": None},
+    ]
+
+    context = {
+        "block_title": f"{entry}",
+        "breadcrumbs": breadcrumbs,
+        "title": f"{entry}",
+        "object": entry,
+        "edit_url": reverse("list:entry_edit", args=[entry.slug]),
+        "status": entry.is_completed,
+        "status_text": "Complete" if entry.is_completed else "Pending",
+        "link_url": entry.url,
+        "image_url": entry.image.url if entry.image else None,
+        "delete_modal_url": reverse("list:entry_delete_modal"),
+    }
+
+    return render(request, "list/list_entry_detail.html", context)
 
 
 @login_required
