@@ -4,6 +4,10 @@
   Standardized button to view an object's associated URL
 ### Buttons.View-Image
   Standardized button to view an object's associated image
+### Buttons.Delete-Object
+  Standardized button to delete an object
+### Buttons.Edit-Object
+  Standardized button to edit an object  
 ### Object.Delete-Script
   Javascript to support an object's delete modal
 ### Object.Delete-Modal
@@ -15,13 +19,15 @@
   * Buttons.View-Link
   * Buttons.View-Image
   
-### Object Detail
-  Detail view for an object
+### Parent Detail
+  Detail view for an object which contains associated child objects
 #### Child Components
 
   * Object-Detail.Detail-Actions
   * Object.Delete-Script
   * Object.Delete-Modal
+  * Buttons.Edit-Object
+  * Buttons.Delete-Object
 
   
 #### Required Context
@@ -37,7 +43,29 @@
 * image_url: (str) URL for the `view_image` component
 * delete_modal_url: (str) URL which provides the delete modal's context, the slug will be added by the JS
   
+### Object Detail
+  Detail view for an object
+#### Child Components
 
+  * Object-Detail.Detail-Actions
+  * Object.Delete-Script
+  * Object.Delete-Modal
+  * Buttons.Edit-Object
+  * Buttons.Delete-Object
+
+  
+#### Required Context
+
+* block_title: (str) contents of `title` HTML tag
+* breadcrumbs: (list({"title":str, "url": str|None})) Breadcrumb contents, title and url
+* title: (str) The page's title
+* object: (Model) Current model instance
+* edit_url: (str) URL to edit the object's values
+* status: (bool) Object's status
+* status_text: (str) Status badge content
+* link_url: (str) URL for the `view_link` component
+* image_url: (str) URL for the `view_image` component
+* delete_modal_url: (str) URL which provides the delete modal's context, the slug will be added by the JS
 
 ## Cotton Migration
 * Core
@@ -46,6 +74,7 @@
 * Guestlist
 * List
   * Entry Detail
+  * List Detail
 ---
 
 

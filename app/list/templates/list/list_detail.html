@@ -14,21 +14,21 @@
                 <div class="detail-card-field-value">{{ object.description }}</div>
             </div>
         </div>
-        <div class="flex flex-row justify-between">
-            <div>
-                <div class="detail-card-field-name">Total</div>
-                <div class="detail-card-field-value">{{ entries|length }}</div>
-            </div>
-            <div>
-                <div class="detail-card-field-name">Completed</div>
-                <div class="detail-card-field-value">{{ completed_count }}</div>
-            </div>
-            <div>
-                <div class="detail-card-field-name">Pending</div>
-                <div class="detail-card-field-value">{{ pending_count }}</div>
-            </div>
-        </div>
     {% endif %}
+    <div class="flex flex-row justify-between">
+        <div>
+            <div class="detail-card-field-name">Total</div>
+            <div class="detail-card-field-value">{{ entries|length }}</div>
+        </div>
+        <div>
+            <div class="detail-card-field-name">Completed</div>
+            <div class="detail-card-field-value">{{ completed_count }}</div>
+        </div>
+        <div>
+            <div class="detail-card-field-name">Pending</div>
+            <div class="detail-card-field-value">{{ pending_count }}</div>
+        </div>
+    </div>
     <c-slot name="children_slot">
     {% if entries %}
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
@@ -59,19 +59,7 @@
                                     {% endif %}
                                 </div>
                                 {% if entry.url %}
-                                    <a href="{{ entry.url }}"
-                                       target="_blank"
-                                       rel="noopener noreferrer"
-                                       class="btn btn-outline btn-warning btn-sm flex-shrink-0">
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                             class="h-4 w-4 mr-1"
-                                             fill="none"
-                                             viewBox="0 0 24 24"
-                                             stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                                        </svg>
-                                        Visit Link
-                                    </a>
+                                    {% with entry.url as link_url %}<c-buttons.visit-link />{% endwith %}
                                 {% endif %}
                             </div>
                         </div>

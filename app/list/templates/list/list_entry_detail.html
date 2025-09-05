@@ -16,6 +16,10 @@
         </div>
     {% endif %}
     <div class="grid grid-cols-2 gap-4 mt-4">
+        <div>
+            <div class="detail-card-field-name">Quantity</div>
+            <div class="detail-card-field-value">{{ object.quantity }}</div>
+        </div>
         {% if object.completed_at %}
             <div>
                 <div class="detail-card-field-name">Completion Date</div>
@@ -42,10 +46,6 @@
                     </div>
                 </div>
             {% endif %}
-            <div>
-                <div class="detail-card-field-name">Quantity</div>
-                <div class="detail-card-field-value">{{ object.quantity }}</div>
-            </div>
             {% if object.unit_price > 0 %}
                 <div>
                     <div class="detail-card-field-name">Unit Price</div>
