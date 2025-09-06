@@ -12,6 +12,8 @@
   Javascript to support an object's delete modal
 ### Object.Delete-Modal
   Delete modal, contents populated by AJAX call
+### Object.Status
+  Status badge for object
 ### Object-Detail.Detail-Actions
   Section of an object's detail card which provides buttons for the actions related to the object
 #### Child Components
@@ -26,6 +28,7 @@
   * Object-Detail.Detail-Actions
   * Object.Delete-Script
   * Object.Delete-Modal
+  * Object.Status
   * Buttons.Edit-Object
   * Buttons.Delete-Object
 
@@ -50,6 +53,7 @@
   * Object-Detail.Detail-Actions
   * Object.Delete-Script
   * Object.Delete-Modal
+  * Object.Status
   * Buttons.Edit-Object
   * Buttons.Delete-Object
 

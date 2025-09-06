@@ -360,6 +360,24 @@ def list_entry_edit(request: HttpRequest, entry_slug: str):
 
 
 @login_required
+def list_entry_complete(request: HttpRequest, entry_slug: str):
+    """
+    Toggle the completion status of a list entry.
+    """
+    if request.method == "POST":
+        try:
+            entry = ListEntry.objects.get(slug=entry_slug, is_deleted=False)
+            entry.is_completed = not entry.is_completed
+            entry.save()
+            messages.success(request, "List entry updated successfully.")
+        except ListEntry.DoesNotExist:
+            messages.error(request, "List entry not found.")
+    else:
+        messages.error(request, "Invalid request method.")
+    return redirect("list:entry_detail", entry_slug=entry_slug)
+
+
+@login_required
 def list_entry_delete(request: HttpRequest, entry_slug: str):
     """
     Delete a list entry.

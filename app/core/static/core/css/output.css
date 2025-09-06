@@ -5220,6 +5220,10 @@
     width: var(--size);
     height: var(--size);
   }
+  .size-6 {
+    width: calc(var(--spacing) * 6);
+    height: calc(var(--spacing) * 6);
+  }
   .status-lg {
     width: calc(0.25rem * 3);
     height: calc(0.25rem * 3);

@@ -17,10 +17,6 @@
   * Contacts
     * Summary of all contacts
     * Contact detail
-  * Lists
-    * Summary of all lists
-    * List detail
-    * List entry detail
   * Guest List
     * Summary of all Guests by Guest Group
     * Guest Group detail

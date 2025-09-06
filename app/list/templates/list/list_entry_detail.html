@@ -67,7 +67,7 @@
         {% endif %}
     </div>
     <c-slot name="detail_actions_content">
-    Toggle Complete
+    <c-buttons.toggle_complete complete_url="{% url 'list:entry_complete' object.slug %}" />
     </c-slot>
     </c-object-detail>
 {% endblock content %}

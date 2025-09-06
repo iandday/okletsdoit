@@ -14,6 +14,7 @@ urlpatterns = [
     path("entries/<slug:entry_slug>/", views.list_entry_detail, name="entry_detail"),
     path("entries/<slug:entry_slug>/edit/", views.list_entry_edit, name="entry_edit"),
     path("entries/<slug:entry_slug>/delete/", views.list_entry_delete, name="entry_delete"),
+    path("entries/<slug:entry_slug>/complete/", views.list_entry_complete, name="entry_complete"),
     path("<slug:list_slug>/", views.list_detail, name="detail"),
     path("<slug:list_slug>/edit/", views.list_edit, name="edit"),
     path("<slug:list_slug>/delete/", views.list_delete, name="delete"),
