@@ -83,6 +83,7 @@
               <tr>
                 <th class="associated-table-header">Deadline</th>
                 <th class="associated-table-header">Description</th>
+                <th class="associated-table-header">List</th>
                 <th class="associated-table-header">Due Date</th>
                 <th class="associated-table-header">Assignee</th>
                 <th class="associated-table-header">Status</th>
@@ -98,15 +99,11 @@
     </div>
   </div>
   <!-- Delete Deadline Modal-->
-
-  {% include "shared_helpers/modal/object_delete_shell.html" %}
-
+  <c-object.delete-modal />
 {% endblock content %}
 {% block extra_script %}
   <!-- datatables and optional scripts-->
-
-  {% include "shared_helpers/script/datatables.html" %}
-
+  <c-script.datatables />
   <script nonce="{{ request.csp_nonce }}">
     $(document).ready(function() {
       const listSlug = new URLSearchParams(window.location.search).get('list');
@@ -121,7 +118,7 @@
         serverSide: true,
         ajax: ajaxUrl,
         order: [
-          [2, 'asc']
+          [3, 'asc']
         ],
         columns: [{
           data: 'name',
@@ -132,6 +129,10 @@
         }, {
           data: 'description',
           name: 'description',
+
+        }, {
+          data: 'list',
+          name: 'list',
 
         }, {
           data: 'due_date',
@@ -186,7 +187,7 @@
         buttons: [{
           extend: 'searchBuilder',
           config: {
-            columns: [0, 1, 3, 4],
+            columns: [0, 1, 2, 4],
 
           }
         }, {
@@ -228,8 +229,5 @@
     });
   </script>
   <!-- Delete Modal Functionality-->
-  {% url "deadline:deadline_delete_modal" as delete_modal_url %}
-
-  {% include "shared_helpers/modal/object_delete_script.html" %}
-
+  <c-object.delete-script />
 {% endblock extra_script %}

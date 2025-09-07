@@ -3,8 +3,8 @@ import uuid
 
 from django.db import models
 from django.utils.text import slugify
+from django_stubs_ext.db.models.manager import RelatedManager
 from simple_history.models import HistoricalRecords
-
 from users.models import User
 
 
@@ -20,21 +20,33 @@ class DeadlineList(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     is_deleted = models.BooleanField(default=False)
     history = HistoricalRecords()
+    deadlines: RelatedManager["Deadline"] = None  # Type hint for the reverse relation
+
+    @property
+    def count(self):
+        return self.deadlines.filter(is_deleted=False).count()
 
     @property
     def completed_count(self):
-        return self.deadline_set.filter(completed=True, is_deleted=False).count()
+        return self.deadlines.filter(completed=True, is_deleted=False).count()
 
     @property
     def pending_count(self):
-        return self.deadline_set.filter(completed=False, is_deleted=False).count()
+        return self.deadlines.filter(completed=False, is_deleted=False).count()
+
+    @property
+    def completion_percentage(self):
+        """Return completion percentage of associated deadlines"""
+        if self.completed_count == 0:
+            return 0
+        return round((self.completed_count / len(self.deadlines.all())) * 100, 1)
 
     def __str__(self):
         return self.name
 
     class Meta:
         ordering = ["name"]
-        verbose_name_plural = "Task Lists"
+        verbose_name_plural = "Deadline Lists"
         constraints = [models.UniqueConstraint(fields=["name"], name="unique_deadline_list")]
 
     def save(self, *args, **kwargs):
@@ -57,7 +69,7 @@ class Deadline(models.Model):
     name = models.CharField(max_length=250)
     description = models.TextField(blank=True, null=True)
     slug = models.SlugField(max_length=250, null=True, blank=True, unique=True)
-    deadline_list = models.ForeignKey(DeadlineList, on_delete=models.CASCADE, null=True)
+    deadline_list = models.ForeignKey(DeadlineList, on_delete=models.CASCADE, null=True, related_name="deadlines")
     created_by = models.ForeignKey(User, related_name="created_by_deadline", on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_by = models.ForeignKey(

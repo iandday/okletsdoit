@@ -14,6 +14,8 @@
   Delete modal, contents populated by AJAX call
 ### Object.Status
   Status badge for object
+### Object.Menu
+  Dropdown menu for actions related to an object
 ### Object-Detail.Detail-Actions
   Section of an object's detail card which provides buttons for the actions related to the object
 #### Child Components
@@ -74,6 +76,9 @@
 ## Cotton Migration
 * Core
 * Deadline
+  * Deadline Detail
+  * List Detail
+  * All Deadlines
 * Expenses
 * Guestlist
 * List
@@ -84,10 +89,6 @@
 
 Shared Helpers
 * Object Delete Modal
-  * Deadlines
-    * Deadline All
-    * Deadline Detail
-    * Deadline List Detail
   * Ideas
     * Idea Detail
     * Idea List

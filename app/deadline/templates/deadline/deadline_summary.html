@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block title %}
-    Deadline Summary
+    {{ block_title }}
 {% endblock title %}
 {% block content %}
     <div class="max-w-7xl mx-auto px-4 py-8">
@@ -65,7 +65,7 @@
                         <div class="list-card-body">
                             <div class="flex items-start justify-between">
                                 <a class="list-card-title"
-                                   href="{% url 'deadline:list' %}?list={{ deadline_list.slug }}">
+                                   href="{% url 'deadline:deadline_list_detail' deadline_list.slug %}">
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                          class="h-5 w-5"
                                          fill="none"
@@ -78,28 +78,25 @@
                                 <!-- list card options menu-->
                                 {% url "deadline:deadline_list_detail" deadline_list.slug as detail_action %}
                                 {% url 'deadline:deadline_list_edit' deadline_list.slug as update_action %}
-
-                                {% include "shared_helpers/card/list_card_options.html" with slug=deadline_list.slug %}
-
+                                <c-object.menu detail_action="{{ detail_action }}" update_action="{{ update_action }}" slug="{{ deadline_list.slug }}" />
                             </div>
                             <!-- Progress Stats -->
                             <div class="flex justify-between items-center mb-4">
                                 <div class="flex gap-2">
-                                    {% if deadline_list.completed_deadline > 0 %}
-                                        <div class="badge badge-success">✓ {{ deadline_list.completed_deadline }}</div>
+                                    {% if deadline_list.completed_count > 0 %}
+                                        <div class="badge badge-success">✓ {{ deadline_list.completed_count }}</div>
                                     {% endif %}
-                                    {% if deadline_list.pending_deadline > 0 %}
-                                        <div class="badge badge-warning">⏳ {{ deadline_list.pending_deadline }}</div>
+                                    {% if deadline_list.pending_count > 0 %}
+                                        <div class="badge badge-warning">⏳ {{ deadline_list.pending_count }}</div>
                                     {% endif %}
                                 </div>
                             </div>
                             <!-- Progress Bar -->
-                            {% if deadline_list.total_deadline > 0 %}
-                                {% widthratio deadline_list.completed_deadline deadline_list.total_deadline 100 as completion_percentage %}
+                            {% if deadline_list.count > 0 %}
                                 <div class="mb-4">
                                     <div class="flex justify-between text-sm text-neutral-content mb-1">
                                         <span>Progress</span>
-                                        <span>{{ completion_percentage }}%</span>
+                                        <span>{{ deadline_list.completion_percentage }}%</span>
                                     </div>
                                     <progress class="progress progress-primary w-full"
                                               value="{{ completion_percentage }}"
@@ -166,6 +163,7 @@
                 </div>
             </div>
         {% endif %}
+        <c-object.delete-modal />
     </div>
     <!-- Import Modal -->
     <dialog id="import_modal" class="modal">
@@ -232,6 +230,7 @@
     </dialog>
 {% endblock content %}
 {% block extra_script %}
+    <c-object.delete-script />
     <script nonce="{{ request.csp_nonce }}">
       document.addEventListener('DOMContentLoaded', function() {
         // Modal handling

@@ -3,95 +3,37 @@
 {% load static %}
 
 {% block title %}
-    Deadline Detail
+    {{ block_title }}
 {% endblock title %}
 {% block content %}
-    <div class="container mx-auto px-4 py-8">
-        <!-- Header Section -->
-        <div class="breadcrumbs mb-4">
-            <ul>
-                <li>
-                    <a href="{% url 'deadline:deadline_summary' %}" class="link">Deadline Summary</a>
-                </li>
-                <li>
-                    <a href="{% url 'deadline:list' %}" class="link">All Deadlines</a>
-                </li>
-                <li>
-                    <a href="{% url 'deadline:deadline_list_detail' deadline.deadline_list.slug %}"
-                       class="link">{{ deadline.deadline_list.name }}</a>
-                </li>
-            </ul>
-        </div>
-        <!-- Title -->
-        <div class="mb-6 flex items-center justify-between">
-            <h1 class="text-3xl font-bold text-base-content">{{ deadline.name }}</h1>
-            <div class="flex gap-2">
-                <a href="{% url 'deadline:deadline_edit' deadline.slug %}"
-                   class="btn btn-primary btn-sm">Edit</a>
-                <button class="btn btn-sm btn-error delete-btn" data-id="{{ deadline.slug }}">Delete</button>
-                <form method="post"
-                      action="{% url 'deadline:deadline_toggle_complete' deadline.slug %}">
-                    {% csrf_token %}
-                    <button type="submit"
-                            class="btn btn-sm {% if deadline.completed %}btn-success{% else %}btn-secondary{% endif %}">
-                        {% if deadline.completed %}
-                            Mark Pending
-                        {% else %}
-                            Mark Complete
-                        {% endif %}
-                    </button>
-                </form>
+    <c-object-detail>
+    {% if object.description %}
+        <div class="space-y-4">
+            <div>
+                <div class="detail-card-field-name">Description</div>
+                <div class="detail-card-field-value">{{ object.description }}</div>
             </div>
         </div>
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <!-- Main Information-->
-            <div class="detail-card" id="main-info">
-                <div class="detail-card-body">
-                    <h2 class="detail-card-title">Deadline Information</h2>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <div class="detail-card-field-name">List</div>
-                            <div class="detail-card-field-value">{{ deadline.deadline_list.name }}</div>
-                        </div>
-                        <div>
-                            <div class="detail-card-field-name">Status</div>
-                            <div class="badge {% if deadline.completed %}badge-success{% else %}badge-warning{% endif %}">
-                                {% if deadline.completed %}
-                                    Completed
-                                {% else %}
-                                    Pending
-                                {% endif %}
-                            </div>
-                        </div>
-                        <div>
-                            <div class="detail-card-field-name">Due Date</div>
-                            <div class="detail-card-field-value">{{ deadline.due_date|date:'Y-m-d'|default:'—' }}</div>
-                        </div>
-                        <div>
-                            <div class="detail-card-field-name">Assigned To</div>
-                            <div class="detail-card-field-value">{{ deadline.assigned_to.first_name|default:'Unassigned' }}</div>
-                        </div>
-                        <div>
-                            <div class="detail-card-field-name">Description</div>
-                            <div class="detail-card-field-value">{{ deadline.description|default:'—' }}</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Metadata -->
-
-            {% include "components/detail_metadata.html" with object=deadline %}
-
+    {% endif %}
+    <div class="grid grid-cols-2 gap-4 mt-4">
+        <div>
+            <div class="detail-card-field-name">List</div>
+            <div class="detail-card-field-value">{{ object.deadline_list }}</div>
         </div>
-        <!-- Delete Deadline Modal-->
-
-        {% include "shared_helpers/modal/object_delete_shell.html" %}
-
+        <div>
+            <div class="detail-card-field-name">Due Date</div>
+            <div class="detail-card-field-value">{{ object.due_date|date:'Y-m-d'|default:'—' }}</div>
+        </div>
+        <div>
+            <div class="detail-card-field-name">Assigned To</div>
+            <div class="detail-card-field-value">{{ object.assigned_to.first_name|default:'Unassigned' }}</div>
+        </div>
     </div>
+    <c-slot name="detail_actions_content">
+    <c-buttons.toggle_complete complete_url="{% url 'deadline:deadline_toggle_complete' object.slug %}" />
+    </c-slot>
+    </c-object-detail>
 {% endblock content %}
 {% block extra_script %}
-    {% url "deadline:deadline_delete_modal" as delete_modal_url %}
-
-    {% include "shared_helpers/modal/object_delete_script.html" %}
-
+    <c-object.delete-script />
 {% endblock extra_script %}

@@ -21,23 +21,16 @@ logger.error("Deadline views loaded")
 
 @login_required
 def deadline_summary(request: HttpRequest) -> HttpResponse:
-    """ """
-    deadline_lists = (
-        DeadlineList.objects.filter(is_deleted=False)
-        .prefetch_related("deadline_set")
-        .annotate(
-            total_deadline=Count("deadline"),
-            completed_deadline=Count("deadline", filter=Q(deadline__completed=True)),
-            pending_deadline=Count("deadline", filter=Q(deadline__completed=False)),
-        )
-        .order_by("name")
-    )
+    """
+    Display a summary of all deadline lists and their progress.
+    """
+    deadline_lists = DeadlineList.objects.filter(is_deleted=False).order_by("name")
 
     context = {
         "deadline_lists": deadline_lists,
         "form": DeadlineImportForm(),
-        "completed_deadline": sum(list.completed_count for list in deadline_lists),
-        "pending_deadline": sum(list.pending_count for list in deadline_lists),
+        "delete_modal_url": reverse("deadline:deadline_list_delete_modal"),
+        "block_title": "Deadline Summary",
     }
     return render(request, "deadline/deadline_summary.html", context)
 
@@ -52,7 +45,29 @@ def deadline_detail(request: HttpRequest, deadline_slug: str) -> HttpResponse:
     except Deadline.DoesNotExist:
         messages.error(request, "Deadline not found.")
         return redirect("deadline:deadline_summary")
-    context = {"deadline": deadline}
+
+    breadcrumbs = [
+        {"title": "Deadline Summary", "url": reverse("deadline:deadline_summary")},
+        {
+            "title": deadline.deadline_list.name,
+            "url": reverse("deadline:deadline_list_detail", args=[deadline.deadline_list.slug]),
+        },
+        {"title": f"{deadline}", "url": None},
+    ]
+
+    context = {
+        "block_title": f"{deadline}",
+        "breadcrumbs": breadcrumbs,
+        "title": f"{deadline}",
+        "object": deadline,
+        "edit_url": reverse("deadline:deadline_edit", args=[deadline.slug]),
+        "status": deadline.completed,
+        "status_text": "Complete" if deadline.completed else "Pending",
+        "link_url": None,
+        "image_url": None,
+        "delete_modal_url": reverse("deadline:deadline_delete_modal"),
+    }
+
     return render(request, "deadline/deadline_detail.html", context)
 
 
@@ -183,20 +198,21 @@ def deadline_toggle_complete(request: HttpRequest, deadline_slug: str) -> HttpRe
     """
     Toggle the completion status of a deadline.
     """
-    if request.method != "POST":
-        messages.error(request, "Invalid request method.")
-        return redirect("deadline:deadline_summary")
+
     try:
         deadline = Deadline.objects.get(slug=deadline_slug, is_deleted=False)
     except Deadline.DoesNotExist:
         messages.error(request, "Deadline not found.")
         return redirect("deadline:deadline_summary")
 
-    deadline.completed = not deadline.completed
-    deadline.save()
-    status = "completed" if deadline.completed else "pending"
-    messages.success(request, f"Deadline marked as {status}.")
-    return redirect(f"{reverse('deadline:list')}?list={deadline.deadline_list.slug}")
+    if request.method != "POST":
+        messages.error(request, "Invalid request method.")
+    else:
+        deadline.completed = not deadline.completed
+        deadline.save()
+        status = "completed" if deadline.completed else "pending"
+        messages.success(request, f"Deadline marked as {status}.")
+    return redirect("deadline:deadline_detail", deadline_slug=deadline.slug)
 
 
 @login_required
@@ -253,11 +269,15 @@ def deadline_data(request) -> JsonResponse:
             update_url=reverse("deadline:deadline_edit", args=[deadline.slug]),
             slug=deadline.slug,
         )
-
+        if deadline.deadline_list:
+            deadline_list_url = f'<a href="{reverse("deadline:deadline_list_detail", args=[deadline.deadline_list.slug])}">{deadline.deadline_list.name}</a>'
+        else:
+            deadline_list_url = "-"
         data.append(
             {
                 "name": f'<a href="{reverse("deadline:deadline_detail", args=[deadline.slug])}">{deadline.name}</a>',
                 "description": deadline.description or "-",
+                "list": deadline_list_url if deadline.deadline_list else "-",
                 "due_date": deadline.due_date.strftime("%Y-%m-%d") if deadline.due_date else None,
                 "assigned_to": deadline.assigned_to.first_name if deadline.assigned_to else "Unassigned",
                 "status": "Completed" if deadline.completed else "Pending",
@@ -279,8 +299,8 @@ def deadline_data(request) -> JsonResponse:
 def list(request: HttpRequest):
     # check if list is in parameters
     list_slug = request.GET.get("list")
-    context = {}
-    context["form"] = DeadlineForm()
+    context = {"delete_modal_url": reverse("deadline:deadline_delete_modal"), "form": DeadlineForm()}
+
     if list_slug:
         deadline_list = DeadlineList.objects.get(slug=list_slug, is_deleted=False)
         if not deadline_list:
@@ -330,14 +350,34 @@ def deadline_list_create(request: HttpRequest) -> HttpResponse:
 @login_required
 def deadline_list_detail(request: HttpRequest, deadline_list_slug: str) -> HttpResponse:
     try:
-        deadline_list = DeadlineList.objects.get(slug=deadline_list_slug, is_deleted=False)
+        obj = DeadlineList.objects.get(slug=deadline_list_slug, is_deleted=False)
     except DeadlineList.DoesNotExist:
         messages.error(request, "Deadline list not found.")
         return redirect("deadline:deadline_summary")
 
+    # context = {
+    #     "deadline_list": deadline_list,
+    #     "form": DeadlineForm(),
+    # }
+    breadcrumbs = [
+        {"title": "Deadline Summary", "url": reverse("deadline:deadline_summary")},
+        {"title": obj, "url": None},
+    ]
+
     context = {
-        "deadline_list": deadline_list,
-        "form": DeadlineForm(),
+        "block_title": f"{obj}",
+        "breadcrumbs": breadcrumbs,
+        "title": f"{obj}",
+        "object": obj,
+        "edit_url": reverse("deadline:deadline_list_edit", args=[obj.slug]),
+        "status": obj.completion_percentage > 0,
+        "status_text": f"{obj.completion_percentage}% Complete" if obj.completion_percentage > 0 else "Not Started",
+        "link_url": None,
+        "image_url": None,
+        "delete_modal_url": reverse("deadline:deadline_list_delete_modal"),
+        "completed_count": obj.completed_count,
+        "pending_count": obj.pending_count,
+        "entries": obj.deadlines.all(),
     }
     return render(request, "deadline/deadline_list_detail.html", context)
 
