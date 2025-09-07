@@ -80,6 +80,8 @@ def list_summary(request: HttpRequest):
             "total_lists": total_lists,
             "lists_with_expenses_count": lists_with_expenses_count,
             "lists_without_expenses_count": lists_without_expenses_count,
+            "delete_modal_url": reverse("list:list_delete_modal"),
+            "block_title": "Planning Lists",
         },
     )
 
