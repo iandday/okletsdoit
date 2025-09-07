@@ -110,11 +110,11 @@ def site_vars(request):
             {"view_name": "core:rsvp", "icon": "fa-pen-to-square", "text": "RSVP"},
         ],
         "planning_links": [
+            {"view_name": "list:summary", "icon": "fa-list-check", "text": "Lists"},
             {"view_name": "deadline:deadline_summary", "icon": "fa-list", "text": "Deadlines"},
             {"view_name": "core:idea_list", "icon": "fa-lightbulb", "text": "Ideas"},
             {"view_name": "expenses:summary", "icon": "fa-dollar-sign", "text": "Budget"},
             {"view_name": "contacts:list", "icon": "fa-address-book", "text": "Contacts"},
-            {"view_name": "list:summary", "icon": "fa-list-check", "text": "Lists"},
             {"view_name": "guestlist:guestlist_summary", "icon": "fa-users", "text": "Guest List"},
             {"view_name": "core:timeline_summary", "icon": "fa-users", "text": "Timeline"},
             {"view_name": "core:inspiration_summary", "icon": "fa-users", "text": "Inspiration"},
