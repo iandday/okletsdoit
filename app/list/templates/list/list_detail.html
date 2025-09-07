@@ -29,6 +29,11 @@
             <div class="detail-card-field-value">{{ pending_count }}</div>
         </div>
     </div>
+    <c-slot name="detail_actions_content">
+    <c-buttons.add_object add_object_url="{{ add_object_url }}">
+    Add List Entry
+    </c-buttons.add_object>
+    </c-slot>
     <c-slot name="children_slot">
     {% if entries %}
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4">

@@ -8,6 +8,8 @@
   Standardized button to delete an object
 ### Buttons.Edit-Object
   Standardized button to edit an object  
+### Buttons.Add-Object
+  Standardized button to add an object
 ### Object.Delete-Script
   Javascript to support an object's delete modal
 ### Object.Delete-Modal
@@ -33,6 +35,7 @@
   * Object.Status
   * Buttons.Edit-Object
   * Buttons.Delete-Object
+  * Buttons.Add-Object
 
   
 #### Required Context

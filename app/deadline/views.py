@@ -85,8 +85,18 @@ def deadline_create(request: HttpRequest) -> HttpResponse:
         else:
             messages.error(request, "Please correct the errors below.")
     else:
-        form = DeadlineForm()
-    # configure rest of template context
+        # check for deadline_list value in request.GET
+        deadline_list_slug = request.GET.get("list")
+        if deadline_list_slug:
+            try:
+                deadline_list = DeadlineList.objects.get(slug=deadline_list_slug, is_deleted=False)
+                form = DeadlineForm(initial={"deadline_list": deadline_list})
+            except DeadlineList.DoesNotExist:
+                messages.error(request, "Deadline list not found.")
+                return redirect("deadline:deadline_summary")
+        else:
+            form = DeadlineForm()
+
     intro = "Create Deadline"
     breadcrumbs = [
         {"title": "Deadline List", "url": reverse("deadline:deadline_summary")},
@@ -355,10 +365,6 @@ def deadline_list_detail(request: HttpRequest, deadline_list_slug: str) -> HttpR
         messages.error(request, "Deadline list not found.")
         return redirect("deadline:deadline_summary")
 
-    # context = {
-    #     "deadline_list": deadline_list,
-    #     "form": DeadlineForm(),
-    # }
     breadcrumbs = [
         {"title": "Deadline Summary", "url": reverse("deadline:deadline_summary")},
         {"title": obj, "url": None},
@@ -374,6 +380,7 @@ def deadline_list_detail(request: HttpRequest, deadline_list_slug: str) -> HttpR
         "status_text": f"{obj.completion_percentage}% Complete" if obj.completion_percentage > 0 else "Not Started",
         "link_url": None,
         "image_url": None,
+        "add_object_url": f"{reverse('deadline:deadline_create')}?list={obj.slug}",
         "delete_modal_url": reverse("deadline:deadline_list_delete_modal"),
         "completed_count": obj.completed_count,
         "pending_count": obj.pending_count,

@@ -155,6 +155,7 @@ def list_detail(request: HttpRequest, list_slug: str):
         "status_text": f"{obj.completion_percentage}% Complete" if obj.completion_percentage > 0 else "Not Started",
         "link_url": None,
         "image_url": None,
+        "add_object_url": reverse("list:entry_create", args=[obj.slug]),
         "delete_modal_url": reverse("list:list_delete_modal"),
         "completed_count": obj.completed_entries,
         "pending_count": obj.pending_entries,
