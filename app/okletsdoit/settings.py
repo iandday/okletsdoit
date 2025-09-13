@@ -72,6 +72,7 @@ INSTALLED_APPS = [
     "csp",
     "django_cotton",  # https://django-cotton.com/docs/quickstart
     "core",
+    "attachments",
     "users",
     "expenses",
     "contacts",

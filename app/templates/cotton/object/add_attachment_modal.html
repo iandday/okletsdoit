@@ -1,0 +1,48 @@
+<!-- Add Attachment Modal
+     vars:
+       attach_submit_url: str
+       attach_form: Form
+-->
+<dialog id="addAttachmentModal" class="modal">
+    <div class="modal-box card bg-base-200 shadow-xl hover:shadow-2xl transition-shadow duration-300 text-error-content m-6 max-w-2xl">
+        <div class="card-body px-6 py-4" id="add-attachment-modal-body">
+            <form method="post"
+                  id="attachmentForm"
+                  enctype="multipart/form-data"
+                  action="{{ attach_submit_url }}">
+                {% csrf_token %}
+                {% for field in attach_form %}
+                    <div class="form-control w-full py-2">
+                        <label class="label">
+                            <span class="edit-card-field-name">{{ field.label }}</span>
+                            <!-- if the field is required-->
+                            {% if field.required %}<span class="label-text-alt text-error">Required</span>{% endif %}
+                        </label>
+                        {{ field }}
+                        {% if field.errors %}
+                            <label class="label">
+                                <span class="label-text-alt text-error">
+                                    {% for error in field.errors %}{{ error }}{% endfor %}
+                                </span>
+                            </label>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                <!-- Form Actions -->
+                <div class="card-actions justify-end py-2">
+                    <button class="btn cancel-add-btn">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             class="h-5 w-5"
+                             fill="none"
+                             viewBox="0 0 24 24"
+                             stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                        Attach
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</dialog>
