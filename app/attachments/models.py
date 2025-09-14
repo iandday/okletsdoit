@@ -4,6 +4,7 @@ from pathlib import Path
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
+from django.db.models.query import QuerySet
 from django.utils.text import slugify
 from simple_history.models import HistoricalRecords
 from users.models import User
@@ -27,13 +28,15 @@ def attachment_upload_path(instance, filename: str) -> str:
     )
 
 
-class AttachmentManager(models.Manager):
-    def attachments_for_object(self, obj):
+class AttachmentManager(models.Manager["Attachment"]):
+    def attachments_for_object(self, obj: models.Model) -> QuerySet["Attachment"]:
         object_type = ContentType.objects.get_for_model(obj)
-        return self.filter(content_type__pk=object_type.id, object_id=obj.pk)
+        return self.filter(content_type=object_type, object_id=obj.pk, is_deleted=False)
 
 
 class Attachment(models.Model):
+    objects: AttachmentManager = AttachmentManager()  # pyright: ignore[reportIncompatibleVariableOverride]
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=255, blank=True, null=True)
     slug = models.SlugField(max_length=250, null=True, blank=True, unique=True)
@@ -49,7 +52,7 @@ class Attachment(models.Model):
     )
     updated_at = models.DateTimeField(auto_now=True)
     is_deleted = models.BooleanField(default=False)
-    objects = AttachmentManager()
+
     history = HistoricalRecords()
 
     def __str__(self) -> str:
@@ -71,8 +74,8 @@ class Attachment(models.Model):
                 counter += 1
 
             self.slug = slug
-        if self.content_object:
-            self.content_type = ContentType.objects.get_for_model(self.content_object)
+        # if self.content_object:
+        #    self.content_type = ContentType.objects.get_for_model(self.content_object)
 
         super().save(*args, **kwargs)
 
