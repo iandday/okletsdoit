@@ -49,6 +49,13 @@ class Expense(models.Model):
     date = models.DateField(blank=True, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
     quantity = models.PositiveIntegerField(default=1)
+    unit_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    additional_price = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=0.00,
+        help_text="Additional price for this expense, regardless of quantity",
+    )
     estimated_amount = models.DecimalField(max_digits=40, decimal_places=2, blank=True, null=True)
     actual_amount = models.DecimalField(max_digits=40, decimal_places=2, blank=True, null=True)
     url = models.URLField(
@@ -68,10 +75,16 @@ class Expense(models.Model):
     list_entries: RelatedManager[ListEntry]
 
     @property
-    def completed(self):
+    def purchased(self):
         if self.actual_amount is not None and self.actual_amount > 0:
             return True
         return False
+
+    @property
+    def variance(self):
+        if self.estimated_amount is not None and self.actual_amount is not None:
+            return self.actual_amount - self.estimated_amount
+        return None
 
     @property
     def calculated_price(self):
@@ -124,4 +137,7 @@ class Expense(models.Model):
         if self.list_entries.exists():
             self.estimated_amount = self.calculated_estimated_amount()
             self.actual_amount = self.calculated_actual_amount()
+        else:
+            # update estimated amount
+            self.estimated_amount = self.unit_price * self.quantity + self.additional_price
         super().save(*args, **kwargs)

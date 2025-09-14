@@ -1,15 +1,6 @@
 ## Cotton Templates
 
-### Buttons.View-Link
-  Standardized button to view an object's associated URL
-### Buttons.View-Image
-  Standardized button to view an object's associated image
-### Buttons.Delete-Object
-  Standardized button to delete an object
-### Buttons.Edit-Object
-  Standardized button to edit an object  
-### Buttons.Add-Object
-  Standardized button to add an object
+
 ### Object.Delete-Script
   Javascript to support an object's delete modal
 ### Object.Delete-Modal
@@ -58,9 +49,11 @@
   * Object-Detail.Detail-Actions
   * Object.Delete-Script
   * Object.Delete-Modal
+  * Object.Add-Attachment-Modal 
   * Object.Status
   * Buttons.Edit-Object
   * Buttons.Delete-Object
+  * Buttons.Add-Attachment
 
   
 #### Required Context
@@ -75,6 +68,9 @@
 * link_url: (str) URL for the `view_link` component
 * image_url: (str) URL for the `view_image` component
 * delete_modal_url: (str) URL which provides the delete modal's context, the slug will be added by the JS
+* attach_submit_url
+* attach_form: Form
+* attachments: queryset from `Attachment.objects.attachments_for_object(obj).all()`
 
 ## Cotton Migration
 * Core
@@ -83,6 +79,8 @@
   * List Detail
   * All Deadlines
 * Expenses
+  * Expense Detail
+  * Category Detail
 * Guestlist
 * List
   * Entry Detail
@@ -97,9 +95,7 @@ Shared Helpers
     * Idea List
   * Budget
     * Category List
-    * Category Detail
     * Expense List
-    * Expense Detail
   * Contacts
     * File
     * Contact

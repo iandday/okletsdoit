@@ -4,7 +4,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.db.models import Sum, Case, When, Value, DecimalField, F
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Q
-from django.http import HttpRequest, JsonResponse, HttpResponse
+from django.http import HttpRequest, JsonResponse, HttpResponse, QueryDict
 from django.contrib import messages
 from django.utils.text import slugify
 from django.urls import reverse
@@ -14,11 +14,12 @@ from io import BytesIO
 from datetime import datetime
 from decimal import Decimal, InvalidOperation
 
+from attachments.models import Attachment, AttachmentManager
 from shared_helpers.table_helpers import format_row_action_cell
 from expenses.forms import CategoryForm, ExpenseForm
 from list.models import ListEntry
 from .models import Category, Expense
-
+from attachments.forms import AttachmentUploadForm
 
 logger = logging.getLogger(__name__)
 
@@ -487,18 +488,42 @@ def expense_import(request) -> HttpResponse:
 @login_required
 def detail(request, slug: str) -> HttpResponse:
     """View for expense detail"""
-    expense = get_object_or_404(Expense, slug=slug, is_deleted=False)
-    if expense.actual_amount and expense.estimated_amount:
-        variance = expense.actual_amount - expense.estimated_amount
-    else:
-        variance = None
+    try:
+        expense = Expense.objects.get(slug=slug, is_deleted=False)
+    except Expense.DoesNotExist:
+        messages.error(request, "Expense not found.")
+        return redirect("expenses:summary")
 
+    breadcrumbs = [
+        {"title": "Budget Summary", "url": reverse("expenses:summary")},
+        {"title": expense.category, "url": reverse("expenses:category_detail", args=[expense.category.slug])},
+        {"title": f"{expense}", "url": None},
+    ]
+    attach_url_query = QueryDict("", mutable=True)
+    attach_url_query["next"] = request.path
     context = {
-        "expense": expense,
-        "variance": variance,
-        "form": ExpenseForm(instance=expense),
-        "list_entries": expense.list_entries.filter(is_deleted=False).order_by("order"),  # type: ignore
+        "block_title": f"{expense}",
+        "breadcrumbs": breadcrumbs,
+        "title": f"{expense}",
+        "object": expense,
+        "edit_url": reverse("expenses:expense_edit", args=[expense.slug]),
+        "status": expense.purchased,
+        "status_text": "Purchased" if expense.purchased else "Pending",
+        "link_url": expense.url,
+        "image_url": None,
+        "delete_modal_url": reverse("expenses:expense_delete_modal"),
+        "list_entries": expense.list_entries.filter(is_deleted=False),
+        "attachments": Attachment.objects.attachments_for_object(expense).all(),
+        "attach_form": AttachmentUploadForm(),
+        "attach_submit_url": str(
+            reverse(
+                "attachments:add_attachment",
+                kwargs={"app_label": "expenses", "model_name": "Expense", "pk": expense.pk},
+                query=attach_url_query,
+            )
+        ),
     }
+
     return render(request, "expenses/expense_detail.html", context)
 
 
@@ -606,18 +631,41 @@ def template_download(request) -> HttpResponse:
 
 @login_required
 def category_detail(request, slug: str) -> HttpResponse:
-    category = get_object_or_404(Category, slug=slug, is_deleted=False)
-    expenses = Expense.objects.filter(category=category, is_deleted=False)
+    try:
+        category = Category.objects.get(slug=slug, is_deleted=False)
+        expenses = Expense.objects.filter(category=category, is_deleted=False).order_by("-date")
+    except Category.DoesNotExist:
+        messages.error(request, "Category not found.")
+        return redirect("expenses:category_list")
+
+    breadcrumbs = [
+        {"title": "Budget Summary", "url": reverse("expenses:summary")},
+        {"title": "Categories", "url": reverse("expenses:category_list")},
+        {"title": f"{category}", "url": None},
+    ]
+
+    estimated = expenses.aggregate(total=Sum("estimated_amount", filter=Q(estimated_amount__isnull=False)))[
+        "total"
+    ] or Decimal("0.00")
+    actual = expenses.aggregate(total=Sum("actual_amount", filter=Q(actual_amount__isnull=False)))["total"] or Decimal(
+        "0.00"
+    )
     context = {
-        "category": category,
+        "block_title": f"{category}",
+        "breadcrumbs": breadcrumbs,
+        "title": f"{category}",
+        "object": category,
+        "edit_url": reverse("expenses:category_edit", args=[category.slug]),
+        # "status": category.purchased,
+        # "status_text": "Purchased" if category.purchased else "Pending",
+        "link_url": None,
+        "image_url": None,
+        "delete_modal_url": reverse("expenses:category_delete_modal"),
         "expenses": expenses,
-        "total_estimated": expenses.aggregate(total=Sum("estimated_amount", filter=Q(estimated_amount__isnull=False)))[
-            "total"
-        ]
-        or Decimal("0.00"),
-        "total_actual": expenses.aggregate(total=Sum("actual_amount", filter=Q(actual_amount__isnull=False)))["total"]
-        or Decimal("0.00"),
+        "total_estimated": estimated,
+        "total_actual": actual,
     }
+
     return render(request, "expenses/category_detail.html", context)
 
 

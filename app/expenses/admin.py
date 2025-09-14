@@ -2,6 +2,8 @@ from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
 from simple_history.admin import SimpleHistoryAdmin
 
+from attachments.admin import AttachmentInlines
+
 from .models import Category
 from .models import Expense
 
@@ -36,6 +38,7 @@ class CategoryAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
 
 @admin.register(Expense)
 class ExpenseAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
+    inlines = (AttachmentInlines,)
     list_display = (
         "item",
         "category",

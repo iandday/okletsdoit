@@ -22,12 +22,12 @@ css:
 
 makemigrations:
     @echo "Running Django makemigrations..."
-    uv run python manage.py makemigrations
+    uv run python app/manage.py makemigrations
 
 # Run migrations
 migrate:
     @echo "Running Django migrations..."
-    uv run python manage.py migrate
+    uv run python app/manage.py migrate
 
 
 #----Pre-commit commands----#

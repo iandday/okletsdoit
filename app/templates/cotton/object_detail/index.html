@@ -54,6 +54,25 @@
                 </c-object-detail.detail-actions>
             </div>
         </div>
+        <!-- Attachments -->
+        {% if attachments %}
+            <div class="detail-card" id="attachments">
+                <div class="detail-card-body">
+                    <h2 class="detail-card-title">Attachments</h2>
+                    <div class="grid grid-cols-1 gap-4">
+                        {% for attachment in attachments %}
+                            <div>
+                                <a class="attachment-card-title text-primary"
+                                   href="{{ attachment.attachment_file.url }}">{{ attachment.name }}</a>
+                                <div>{{ attachment.description }}</div>
+                                <span class="attachment-card-author">{{ attachment.uploaded_by.get_full_name|default:'Unassigned' }}</span>
+                                <span class="attachment-card-date">{{ attachment.uploaded_at|date:'Y-m-d H:i'|default:'—' }}</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
         <!-- Metadata -->
         <div class="detail-card" id="metadata">
             <div class="detail-card-body">
@@ -80,4 +99,5 @@
         </div>
     </div>
     <c-object.delete-modal />
+    <c-object.add-attachment-modal />
 </div>

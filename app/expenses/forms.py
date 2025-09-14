@@ -32,7 +32,18 @@ class ExpenseForm(ModelForm):
 
     class Meta:
         model = Expense
-        fields = ["item", "description", "date", "category", "quantity", "estimated_amount", "actual_amount", "url"]
+        fields = [
+            "item",
+            "description",
+            "date",
+            "category",
+            "unit_price",
+            "additional_price",
+            "quantity",
+            "estimated_amount",
+            "actual_amount",
+            "url",
+        ]
         widgets = {
             "item": forms.TextInput(
                 attrs={"class": "input input-bordered edit-card-field-value", "placeholder": "Enter item name"}
@@ -43,6 +54,12 @@ class ExpenseForm(ModelForm):
             "date": forms.DateInput(attrs={"class": "input input-bordered edit-card-field-value", "type": "date"}),
             "category": forms.Select(attrs={"class": "select select-bordered edit-card-field-value"}),
             "quantity": forms.NumberInput(attrs={"class": "input input-bordered edit-card-field-value", "min": 1}),
+            "unit_price": forms.NumberInput(
+                attrs={"class": "input input-bordered edit-card-field-value", "step": 0.01}
+            ),
+            "additional_price": forms.NumberInput(
+                attrs={"class": "input input-bordered edit-card-field-value", "step": 0.01}
+            ),
             "estimated_amount": forms.NumberInput(
                 attrs={"class": "input input-bordered edit-card-field-value", "step": 0.01}
             ),
