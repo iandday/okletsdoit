@@ -87,22 +87,17 @@
   * List Detail
 ---
 
+Attachments
+* Expenses
 
 Shared Helpers
 * Object Delete Modal
   * Ideas
     * Idea Detail
     * Idea List
-  * Budget
-    * Category List
-    * Expense List
   * Contacts
     * File
     * Contact
-  * Lists
-    * List Summary
-    * List Detail
-    * List Entry Detail
   * Guestlist
     * All Guests
     * Guest Detail
@@ -139,6 +134,5 @@ Shared Helpers
 
 
 * List Card Options
-  * Expense:Category List
   * Deadline:Deadline Summary
   * Core: Idea List

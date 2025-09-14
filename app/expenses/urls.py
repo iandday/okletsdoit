@@ -15,7 +15,6 @@ urlpatterns = [
     path("<slug:slug>", views.detail, name="detail"),
     path("<slug:slug>/edit", views.expense_edit, name="expense_edit"),
     path("<slug:slug>/delete", views.expense_delete, name="expense_delete"),
-    path("category/list", views.category_list, name="category_list"),
     path("category/create", views.category_create, name="category_create"),
     path("category_delete_modal/", views.category_delete_modal, name="category_delete_modal"),
     path("category/<slug:slug>/", views.category_detail, name="category_detail"),

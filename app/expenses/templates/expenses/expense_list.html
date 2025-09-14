@@ -92,15 +92,11 @@
     </div>
   </div>
   <!-- Delete Expense Modal-->
-
-  {% include "shared_helpers/modal/object_delete_shell.html" %}
-
+  <c-object.delete-modal />
 {% endblock content %}
 {% block extra_script %}
-  <!-- datatables and optional scripts-->
-
-  {% include "shared_helpers/script/datatables.html" %}
-
+  <c-object.delete-script />
+  <c-script.datatables />
   <script nonce="{{ request.csp_nonce }}">
     $(document).ready(function() {
       const categorySlug = new URLSearchParams(window.location.search).get('category');
@@ -216,9 +212,4 @@
 
     });
   </script>
-  <!-- Delete Modal Functionality-->
-  {% url "expenses:expense_delete_modal" as delete_modal_url %}
-
-  {% include "shared_helpers/modal/object_delete_script.html" %}
-
 {% endblock extra_script %}
