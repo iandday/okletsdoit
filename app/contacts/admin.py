@@ -3,16 +3,7 @@ from django.utils.html import format_html
 from import_export.admin import ImportExportModelAdmin
 from simple_history.admin import SimpleHistoryAdmin
 
-from .models import Contact, File
-
-
-@admin.register(File)
-class FileAdmin(admin.ModelAdmin):
-    list_display = ["name", "contact", "uploaded_by", "uploaded_at"]
-    list_filter = ["uploaded_at", "uploaded_by"]
-    search_fields = ["name", "description", "contact__name"]
-    readonly_fields = ["id", "uploaded_at"]
-    ordering = ["-uploaded_at"]
+from .models import Contact
 
 
 @admin.register(Contact)
@@ -57,13 +48,6 @@ class ContactAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
                 [f'<a href="{file.file.url}" target="_blank">{file.name or file.file.name}</a>' for file in files]
             )
         )
-
-    files_list.short_description = "Associated Files"
-
-    def get_readonly_fields(self, request, obj=None):
-        if obj:  # editing an existing object
-            return self.readonly_fields + ["created_by"]
-        return self.readonly_fields
 
     def save_model(self, request, obj, form, change):
         if not change:  # creating a new object

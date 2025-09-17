@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Contact, File
+from .models import Contact
 
 
 class ContactForm(ModelForm):
@@ -58,28 +58,6 @@ class ContactForm(ModelForm):
         self.fields["website"].required = False
         self.fields["category"].required = False
         self.fields["notes"].required = False
-
-
-class FileUploadForm(ModelForm):
-    """Form for uploading files associated with a contact."""
-
-    class Meta:
-        model = File
-        fields = ["file", "name", "description", "contact"]
-        widgets = {
-            "file": forms.ClearableFileInput(attrs={"class": "file-input file-input-bordered edit-card-field-value"}),
-            "name": forms.TextInput(
-                attrs={"class": "input input-bordered edit-card-field-value", "placeholder": "Enter file name"}
-            ),
-            "description": forms.Textarea(
-                attrs={"class": "input input-bordered edit-card-field-value", "placeholder": "Enter file description"}
-            ),
-            "contact": forms.Select(attrs={"class": "input input-bordered edit-card-field-value"}),
-        }
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields["file"].label = "Upload File"
 
 
 class ContactImportForm(forms.Form):
