@@ -5,13 +5,15 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db.models import Q
 from django.core.paginator import Paginator
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, QueryDict
 from django.urls import reverse
 import polars as pl
 import openpyxl
 from io import BytesIO
 import logging
 
+from attachments.forms import AttachmentUploadForm
+from attachments.models import Attachment
 from list.models import ListEntry
 from .models import Contact, File as ContactFile
 from .forms import ContactForm, FileUploadForm
@@ -53,21 +55,41 @@ def contact_list(request):
 @login_required
 def contact_detail(request, slug):
     """Show contact details"""
-    contact = get_object_or_404(Contact, slug=slug, is_deleted=False)
+    try:
+        contact = Contact.objects.get(slug=slug, is_deleted=False)
+    except Contact.DoesNotExist:
+        messages.error(request, "Contact not found.")
+        return redirect("contacts:list")
 
-    # get related list entries to form a shopping list
-    shopping_list = ListEntry.objects.filter(vendor=contact, purchased=False, is_deleted=False).order_by("item")
-
-    # get associated files
-    files = ContactFile.objects.filter(contact=contact, is_deleted=False).order_by("-uploaded_at")
-
+    breadcrumbs = [
+        {"title": "Contacts", "url": reverse("contacts:list")},
+        {"title": f"{contact}", "url": None},
+    ]
+    attach_url_query = QueryDict("", mutable=True)
+    attach_url_query["next"] = request.path
     context = {
-        "contact": contact,
-        "shopping_list": shopping_list,
-        "files": files,
-        "form": FileUploadForm(),
+        "block_title": f"{contact}",
+        "breadcrumbs": breadcrumbs,
+        "title": f"{contact}",
+        "object": contact,
+        "edit_url": reverse("contacts:contact_edit", args=[contact.slug]),
+        "status": None,
+        "status_text": None,
+        "link_url": contact.website,
+        "image_url": None,
+        "delete_modal_url": reverse("contacts:contact_delete_modal"),
+        "shopping_list": ListEntry.objects.filter(vendor=contact, purchased=False, is_deleted=False).order_by("item"),
+        "attachments": Attachment.objects.attachments_for_object(contact).all(),
+        "attach_form": AttachmentUploadForm(),
+        "attach_submit_url": str(
+            reverse(
+                "attachments:add_attachment",
+                kwargs={"app_label": "contacts", "model_name": "Contact", "pk": contact.pk},
+                query=attach_url_query,
+            )
+        ),
     }
-    logger.error(files)
+
     return render(request, "contacts/contact_detail.html", context)
 
 
@@ -108,7 +130,7 @@ def contact_create(request):
 
 
 @login_required
-def contact_update(request, slug):
+def contact_edit(request, slug):
     """Update an existing contact"""
     contact = get_object_or_404(Contact, slug=slug, is_deleted=False)
 
@@ -120,6 +142,12 @@ def contact_update(request, slug):
             contact.save()
             messages.success(request, f'Contact "{contact.name}" was updated successfully.')
             return redirect("contacts:detail", slug=contact.slug)
+        else:
+            # Add field-specific error messages
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field}: {error}")
+            messages.error(request, "Please correct the errors below.")
     else:
         form = ContactForm(instance=contact)
 
@@ -132,16 +160,18 @@ def contact_update(request, slug):
     cancel_url = reverse("contacts:detail", args=[contact.slug])
 
     context = {
-        "block_title": "Update Contact",
+        "block_title": "Edit Contact",
         "breadcrumbs": breadcrumbs,
-        "title": "Update Contact",
+        "title": f"Edit Contact: {contact.name}",
         "intro": intro,
         "form": form,
         "object": Contact,
-        "submit_text": "Update",
+        "submit_text": "Save Changes",
         "cancel_url": cancel_url,
         "first_field": "name",
         "file": False,
+        "hugerte_enabled": True,
+        "selector": "id_notes",
     }
     return render(request, "shared_helpers/form/object.html", context)
 

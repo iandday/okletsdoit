@@ -74,6 +74,8 @@
 
 ## Cotton Migration
 * Core
+* Contacts
+  * Contact Detail
 * Deadline
   * Deadline Detail
   * List Detail
