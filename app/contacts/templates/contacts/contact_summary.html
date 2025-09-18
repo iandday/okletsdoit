@@ -100,10 +100,7 @@
                                 </div>
                                 {% url 'contacts:detail' contact.slug as detail_action %}
                                 {% url 'contacts:update' contact.slug as update_action %}
-                                {% url 'contacts:delete' contact.slug as delete_action %}
-
-                                {% include "components/card_options.html" with detail_action=detail_action update_action=update_action delete_action=delete_action %}
-
+                                <c-object.menu slug="{{ contact.slug }}" />
                             </div>
                             <!-- Contact Info -->
                             <div class="space-y-2 mb-4">
@@ -209,6 +206,7 @@
             <div class="join"></div>
         </div>
     </div>
+    <c-object.delete-modal />
     <!-- Import Modal -->
     <dialog id="importModal" class="modal">
         <div class="modal-box">
@@ -279,6 +277,7 @@
     </dialog>
 {% endblock content %}
 {% block extra_script %}
+    <c-object.delete-script />
     <script nonce="{{ request.csp_nonce }}">
       document.addEventListener('DOMContentLoaded', function() {
         // Import Modal

@@ -47,6 +47,7 @@ def contact_list(request):
         "page_obj": page_obj,
         "search_query": search_query,
         "total_contacts": contacts.count(),
+        "delete_modal_url": reverse("contacts:contact_delete_modal"),
     }
 
     return render(request, "contacts/contact_summary.html", context)
@@ -60,6 +61,9 @@ def contact_detail(request, slug):
     except Contact.DoesNotExist:
         messages.error(request, "Contact not found.")
         return redirect("contacts:list")
+
+    # get attachments from expense objects where this contact is the vendor
+    attachments = Attachment.objects.filter(expense__vendor=contact)
 
     breadcrumbs = [
         {"title": "Contacts", "url": reverse("contacts:list")},
