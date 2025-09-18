@@ -43,6 +43,9 @@ class ExpenseAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
         "item",
         "category",
         "date",
+        "quantity",
+        "unit_price",
+        "additional_price",
         "estimated_amount",
         "actual_amount",
         "created_by",
@@ -62,7 +65,13 @@ class ExpenseAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
         (
             "Financial Information",
             {
-                "fields": ("estimated_amount", "actual_amount"),
+                "fields": (
+                    "quantity",
+                    "unit_price",
+                    "additional_price",
+                    "estimated_amount",
+                    "actual_amount",
+                ),
             },
         ),
         (
