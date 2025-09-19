@@ -1,6 +1,10 @@
 
 ### Buttons.View-Link
-  Standardized button to view an object's associated URL
+  View an object's associated URL
+### Buttons.Call
+  Dial the object's associated phone number
+### BUttons.Email
+  Send an email to the object's associated email address
 ### Buttons.View-Image
   Standardized button to view an object's associated image
 ### Buttons.Delete-Object

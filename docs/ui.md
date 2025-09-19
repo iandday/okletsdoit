@@ -91,6 +91,8 @@
 
 Attachments
 * Expenses
+* List Entry
+* Contact
 
 Shared Helpers
 * Object Delete Modal
