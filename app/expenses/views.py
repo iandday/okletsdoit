@@ -194,7 +194,7 @@ def list(request: HttpRequest) -> HttpResponse:
     if category_slug:
         category = Category.objects.filter(slug=category_slug, is_deleted=False)
         if not category:
-            return redirect("expenses:category_list")
+            return redirect("expenses:expense_list")
         context["category"] = category  # type: ignore[assignment]
 
     return render(request, "expenses/expense_list.html", context)
@@ -677,11 +677,10 @@ def category_detail(request, slug: str) -> HttpResponse:
         expenses = Expense.objects.filter(category=category, is_deleted=False).order_by("-date")
     except Category.DoesNotExist:
         messages.error(request, "Category not found.")
-        return redirect("expenses:category_list")
+        return redirect("expenses:expense_summary")
 
     breadcrumbs = [
         {"title": "Budget Summary", "url": reverse("expenses:summary")},
-        {"title": "Categories", "url": reverse("expenses:category_list")},
         {"title": f"{category}", "url": None},
     ]
 
@@ -718,15 +717,15 @@ def category_create(request) -> HttpResponse:
             category: Category = form.save(commit=False)
             category.created_by = request.user
             category.save()
-            return redirect("expenses:category_list")
+            return redirect("expenses:summary")
     else:
         form = CategoryForm()
     intro = f"Create Category"
     breadcrumbs = [
-        {"title": "Category List", "url": reverse("expenses:category_list")},
+        {"title": "Budget", "url": reverse("expenses:summary")},
         {"title": "Create", "url": None},
     ]
-    cancel_url = reverse("expenses:category_list")
+    cancel_url = reverse("expenses:summary")
 
     context = {
         "block_title": "Create Category",
@@ -755,7 +754,7 @@ def category_edit(request, slug: str) -> HttpResponse:
         form = CategoryForm(instance=category)
     intro = f"Edit Category: {category}"
     breadcrumbs = [
-        {"title": "Category List", "url": reverse("expenses:category_list")},
+        {"title": "Budget", "url": reverse("expenses:summary")},
         {"title": category, "url": reverse("expenses:category_detail", args=[category.slug])},
         {"title": "Edit", "url": None},
     ]
@@ -787,7 +786,7 @@ def category_delete(request, slug: str) -> HttpResponse:
         for expense in expenses:
             expense.category = uncategorized
             expense.save()
-    return redirect("expenses:category_list")
+    return redirect("expenses:summary")
 
 
 @login_required
