@@ -4,13 +4,15 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from django.db.models import Exists, OuterRef
 from django.contrib import messages
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, QueryDict
 from django.urls import reverse
 from django.utils.text import slugify
 import polars as pl
 from django.http import HttpRequest
 from django.utils import timezone
 
+from attachments.models import Attachment
+from attachments.forms import AttachmentUploadForm
 from expenses.models import Category, Expense
 from .forms import ListForm, ListEntryForm, ListImportForm
 from .models import List, ListEntry
@@ -296,7 +298,8 @@ def list_entry_detail(request: HttpRequest, entry_slug: str):
         {"title": entry.list, "url": reverse("list:detail", args=[entry.list.slug])},
         {"title": f"{entry}", "url": None},
     ]
-
+    attach_url_query = QueryDict("", mutable=True)
+    attach_url_query["next"] = request.path
     context = {
         "block_title": f"{entry}",
         "breadcrumbs": breadcrumbs,
@@ -308,6 +311,15 @@ def list_entry_detail(request: HttpRequest, entry_slug: str):
         "link_url": entry.url,
         "image_url": entry.image.url if entry.image else None,
         "delete_modal_url": reverse("list:entry_delete_modal"),
+        "attachments": Attachment.objects.attachments_for_object(entry).all(),
+        "attach_form": AttachmentUploadForm(),
+        "attach_submit_url": str(
+            reverse(
+                "attachments:add_attachment",
+                kwargs={"app_label": "list", "model_name": "ListEntry", "pk": entry.pk},
+                query=attach_url_query,
+            )
+        ),
     }
 
     return render(request, "list/list_entry_detail.html", context)

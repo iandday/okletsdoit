@@ -68,9 +68,11 @@
     </div>
     <c-slot name="detail_actions_content">
     <c-buttons.toggle_complete complete_url="{% url 'list:entry_complete' object.slug %}" />
+    <c-buttons.add_attachment />
     </c-slot>
     </c-object-detail>
 {% endblock content %}
 {% block extra_script %}
     <c-object.delete-script />
+    <c-object.add-attachment-script />
 {% endblock extra_script %}
