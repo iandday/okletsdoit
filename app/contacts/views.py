@@ -62,8 +62,12 @@ def contact_detail(request, slug):
         messages.error(request, "Contact not found.")
         return redirect("contacts:list")
 
-    # get attachments from expense objects where this contact is the vendor
-    attachments = Attachment.objects.filter(expense__vendor=contact)
+    # get attachments from associated ListEntry objects where this contact is the vendor
+    associated_entries = ListEntry.objects.filter(vendor=contact)
+    attachments = Attachment.objects.filter(
+        Q(is_deleted=False)
+        & (Q(object_id=contact.id) | Q(object_id__in=associated_entries.values_list("id", flat=True)))
+    )
 
     breadcrumbs = [
         {"title": "Contacts", "url": reverse("contacts:list")},
@@ -83,7 +87,7 @@ def contact_detail(request, slug):
         "image_url": None,
         "delete_modal_url": reverse("contacts:contact_delete_modal"),
         "shopping_list": ListEntry.objects.filter(vendor=contact, purchased=False, is_deleted=False).order_by("item"),
-        "attachments": Attachment.objects.attachments_for_object(contact).all(),
+        "attachments": attachments,
         "attach_form": AttachmentUploadForm(),
         "attach_submit_url": str(
             reverse(
