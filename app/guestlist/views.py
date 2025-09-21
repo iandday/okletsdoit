@@ -1,17 +1,21 @@
 import io
 import logging
+from unicodedata import category
 
-from django.urls import reverse
 import polars as pl
+from attachments.forms import AttachmentUploadForm
+from attachments.models import Attachment
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import HttpRequest
 from django.http import HttpResponse
 from django.http import JsonResponse
+from django.http import QueryDict
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.shortcuts import render
+from django.urls import reverse
 from shared_helpers.table_helpers import format_row_action_cell
 from users.models import User
 
@@ -336,6 +340,7 @@ def guestlist_summary(request: HttpRequest) -> HttpResponse:
     context = {
         "guest_groups": guest_groups,
         "form": GuestlistImportForm(),
+        "delete_modal_url": reverse("guestlist:guest_group_delete_modal"),
         "total_guests": Guest.objects.filter(is_deleted=False).count(),
         "total_invited": Guest.objects.filter(is_deleted=False, is_invited=True).count(),
         "total_invited_day": Guest.objects.filter(is_deleted=False, is_invited=True, overnight=False).count(),
@@ -369,6 +374,7 @@ def all_guests(request: HttpRequest) -> HttpResponse:
 
     context = {
         "guests": guests,
+        "delete_modal_url": reverse("guestlist:guest_delete_modal"),
         "total_guests": Guest.objects.filter(is_deleted=False).count(),
         "total_invited": Guest.objects.filter(is_deleted=False, is_invited=True).count(),
         "total_invited_day": Guest.objects.filter(is_deleted=False, is_invited=True, overnight=False).count(),
@@ -394,9 +400,39 @@ def guestgroup_detail(request: HttpRequest, group_slug: str) -> HttpResponse:
     Returns:
         HttpResponse: Rendered template with guest group details.
     """
-    guest_group = get_object_or_404(GuestGroup, slug=group_slug)
+    try:
+        guest_group = GuestGroup.objects.get(slug=group_slug, is_deleted=False)
+    except GuestGroup.DoesNotExist:
+        messages.error(request, "Guest group not found.")
+        return redirect("guestlist:guestlist_summary")
+
+    breadcrumbs = [
+        {"title": "Guest List", "url": reverse("guestlist:guestlist_summary")},
+        {"title": f"{guest_group.name}", "url": None},
+    ]
+    attach_url_query = QueryDict("", mutable=True)
+    attach_url_query["next"] = request.path
     context = {
-        "guest_group": guest_group,
+        "block_title": f"{guest_group}",
+        "breadcrumbs": breadcrumbs,
+        "title": f"{guest_group}",
+        "object": guest_group,
+        "edit_url": reverse("guestlist:guestgroup_edit", args=[guest_group.slug]),
+        "status": None,
+        "status_text": None,
+        "link_url": None,
+        "image_url": None,
+        "delete_modal_url": reverse("guestlist:guest_group_delete_modal"),
+        "child_item_title": "Guests",
+        "attachments": Attachment.objects.attachments_for_object(guest_group).all(),
+        "attach_form": AttachmentUploadForm(),
+        "attach_submit_url": str(
+            reverse(
+                "attachments:add_attachment",
+                kwargs={"app_label": "guestlist", "model_name": "GuestGroup", "pk": guest_group.pk},
+                query=attach_url_query,
+            )
+        ),
     }
     return render(request, "guestlist/guestgroup_detail.html", context)
 
@@ -719,9 +755,40 @@ def guest_detail(request: HttpRequest, guest_slug: str) -> HttpResponse:
     Returns:
         HttpResponse: Rendered template with guest details.
     """
-    guest = get_object_or_404(Guest, slug=guest_slug)
+
+    try:
+        guest = Guest.objects.get(slug=guest_slug, is_deleted=False)
+    except Guest.DoesNotExist:
+        messages.error(request, "Guest not found.")
+        return redirect("guestlist:guestlist_summary")
+
+    breadcrumbs = [
+        {"title": "Guest List", "url": reverse("guestlist:guestlist_summary")},
+        {"title": guest.group, "url": reverse("guestlist:guestgroup_detail", args=[guest.group.slug])},
+        {"title": guest, "url": None},
+    ]
+    attach_url_query = QueryDict("", mutable=True)
+    attach_url_query["next"] = request.path
     context = {
-        "guest": guest,
+        "block_title": f"{guest}",
+        "breadcrumbs": breadcrumbs,
+        "title": f"{guest}",
+        "object": guest,
+        "edit_url": reverse("guestlist:guest_edit", args=[guest.slug]),
+        "status": guest.is_attending,
+        "status_text": "Attending" if guest.is_attending else "Not Attending",
+        "link_url": None,
+        "image_url": None,
+        "delete_modal_url": reverse("guestlist:guest_delete_modal"),
+        "attachments": Attachment.objects.attachments_for_object(guest).all(),
+        "attach_form": AttachmentUploadForm(),
+        "attach_submit_url": str(
+            reverse(
+                "attachments:add_attachment",
+                kwargs={"app_label": "guestlist", "model_name": "Guest", "pk": guest.pk},
+                query=attach_url_query,
+            )
+        ),
     }
     return render(request, "guestlist/guest_detail.html", context)
 

@@ -41,6 +41,7 @@
 * link_url: (str) URL for the `view_link` component
 * image_url: (str) URL for the `view_image` component
 * delete_modal_url: (str) URL which provides the delete modal's context, the slug will be added by the JS
+* child_items_title: (str) Titlg for child items card, defaults to Associated Items
   
 ### Object Detail
   Detail view for an object
@@ -86,6 +87,9 @@
   * Expense Detail
   * Category Detail
 * Guestlist
+  * Guest Detail
+  * Guest Group Detail
+  * All Guests
 * List
   * Entry Detail
   * List Detail
@@ -101,17 +105,8 @@ Attachments
 * Idea
 * Inspiration
 * Timeline
-
-Shared Helpers
-* Object Delete Modal
-  * Guestlist
-    * All Guests
-    * Guest Detail
-    * Guest Group Detail
-    * Guest Group Summary
-
-
-
+* Guest
+* Guest Group
 
 
 * Complete Form

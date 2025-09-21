@@ -84,9 +84,7 @@
                                     <!-- list card options menu-->
                                     {% url 'guestlist:guestgroup_detail' guest_group.slug as detail_action %}
                                     {% url 'guestlist:guestgroup_edit' guest_group.slug as update_action %}
-
-                                    {% include "shared_helpers/card/list_card_options.html" with slug=guest_group.slug %}
-
+                                    <c-object.menu slug="{{ guest_group.slug }}" />
                                 </div>
                                 <!-- Relationship Badge -->
                                 <div class="mb-2">
@@ -226,10 +224,7 @@
                 </div>
             </div>
         {% endif %}
-        <!-- Delete Deadline Modal-->
-
-        {% include "shared_helpers/modal/object_delete_shell.html" %}
-
+        <c-object.delete-modal />
         <!-- Import Modal -->
         <dialog id="import_modal" class="modal">
             <div class="modal-box">
@@ -336,8 +331,5 @@
         }
       });
     </script>
-    {% url "guestlist:guest_group_delete_modal" as delete_modal_url %}
-
-    {% include "shared_helpers/modal/object_delete_script.html" %}
-
+    <c-object.delete-script />
 {% endblock extra_script %}
