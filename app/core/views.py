@@ -7,7 +7,7 @@ from io import BytesIO
 import polars as pl
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import HttpRequest
+from django.http import HttpRequest, QueryDict
 from django.http import HttpResponse
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
@@ -15,10 +15,11 @@ from django.shortcuts import redirect
 from django.shortcuts import render
 from django.db.models import Q
 from django.urls import reverse
-from django.utils import timezone
 from django.utils.text import slugify
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
+from attachments.forms import AttachmentUploadForm
+from attachments.models import Attachment
 from shared_helpers.table_helpers import format_row_action_cell
 
 from core.forms import IdeaForm
@@ -77,7 +78,15 @@ def idea_list(request: HttpRequest):
     """
     ideas = Idea.objects.filter(is_deleted=False).select_related("created_by", "updated_by").order_by("created_at")
     add_idea_form = IdeaForm()
-    return render(request, "core/idea_list.html", {"ideas": ideas, "add_idea_form": add_idea_form})
+    return render(
+        request,
+        "core/idea_list.html",
+        {
+            "ideas": ideas,
+            "add_idea_form": add_idea_form,
+            "delete_modal_url": reverse("core:idea_delete_modal"),
+        },
+    )
 
 
 @login_required
@@ -135,10 +144,39 @@ def idea_detail(request: HttpRequest, idea_slug: str):
     """
     try:
         idea = Idea.objects.get(slug=idea_slug, is_deleted=False)
-        return render(request, "core/idea_detail.html", {"idea": idea})
+
     except Idea.DoesNotExist:
         messages.error(request, "Idea not found.")
         return redirect("idea_list")
+
+    breadcrumbs = [
+        {"title": "Ideas", "url": reverse("core:idea_list")},
+        {"title": f"{idea}", "url": None},
+    ]
+    attach_url_query = QueryDict("", mutable=True)
+    attach_url_query["next"] = request.path
+    context = {
+        "block_title": f"{idea}",
+        "breadcrumbs": breadcrumbs,
+        "title": f"{idea}",
+        "object": idea,
+        "edit_url": reverse("core:idea_edit", args=[idea.slug]),
+        "status": None,
+        "status_text": None,
+        "link_url": None,
+        "image_url": None,
+        "delete_modal_url": reverse("core:idea_delete_modal"),
+        "attachments": Attachment.objects.attachments_for_object(idea).all(),
+        "attach_form": AttachmentUploadForm(),
+        "attach_submit_url": str(
+            reverse(
+                "attachments:add_attachment",
+                kwargs={"app_label": "core", "model_name": "Idea", "pk": idea.pk},
+                query=attach_url_query,
+            )
+        ),
+    }
+    return render(request, "core/idea_detail.html", context)
 
 
 @login_required

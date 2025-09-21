@@ -3,15 +3,6 @@
 {% load static %}
 
 {% block title %}Ideas{% endblock %}
-{% block extra_head %}
-    <link rel="stylesheet"
-          href="https://cdn.ckeditor.com/ckeditor5/46.0.0/ckeditor5.css"
-          crossorigin>
-    <link rel="stylesheet" href="{% static 'core/css/ckeditor.css' %}">
-    <script nonce="{{ request.csp_nonce }}"
-            src="https://cdn.ckeditor.com/ckeditor5/46.0.0/ckeditor5.umd.js"
-            crossorigin></script>
-{% endblock extra_head %}
 {% block content %}
     <div class="max-w-7xl mx-auto px-4 py-8">
         <!-- Header Section -->
@@ -53,9 +44,7 @@
                             <a class="list-card-title" href="{% url 'core:idea_detail' idea.slug %}">{{ idea.name }}</a>
                             {% url 'core:idea_detail' idea.slug as detail_action %}
                             {% url 'core:idea_edit' idea.slug as update_action %}
-
-                            {% include "shared_helpers/card/list_card_options.html" with detail_action=detail_action update_action=update_action slug=idea.slug %}
-
+                            <c-object.menu slug="{{ idea.slug }}" />
                         </div>
                         <!-- Description Preview -->
                         {% if idea.description %}
@@ -173,13 +162,11 @@
                 <button>close</button>
             </form>
         </dialog>
-        <!-- Delete Modal -->
-
-        {% include "shared_helpers/modal/object_delete_shell.html" %}
-
+        <c-object.delete-modal />
     </div>
 {% endblock content %}
 {% block extra_script %}
+    <c-object.delete-script />
     <script nonce="{{ request.csp_nonce }}">
       document.addEventListener('DOMContentLoaded', function() {
         const showImportModal = document.getElementById('show-import-modal');
@@ -199,8 +186,4 @@
         }
       });
     </script>
-    {% url "core:idea_delete_modal" as delete_modal_url %}
-
-    {% include "shared_helpers/modal/object_delete_script.html" %}
-
 {% endblock %}

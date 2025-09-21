@@ -74,6 +74,7 @@
 
 ## Cotton Migration
 * Core
+  * Idea Detail
 * Contacts
   * Contact Detail
 * Deadline
@@ -93,15 +94,10 @@ Attachments
 * Expenses
 * List Entry
 * Contact
+* Idea
 
 Shared Helpers
 * Object Delete Modal
-  * Ideas
-    * Idea Detail
-    * Idea List
-  * Contacts
-    * File
-    * Contact
   * Guestlist
     * All Guests
     * Guest Detail
