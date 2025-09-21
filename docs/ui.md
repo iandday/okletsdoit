@@ -75,6 +75,7 @@
 ## Cotton Migration
 * Core
   * Idea Detail
+  * Inspiration Detail
 * Contacts
   * Contact Detail
 * Deadline
@@ -95,6 +96,7 @@ Attachments
 * List Entry
 * Contact
 * Idea
+* Inspiration
 
 Shared Helpers
 * Object Delete Modal
@@ -106,8 +108,7 @@ Shared Helpers
   * Timeline
     * Timeline List
     * Timeline Detail
-  * Inspiration
-    * Inspiration Detail
+
 
 
 

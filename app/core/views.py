@@ -784,19 +784,10 @@ def inspiration_summary(request: HttpRequest):
     """
     Render the 'Inspiration Summary' page of the application.
     """
-    if request.method == "POST":
-        form = InspirationForm(request.POST, request.FILES)
-        if form.is_valid():
-            inspiration: Inspiration = form.save(commit=False)
-            inspiration.created_by = request.user
-            inspiration.updated_by = request.user
-            inspiration.save()
-            messages.success(request, "Inspiration created successfully.")
-        return redirect("core:inspiration_summary")
-    else:
-        inspirations = Inspiration.objects.filter(is_deleted=False).order_by("created_at")
-        context = {"inspirations": inspirations, "form": InspirationForm()}
-        return render(request, "core/inspiration_summary.html", context)
+
+    inspirations = Inspiration.objects.filter(is_deleted=False).order_by("created_at")
+    context = {"inspirations": inspirations, "form": InspirationForm()}
+    return render(request, "core/inspiration_summary.html", context)
 
 
 @login_required
@@ -858,8 +849,42 @@ def inspiration_detail(request: HttpRequest, inspiration_slug: str):
     Returns:
         HttpResponse: Rendered template with inspiration details.
     """
-    inspiration = get_object_or_404(Inspiration, slug=inspiration_slug, is_deleted=False)
-    return render(request, "core/inspiration_detail.html", {"inspiration": inspiration})
+    try:
+        inspiration = Inspiration.objects.get(slug=inspiration_slug, is_deleted=False)
+
+    except Inspiration.DoesNotExist:
+        messages.error(request, "Inspiration not found.")
+        return redirect("inspiration_list")
+
+    breadcrumbs = [
+        {"title": "Inspiration Board", "url": reverse("core:inspiration_summary")},
+        {"title": f"{inspiration}", "url": None},
+    ]
+    attach_url_query = QueryDict("", mutable=True)
+    attach_url_query["next"] = request.path
+    context = {
+        "block_title": f"{inspiration}",
+        "breadcrumbs": breadcrumbs,
+        "title": f"{inspiration}",
+        "object": inspiration,
+        "edit_url": reverse("core:inspiration_edit", args=[inspiration.slug]),
+        "status": None,
+        "status_text": None,
+        "link_url": None,
+        "image_url": None,
+        "delete_modal_url": reverse("core:inspiration_delete_modal"),
+        "attachments": Attachment.objects.attachments_for_object(inspiration).all(),
+        "attach_form": AttachmentUploadForm(),
+        "attach_submit_url": str(
+            reverse(
+                "attachments:add_attachment",
+                kwargs={"app_label": "core", "model_name": "Inspiration", "pk": inspiration.pk},
+                query=attach_url_query,
+            )
+        ),
+    }
+
+    return render(request, "core/inspiration_detail.html", context)
 
 
 @login_required
