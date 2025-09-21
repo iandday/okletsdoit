@@ -179,7 +179,7 @@ def create(request) -> HttpResponse:
         "cancel_url": cancel_url,
         "first_field": "item",
     }
-    return render(request, "shared_helpers/form/object.html", context)
+    return render(request, "form/object.html", context)
 
 
 @login_required
@@ -241,7 +241,7 @@ def expense_edit(request, slug: str) -> HttpResponse:
         "cancel_url": cancel_url,
         "first_field": "item",
     }
-    return render(request, "shared_helpers/form/object.html", context)
+    return render(request, "form/object.html", context)
 
 
 @login_required
@@ -262,7 +262,7 @@ def expense_delete_modal(request: HttpRequest) -> HttpResponse:
         "object_type": "Expense",
         "action_url": reverse("expenses:expense_delete", args=[expense.slug]),
     }
-    return render(request, "shared_helpers/modal/object_delete_body.html", context)
+    return render(request, "components/modal/object_delete_modal_body.html", context)
 
 
 @login_required
@@ -737,7 +737,7 @@ def category_create(request) -> HttpResponse:
         "cancel_url": cancel_url,
         "first_field": "name",
     }
-    return render(request, "shared_helpers/form/object.html", context)
+    return render(request, "form/object.html", context)
 
 
 @login_required
@@ -771,7 +771,7 @@ def category_edit(request, slug: str) -> HttpResponse:
         "cancel_url": cancel_url,
         "first_field": "name",
     }
-    return render(request, "shared_helpers/form/object.html", context)
+    return render(request, "form/object.html", context)
 
 
 @login_required
@@ -806,4 +806,4 @@ def category_delete_modal(request: HttpRequest) -> HttpResponse:
         "action_url": reverse("expenses:category_delete", args=[category.slug]),
         "custom_message": f"This action cannot be undone. All expenses associated to this '{category}' Category will be moved to the 'Uncategorized' category.",
     }
-    return render(request, "shared_helpers/modal/object_delete_body.html", context)
+    return render(request, "components/modal/object_delete_modal_body.html", context)

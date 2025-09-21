@@ -127,7 +127,7 @@ def list_create(request: HttpRequest):
         "cancel_url": cancel_url,
         "first_field": "name",
     }
-    return render(request, "shared_helpers/form/object.html", context)
+    return render(request, "form/object.html", context)
 
 
 @login_required
@@ -208,7 +208,7 @@ def list_edit(request: HttpRequest, list_slug: str):
         "cancel_url": cancel_url,
         "first_field": "name",
     }
-    return render(request, "shared_helpers/form/object.html", context)
+    return render(request, "form/object.html", context)
 
 
 @login_required
@@ -277,7 +277,7 @@ def list_entry_create(request: HttpRequest, list_slug: str):
         "cancel_url": cancel_url,
         "first_field": "name",
     }
-    return render(request, "shared_helpers/form/object.html", context)
+    return render(request, "form/object.html", context)
 
 
 @login_required
@@ -371,7 +371,7 @@ def list_entry_edit(request: HttpRequest, entry_slug: str):
         "cancel_url": cancel_url,
         "first_field": "name",
     }
-    return render(request, "shared_helpers/form/object.html", context)
+    return render(request, "form/object.html", context)
 
 
 @login_required
@@ -424,7 +424,7 @@ def list_delete_modal(request: HttpRequest) -> HttpResponse | JsonResponse:
         "object_type": "List",
         "action_url": reverse("list:delete", args=[obj.slug]),
     }
-    return render(request, "shared_helpers/modal/object_delete_body.html", context)
+    return render(request, "components/modal/object_delete_modal_body.html", context)
 
 
 @login_required
@@ -442,7 +442,7 @@ def entry_delete_modal(request: HttpRequest) -> HttpResponse | JsonResponse:
         "object_type": "Entry",
         "action_url": reverse("list:entry_delete", args=[entry.slug]),
     }
-    return render(request, "shared_helpers/modal/object_delete_body.html", context)
+    return render(request, "components/modal/object_delete_modal_body.html", context)
 
 
 @login_required

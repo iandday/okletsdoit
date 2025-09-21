@@ -128,7 +128,7 @@ def idea_create(request: HttpRequest):
         "hugerte_enabled": True,
         "selector": "id_description",
     }
-    return render(request, "shared_helpers/form/object.html", context)
+    return render(request, "form/object.html", context)
 
 
 @login_required
@@ -195,7 +195,7 @@ def idea_delete_modal(request: HttpRequest) -> HttpResponse | JsonResponse:
         "object_type": "Idea",
         "action_url": reverse("core:idea_delete", args=[idea.slug]),
     }
-    return render(request, "shared_helpers/modal/object_delete_body.html", context)
+    return render(request, "components/modal/object_delete_modal_body.html", context)
 
 
 @login_required
@@ -271,7 +271,7 @@ def idea_edit(request: HttpRequest, idea_slug: str):
         "hugerte_enabled": True,
         "selector": "id_description",
     }
-    return render(request, "shared_helpers/form/object.html", context)
+    return render(request, "form/object.html", context)
 
 
 @login_required
@@ -582,7 +582,7 @@ def timeline_create(request: HttpRequest) -> HttpResponse:
         "cancel_url": cancel_url,
         "first_field": "name",
     }
-    return render(request, "shared_helpers/form/object.html", context)
+    return render(request, "form/object.html", context)
 
 
 @login_required
@@ -631,7 +631,7 @@ def timeline_edit(request: HttpRequest, timeline_slug: str) -> HttpResponse:
         "cancel_url": cancel_url,
         "first_field": "name",
     }
-    return render(request, "shared_helpers/form/object.html", context)
+    return render(request, "form/object.html", context)
 
 
 @login_required
@@ -649,7 +649,7 @@ def timeline_delete_modal(request: HttpRequest) -> HttpResponse | JsonResponse:
         "object_type": "Timeline entry",
         "action_url": reverse("core:timeline_delete", args=[timeline_event.slug]),
     }
-    return render(request, "shared_helpers/modal/object_delete_body.html", context)
+    return render(request, "components/modal/object_delete_modal_body.html", context)
 
 
 @login_required
@@ -858,7 +858,7 @@ def inspiration_create(request: HttpRequest):
         "first_field": "name",
         "file": True,
     }
-    return render(request, "shared_helpers/form/object.html", context)
+    return render(request, "form/object.html", context)
 
 
 @login_required
@@ -958,7 +958,7 @@ def inspiration_edit(request: HttpRequest, inspiration_slug: str):
         "first_field": "name",
         "file": True,
     }
-    return render(request, "shared_helpers/form/object.html", context)
+    return render(request, "form/object.html", context)
 
 
 @login_required
@@ -976,7 +976,7 @@ def inspiration_delete_modal(request: HttpRequest) -> HttpResponse | JsonRespons
         "object_type": "Inspiration",
         "action_url": reverse("core:inspiration_delete", args=[inspiration.slug]),
     }
-    return render(request, "shared_helpers/modal/object_delete_body.html", context)
+    return render(request, "components/modal/object_delete_modal_body.html", context)
 
 
 @login_required

@@ -134,7 +134,7 @@ def contact_create(request):
         "first_field": "name",
         "file": False,
     }
-    return render(request, "shared_helpers/form/object.html", context)
+    return render(request, "form/object.html", context)
 
 
 @login_required
@@ -181,7 +181,7 @@ def contact_edit(request, slug):
         "hugerte_enabled": True,
         "selector": "id_notes",
     }
-    return render(request, "shared_helpers/form/object.html", context)
+    return render(request, "form/object.html", context)
 
 
 @login_required
@@ -199,7 +199,7 @@ def contact_delete_modal(request):
         "object_type": "Contact",
         "action_url": reverse("contacts:contact_delete", args=[contact.slug]),
     }
-    return render(request, "shared_helpers/modal/object_delete_body.html", context)
+    return render(request, "components/modal/object_delete_modal_body.html", context)
 
 
 @login_required

@@ -114,7 +114,7 @@ def deadline_create(request: HttpRequest) -> HttpResponse:
         "cancel_url": cancel_url,
         "first_field": "item",
     }
-    return render(request, "shared_helpers/form/object.html", context)
+    return render(request, "form/object.html", context)
 
 
 @login_required
@@ -162,7 +162,7 @@ def deadline_edit(request: HttpRequest, deadline_slug: str) -> HttpResponse:
         "cancel_url": cancel_url,
         "first_field": "item",
     }
-    return render(request, "shared_helpers/form/object.html", context)
+    return render(request, "form/object.html", context)
 
 
 @login_required
@@ -183,7 +183,7 @@ def deadline_delete_modal(request: HttpRequest) -> HttpResponse:
         "object_type": "Deadline",
         "action_url": reverse("deadline:deadline_delete", args=[deadline.slug]),
     }
-    return render(request, "shared_helpers/modal/object_delete_body.html", context)
+    return render(request, "components/modal/object_delete_modal_body.html", context)
 
 
 @login_required
@@ -354,7 +354,7 @@ def deadline_list_create(request: HttpRequest) -> HttpResponse:
         "cancel_url": cancel_url,
         "first_field": "name",
     }
-    return render(request, "shared_helpers/form/object.html", context)
+    return render(request, "form/object.html", context)
 
 
 @login_required
@@ -411,7 +411,7 @@ def deadline_list_delete_modal(request: HttpRequest) -> HttpResponse | JsonRespo
         "action_url": reverse("deadline:deadline_list_delete", args=[deadline_list.slug]),
     }
 
-    return render(request, "shared_helpers/modal/object_delete_body.html", context)
+    return render(request, "components/modal/object_delete_modal_body.html", context)
 
 
 @login_required
@@ -477,7 +477,7 @@ def deadline_list_edit(request: HttpRequest, deadline_list_slug: str) -> HttpRes
         "cancel_url": cancel_url,
         "first_field": "name",
     }
-    return render(request, "shared_helpers/form/object.html", context)
+    return render(request, "form/object.html", context)
 
 
 @login_required

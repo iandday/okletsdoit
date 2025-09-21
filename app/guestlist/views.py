@@ -478,7 +478,7 @@ def guestgroup_create(request: HttpRequest) -> HttpResponse:
         "cancel_url": reverse("guestlist:guestlist_summary"),
         "first_field": "name",
     }
-    return render(request, "shared_helpers/form/object.html", context)
+    return render(request, "form/object.html", context)
 
 
 @login_required
@@ -525,7 +525,7 @@ def guestgroup_edit(request: HttpRequest, group_slug: str) -> HttpResponse:
         "cancel_url": reverse("guestlist:guestlist_summary"),
         "first_field": "name",
     }
-    return render(request, "shared_helpers/form/object.html", context)
+    return render(request, "form/object.html", context)
 
 
 @login_required
@@ -543,7 +543,7 @@ def guest_group_delete_modal(request: HttpRequest) -> HttpResponse | JsonRespons
         "object_type": "Guest Group",
         "action_url": reverse("guestlist:guest_group_delete", args=[guest_group.slug]),
     }
-    return render(request, "shared_helpers/modal/object_delete_body.html", context)
+    return render(request, "components/modal/object_delete_modal_body.html", context)
 
 
 @login_required
@@ -740,7 +740,7 @@ def guest_create(request: HttpRequest, group_slug: str | None = None) -> HttpRes
         "first_field": "name",
     }
 
-    return render(request, "shared_helpers/form/object.html", context)
+    return render(request, "form/object.html", context)
 
 
 @login_required
@@ -840,7 +840,7 @@ def guest_edit(request: HttpRequest, guest_slug: str) -> HttpResponse:
         "cancel_url": cancel_url,
         "first_field": "name",
     }
-    return render(request, "shared_helpers/form/object.html", context)
+    return render(request, "form/object.html", context)
 
 
 @login_required
@@ -867,7 +867,7 @@ def guest_delete_modal(request: HttpRequest) -> HttpResponse:
         "object_type": "Guest",
         "action_url": reverse("guestlist:guest_delete", args=[guest.slug]),
     }
-    return render(request, "shared_helpers/modal/object_delete_body.html", context)
+    return render(request, "components/modal/object_delete_modal_body.html", context)
 
 
 @login_required
