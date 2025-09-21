@@ -3,6 +3,7 @@ import io
 import json
 import logging
 from io import BytesIO
+from unicodedata import category
 
 import polars as pl
 from django.contrib import messages
@@ -408,7 +409,10 @@ def timeline_summary(request: HttpRequest) -> HttpResponse:
         HttpResponse: Rendered template with timeline events summary.
     """
 
-    context = {"timeline_events": True if Timeline.objects.filter(is_deleted=False) else False}
+    context = {
+        "timeline_events": True if Timeline.objects.filter(is_deleted=False) else False,
+        "delete_modal_url": reverse("core:timeline_delete_modal"),
+    }
 
     return render(request, "core/timeline_summary.html", context)
 
@@ -496,7 +500,16 @@ def timeline_detail(request: HttpRequest, timeline_slug: str) -> HttpResponse:
     Returns:
         HttpResponse: Rendered template with timeline event details.
     """
-    timeline_event = get_object_or_404(Timeline, slug=timeline_slug, is_deleted=False)
+    try:
+        timeline_event = Timeline.objects.get(slug=timeline_slug, is_deleted=False)
+    except Timeline.DoesNotExist:
+        messages.error(request, "Timeline event not found.")
+        return redirect("core:timeline_summary")
+
+    breadcrumbs = [
+        {"title": "Timeline", "url": reverse("core:timeline_summary")},
+        {"title": f"{timeline_event}", "url": None},
+    ]
 
     # Calculate duration if both start and end dates exist
     duration = None
@@ -505,13 +518,24 @@ def timeline_detail(request: HttpRequest, timeline_slug: str) -> HttpResponse:
 
     context = {
         "timeline_event": timeline_event,
+    }
+    context = {
+        "block_title": f"{timeline_event}",
+        "breadcrumbs": breadcrumbs,
+        "title": f"{timeline_event}",
+        "object": timeline_event,
+        "edit_url": reverse("core:timeline_edit", args=[timeline_event.slug]),
+        "link_url": None,
+        "image_url": None,
+        "status": timeline_event.confirmed,
+        "status_text": "Confirmed" if timeline_event.confirmed else "Pending Confirmation",
+        "delete_modal_url": reverse("core:timeline_delete_modal"),
         "duration_days": duration.days if duration else None,
         "duration_hours": duration.seconds // 3600 if duration else None,
         "duration_minutes": (duration.seconds // 60) % 60 if duration else None,
         "duration_seconds": duration.seconds % 60 if duration else None,
         "duration": duration,
     }
-
     return render(request, "core/timeline_detail.html", context)
 
 

@@ -89,6 +89,9 @@
 * List
   * Entry Detail
   * List Detail
+* Timeline
+  * Timeline List
+  * Timeline Detail
 ---
 
 Attachments
@@ -97,6 +100,7 @@ Attachments
 * Contact
 * Idea
 * Inspiration
+* Timeline
 
 Shared Helpers
 * Object Delete Modal
@@ -105,9 +109,7 @@ Shared Helpers
     * Guest Detail
     * Guest Group Detail
     * Guest Group Summary
-  * Timeline
-    * Timeline List
-    * Timeline Detail
+
 
 
 
