@@ -204,10 +204,7 @@
 </dialog>
 {% endblock content %}
 {% block extra_script %}
-  <!-- datatables and optional scripts-->
-
-  {% include "shared_helpers/script/datatables.html" %}
-
+  <c-script.datatables />
   <script nonce="{{ request.csp_nonce }}">
     document.addEventListener('DOMContentLoaded', function() {
       // Parse data
