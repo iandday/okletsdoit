@@ -135,6 +135,7 @@ class Question(models.Model):
     slug = models.SlugField(max_length=250, null=True, blank=True, unique=True)
     answer = models.TextField(blank=True, null=True)
     order = models.PositiveIntegerField(default=0)
+    published = models.BooleanField(default=False, help_text="Indicates if the question is viewable")
     created_by = models.ForeignKey(User, related_name="created_by_question", on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_by = models.ForeignKey(

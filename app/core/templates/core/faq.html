@@ -10,8 +10,8 @@
          alt="faq"
          class="max-w-sm rounded-lg justify-self-center" />
     <div class="flex flex-col items-center justify-center mx-auto px-4 py-8">
-        <div class="join join-vertical bg-base-200">
-            {% if questions %}
+        {% if questions %}
+            <div class="join join-vertical bg-base-200">
                 {% for q in questions %}
                     <div class="collapse collapse-arrow join-item border-base-300 border">
                         <input type="radio"
@@ -23,10 +23,10 @@
                         </div>
                     </div>
                 {% endfor %}
-            {% else %}
-                <p>Check back soon!</p>
-            {% endif %}
-        </div>
+            </div>
+        {% else %}
+            <p>Check back soon!</p>
+        {% endif %}
     </div>
 {% endblock content %}
 {% block extra_script %}

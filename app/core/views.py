@@ -36,14 +36,14 @@ from .models import Timeline
 logger = logging.getLogger(__name__)
 
 
-def home(request: HttpRequest):
+def home(request: HttpRequest) -> HttpResponse:
     """
     Render the main page of the application.
     """
     return render(request, "core/index.html")
 
 
-def venue(request: HttpRequest):
+def venue(request: HttpRequest) -> HttpResponse:
     """
     Render the venues page of the application.
     """
@@ -51,21 +51,21 @@ def venue(request: HttpRequest):
     return render(request, "core/venue.html", {"timeline": timeline})
 
 
-def our_story(request: HttpRequest):
+def our_story(request: HttpRequest) -> HttpResponse:
     """
     Render the 'Our Story' page of the application.
     """
     return render(request, "core/our_story.html")
 
 
-def rsvp(request: HttpRequest):
+def rsvp(request: HttpRequest) -> HttpResponse:
     """
     Render the 'RSVP' page of the application.
     """
     return render(request, "core/rsvp.html")
 
 
-def photos(request: HttpRequest):
+def photos(request: HttpRequest) -> HttpResponse:
     """
     Render the 'Photos' page of the application.
     """
@@ -73,12 +73,12 @@ def photos(request: HttpRequest):
 
 
 def faq(request: HttpRequest) -> HttpResponse:
-    questions = Question.objects.filter(is_deleted=False).order_by("order").order_by("question")
+    questions = Question.objects.filter(is_deleted=False, published=True).order_by("order").order_by("question")
     return render(request, "core/faq.html", {"questions": questions})
 
 
 @login_required
-def idea_list(request: HttpRequest):
+def idea_list(request: HttpRequest) -> HttpResponse:
     """
     Render the 'Idea List' page of the application.
     """
@@ -94,7 +94,7 @@ def idea_list(request: HttpRequest):
 
 
 @login_required
-def idea_create(request: HttpRequest):
+def idea_create(request: HttpRequest) -> HttpResponse:
     """
     Create a new idea.
     """
@@ -135,7 +135,7 @@ def idea_create(request: HttpRequest):
 
 
 @login_required
-def idea_detail(request: HttpRequest, idea_slug: str):
+def idea_detail(request: HttpRequest, idea_slug: str) -> HttpResponse:
     """
     Display the details of a specific idea.
 
@@ -202,7 +202,7 @@ def idea_delete_modal(request: HttpRequest) -> HttpResponse | JsonResponse:
 
 
 @login_required
-def idea_delete(request: HttpRequest, idea_slug: str):
+def idea_delete(request: HttpRequest, idea_slug: str) -> HttpResponse:
     """
     Deletes an idea.
 
@@ -227,7 +227,7 @@ def idea_delete(request: HttpRequest, idea_slug: str):
 
 
 @login_required
-def idea_edit(request: HttpRequest, idea_slug: str):
+def idea_edit(request: HttpRequest, idea_slug: str) -> HttpResponse:
     """
     Edits an existing idea.
 
@@ -278,7 +278,7 @@ def idea_edit(request: HttpRequest, idea_slug: str):
 
 
 @login_required
-def idea_import(request: HttpRequest):
+def idea_import(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
         form = IdeaImportForm(request.POST, request.FILES)
         excel_file = request.FILES.get("excel_file")
@@ -351,7 +351,7 @@ def idea_import(request: HttpRequest):
 
 
 @login_required
-def idea_template_download(request: HttpRequest):
+def idea_template_download(request: HttpRequest) -> HttpResponse:
     """
     Generates and returns an Excel file template for idea import.
 
@@ -389,7 +389,7 @@ def idea_template_download(request: HttpRequest):
 
 @csrf_exempt
 @require_POST
-def csp_report(request):
+def csp_report(request) -> HttpResponse:
     """Handle CSP violation reports"""
     try:
         report = json.loads(request.body.decode("utf-8"))
@@ -807,7 +807,7 @@ def timeline_import(request: HttpRequest) -> HttpResponse:
 
 
 @login_required
-def inspiration_summary(request: HttpRequest):
+def inspiration_summary(request: HttpRequest) -> HttpResponse:
     """
     Render the 'Inspiration Summary' page of the application.
     """
@@ -818,7 +818,7 @@ def inspiration_summary(request: HttpRequest):
 
 
 @login_required
-def inspiration_create(request: HttpRequest):
+def inspiration_create(request: HttpRequest) -> HttpResponse:
     """
     Create a new inspiration.
 
@@ -865,7 +865,7 @@ def inspiration_create(request: HttpRequest):
 
 
 @login_required
-def inspiration_detail(request: HttpRequest, inspiration_slug: str):
+def inspiration_detail(request: HttpRequest, inspiration_slug: str) -> HttpResponse:
     """
     Display the details of a specific inspiration.
 
@@ -915,7 +915,7 @@ def inspiration_detail(request: HttpRequest, inspiration_slug: str):
 
 
 @login_required
-def inspiration_edit(request: HttpRequest, inspiration_slug: str):
+def inspiration_edit(request: HttpRequest, inspiration_slug: str) -> HttpResponse:
     """
     Edit an existing inspiration.
 
@@ -983,7 +983,7 @@ def inspiration_delete_modal(request: HttpRequest) -> HttpResponse | JsonRespons
 
 
 @login_required
-def inspiration_delete(request: HttpRequest, inspiration_slug: str):
+def inspiration_delete(request: HttpRequest, inspiration_slug: str) -> HttpResponse:
     """
     Deletes an inspiration by marking it as deleted.
 
@@ -1008,7 +1008,7 @@ def inspiration_delete(request: HttpRequest, inspiration_slug: str):
 
 
 @login_required
-def question_create(request: HttpRequest):
+def question_create(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
         form = QuestionForm(request.POST)
         if form.is_valid():
@@ -1048,7 +1048,7 @@ def question_create(request: HttpRequest):
 
 
 @login_required
-def question_edit(request: HttpRequest, question_slug: str):
+def question_edit(request: HttpRequest, question_slug: str) -> HttpResponse:
     question = get_object_or_404(Question, slug=question_slug, is_deleted=False)
     try:
         question = Question.objects.get(slug=question_slug, is_deleted=False)
@@ -1114,7 +1114,7 @@ def question_delete_modal(request: HttpRequest) -> HttpResponse | JsonResponse:
 
 
 @login_required
-def question_delete(request: HttpRequest, question_slug: str):
+def question_delete(request: HttpRequest, question_slug: str) -> HttpResponse:
     question = get_object_or_404(Question, slug=question_slug, is_deleted=False)
     try:
         question = Question.objects.get(slug=question_slug, is_deleted=False)
@@ -1135,7 +1135,7 @@ def question_delete(request: HttpRequest, question_slug: str):
 
 
 @login_required
-def question_detail(request: HttpRequest, question_slug: str):
+def question_detail(request: HttpRequest, question_slug: str) -> HttpResponse:
     try:
         question = Question.objects.get(slug=question_slug, is_deleted=False)
 
@@ -1174,7 +1174,15 @@ def question_detail(request: HttpRequest, question_slug: str):
 
 
 @login_required
-def question_summary(request: HttpRequest):
+def question_summary(request: HttpRequest) -> HttpResponse:
     questions = Question.objects.filter(is_deleted=False).order_by("created_at")
     context = {"questions": questions, "form": QuestionForm()}
     return render(request, "core/question_summary.html", context)
+
+
+@login_required
+def planning_home(request: HttpRequest) -> HttpResponse:
+    """
+    Render the 'Planning Home' page of the application.
+    """
+    return render(request, "core/planning_home.html")

@@ -1,4 +1,9 @@
 * Public
+  * Our Story
+  * Venue
+  * FAQ
+  * RSVP
+  * Upload Photos
 * Private
   * Deadlines
     * Summary: Count of deadlines by list

@@ -8,6 +8,7 @@ A Question contains a question and answer which is displayed on the public FAQ p
     * Question
     * Answer
     * Order
+    * Published
     * Record Metadata
       * Created by Name & Timestamp
       * Last Updated by Name & Timestamp

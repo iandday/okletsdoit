@@ -175,7 +175,7 @@ class QuestionForm(forms.ModelForm):
 
     class Meta:
         model = Question
-        fields = ["question", "answer"]
+        fields = ["question", "answer", "order", "published"]
         widgets = {
             "question": forms.TextInput(
                 attrs={
@@ -190,6 +190,18 @@ class QuestionForm(forms.ModelForm):
                     "rows": 40,
                     "placeholder": "Enter answer text",
                     "required": True,
+                }
+            ),
+            "order": forms.NumberInput(
+                attrs={
+                    "class": "input input-bordered edit-card-field-value",
+                    "placeholder": "Enter order",
+                    "required": True,
+                },
+            ),
+            "published": forms.CheckboxInput(
+                attrs={
+                    "class": "checkbox checkbox-primary edit-card-field-toggle",
                 }
             ),
         }
