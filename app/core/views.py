@@ -2,35 +2,52 @@ import datetime
 import io
 import json
 import logging
+from datetime import timedelta
+from decimal import Decimal
 from io import BytesIO
-from unicodedata import category
 
 import polars as pl
+from attachments.forms import AttachmentUploadForm
+from attachments.models import Attachment
+from contacts.models import Contact
+from deadline.models import Deadline
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import HttpRequest, QueryDict
+from django.db.models import Q
+from django.db.models import Sum
+from django.http import HttpRequest
 from django.http import HttpResponse
 from django.http import JsonResponse
+from django.http import QueryDict
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.shortcuts import render
-from django.db.models import Q
 from django.urls import reverse
+from django.utils import timezone
 from django.utils.text import slugify
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
-from attachments.forms import AttachmentUploadForm
-from attachments.models import Attachment
+from expenses.models import Category
+
+
+from expenses.models import Expense
+from guestlist.models import Guest
+from guestlist.models import GuestGroup
+from list.models import List
+from list.models import ListEntry
 from shared_helpers.table_helpers import format_row_action_cell
 
-from core.forms import IdeaForm, QuestionForm
-from core.forms import IdeaImportForm
-from core.forms import InspirationForm
-from core.forms import TimelineForm
-from core.forms import TimelineImportForm
-from core.models import Idea
+from .forms import IdeaForm
+from .forms import IdeaImportForm
+from .forms import InspirationForm
+from .forms import QuestionForm
+from .forms import TimelineForm
+from .forms import TimelineImportForm
+from .models import Idea
 
-from .models import Inspiration, Question
+
+from .models import Inspiration
+from .models import Question
 from .models import Timeline
 
 logger = logging.getLogger(__name__)
@@ -1183,6 +1200,107 @@ def question_summary(request: HttpRequest) -> HttpResponse:
 @login_required
 def planning_home(request: HttpRequest) -> HttpResponse:
     """
-    Render the 'Planning Home' page of the application.
+    Render the 'Planning Home' page with comprehensive wedding planning summary.
     """
-    return render(request, "core/planning_home.html")
+
+    now = timezone.now()
+
+    # Budget & Expenses data
+    expenses = Expense.objects.filter(is_deleted=False)
+    total_estimated = expenses.aggregate(total=Sum("estimated_amount"))["total"] or Decimal("0.00")
+    total_actual = expenses.aggregate(total=Sum("actual_amount"))["total"] or Decimal("0.00")
+    expense_count = expenses.count()
+    category_count = Category.objects.filter(is_deleted=False).count()
+    purchased_count = expenses.filter(actual_amount__isnull=False).count()
+
+    # Guest List data
+    guests = Guest.objects.filter(is_deleted=False)
+    guest_groups = GuestGroup.objects.filter(is_deleted=False)
+    guest_count = guests.count()
+    guest_group_count = guest_groups.count()
+    confirmed_guests = guests.filter(is_attending=True).count()
+    total_guests = guest_count  # You might want to calculate this differently based on your logic
+
+    # Timeline data
+    timelines = Timeline.objects.filter(is_deleted=False)
+    timeline_count = timelines.count()
+    confirmed_timeline = timelines.filter(confirmed=True).count()
+    published_timeline = timelines.filter(published=True).count()
+
+    # Calculate days until wedding (assuming you have a wedding date somewhere)
+    # You might need to adjust this based on how you store the wedding date
+    wedding_date = None
+    days_until_wedding = None
+
+    # Try to get wedding date from timeline events
+    ceremony_event = timelines.filter(Q(name__icontains="ceremony") | Q(name__icontains="wedding")).first()
+    if ceremony_event and ceremony_event.start:
+        wedding_date = ceremony_event.start.date()
+        days_until_wedding = (wedding_date - now.date()).days
+
+    # Deadlines data
+    deadlines = Deadline.objects.filter(is_deleted=False)
+    deadline_count = deadlines.count()
+    upcoming_deadlines = deadlines.filter(due_date__gte=now, completed=False).count()
+    completed_deadlines = deadlines.filter(completed=True).count()
+
+    # Lists data
+    lists = List.objects.filter(is_deleted=False)
+    list_entries = ListEntry.objects.filter(is_deleted=False)
+    list_count = lists.count()
+    list_entry_count = list_entries.count()
+    completed_entries = list_entries.filter(is_completed=True).count()
+
+    # Contacts data
+    contacts = Contact.objects.filter(is_deleted=False)
+    contact_count = contacts.count()
+    vendor_count = contacts.filter(category="vendor").count()
+
+    # Count contacts with files
+    contacts_with_files = contacts.filter(
+        pk__in=Attachment.objects.filter(content_type__app_label="contacts", content_type__model="contact").values_list(
+            "object_id", flat=True
+        )
+    ).count()
+
+    # Recent Activity
+    recent_ideas = Idea.objects.filter(is_deleted=False).order_by("-created_at")[:5]
+    upcoming_deadline_items = deadlines.filter(
+        due_date__gte=now, due_date__lte=now + timedelta(days=30), completed=False
+    ).order_by("due_date")[:5]
+
+    context = {
+        # Budget stats
+        "total_estimated": total_estimated,
+        "total_actual": total_actual,
+        "expense_count": expense_count,
+        "category_count": category_count,
+        "purchased_count": purchased_count,
+        # Guest stats
+        "guest_count": guest_count,
+        "guest_group_count": guest_group_count,
+        "confirmed_guests": confirmed_guests,
+        "total_guests": total_guests,
+        # Timeline stats
+        "timeline_count": timeline_count,
+        "confirmed_timeline": confirmed_timeline,
+        "published_timeline": published_timeline,
+        "days_until_wedding": days_until_wedding,
+        # Deadline stats
+        "deadline_count": deadline_count,
+        "upcoming_deadlines": upcoming_deadlines,
+        "completed_deadlines": completed_deadlines,
+        # List stats
+        "list_count": list_count,
+        "list_entry_count": list_entry_count,
+        "completed_entries": completed_entries,
+        # Contact stats
+        "contact_count": contact_count,
+        "vendor_count": vendor_count,
+        "contacts_with_files": contacts_with_files,
+        # Recent activity
+        "recent_ideas": recent_ideas,
+        "upcoming_deadline_items": upcoming_deadline_items,
+    }
+
+    return render(request, "core/planning_home.html", context)

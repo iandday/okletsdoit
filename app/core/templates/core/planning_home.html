@@ -1,0 +1,302 @@
+{% extends "components/layout/base.html" %}
+
+{% load static %}
+
+{% block title %}
+    Wedding Planning Dashboard
+{% endblock title %}
+{% block content %}
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <h1 class="text-5xl font-bold text-base-content mb-4">Wedding Planning Dashboard</h1>
+            <p class="text-xl text-base-content/70">Your complete wedding planning overview</p>
+        </div>
+        <!-- Quick Stats -->
+        <div class="stats-card">
+            <div class="stats-card-stats grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <div class="stats-card-stat">
+                    <div class="stats-card-stat-title">Total Budget</div>
+                    <div class="stats-card-stat-value">${{ total_estimated|floatformat:0|default:"0" }}</div>
+                    <div class="stats-card-stat-desc">Estimated costs</div>
+                </div>
+                <div class="stats-card-stat">
+                    <div class="stats-card-stat-title">Spent</div>
+                    <div class="stats-card-stat-value">${{ total_actual|floatformat:0|default:"0" }}</div>
+                    <div class="stats-card-stat-desc">Actual costs</div>
+                </div>
+                <div class="stats-card-stat">
+                    <div class="stats-card-stat-title">Guest Count</div>
+                    <div class="stats-card-stat-value">{{ total_guests|default:"0" }}</div>
+                    <div class="stats-card-stat-desc">Expected attendees</div>
+                </div>
+                <div class="stats-card-stat">
+                    <div class="stats-card-stat-title">Days to Go</div>
+                    <div class="stats-card-stat-value">{{ days_until_wedding|default:"∞" }}</div>
+                    <div class="stats-card-stat-desc">Until the big day</div>
+                </div>
+            </div>
+        </div>
+        <!-- Planning Sections Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Budget & Expenses -->
+            <div class="list-card">
+                <div class="list-card-body">
+                    <h2 class="list-card-title">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             class="h-6 w-6"
+                             fill="none"
+                             viewBox="0 0 24 24"
+                             stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+                        </svg>
+                        Budget & Expenses
+                    </h2>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex justify-between">
+                            <span>Total Expenses:</span>
+                            <span class="font-semibold">{{ expense_count|default:"0" }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Categories:</span>
+                            <span class="font-semibold">{{ category_count|default:"0" }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Purchased:</span>
+                            <span class="font-semibold">{{ purchased_count|default:"0" }}</span>
+                        </div>
+                    </div>
+                    <div class="card-actions justify-center">
+                        <a href="{% url 'expenses:summary' %}" class="btn btn-primary btn-sm">View Budget</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Guest List -->
+            <div class="list-card">
+                <div class="list-card-body">
+                    <h2 class="list-card-title">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             class="h-6 w-6"
+                             fill="none"
+                             viewBox="0 0 24 24"
+                             stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+                        </svg>
+                        Guest List
+                    </h2>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex justify-between">
+                            <span>Guest Groups:</span>
+                            <span class="font-semibold">{{ guest_group_count|default:"0" }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Total Guests:</span>
+                            <span class="font-semibold">{{ guest_count|default:"0" }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Confirmed:</span>
+                            <span class="font-semibold">{{ confirmed_guests|default:"0" }}</span>
+                        </div>
+                    </div>
+                    <div class="card-actions justify-center">
+                        <a href="{% url 'guestlist:guestlist_summary' %}"
+                           class="btn btn-primary btn-sm">View Guests</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Timeline -->
+            <div class="list-card">
+                <div class="list-card-body">
+                    <h2 class="list-card-title">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             class="h-6 w-6"
+                             fill="none"
+                             viewBox="0 0 24 24"
+                             stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        Wedding Timeline
+                    </h2>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex justify-between">
+                            <span>Total Events:</span>
+                            <span class="font-semibold">{{ timeline_count|default:"0" }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Confirmed:</span>
+                            <span class="font-semibold">{{ confirmed_timeline|default:"0" }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Published:</span>
+                            <span class="font-semibold">{{ published_timeline|default:"0" }}</span>
+                        </div>
+                    </div>
+                    <div class="card-actions justify-center">
+                        <a href="{% url 'core:timeline_summary' %}"
+                           class="btn btn-primary btn-sm">View Timeline</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Deadlines -->
+            <div class="list-card">
+                <div class="list-card-body">
+                    <h2 class="list-card-title">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             class="h-6 w-6"
+                             fill="none"
+                             viewBox="0 0 24 24"
+                             stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Deadlines
+                    </h2>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex justify-between">
+                            <span>Total Deadlines:</span>
+                            <span class="font-semibold">{{ deadline_count|default:"0" }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Upcoming:</span>
+                            <span class="font-semibold">{{ upcoming_deadlines|default:"0" }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Completed:</span>
+                            <span class="font-semibold">{{ completed_deadlines|default:"0" }}</span>
+                        </div>
+                    </div>
+                    <div class="card-actions justify-center">
+                        <a href="{% url 'deadline:deadline_summary' %}"
+                           class="btn btn-primary btn-sm">View Deadlines</a>
+                    </div>
+                </div>
+            </div>
+            <!-- To-Do Lists -->
+            <div class="list-card">
+                <div class="list-card-body">
+                    <h2 class="list-card-title">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             class="h-6 w-6"
+                             fill="none"
+                             viewBox="0 0 24 24"
+                             stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                        </svg>
+                        To-Do Lists
+                    </h2>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex justify-between">
+                            <span>Total Lists:</span>
+                            <span class="font-semibold">{{ list_count|default:"0" }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>List Items:</span>
+                            <span class="font-semibold">{{ list_entry_count|default:"0" }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Completed:</span>
+                            <span class="font-semibold">{{ completed_entries|default:"0" }}</span>
+                        </div>
+                    </div>
+                    <div class="card-actions justify-center">
+                        <a href="{% url 'list:summary' %}" class="btn btn-primary btn-sm">View Lists</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Contacts -->
+            <div class="list-card">
+                <div class="list-card-body">
+                    <h2 class="list-card-title">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             class="h-6 w-6"
+                             fill="none"
+                             viewBox="0 0 24 24"
+                             stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                        Contacts
+                    </h2>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex justify-between">
+                            <span>Total Contacts:</span>
+                            <span class="font-semibold">{{ contact_count|default:"0" }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Vendors:</span>
+                            <span class="font-semibold">{{ vendor_count|default:"0" }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>With Files:</span>
+                            <span class="font-semibold">{{ contacts_with_files|default:"0" }}</span>
+                        </div>
+                    </div>
+                    <div class="card-actions justify-center">
+                        <a href="{% url 'contacts:list' %}" class="btn btn-primary btn-sm">View Contacts</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Recent Activity Section -->
+        <div class="mt-12">
+            <h2 class="text-3xl font-bold text-base-content mb-6">Recent Activity</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Recent Ideas -->
+                {% if recent_ideas %}
+                    <div class="detail-card">
+                        <div class="detail-card-body">
+                            <h3 class="detail-card-title">Recent Ideas</h3>
+                            <div class="space-y-3">
+                                {% for idea in recent_ideas %}
+                                    <div class="flex items-start space-x-3">
+                                        <div class="badge badge-primary badge-sm mt-1">New</div>
+                                        <div>
+                                            <div class="detail-card-field-value">{{ idea.title }}</div>
+                                            <div class="detail-card-field-value-secondary text-sm">{{ idea.created_at|date:"M d" }}</div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <div class="detail-card-actions">
+                                <a href="{% url 'core:idea_list' %}" class="btn btn-outline btn-sm">View All Ideas</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                <!-- Upcoming Deadlines -->
+                {% if upcoming_deadline_items %}
+                    <div class="detail-card">
+                        <div class="detail-card-body">
+                            <h3 class="detail-card-title">Upcoming Deadlines</h3>
+                            <div class="space-y-3">
+                                {% for deadline in upcoming_deadline_items %}
+                                    <div class="flex items-start space-x-3">
+                                        <div class="badge badge-warning badge-sm mt-1">Due Soon</div>
+                                        <div>
+                                            <div class="detail-card-field-value">{{ deadline.title }}</div>
+                                            <div class="detail-card-field-value-secondary text-sm">Due {{ deadline.deadline_date|date:"M d" }}</div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <div class="detail-card-actions">
+                                <a href="{% url 'deadline:deadline_summary' %}"
+                                   class="btn btn-outline btn-sm">View All Deadlines</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <!-- Quick Actions -->
+        <div class="text-center mt-12">
+            <h2 class="text-3xl font-bold text-base-content mb-6">Quick Actions</h2>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="{% url 'expenses:create' %}" class="btn btn-primary">Add Expense</a>
+                <a href="{% url 'guestlist:guest_create' %}" class="btn btn-primary">Add Guest</a>
+                <a href="{% url 'contacts:create' %}" class="btn btn-primary">Add Contact</a>
+                <a href="{% url 'list:create' %}" class="btn btn-primary">Create List</a>
+                <a href="{% url 'deadline:deadline_create' %}" class="btn btn-primary">Add Deadline</a>
+                <a href="{% url 'core:timeline_create' %}" class="btn btn-primary">Add Timeline Event</a>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

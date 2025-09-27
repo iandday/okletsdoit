@@ -111,6 +111,7 @@ def site_vars(request):
             {"view_name": "core:photos", "icon": "fa-camera", "text": "Upload Photos"},
         ],
         "planning_links": [
+            {"view_name": "core:planning_home", "icon": "fa-list-check", "text": "Home"},
             {"view_name": "list:summary", "icon": "fa-list-check", "text": "Lists"},
             {"view_name": "deadline:deadline_summary", "icon": "fa-list", "text": "Deadlines"},
             {"view_name": "core:idea_list", "icon": "fa-lightbulb", "text": "Ideas"},

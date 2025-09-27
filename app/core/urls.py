@@ -11,6 +11,7 @@ urlpatterns = [
     path("photos/", views.photos, name="photos"),
     path("rsvp/", views.rsvp, name="rsvp"),
     path("faq/", views.faq, name="faq"),
+    path("planning/", views.planning_home, name="planning_home"),
     path("timeline/", views.timeline_summary, name="timeline_summary"),
     path("timeline_data/", views.timeline_data, name="timeline_data"),
     path("timeline_delete_modal/", views.timeline_delete_modal, name="timeline_delete_modal"),
