@@ -23,14 +23,14 @@ from attachments.forms import AttachmentUploadForm
 from attachments.models import Attachment
 from shared_helpers.table_helpers import format_row_action_cell
 
-from core.forms import IdeaForm
+from core.forms import IdeaForm, QuestionForm
 from core.forms import IdeaImportForm
 from core.forms import InspirationForm
 from core.forms import TimelineForm
 from core.forms import TimelineImportForm
 from core.models import Idea
 
-from .models import Inspiration
+from .models import Inspiration, Question
 from .models import Timeline
 
 logger = logging.getLogger(__name__)
@@ -72,19 +72,22 @@ def photos(request: HttpRequest):
     return render(request, "core/photos.html")
 
 
+def faq(request: HttpRequest) -> HttpResponse:
+    questions = Question.objects.filter(is_deleted=False).order_by("order").order_by("question")
+    return render(request, "core/faq.html", {"questions": questions})
+
+
 @login_required
 def idea_list(request: HttpRequest):
     """
     Render the 'Idea List' page of the application.
     """
     ideas = Idea.objects.filter(is_deleted=False).select_related("created_by", "updated_by").order_by("created_at")
-    add_idea_form = IdeaForm()
     return render(
         request,
         "core/idea_list.html",
         {
             "ideas": ideas,
-            "add_idea_form": add_idea_form,
             "delete_modal_url": reverse("core:idea_delete_modal"),
         },
     )
@@ -1002,3 +1005,176 @@ def inspiration_delete(request: HttpRequest, inspiration_slug: str):
     else:
         messages.error(request, "Invalid request method. Please use POST to delete an inspiration.")
         return redirect("core:inspiration_detail", inspiration_slug=inspiration.slug)
+
+
+@login_required
+def question_create(request: HttpRequest):
+    if request.method == "POST":
+        form = QuestionForm(request.POST)
+        if form.is_valid():
+            question: Question = form.save(commit=False)
+            question.created_by = request.user
+            question.updated_by = request.user
+            question.save()
+            messages.success(request, "Question created successfully.")
+            return redirect("core:question_detail", question_slug=question.slug)
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field}: {error}")
+    else:
+        form = QuestionForm()
+    intro = "Create a new question for the FAQ Page"
+    breadcrumbs = [
+        {"title": "Questions", "url": reverse("core:question_summary")},
+        {"title": "New Question", "url": None},
+    ]
+    cancel_url = reverse("core:question_summary")
+    context = {
+        "block_title": "New Question",
+        "breadcrumbs": breadcrumbs,
+        "title": "New Question",
+        "intro": intro,
+        "form": form,
+        "object": None,
+        "submit_text": "Create",
+        "cancel_url": cancel_url,
+        "first_field": "question",
+        "file": False,
+        "hugerte_enabled": True,
+        "selector": "id_answer",
+    }
+    return render(request, "form/object.html", context)
+
+
+@login_required
+def question_edit(request: HttpRequest, question_slug: str):
+    question = get_object_or_404(Question, slug=question_slug, is_deleted=False)
+    try:
+        question = Question.objects.get(slug=question_slug, is_deleted=False)
+
+    except Question.DoesNotExist:
+        messages.error(request, "Question not found.")
+        return redirect("core:question_summary")
+
+    if request.method == "POST":
+        form = QuestionForm(request.POST, instance=question)
+        if form.is_valid():
+            question = form.save(commit=False)
+            question.updated_by = request.user
+            question.save()
+            messages.success(request, "Question updated successfully.")
+            return redirect("core:question_detail", question_slug=question.slug)
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field}: {error}")
+    else:
+        form = QuestionForm(instance=question)
+
+    intro = "Edit an existing question"
+    breadcrumbs = [
+        {"title": "Questions", "url": reverse("core:question_summary")},
+        {"title": question, "url": reverse("core:question_detail", args=[question.slug])},
+    ]
+    cancel_url = reverse("core:question_detail", args=[question.slug])
+    context = {
+        "block_title": "Edit Question",
+        "breadcrumbs": breadcrumbs,
+        "title": "Edit Question",
+        "intro": intro,
+        "form": form,
+        "object": None,
+        "submit_text": "Update",
+        "cancel_url": cancel_url,
+        "first_field": "question",
+        "file": False,
+        "hugerte_enabled": True,
+        "selector": "id_answer",
+    }
+    return render(request, "form/object.html", context)
+
+
+@login_required
+def question_delete_modal(request: HttpRequest) -> HttpResponse | JsonResponse:
+    question_slug = request.GET.get("slug")
+    if not question_slug:
+        return JsonResponse({"error": "Question slug is required"}, status=400)
+    try:
+        question = Question.objects.get(slug=question_slug, is_deleted=False)
+    except Question.DoesNotExist:
+        return JsonResponse({"error": "Question not found"}, status=404)
+
+    context = {
+        "object": question,
+        "object_type": "Question",
+        "action_url": reverse("core:question_delete", args=[question.slug]),
+    }
+    return render(request, "components/modal/object_delete_modal_body.html", context)
+
+
+@login_required
+def question_delete(request: HttpRequest, question_slug: str):
+    question = get_object_or_404(Question, slug=question_slug, is_deleted=False)
+    try:
+        question = Question.objects.get(slug=question_slug, is_deleted=False)
+
+    except Question.DoesNotExist:
+        messages.error(request, "Question not found.")
+        return redirect("core:question_summary")
+
+    if request.method == "POST":
+        question.is_deleted = True
+        question.updated_by = request.user
+        question.save()
+        messages.success(request, f"Question '{question}' deleted successfully.")
+        return redirect("core:question_summary")
+    else:
+        messages.error(request, "Invalid request method. Please use POST to delete a question.")
+        return redirect("core:question_detail", question_slug=question.slug)
+
+
+@login_required
+def question_detail(request: HttpRequest, question_slug: str):
+    try:
+        question = Question.objects.get(slug=question_slug, is_deleted=False)
+
+    except Question.DoesNotExist:
+        messages.error(request, "Question not found.")
+        return redirect("core:question_summary")
+
+    breadcrumbs = [
+        {"title": "FAQ", "url": reverse("core:question_summary")},
+        {"title": f"{question}", "url": None},
+    ]
+    attach_url_query = QueryDict("", mutable=True)
+    attach_url_query["next"] = request.path
+    context = {
+        "block_title": f"{question}",
+        "breadcrumbs": breadcrumbs,
+        "title": f"{question}",
+        "object": question,
+        "edit_url": reverse("core:question_edit", args=[question.slug]),
+        "status": None,
+        "status_text": None,
+        "link_url": None,
+        "image_url": None,
+        "delete_modal_url": reverse("core:question_delete_modal"),
+        "attachments": Attachment.objects.attachments_for_object(question).all(),
+        "attach_form": AttachmentUploadForm(),
+        "attach_submit_url": str(
+            reverse(
+                "attachments:add_attachment",
+                kwargs={"app_label": "core", "model_name": "Question", "pk": question.pk},
+                query=attach_url_query,
+            )
+        ),
+    }
+    return render(request, "core/question_detail.html", context)
+
+
+@login_required
+def question_summary(request: HttpRequest):
+    questions = Question.objects.filter(is_deleted=False).order_by("created_at")
+    context = {"questions": questions, "form": QuestionForm()}
+    return render(request, "core/question_summary.html", context)

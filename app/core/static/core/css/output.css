@@ -15,6 +15,7 @@
     --spacing: 0.25rem;
     --container-sm: 24rem;
     --container-md: 28rem;
+    --container-lg: 32rem;
     --container-2xl: 42rem;
     --container-4xl: 56rem;
     --container-7xl: 80rem;
@@ -5076,6 +5077,9 @@
   .inline-block {
     display: inline-block;
   }
+  .list-item {
+    display: list-item;
+  }
   .table {
     display: table;
   }
@@ -5471,6 +5475,9 @@
   }
   .max-w-full {
     max-width: 100%;
+  }
+  .max-w-lg {
+    max-width: var(--container-lg);
   }
   .max-w-md {
     max-width: var(--container-md);
@@ -5952,6 +5959,9 @@
     border-color: var(--color-warning);
     color: var(--color-warning-content);
     --alert-color: var(--color-warning);
+  }
+  .border-base-300 {
+    border-color: var(--color-base-300);
   }
   .chat-bubble-accent {
     background-color: var(--color-accent);
@@ -7861,6 +7871,26 @@
       --fontsize: 0.875rem;
       --btn-p: 1rem;
       --size: calc(var(--size-field, 0.25rem) * 10);
+    }
+  }
+  .\[\&_ol\]\:ml-6 {
+    & ol {
+      margin-left: calc(var(--spacing) * 6);
+    }
+  }
+  .\[\&_ol\]\:list-decimal {
+    & ol {
+      list-style-type: decimal;
+    }
+  }
+  .\[\&_ul\]\:ml-6 {
+    & ul {
+      margin-left: calc(var(--spacing) * 6);
+    }
+  }
+  .\[\&_ul\]\:list-disc {
+    & ul {
+      list-style-type: disc;
     }
   }
 }

@@ -106,8 +106,9 @@ def site_vars(request):
             {"view_name": "core:home", "icon": "fa-house", "text": "Home"},
             {"view_name": "core:our_story", "icon": "fa-heart", "text": "Our Story"},
             {"view_name": "core:venue", "icon": "fa-hotel", "text": "Venue"},
-            {"view_name": "core:photos", "icon": "fa-camera", "text": "Upload Photos"},
+            {"view_name": "core:faq", "icon": "fa-question", "text": "FAQ"},
             {"view_name": "core:rsvp", "icon": "fa-pen-to-square", "text": "RSVP"},
+            {"view_name": "core:photos", "icon": "fa-camera", "text": "Upload Photos"},
         ],
         "planning_links": [
             {"view_name": "list:summary", "icon": "fa-list-check", "text": "Lists"},
@@ -118,6 +119,7 @@ def site_vars(request):
             {"view_name": "guestlist:guestlist_summary", "icon": "fa-users", "text": "Guest List"},
             {"view_name": "core:timeline_summary", "icon": "fa-users", "text": "Timeline"},
             {"view_name": "core:inspiration_summary", "icon": "fa-users", "text": "Inspiration"},
+            {"view_name": "core:question_summary", "icon": "fa-users", "text": "FAQ"},
         ],
         "sidebar_app_links": [
             {"view_name": "settings", "icon": "fa-gear", "text": "Settings"},

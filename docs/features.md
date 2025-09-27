@@ -28,3 +28,6 @@
   * Inspiration
     * Inspiration summary
     * Insipiration detail
+  * FAQ
+    * FAQ Summary
+    * FAQ Detail

@@ -4,7 +4,7 @@ from django.utils.html import format_html
 from import_export.admin import ImportExportModelAdmin
 from simple_history.admin import SimpleHistoryAdmin
 from django.db import models
-from .models import Idea, Timeline, Inspiration
+from .models import Idea, Timeline, Inspiration, Question
 
 
 @admin.register(Idea)
@@ -171,7 +171,33 @@ class InspirationAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
         super().save_model(request, obj, form, change)
 
 
-# Custom admin site configuration for better styling with daisyUI 5
+@admin.register(Question)
+class QuestionAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
+    list_display = ("question", "created_by", "created_at", "updated_at")
+    list_filter = ("created_at", "updated_at", "is_deleted", "created_by")
+    search_fields = ("question", "answer")
+    prepopulated_fields = {"slug": ("question",)}
+    readonly_fields = ("id", "created_at", "updated_at")
+
+    fieldsets = (
+        ("Basic Information", {"fields": ("question", "slug", "answer")}),
+        ("Tracking", {"fields": ("created_by", "updated_by", "is_deleted"), "classes": ("collapse",)}),
+        ("Timestamps", {"fields": ("id", "created_at", "updated_at"), "classes": ("collapse",)}),
+    )
+
+    def get_queryset(self, request):
+        """Optimize queryset and exclude deleted questions by default"""
+        queryset = super().get_queryset(request)
+        return queryset.select_related("created_by", "updated_by").filter(is_deleted=False)
+
+    def save_model(self, request, obj, form, change):
+        """Auto-set created_by and updated_by fields"""
+        if not change:  # Creating new object
+            obj.created_by = request.user
+        obj.updated_by = request.user
+        super().save_model(request, obj, form, change)
+
+
 admin.site.site_header = "Wedding Planning Manager"
 admin.site.site_title = "Wedding Admin"
 admin.site.index_title = "Manage Wedding Tasks & Ideas"

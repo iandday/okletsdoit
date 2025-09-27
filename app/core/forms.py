@@ -1,7 +1,7 @@
 import importlib
 from django import forms
 from django.forms import ModelForm
-from .models import Idea, Timeline, Inspiration
+from .models import Idea, Question, Timeline, Inspiration
 from users.models import User
 from django.core.files.base import ContentFile
 
@@ -166,3 +166,36 @@ class InspirationForm(ModelForm):
             except Exception:
                 pass
             return image_file
+
+
+class QuestionForm(forms.ModelForm):
+    """
+    Form for creating and editing questions.
+    """
+
+    class Meta:
+        model = Question
+        fields = ["question", "answer"]
+        widgets = {
+            "question": forms.TextInput(
+                attrs={
+                    "class": "input input-bordered edit-card-field-value",
+                    "placeholder": "Enter question text",
+                    "required": True,
+                },
+            ),
+            "answer": forms.Textarea(
+                attrs={
+                    "class": "textarea textarea-bordered edit-card-field-value",
+                    "rows": 40,
+                    "placeholder": "Enter answer text",
+                    "required": True,
+                }
+            ),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["question"].label = "Question"
+        self.fields["answer"].label = "Answer"
+        self.fields["answer"].required = False

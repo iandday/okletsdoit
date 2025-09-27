@@ -127,3 +127,41 @@ class Inspiration(models.Model):
             self.slug = slug
 
         super().save(*args, **kwargs)
+
+
+class Question(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    question = models.TextField(max_length=500)
+    slug = models.SlugField(max_length=250, null=True, blank=True, unique=True)
+    answer = models.TextField(blank=True, null=True)
+    order = models.PositiveIntegerField(default=0)
+    created_by = models.ForeignKey(User, related_name="created_by_question", on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_by = models.ForeignKey(
+        User, related_name="updated_by_question", on_delete=models.CASCADE, null=True, blank=True
+    )
+    updated_at = models.DateTimeField(auto_now=True)
+    is_deleted = models.BooleanField(default=False)
+    history = HistoricalRecords()
+
+    def __str__(self):
+        return self.question
+
+    class Meta:
+        ordering = ["question"]
+        verbose_name_plural = "Questions"
+        constraints = [models.UniqueConstraint(fields=["question"], name="unique_question")]
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base_slug = slugify(self.question[:50])
+            slug = base_slug
+            counter = 1
+
+            while Question.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+
+            self.slug = slug
+
+        super().save(*args, **kwargs)

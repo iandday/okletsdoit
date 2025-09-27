@@ -1,0 +1,100 @@
+{% extends "components/layout/base.html" %}
+
+{% load static %}
+
+{% block title %}
+    FAQ
+{% endblock title %}
+{% block content %}
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <!-- Page Header -->
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
+            <div>
+                <h1 class="text-3xl font-bold text-base-content mb-2">FAQ</h1>
+                <p class="text-base-content/70">Manage your wedding FAQ content</p>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-2 mt-4 sm:mt-0">
+                <a href="{% url 'core:question_create' %}" class="btn btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         class="h-5 w-5"
+                         fill="none"
+                         viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                    New Question
+                </a>
+            </div>
+        </div>
+        <!-- Main Content -->
+        <div class="grid grid-cols-1  gap-6">
+            <!-- Questions -->
+            {% if questions %}
+                {% for question in questions %}
+                    <div class="list-card">
+                        <div class="card-body">
+                            <!-- Question Header -->
+                            <div class="flex items-start justify-between mb-4">
+                                <a class="list-card-title"
+                                   href="{% url 'core:question_detail' question.slug %}">{{ question.question }}</a>
+                                {% url 'core:question_detail' question.slug as detail_action %}
+                                {% url 'core:question_edit' question.slug as update_action %}
+                                <c-object.menu slug="{{ question.slug }}" />
+                            </div>
+                            <!-- Description Preview -->
+                            <div class="prose prose-sm max-w-none mb-4 ckeditor-content">{{ question.answer|safe|truncatewords:50 }}</div>
+                            <!-- Card Actions -->
+                            <div class="card-actions justify-center items-center">
+                                <a class="btn btn-primary btn-sm"
+                                   href="{% url 'core:question_detail' question.slug %}">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         class="h-4 w-4"
+                                         fill="none"
+                                         viewBox="0 0 24 24"
+                                         stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
+                                    View Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <!-- Empty State -->
+                <div class="hero min-h-96">
+                    <div class="hero-content text-center">
+                        <div class="max-w-md">
+                            <div class="mb-8">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     class="h-24 w-24 mx-auto text-base-content/30"
+                                     fill="none"
+                                     viewBox="0 0 24 24"
+                                     stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                            </div>
+                            <h2 class="text-2xl font-bold text-base-content mb-4">No Questions Yet</h2>
+                            <p class="text-base-content/70 mb-6">Start planning your wedding FAQ by adding your first question.</p>
+                            <a href="{% url 'core:question_create' %}" class="btn btn-primary">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     class="h-5 w-5"
+                                     fill="none"
+                                     viewBox="0 0 24 24"
+                                     stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                </svg>
+                                Create First FAQ Entry
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        <c-object.delete-modal />
+    </div>
+{% endblock content %}
+{% block extra_script %}
+    <c-object.delete-script />
+{% endblock extra_script %}
