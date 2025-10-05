@@ -27,8 +27,12 @@
             <div>
                 <div class="detail-card-field-name">Vendor</div>
                 <div class="detail-card-field-value">
-                    <a href="{% url 'contacts:detail' object.vendor.slug %}"
-                       class="link link-primary">{{ object.vendor.name }}</a>
+                    {% if object.vendor %}
+                        <a href="{% url 'contacts:detail' object.vendor.slug %}"
+                           class="link link-primary">{{ object.vendor.name }}</a>
+                    {% else %}
+                        -
+                    {% endif %}
                 </div>
             </div>
             <div>
@@ -64,8 +68,12 @@
             <div>
                 <div class="detail-card-field-name">Vendor</div>
                 <div class="detail-card-field-value">
-                    <a href="{% url 'contacts:detail' object.vendor.slug %}"
-                       class="link link-primary">{{ object.vendor.name }}</a>
+                    {% if object.vendor %}
+                        <a href="{% url 'contacts:detail' object.vendor.slug %}"
+                           class="link link-primary">{{ object.vendor.name }}</a>
+                    {% else %}
+                        -
+                    {% endif %}
                 </div>
             </div>
             <div>
