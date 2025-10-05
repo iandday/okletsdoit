@@ -32,6 +32,7 @@ env = environ.Env(
     DJANGO_LOG_LEVEL=(str, "INFO"),
     DJANGO_ACCOUNT_ALLOW_REGISTRATION=(bool, True),
     DJANGO_ACCOUNT_ALLOW_SOCIAL_REGISTRATION=(bool, True),
+    AWS_S3_STATIC_DOMAIN_CSP=(str, ""),
 )
 env.read_env(BASE_DIR / ".env", overwrite=True)
 
@@ -216,10 +217,6 @@ USE_I18N = False
 USE_TZ = True
 
 
-STATIC_URL = "/static/"
-MEDIA_URL = "/media/"
-STATIC_ROOT = env.path("STATIC_ROOT")
-MEDIA_ROOT = env.path("MEDIA_ROOT")
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # HTTPS redirect
@@ -230,21 +227,26 @@ CSRF_COOKIE_SECURE = True
 
 CSRF_TRUSTED_ORIGINS = env.list("DJANGO_CSRF_TRUSTED_ORIGINS")
 
+
+style_src = [
+    SELF,
+    env("AWS_S3_STATIC_DOMAIN_CSP"),
+    "cdnjs.cloudflare.com",
+    "cdn.ckeditor.com",
+    "fonts.googleapis.com",
+    "cdn.datatables.net",
+    "cdn.jsdelivr.net",
+    "'unsafe-inline'",  # Required for daisyUI 5 theme switching
+]
+if env("AWS_S3_STATIC_DOMAIN_CSP") != "":
+    style_src.append(env("AWS_S3_STATIC_DOMAIN_CSP"))
+
 CONTENT_SECURITY_POLICY = {
     "EXCLUDE_URL_PREFIXES": ["/excluded-path/"],
     "DIRECTIVES": {
         "default-src": [SELF],
         "script-src": [SELF, NONCE, "code.jquery.com", "cdn.jsdelivr.net"],
-        "style-src": [
-            SELF,
-            # NONCE,
-            "cdnjs.cloudflare.com",
-            "cdn.ckeditor.com",
-            "fonts.googleapis.com",
-            "cdn.datatables.net",
-            "cdn.jsdelivr.net",
-            "'unsafe-inline'",  # Required for daisyUI 5 theme switching
-        ],
+        "style-src": style_src,
         "font-src": [
             SELF,
             "data:",
@@ -278,3 +280,39 @@ DEBUG_TOOLBAR_CONFIG = {
     ],
     "SHOW_TEMPLATE_CONTEXT": True,
 }
+
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3.S3Storage",
+        "OPTIONS": {
+            "bucket_name": env("AWS_MEDIA_BUCKET_NAME"),
+            "region_name": env("AWS_S3_REGION_NAME"),
+            "access_key": env("AWS_ACCESS_KEY_ID"),
+            "secret_key": env("AWS_SECRET_ACCESS_KEY"),
+            "security_token": None,
+            "endpoint_url": env("AWS_S3_ENDPOINT_URL"),
+            "location": "media",
+            "file_overwrite": False,
+            "querystring_auth": True,
+            "querystring_expire": 3600,
+            "addressing_style": "path",
+        },
+    },
+    "staticfiles": {
+        "BACKEND": "storages.backends.s3.S3Storage",
+        "OPTIONS": {
+            "bucket_name": env("AWS_STATIC_BUCKET_NAME"),
+            "region_name": env("AWS_S3_REGION_NAME"),
+            "access_key": env("AWS_ACCESS_KEY_ID"),
+            "secret_key": env("AWS_SECRET_ACCESS_KEY"),
+            "security_token": None,
+            "endpoint_url": env("AWS_S3_ENDPOINT_URL"),
+            "location": "static",
+            "file_overwrite": False,
+            "querystring_auth": False,
+            "custom_domain": env("AWS_S3_STATIC_DOMAIN"),
+        },
+    },
+}
+STATIC_URL = f"https://{env('AWS_S3_STATIC_DOMAIN')}/"
+MEDIA_URL = f"https://{env('AWS_S3_MEDIA_DOMAIN')}/"

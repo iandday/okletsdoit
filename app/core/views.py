@@ -1251,18 +1251,6 @@ def planning_home(request: HttpRequest) -> HttpResponse:
     list_entry_count = list_entries.count()
     completed_entries = list_entries.filter(is_completed=True).count()
 
-    # Contacts data
-    contacts = Contact.objects.filter(is_deleted=False)
-    contact_count = contacts.count()
-    vendor_count = contacts.filter(category="vendor").count()
-
-    # Count contacts with files
-    contacts_with_files = contacts.filter(
-        pk__in=Attachment.objects.filter(content_type__app_label="contacts", content_type__model="contact").values_list(
-            "object_id", flat=True
-        )
-    ).count()
-
     # Recent Activity
     recent_ideas = Idea.objects.filter(is_deleted=False).order_by("-created_at")[:5]
     upcoming_deadline_items = deadlines.filter(
@@ -1294,10 +1282,6 @@ def planning_home(request: HttpRequest) -> HttpResponse:
         "list_count": list_count,
         "list_entry_count": list_entry_count,
         "completed_entries": completed_entries,
-        # Contact stats
-        "contact_count": contact_count,
-        "vendor_count": vendor_count,
-        "contacts_with_files": contacts_with_files,
         # Recent activity
         "recent_ideas": recent_ideas,
         "upcoming_deadline_items": upcoming_deadline_items,

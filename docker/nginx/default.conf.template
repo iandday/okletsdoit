@@ -1,16 +1,14 @@
 upstream django {
-    server django:8000; 
+    server ${DJANGO_HOST}:${DJANGO_PORT};
 }
-
 
 server {
     listen 80;
-    server_name your_domain.com; 
-    client_max_body_size 100M;
-
+    server_name ${NGINX_SERVER_NAME};
+    client_max_body_size ${NGINX_CLIENT_MAX_BODY_SIZE};
 
     location / {
-        proxy_pass http://django;
+        proxy_pass http://${DJANGO_HOST}:${DJANGO_PORT};
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header Host $host;
         proxy_redirect off;
