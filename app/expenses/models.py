@@ -11,6 +11,7 @@ from django_stubs_ext.db.models.manager import RelatedManager
 
 from list.models import ListEntry
 from users.models import User
+from contacts.models import Contact
 
 
 class Category(models.Model):
@@ -48,6 +49,7 @@ class Expense(models.Model):
     description = models.TextField(blank=True, null=True)
     date = models.DateField(blank=True, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
+    vendor = models.ForeignKey(Contact, on_delete=models.PROTECT, null=True, blank=True)
     quantity = models.PositiveIntegerField(default=1)
     unit_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     additional_price = models.DecimalField(

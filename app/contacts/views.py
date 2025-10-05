@@ -17,6 +17,7 @@ from attachments.models import Attachment
 from list.models import ListEntry
 from .models import Contact
 from .forms import ContactForm
+from expenses.models import Expense
 
 logger = logging.getLogger(__name__)
 
@@ -62,12 +63,18 @@ def contact_detail(request, slug):
         messages.error(request, "Contact not found.")
         return redirect("contacts:list")
 
-    # get attachments from associated ListEntry objects where this contact is the vendor
+    # get attachments from associated ListEntry objects and expenses where this contact is the vendor
     associated_entries = ListEntry.objects.filter(vendor=contact)
+    expense_entries = Expense.objects.filter(vendor=contact)
     attachments = Attachment.objects.filter(
         Q(is_deleted=False)
-        & (Q(object_id=contact.id) | Q(object_id__in=associated_entries.values_list("id", flat=True)))
+        & (
+            (Q(object_id__in=associated_entries.values_list("id", flat=True)))
+            | Q(object_id__in=expense_entries.values_list("id", flat=True))
+            | Q(object_id=contact.id)
+        )
     )
+    attachments = attachments.distinct().order_by("-uploaded_at")
 
     breadcrumbs = [
         {"title": "Contacts", "url": reverse("contacts:list")},

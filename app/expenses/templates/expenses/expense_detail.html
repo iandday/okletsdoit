@@ -25,6 +25,13 @@
                 </div>
             </div>
             <div>
+                <div class="detail-card-field-name">Vendor</div>
+                <div class="detail-card-field-value">
+                    <a href="{% url 'contacts:detail' object.vendor.slug %}"
+                       class="link link-primary">{{ object.vendor.name }}</a>
+                </div>
+            </div>
+            <div>
                 {% with first_entry=list_entries.first %}
                     <div class="detail-card-field-name">List Entry</div>
                     <div class="detail-card-field-value">
@@ -52,6 +59,13 @@
                 <div class="detail-card-field-value">
                     <a href="{% url 'expenses:category_detail' object.category.slug %}"
                        class="link link-primary">{{ object.category.name }}</a>
+                </div>
+            </div>
+            <div>
+                <div class="detail-card-field-name">Vendor</div>
+                <div class="detail-card-field-value">
+                    <a href="{% url 'contacts:detail' object.vendor.slug %}"
+                       class="link link-primary">{{ object.vendor.name }}</a>
                 </div>
             </div>
             <div>

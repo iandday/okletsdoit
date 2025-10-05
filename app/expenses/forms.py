@@ -37,6 +37,7 @@ class ExpenseForm(ModelForm):
             "description",
             "date",
             "category",
+            "vendor",
             "unit_price",
             "additional_price",
             "quantity",
@@ -53,6 +54,7 @@ class ExpenseForm(ModelForm):
             ),
             "date": forms.DateInput(attrs={"class": "input input-bordered edit-card-field-value", "type": "date"}),
             "category": forms.Select(attrs={"class": "select select-bordered edit-card-field-value"}),
+            "vendor": forms.Select(attrs={"class": "select select-bordered edit-card-field-value"}),
             "quantity": forms.NumberInput(attrs={"class": "input input-bordered edit-card-field-value", "min": 1}),
             "unit_price": forms.NumberInput(
                 attrs={"class": "input input-bordered edit-card-field-value", "step": 0.01}
