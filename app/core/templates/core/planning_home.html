@@ -30,14 +30,6 @@
                 <div class="stat-desc">Until the big day</div>
             </div>
         </div>
-        <div class="mermaid">
-            flowchart LR;
-            B(## Guests)
-            B --> C{Invited}
-            C -->D[Accepted]
-            C -->E[Declined]
-            C -->F[Pending]
-        </div>
         <!-- Planning Sections Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <!-- Budget & Expenses -->
@@ -87,16 +79,26 @@
                     </h2>
                     <div class="space-y-2 mb-4">
                         <div class="flex justify-between">
-                            <span>Guest Groups:</span>
-                            <span class="font-semibold">{{ guest_group_count|default:"0" }}</span>
-                        </div>
-                        <div class="flex justify-between">
                             <span>Total Guests:</span>
-                            <span class="font-semibold">{{ guest_count|default:"0" }}</span>
+                            <span class="font-semibold">{{ guest_count }}</span>
                         </div>
                         <div class="flex justify-between">
-                            <span>Confirmed:</span>
-                            <span class="font-semibold">{{ confirmed_guests|default:"0" }}</span>
+                            <span>Invited Guests:</span>
+                            <span class="font-semibold">{{ invited_guests }}</span>
+                        </div>
+                        <div class="stats stats-horizontal w-full mt-2">
+                            <div class="stat text-center">
+                                <div class="stat-title text-secondary-content">Confirmed</div>
+                                <div class="stat-value text-success">{{ confirmed_guests|default:"0" }}</div>
+                            </div>
+                            <div class="stat text-center">
+                                <div class="stat-title text-secondary-content">Declined</div>
+                                <div class="stat-value text-error">{{ declined_guests|default:"0" }}</div>
+                            </div>
+                            <div class="stat text-center">
+                                <div class="stat-title text-secondary-content">Pending</div>
+                                <div class="stat-value text-warning">{{ pending_guests|default:"0" }}</div>
+                            </div>
                         </div>
                     </div>
                     <div class="card-actions justify-center">

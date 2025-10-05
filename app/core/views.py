@@ -1218,8 +1218,10 @@ def planning_home(request: HttpRequest) -> HttpResponse:
     guest_groups = GuestGroup.objects.filter(is_deleted=False)
     guest_count = guests.count()
     guest_group_count = guest_groups.count()
-    confirmed_guests = guests.filter(is_attending=True).count()
-    total_guests = guest_count  # You might want to calculate this differently based on your logic
+    invited_guests = guests.filter(is_invited=True).count()
+    declined_guests = guests.filter(is_attending=False, responded=True, is_invited=True).count()
+    confirmed_guests = guests.filter(is_attending=True, responded=True, is_invited=True).count()
+    pending_guests = guests.filter(responded=False, is_invited=True).count()
 
     # Timeline data
     timelines = Timeline.objects.filter(is_deleted=False)
@@ -1268,7 +1270,9 @@ def planning_home(request: HttpRequest) -> HttpResponse:
         "guest_count": guest_count,
         "guest_group_count": guest_group_count,
         "confirmed_guests": confirmed_guests,
-        "total_guests": total_guests,
+        "declined_guests": declined_guests,
+        "pending_guests": pending_guests,
+        "invited_guests": invited_guests,
         # Timeline stats
         "timeline_count": timeline_count,
         "confirmed_timeline": confirmed_timeline,
