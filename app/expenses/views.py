@@ -13,7 +13,7 @@ import openpyxl
 from io import BytesIO
 from datetime import datetime
 from decimal import Decimal, InvalidOperation
-
+from django.template.loader import render_to_string
 from attachments.models import Attachment, AttachmentManager
 from expenses.forms import CategoryForm, ExpenseForm
 from list.models import ListEntry
@@ -21,46 +21,6 @@ from .models import Category, Expense
 from attachments.forms import AttachmentUploadForm
 
 logger = logging.getLogger(__name__)
-
-
-def format_row_action_cell(detail_url: str, update_url: str, slug: str) -> str:
-    """
-    Format a row action cell with links for detail, update, and delete actions.
-
-    Args:
-        detail_url (str): URL for the detail view.
-        update_url (str): URL for the update view.
-        slug (str): object slug.
-
-    Returns:
-        str: HTML string with action links.
-    """
-    return f"""
-            <div class="flex flex-row gap-1">
-                <a class="btn btn-sm btn-primary" href="{detail_url}">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                    </svg> 
-                </a>
-                <a class="btn btn-sm btn-secondary" href="{update_url}">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                        d="M16.862 3.487l2.651 2.651a1.875 1.875 0 010 2.652L8.288 20.015a4.5 4.5 0 01-1.897 1.13l-3.38.96a.75.75 0 01-.926-.926l.96-3.38a4.5 4.5 0 011.13-1.897L16.862 3.487z" />'
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                        d="M19.5 7.125L16.862 4.487" />
-                    </svg>
-                </a>
-                <button class="btn btn-sm btn-error delete-btn" data-id="{slug}">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                    d="M3 6h18M9 6V4h6v2m2 0v12a2 2 0 01-2 2H7a2 2 0 01-2-2V6h14z" />
-                    </svg> 
-                </button>
-            </div>
-        """
 
 
 @login_required
@@ -325,10 +285,13 @@ def expense_data(request) -> JsonResponse:
     for expense in queryset:
         detail_url = reverse("expenses:detail", args=[expense.slug])
 
-        menu_content = format_row_action_cell(
-            detail_url=detail_url,
-            update_url=reverse("expenses:expense_edit", args=[expense.slug]),
-            slug=expense.slug,
+        menu_content = render_to_string(
+            "cotton/table/row_actions.html",
+            {
+                "detail_url": reverse("expenses:detail", args=[expense.slug]),
+                "update_url": reverse("expenses:expense_edit", args=[expense.slug]),
+                "slug": expense.slug,
+            },
         )
 
         if expense.list_entries.exists():

@@ -16,7 +16,7 @@ from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.shortcuts import render
 from django.urls import reverse
-from shared_helpers.table_helpers import format_row_action_cell
+from django.template.loader import render_to_string
 from users.models import User
 
 from .forms import GuestForm
@@ -632,10 +632,13 @@ def guest_data(request: HttpRequest) -> HttpResponse | JsonResponse:
 
     data = []
     for guest in queryset:
-        menu_content = format_row_action_cell(
-            detail_url=reverse("guestlist:guest_detail", args=[guest.slug]),
-            update_url=reverse("guestlist:guest_edit", args=[guest.slug]),
-            slug=guest.slug,
+        menu_content = render_to_string(
+            "cotton/table/row_actions.html",
+            {
+                "detail_url": reverse("guestlist:guest_detail", args=[guest.slug]),
+                "update_url": reverse("guestlist:guest_edit", args=[guest.slug]),
+                "slug": guest.slug,
+            },
         )
 
         if guest.is_invited:

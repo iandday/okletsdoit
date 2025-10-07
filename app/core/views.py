@@ -13,6 +13,7 @@ from contacts.models import Contact
 from deadline.models import Deadline
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.template.loader import render_to_string
 from django.db.models import Q
 from django.db.models import Sum
 from django.http import HttpRequest
@@ -35,7 +36,7 @@ from guestlist.models import Guest
 from guestlist.models import GuestGroup
 from list.models import List
 from list.models import ListEntry
-from shared_helpers.table_helpers import format_row_action_cell
+
 
 from .forms import IdeaForm
 from .forms import IdeaImportForm
@@ -481,10 +482,13 @@ def timeline_data(request) -> JsonResponse:
 
     data = []
     for event in queryset:
-        menu_content = format_row_action_cell(
-            detail_url=reverse("core:timeline_detail", args=[event.slug]),
-            update_url=reverse("core:timeline_edit", args=[event.slug]),
-            slug=event.slug,
+        menu_content = render_to_string(
+            "cotton/table/row_actions.html",
+            {
+                "detail_url": reverse("core:timeline_detail", args=[event.slug]),
+                "update_url": reverse("core:timeline_edit", args=[event.slug]),
+                "slug": event.slug,
+            },
         )
 
         data.append(

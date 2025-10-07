@@ -6,7 +6,7 @@ import polars as pl
 import io
 from django.http import HttpResponse
 from django.contrib import messages
-from shared_helpers.table_helpers import format_row_action_cell
+from django.template.loader import render_to_string
 from deadline.forms import DeadlineForm, DeadlineImportForm, DeadlineListForm
 from deadline.models import Deadline, DeadlineList
 from datetime import datetime
@@ -274,10 +274,13 @@ def deadline_data(request) -> JsonResponse:
     # Prepare data for DataTables
     data = []
     for deadline in queryset:
-        menu_content = format_row_action_cell(
-            detail_url=reverse("deadline:deadline_detail", args=[deadline.slug]),
-            update_url=reverse("deadline:deadline_edit", args=[deadline.slug]),
-            slug=deadline.slug,
+        menu_content = render_to_string(
+            "cotton/table/row_actions.html",
+            {
+                "detail_url": reverse("deadline:deadline_detail", args=[deadline.slug]),
+                "update_url": reverse("deadline:deadline_edit", args=[deadline.slug]),
+                "slug": deadline.slug,
+            },
         )
         if deadline.deadline_list:
             deadline_list_url = f'<a href="{reverse("deadline:deadline_list_detail", args=[deadline.deadline_list.slug])}">{deadline.deadline_list.name}</a>'

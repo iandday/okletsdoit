@@ -5,6 +5,7 @@
   * RSVP
   * Upload Photos
 * Private
+  * Dashboard
   * Deadlines
     * Summary: Count of deadlines by list
     * Deadline list detail

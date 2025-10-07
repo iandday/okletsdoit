@@ -80,7 +80,6 @@ INSTALLED_APPS = [
     "list",
     "deadline",
     "guestlist",
-    "shared_helpers",
 ]
 
 if DEBUG:
