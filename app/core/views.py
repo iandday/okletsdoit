@@ -1229,12 +1229,7 @@ def planning_home(request: HttpRequest) -> HttpResponse:
     confirmed_timeline = timelines.filter(confirmed=True).count()
     published_timeline = timelines.filter(published=True).count()
 
-    # Calculate days until wedding (assuming you have a wedding date somewhere)
-    # You might need to adjust this based on how you store the wedding date
-    wedding_date = None
-    days_until_wedding = None
-
-    # Try to get wedding date from timeline events
+    # TODO Chnage logic to get next event
     ceremony_event = timelines.filter(Q(name__icontains="ceremony") | Q(name__icontains="wedding")).first()
     if ceremony_event and ceremony_event.start:
         wedding_date = ceremony_event.start.date()
@@ -1254,7 +1249,6 @@ def planning_home(request: HttpRequest) -> HttpResponse:
     completed_entries = list_entries.filter(is_completed=True).count()
 
     # Recent Activity
-    recent_ideas = Idea.objects.filter(is_deleted=False).order_by("-created_at")[:5]
     upcoming_deadline_items = deadlines.filter(
         due_date__gte=now, due_date__lte=now + timedelta(days=30), completed=False
     ).order_by("due_date")[:5]
@@ -1287,7 +1281,6 @@ def planning_home(request: HttpRequest) -> HttpResponse:
         "list_entry_count": list_entry_count,
         "completed_entries": completed_entries,
         # Recent activity
-        "recent_ideas": recent_ideas,
         "upcoming_deadline_items": upcoming_deadline_items,
     }
 
