@@ -29,11 +29,13 @@ migrate:
     @echo "Running Django migrations..."
     uv run python app/manage.py migrate
 
+docs:
+    uv run --all-groups mkdocs serve
 
 #----Pre-commit commands----#
 lint:
     uv run --group dev ruff check .
-    uv run --group dev mypy .
+    cd app && uv run --group dev mypy .
 
 test:
     uv run --group dev pytest

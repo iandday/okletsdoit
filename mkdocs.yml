@@ -1,0 +1,34 @@
+site_name: Ok, Let's Do It
+repo_url: https://github.com/iandday/okletsdoit
+
+#site_url:
+theme:
+  name: material
+  palette:
+    scheme: slate
+  features:
+    - content.code.copy
+    - content.code.select
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - attr_list
+  - md_in_html
+  - def_list
+  - pymdownx.tasklist:
+      custom_checkbox: true
+nav:
+  - Home: index.md
+  - Public:
+      - Venue: public/venue.md
+      - FAQ: public/faq.md
+  - Private:
+      - Dashboard: private/dashboard.md
+  - Development:
+      - Roadmap: dev/roadmap.md

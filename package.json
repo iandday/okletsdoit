@@ -4,6 +4,7 @@
     "description": "Wedding communication platform",
     "scripts": {
         "build-css": "tailwindcss -i ./app/core/static/core/css/input.css -o ./app/core/static/core/css/output.css --watch",
+        "build-css-ci": "tailwindcss -i ./app/core/static/core/css/input.css -o ./app/core/static/core/css/output.css",
         "build-css-prod": "tailwindcss -i ./app/core/static/core/css/input.css -o ./app/core/static/core/css/output.css --minify"
     },
     "dependencies": {
