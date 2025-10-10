@@ -1,6 +1,5 @@
 import io
 import logging
-from unicodedata import category
 
 import polars as pl
 from attachments.forms import AttachmentUploadForm
@@ -210,11 +209,6 @@ def guestlist_import(request: HttpRequest) -> HttpResponse:
                             if row.get("is_invited") is not None:
                                 invited_str = str(row.get("is_invited", "")).strip().lower()
                                 is_invited = invited_str in ["true", "yes", "1", "y"]
-
-                            is_attending = False
-                            if row.get("is_attending") is not None:
-                                attending_str = str(row.get("is_attending", "")).strip().lower()
-                                is_attending = attending_str in ["true", "yes", "1", "y"]
 
                             overnight = False
                             if row.get("overnight") is not None:

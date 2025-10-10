@@ -94,7 +94,6 @@ class DeadlineForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
         completed = cleaned_data.get("completed")
-        completed_note = cleaned_data.get("completed_note")
 
         # If marking as completed, set completed_at timestamp
         if completed and not self.instance.completed_at:

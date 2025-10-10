@@ -1,9 +1,8 @@
 import logging
-from typing import Any, Mapping
 from django.shortcuts import redirect, render, get_object_or_404
 from django.db.models import Sum, Case, When, Value, DecimalField, F
 from django.contrib.auth.decorators import login_required
-from django.db.models import Count, Q
+from django.db.models import Q
 from django.http import HttpRequest, JsonResponse, HttpResponse, QueryDict
 from django.contrib import messages
 from django.utils.text import slugify
@@ -14,9 +13,8 @@ from io import BytesIO
 from datetime import datetime
 from decimal import Decimal, InvalidOperation
 from django.template.loader import render_to_string
-from attachments.models import Attachment, AttachmentManager
+from attachments.models import Attachment
 from expenses.forms import CategoryForm, ExpenseForm
-from list.models import ListEntry
 from .models import Category, Expense
 from attachments.forms import AttachmentUploadForm
 
@@ -614,7 +612,7 @@ def template_download(request) -> HttpResponse:
             try:
                 if len(str(cell.value)) > max_length:
                     max_length = len(str(cell.value))
-            except:
+            except:  # noqa: E722
                 pass
         adjusted_width = min(max_length + 2, 50)
         ws.column_dimensions[column_letter].width = adjusted_width
@@ -683,7 +681,7 @@ def category_create(request) -> HttpResponse:
             return redirect("expenses:summary")
     else:
         form = CategoryForm()
-    intro = f"Create Category"
+    intro = "Create Category"
     breadcrumbs = [
         {"title": "Budget", "url": reverse("expenses:summary")},
         {"title": "Create", "url": None},
@@ -693,7 +691,7 @@ def category_create(request) -> HttpResponse:
     context = {
         "block_title": "Create Category",
         "breadcrumbs": breadcrumbs,
-        "title": f"Create Category",
+        "title": "Create Category",
         "intro": intro,
         "form": form,
         "submit_text": "Save Changes",

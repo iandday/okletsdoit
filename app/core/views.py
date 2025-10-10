@@ -9,7 +9,6 @@ from io import BytesIO
 import polars as pl
 from attachments.forms import AttachmentUploadForm
 from attachments.models import Attachment
-from contacts.models import Contact
 from deadline.models import Deadline
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -341,7 +340,7 @@ def idea_import(request: HttpRequest) -> HttpResponse:
                     else:
                         updated_count += 1
 
-                except Exception as e:
+                except Exception:
                     error_count += 1
                     continue
 

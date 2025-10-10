@@ -1,6 +1,5 @@
 import uuid
 from django.db import models
-from django.utils import timezone
 from django_stubs_ext.db.models.manager import RelatedManager
 from simple_history.models import HistoricalRecords
 from django.utils.text import slugify

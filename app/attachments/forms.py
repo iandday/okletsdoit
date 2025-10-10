@@ -1,4 +1,4 @@
-from django.forms import ModelForm, ClearableFileInput, TextInput, Textarea, Select
+from django.forms import ModelForm, ClearableFileInput, TextInput, Textarea
 from .models import Attachment
 
 

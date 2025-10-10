@@ -2,7 +2,6 @@ import importlib
 from django import forms
 from django.forms import ModelForm
 from .models import Idea, Question, Timeline, Inspiration
-from users.models import User
 from django.core.files.base import ContentFile
 
 

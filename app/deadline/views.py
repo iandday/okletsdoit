@@ -10,7 +10,7 @@ from django.template.loader import render_to_string
 from deadline.forms import DeadlineForm, DeadlineImportForm, DeadlineListForm
 from deadline.models import Deadline, DeadlineList
 from datetime import datetime
-from django.db.models import Count, Q
+from django.db.models import Q
 from users.models import User
 import logging
 

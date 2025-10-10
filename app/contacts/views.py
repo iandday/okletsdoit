@@ -1,5 +1,3 @@
-import io
-from click import File
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -122,7 +120,7 @@ def contact_create(request):
     else:
         form = ContactForm()
 
-    intro = f"Create New Contact"
+    intro = "Create New Contact"
     breadcrumbs = [
         {"title": "Contacts", "url": reverse("contacts:list")},
         {"title": "Create New Contact", "url": None},
@@ -388,7 +386,7 @@ def template_download(request):
             try:
                 if len(str(cell.value)) > max_length:
                     max_length = len(str(cell.value))
-            except:
+            except:  # noqa: E722
                 pass
         adjusted_width = min(max_length + 2, 50)
         ws.column_dimensions[column_letter].width = adjusted_width

@@ -1,18 +1,11 @@
 import logging
-from django.shortcuts import render
-from http import HTTPStatus
 from django.apps import apps
-from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.core.files.storage import default_storage
-from django.http import HttpRequest, HttpResponseRedirect, JsonResponse
-from django.shortcuts import get_object_or_404, render
-from django.urls import reverse
+from django.http import HttpRequest, HttpResponseRedirect
+from django.shortcuts import get_object_or_404
 from django.utils.translation import gettext
-from django.views.decorators.http import require_POST
 from .forms import AttachmentUploadForm
-from django.db import models
 from .models import Attachment
 # Create your views here.
 
@@ -52,8 +45,8 @@ def delete_attachment(request, attachment_pk):
     if (request.user.has_perm("attachments.delete_attachment") and request.user == g.creator) or request.user.has_perm(
         "attachments.delete_foreign_attachments"
     ):
-        remove_file_from_disk(g.attachment_file)
-        g.delete()
+        g.is_deleted = True
+        g.save()
         messages.success(request, gettext("Your attachment was deleted."))
     next_ = request.GET.get("next") or "/"
     return HttpResponseRedirect(next_)
