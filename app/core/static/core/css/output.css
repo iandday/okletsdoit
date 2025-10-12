@@ -5667,6 +5667,9 @@
       scroll-snap-align: start;
     }
   }
+  .list-inside {
+    list-style-position: inside;
+  }
   .list-disc {
     list-style-type: disc;
   }
@@ -6929,6 +6932,9 @@
   }
   .text-gray-800 {
     color: var(--color-gray-800);
+  }
+  .text-neutral {
+    color: var(--color-neutral);
   }
   .text-neutral-content {
     color: var(--color-neutral-content);

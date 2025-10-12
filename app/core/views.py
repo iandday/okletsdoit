@@ -51,6 +51,8 @@ from .models import Question
 from .models import Timeline
 from .models import WeddingSettings
 from .forms import WeddingSettingsForm
+from .forms import RsvpFormBooleanFormSet
+from .models import RsvpFormBoolean
 
 logger = logging.getLogger(__name__)
 
@@ -1310,15 +1312,26 @@ def wedding_settings_edit(request):
         ],
         "block_title": "Edit Wedding Settings",
         "title": "Edit Wedding Settings",
-        "form": WeddingSettingsForm(instance=settings),
+        "settings_form": WeddingSettingsForm(request.POST or None, instance=settings, prefix="settings"),
+        "rsvp_form_boolean_formset": RsvpFormBooleanFormSet(
+            request.POST or None, queryset=RsvpFormBoolean.objects.filter(is_deleted=False), prefix="rsvp_boolean"
+        ),
+        "cancel_url": reverse("core:wedding_settings"),
         "submit_text": "Update Settings",
     }
     if request.method == "POST":
-        form = WeddingSettingsForm(request.POST, instance=settings)
-        if form.is_valid():
-            form.save()
+        settings_form = WeddingSettingsForm(request.POST, instance=settings, prefix="settings")
+        if settings_form.is_valid():
+            settings_form.save()
             messages.success(request, "Wedding settings updated.")
-            return redirect("core:wedding_settings")
+        rsvp_form_boolean_formset = RsvpFormBooleanFormSet(
+            request.POST, queryset=RsvpFormBoolean.objects.filter(is_deleted=False), prefix="rsvp_boolean"
+        )
+        if rsvp_form_boolean_formset.is_valid():
+            rsvp_form_boolean_formset.save()
+            messages.success(request, "RSVP boolean fields updated.")
+
+        return redirect("core:wedding_settings")
 
     return render(request, "core/wedding_settings_form.html", context)
 

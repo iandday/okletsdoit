@@ -10,7 +10,7 @@ from PIL import Image
 class Command(BaseCommand):
     help = "Generate smaller web-friendly cover-1-small.webp and cover-2-small.webp from originals"
 
-    def add_arguments(self, parser):
+    def add_arguments(self, parser) -> None:
         parser.add_argument(
             "--max-size",
             type=int,
@@ -29,7 +29,7 @@ class Command(BaseCommand):
             help="Name of the input file",
         )
 
-    def handle(self, *args, **options):
+    def handle(self, *args, **options) -> None:
         max_size: int = options["max_size"]
         app: str = options["app_name"]
         file_name = options["file_name"]

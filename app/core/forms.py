@@ -1,7 +1,7 @@
 import importlib
 from django import forms
-from django.forms import ModelForm
-from .models import Idea, Question, Timeline, Inspiration, WeddingSettings
+from django.forms import ModelForm, modelformset_factory
+from .models import Idea, Question, Timeline, Inspiration, WeddingSettings, RsvpFormBoolean
 from django.core.files.base import ContentFile
 
 
@@ -223,3 +223,36 @@ class WeddingSettingsForm(forms.ModelForm):
                 }
             ),
         }
+
+
+class RsvpFormBooleanForm(forms.ModelForm):
+    class Meta:
+        model = RsvpFormBoolean
+        fields = [
+            "question",
+            "description",
+            "required",
+            "order",
+        ]
+        widgets = {
+            "question": forms.TextInput(
+                attrs={"class": "input input-bordered edit-card-field-value", "placeholder": "Question"}
+            ),
+            "description": forms.Textarea(
+                attrs={
+                    "class": "textarea textarea-bordered edit-card-field-value",
+                    "rows": 2,
+                    "placeholder": "Description",
+                }
+            ),
+            "required": forms.CheckboxInput(attrs={"class": "checkbox checkbox-primary edit-card-field-toggle"}),
+            "order": forms.NumberInput(attrs={"class": "input input-bordered edit-card-field-value"}),
+        }
+
+
+RsvpFormBooleanFormSet = forms.modelformset_factory(
+    RsvpFormBoolean,
+    form=RsvpFormBooleanForm,
+    extra=0,
+    can_delete=True,
+)
