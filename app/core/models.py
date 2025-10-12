@@ -4,7 +4,7 @@ import uuid
 from django.db import models
 from django.utils.text import slugify
 from simple_history.models import HistoricalRecords
-
+from typing import Any
 from users.models import User
 
 
@@ -166,3 +166,25 @@ class Question(models.Model):
             self.slug = slug
 
         super().save(*args, **kwargs)
+
+
+class WeddingSettings(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    allow_rsvp = models.BooleanField(default=False, help_text="Enable or disable RSVP functionality")
+
+    def __str__(self):
+        return "Wedding Settings"
+
+    class Meta:
+        verbose_name_plural = "Wedding Settings"
+
+    def save(self, *args, **kwargs):  # type: ignore
+        """Save object to the database. All other entries, if any, are removed."""
+        self.__class__.objects.exclude(id=self.id).delete()
+        super().save(*args, **kwargs)
+
+    @classmethod
+    def load(cls) -> Any:
+        """Load the model instance."""
+        obj, _ = cls.objects.get_or_create(id=1)
+        return obj

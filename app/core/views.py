@@ -5,7 +5,7 @@ import logging
 from datetime import timedelta
 from decimal import Decimal
 from io import BytesIO
-
+from django.views.decorators.http import require_http_methods
 import polars as pl
 from attachments.forms import AttachmentUploadForm
 from attachments.models import Attachment
@@ -49,6 +49,8 @@ from .models import Idea
 from .models import Inspiration
 from .models import Question
 from .models import Timeline
+from .models import WeddingSettings
+from .forms import WeddingSettingsForm
 
 logger = logging.getLogger(__name__)
 
@@ -79,7 +81,13 @@ def rsvp(request: HttpRequest) -> HttpResponse:
     """
     Render the 'RSVP' page of the application.
     """
-    return render(request, "core/rsvp.html")
+    settings = WeddingSettings.load()
+    logger.error(settings.allow_rsvp)
+    context = {}
+    if settings.allow_rsvp:
+        context = {"test": "value"}
+
+    return render(request, "core/rsvp.html", context)
 
 
 def photos(request: HttpRequest) -> HttpResponse:
@@ -1288,3 +1296,43 @@ def planning_home(request: HttpRequest) -> HttpResponse:
     }
 
     return render(request, "core/planning_home.html", context)
+
+
+@login_required
+@require_http_methods(["GET", "POST"])
+def wedding_settings_edit(request):
+    settings = WeddingSettings.load()
+    context = {
+        "breadcrumbs": [
+            {"title": "Planning", "url": reverse("core:planning_home")},
+            {"title": "Wedding Settings", "url": reverse("core:wedding_settings")},
+            {"title": "Edit", "url": None},
+        ],
+        "block_title": "Edit Wedding Settings",
+        "title": "Edit Wedding Settings",
+        "form": WeddingSettingsForm(instance=settings),
+        "submit_text": "Update Settings",
+    }
+    if request.method == "POST":
+        form = WeddingSettingsForm(request.POST, instance=settings)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Wedding settings updated.")
+            return redirect("core:wedding_settings")
+
+    return render(request, "core/wedding_settings_form.html", context)
+
+
+def wedding_settings(request):
+    settings = WeddingSettings.load()
+    context = {
+        "block_title": "Wedding Settings",
+        "breadcrumbs": [
+            {"title": "Planning", "url": reverse("core:planning_home")},
+            {"title": "Wedding Settings", "url": None},
+        ],
+        "title": "Wedding Settings",
+        "edit_url": reverse("core:wedding_settings_edit"),
+        "settings": settings,
+    }
+    return render(request, "core/wedding_settings_detail.html", context)

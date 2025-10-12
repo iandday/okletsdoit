@@ -1,5 +1,6 @@
-
 from urllib.parse import quote as urllib_quote
+
+from core.models import WeddingSettings
 
 
 def site_vars(request):
@@ -9,6 +10,7 @@ def site_vars(request):
     zipcode = "43149"
 
     return {
+        "wedding_config": WeddingSettings.load(),
         "site_title": "Steph & Ian",
         "logo": "static/images/logo.png",
         "wedding_data": {
@@ -120,6 +122,7 @@ def site_vars(request):
             {"view_name": "guestlist:guestlist_summary", "icon": "fa-users", "text": "Guest List"},
             {"view_name": "core:timeline_summary", "icon": "fa-users", "text": "Timeline"},
             {"view_name": "core:question_summary", "icon": "fa-users", "text": "FAQ"},
+            {"view_name": "core:wedding_settings", "icon": "fa-users", "text": "Settings"},
         ],
         "sidebar_app_links": [
             {"view_name": "settings", "icon": "fa-gear", "text": "Settings"},
