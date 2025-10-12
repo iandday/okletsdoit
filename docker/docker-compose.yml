@@ -23,8 +23,6 @@ services:
     image: nginx:latest
     volumes:
       - ./nginx/default.conf.template:/etc/nginx/templates/default.conf.template
-      #- ../_persist/static:/usr/share/nginx/html/static
-      #- ../_persist/media:/usr/share/nginx/html/media    
     environment:
       - DJANGO_HOST=django-server
       - DJANGO_PORT=8000
@@ -56,16 +54,67 @@ services:
       timeout: 10s
       retries: 5
     restart: unless-stopped
+  redis:
+    image: redis:7.0
+    command: [ "redis-server", "--save", "60", "1", "--loglevel", "warning" ]
+    volumes:
+      - ../_persist/redis:/data
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    restart: unless-stopped
   django-server:
     build:
       context: ..
       dockerfile: ./docker/Dockerfile
       target: development
     volumes:
-      # - ../_persist/static:/app/static
-      #- ../_persist/media:/app/media
       - ../app:/app/app
+    environment:
+      - CONTAINER_ROLE=server
     env_file:
       - ../app/.env
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:8000/health/ || exit 1" ]
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 40s
     labels:
       - "traefik.enable=false"
+  beats:
+    build:
+      context: ..
+      dockerfile: ./docker/Dockerfile
+      target: development
+    volumes:
+      - ../app:/app/app
+    environment:
+      - CONTAINER_ROLE=beats
+    env_file:
+      - ../app/.env
+    depends_on:
+      - django-server
+      - postgres
+    labels:
+      - "traefik.enable=false"
+    restart: unless-stopped
+  worker:
+    build:
+      context: ..
+      dockerfile: ./docker/Dockerfile
+      target: development
+    volumes:
+      - ../app:/app/app
+    environment:
+      - CONTAINER_ROLE=worker
+    env_file:
+      - ../app/.env
+    depends_on:
+      - django-server
+      - postgres
+    labels:
+      - "traefik.enable=false"
+    restart: unless-stopped

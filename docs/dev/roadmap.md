@@ -1,7 +1,9 @@
 # Roadmap
 
 ## New Functionality
-
+- [ ] Customized Settings
+    * [ ] Timezone
+    * [ ] Allow RSVP
 - [ ] Guestlist
     * [ ] RSVP Form Configuration (Private)
     * [ ] RSVP Form (Public)

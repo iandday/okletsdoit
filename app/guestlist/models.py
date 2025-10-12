@@ -34,6 +34,7 @@ class GuestGroup(models.Model):
     associated_with = models.ForeignKey(
         User, related_name="associated_with_guest_group", on_delete=models.CASCADE, null=True, blank=True
     )
+    rsvp_code = models.CharField(max_length=10, null=True, help_text="Unique code for RSVP tracking")
     created_by = models.ForeignKey(User, related_name="created_by_guest_group", on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_by = models.ForeignKey(
@@ -78,6 +79,12 @@ class GuestGroup(models.Model):
                 counter += 1
 
             self.slug = slug
+        # generate rsvp code if not set
+        if not self.rsvp_code:
+            rsvp_code = uuid.uuid4().hex[:10].upper()
+            while GuestGroup.objects.filter(rsvp_code=rsvp_code).exists():
+                rsvp_code = uuid.uuid4().hex[:10].upper()
+            self.rsvp_code = rsvp_code
 
         super().save(*args, **kwargs)
 

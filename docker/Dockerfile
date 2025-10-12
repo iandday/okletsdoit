@@ -25,10 +25,6 @@ WORKDIR /app
 COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen --no-cache --group dev 
 
-# Create static directories
-RUN mkdir -p /app/media /app/static
-RUN chown django:django /app/media /app/static
-
 RUN mkdir -p /app/app
 COPY app/ /app/app
 
@@ -46,8 +42,6 @@ HEALTHCHECK --interval=30s --timeout=30s --start-period=60s --retries=3 \
 
 WORKDIR /app/app  
 ENTRYPOINT ["../docker-entrypoint.sh"]
-CMD ["/app/.venv/bin/python", "manage.py", "runserver_plus", "0.0.0.0:8000"]
-
 
 # Build stage
 FROM python:3.12-slim-bookworm AS prod-builder
@@ -63,7 +57,6 @@ RUN apt-get update \
     build-essential \
     libpq-dev \
     gcc \
-    git \
     && rm -rf /var/lib/apt/lists/*
 
 # Install uv
@@ -75,11 +68,8 @@ WORKDIR /app
 COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen --no-cache 
 
-
 # Copy source code
 COPY app/ .
-
-
 
 FROM python:3.12-slim-bookworm AS production
 
@@ -97,15 +87,10 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get clean
 
-
 # Create user
 RUN groupadd -r django && useradd -r -g django -s /bin/false django
 
 WORKDIR /app
-
-# Create static directories
-RUN mkdir -p /app/media /app/static
-RUN chown django:django /app/media /app/static
 
 # Copy only what's needed from builder
 COPY --from=prod-builder --chown=django:django /app/.venv /app/.venv
@@ -119,9 +104,4 @@ USER django
 
 EXPOSE 8000
 
-# Health check using django-health-check endpoint
-HEALTHCHECK --interval=30s --timeout=30s --start-period=60s --retries=3 \
-    CMD /app/.venv/bin/python manage.py  health_check
-
 ENTRYPOINT ["./docker-entrypoint.sh"]
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "3", "--timeout", "60", "okletsdoit.wsgi:application"]

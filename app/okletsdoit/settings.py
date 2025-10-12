@@ -23,21 +23,26 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env(
     # set casting, default value
     DEBUG=(bool, False),
-    STATIC_ROOT=(Path, "/app/static"),
-    MEDIA_ROOT=(Path, "/app/media"),
     TIME_ZONE=(str, "UTC"),
     ALLOWED_HOSTS=(list, []),
     DJANGO_LOG_LEVEL=(str, "INFO"),
     DJANGO_ACCOUNT_ALLOW_REGISTRATION=(bool, True),
     DJANGO_ACCOUNT_ALLOW_SOCIAL_REGISTRATION=(bool, True),
     AWS_S3_STATIC_DOMAIN_CSP=(str, ""),
+    LOCAL_DEV=(bool, False),
+    AWS_SESSION_TOKEN=(str, None),
+    AWS_ACCESS_KEY_ID=(str, ""),
+    AWS_SECRET_ACCESS_KEY=(str, ""),
+    AWS_REGION=(str, "us-east-1"),
+    ALLOWED_CIDR_NETS=(list, []),
 )
 env.read_env(BASE_DIR / ".env", overwrite=True)
 
 SECRET_KEY = env("SECRET_KEY")
 DEBUG = env("DEBUG")
-
+LOCAL_DEV = env("LOCAL_DEV")
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
+ALLOWED_CIDR_NETS = env.list("ALLOWED_CIDR_NETS")
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -49,14 +54,17 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_extensions",
+    "constance",
+    "django_celery_beat",
+    "django_celery_results",
     "health_check",
     "health_check.db",
     "health_check.storage",
     "health_check.contrib.migrations",
-    #'health_check.cache',
-    #'health_check.contrib.celery',
-    #'health_check.contrib.celery_ping',
-    #'health_check.contrib.redis',
+    "health_check.cache",
+    "health_check.contrib.celery",
+    "health_check.contrib.celery_ping",
+    "health_check.contrib.redis",
     "widget_tweaks",
     "slippers",
     "allauth_ui",
@@ -96,6 +104,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
     "simple_history.middleware.HistoryRequestMiddleware",
+    "allow_cidr.middleware.AllowCIDRMiddleware",
 ]
 if DEBUG:
     MIDDLEWARE += [
@@ -124,17 +133,33 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "okletsdoit.wsgi.application"
 
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": env("POSTGRES_DB"),
-        "USER": env("POSTGRES_USER"),
-        "PASSWORD": env("POSTGRES_PASSWORD"),
-        "HOST": env("POSTGRES_HOST"),
-        "PORT": env("POSTGRES_PORT"),
+if LOCAL_DEV:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": env("POSTGRES_DB"),
+            "USER": env("POSTGRES_USER"),
+            "PASSWORD": env("POSTGRES_PASSWORD"),
+            "HOST": env("POSTGRES_HOST"),
+            "PORT": env("POSTGRES_PORT"),
+        }
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django_iam_dbauth.aws.postgresql",
+            "NAME": env("RDS_DB_NAME"),
+            "USER": env("RDS_USERNAME"),
+            "HOST": env("RDS_HOSTNAME"),
+            "PORT": env("RDS_PORT"),
+            "OPTIONS": {
+                "use_iam_auth": True,
+                "sslmode": "require",
+                "resolve_cname_enabled": True,
+                "region_name": env("AWS_REGION"),
+            },
+        }
+    }
 
 LOGGING = {
     "version": 1,
@@ -157,6 +182,26 @@ LOGGING = {
         },
     },
 }
+
+REDIS_URL = env("REDIS_URL")
+CONSTANCE_REDIS_CONNECTION = f"{REDIS_URL}/3"
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": f"{REDIS_URL}/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+    },
+    "select2": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": f"{REDIS_URL}/2",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+    },
+}
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -313,3 +358,17 @@ STORAGES = {
 }
 STATIC_URL = f"https://{env('AWS_S3_STATIC_DOMAIN')}/"
 MEDIA_URL = f"https://{env('AWS_S3_MEDIA_DOMAIN')}/"
+
+CELERY_BROKER_URL = REDIS_URL
+CELERY_RESULT_BACKEND = "django-db"
+CELERY_RESULT_EXTENDED = True
+CELERY_RESULT_BACKEND_ALWAYS_RETRY = True
+CELERY_RESULT_BACKEND_MAX_RETRIES = 10
+CELERY_ACCEPT_CONTENT = ["json"]
+CELERY_TASK_SERIALIZER = "json"
+CELERY_TASK_TIME_LIMIT = 5 * 60
+CELERY_TASK_SOFT_TIME_LIMIT = 60
+CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
+CELERY_WORKER_SEND_TASK_EVENTS = True
+CELERY_TASK_SEND_SENT_EVENT = True
+CELERY_WORKER_HIJACK_ROOT_LOGGER = False
