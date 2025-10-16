@@ -193,6 +193,9 @@ class WeddingSettings(models.Model):
 class RsvpFormBoolean(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     slug = models.SlugField(max_length=250, null=True, blank=True, unique=True)
+    setting = models.ForeignKey(
+        WeddingSettings, related_name="rsvp_form_booleans", on_delete=models.CASCADE, null=True, blank=True
+    )
     question = models.CharField(max_length=250, unique=True)
     description = models.TextField(blank=True, null=True)
     required = models.BooleanField(default=False)

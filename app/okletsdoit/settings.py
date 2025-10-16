@@ -78,6 +78,9 @@ INSTALLED_APPS = [
     "simple_history",  # https://django-simple-history.readthedocs.io/en/latest/quick_start.html#install
     "csp",
     "django_cotton",  # https://django-cotton.com/docs/quickstart
+    "crispy_forms",  # https://django-crispy-forms.readthedocs.io/en/latest/
+    "crispy_formset_modal",  # https://blasferna.github.io/django-crispy-formset-modal/installation/
+    "extra_views",  # https://django-extra-views.readthedocs.io/en/latest/pages/getting-started.html#installation
     "core",
     "attachments",
     "users",

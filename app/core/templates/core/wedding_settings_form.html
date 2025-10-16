@@ -12,11 +12,11 @@
                 <div class="edit-card-body">
                     <form method="post" class="space-y-4" id="wedding-settings-form">
                         {% csrf_token %}
-                        {{ form.non_field_errors }}
+                        {{ settings_form.non_field_errors }}
                         <div class="form-control">
-                            {{ form.allow_rsvp.label_tag }}
-                            {{ form.allow_rsvp }}
-                            {% if form.allow_rsvp.errors %}<div class="text-error">{{ form.allow_rsvp.errors }}</div>{% endif %}
+                            {{ settings_form.allow_rsvp.label_tag }}
+                            {{ settings_form.allow_rsvp }}
+                            {% if settings_form.allow_rsvp.errors %}<div class="text-error">{{ settings_form.allow_rsvp.errors }}</div>{% endif %}
                         </div>
                         <div class="card-actions justify-end py-2">
                             <a href="{{ cancel_url }}" class="btn">Cancel</a>
@@ -34,86 +34,8 @@
                     </form>
                 </div>
             </div>
-            <div class="edit-card col-span-2">
-                <div class="edit-card-body">
-                    <h2 class="text-xl font-semibold mb-4">RSVP Yes/No Fields</h2>
-                    <form method="post" class="space-y-4" id="rsvp-form-boolean-formset">
-                        {% csrf_token %}
-                        {{ rsvp_form_boolean_formset.management_form }}
-                        {{ rsvp_form_boolean_formset.non_form_errors }}
-                        <div id="formset-forms">
-                            {% for form in rsvp_form_boolean_formset %}
-                                <div class="card card-bordered p-4 mb-2 formset-form">
-                                    {% for field in form.visible_fields %}
-                                        <div class="form-control w-full py-2">
-                                            <label class="label">
-                                                <span class="edit-card-field-name">{{ field.label }}</span>
-                                                {% if field.required %}<span class="label-text-alt text-error">Required</span>{% endif %}
-                                            </label>
-                                            {{ field }}
-                                            {% if field.errors %}
-                                                <label class="label">
-                                                    <span class="label-text-alt text-error">
-                                                        {% for error in field.errors %}{{ error }}{% endfor %}
-                                                    </span>
-                                                </label>
-                                            {% endif %}
-                                        </div>
-                                    {% endfor %}
-                                    {% if form.can_delete %}
-                                        <div class="form-control">
-                                            {{ form.DELETE }} <span>Delete</span>
-                                        </div>
-                                    {% endif %}
-                                    {% if not form.instance.pk %}
-                                        <button type="button" class="btn btn-error btn-sm mt-2 remove-form-btn">Remove</button>
-                                    {% endif %}
-                                </div>
-                            {% endfor %}
-                        </div>
-                        <button type="button" class="btn btn-accent mt-2" id="add-form-btn">Add RSVP Field</button>
-                        <button type="submit" class="btn btn-primary mt-4">Save Changes</button>
-                    </form>
-                </div>
-            </div>
         </div>
     </div>
 {% endblock content %}
 {% block extra_script %}
-    <script nonce="{{request.csp_nonce}}">
-      document.addEventListener('DOMContentLoaded', function() {
-        const addBtn = document.getElementById('add-form-btn');
-        const formsetForms = document.getElementById('formset-forms');
-        const formsetPrefix = '{{ rsvp_form_boolean_formset.prefix }}';
-        const totalFormsInput = document.querySelector('input[name="' + formsetPrefix + '-TOTAL_FORMS"]');
-        const emptyFormHtml = `{% filter escapejs %}{{ rsvp_form_boolean_formset.empty_form.as_p }}{% endfilter %}`;
-
-        addBtn.addEventListener('click', function() {
-          const formCount = parseInt(totalFormsInput.value, 10);
-          let newFormHtml = emptyFormHtml.replace(/__prefix__/g, formCount);
-          newFormHtml = `<div class=\"card card-bordered p-4 mb-2 formset-form\">${newFormHtml}<button type=\"button\" class=\"btn btn-error btn-sm mt-2 remove-form-btn\">Remove</button></div>`;
-          formsetForms.insertAdjacentHTML('beforeend', newFormHtml);
-          totalFormsInput.value = formCount + 1;
-        });
-
-        formsetForms.addEventListener('click', function(e) {
-          if (e.target.classList.contains('remove-form-btn')) {
-            e.target.closest('.formset-form').remove();
-            // Update TOTAL_FORMS
-            const forms = formsetForms.querySelectorAll('.formset-form');
-            totalFormsInput.value = forms.length;
-            // Re-index new forms' input names/ids
-            let idx = 0;
-            forms.forEach(function(formDiv) {
-              formDiv.querySelectorAll('input, select, textarea, label').forEach(function(el) {
-                if (el.name) el.name = el.name.replace(/\d+/, idx);
-                if (el.id) el.id = el.id.replace(/\d+/, idx);
-                if (el.htmlFor) el.htmlFor = el.htmlFor.replace(/\d+/, idx);
-              });
-              idx++;
-            });
-          }
-        });
-      });
-    </script>
 {% endblock extra_script %}

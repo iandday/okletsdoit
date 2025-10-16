@@ -1,58 +1,31 @@
 import datetime
 import io
-import json
-import logging
-from datetime import timedelta
-from decimal import Decimal
-from io import BytesIO
-from django.views.decorators.http import require_http_methods
-import polars as pl
-from attachments.forms import AttachmentUploadForm
-from attachments.models import Attachment
-from deadline.models import Deadline
-from django.contrib import messages
+
 from django.contrib.auth.decorators import login_required
-from django.template.loader import render_to_string
-from django.db.models import Q
-from django.db.models import Sum
-from django.http import HttpRequest
-from django.http import HttpResponse
-from django.http import JsonResponse
-from django.http import QueryDict
-from django.shortcuts import get_object_or_404
-from django.shortcuts import redirect
-from django.shortcuts import render
+from django.views.decorators.http import require_http_methods
+from django.shortcuts import render, redirect
 from django.urls import reverse
-from django.utils import timezone
-from django.utils.text import slugify
+from django.contrib import messages
+from .forms import (
+    QuestionForm,
+    TimelineForm,
+    TimelineImportForm,
+)
+from .models import (
+    Idea,
+    Inspiration,
+    Question,
+    Timeline,
+    WeddingSettings,
+)
+import logging
+from django.http import HttpRequest, HttpResponse, JsonResponse, QueryDict
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
-from expenses.models import Category
-
-
-from expenses.models import Expense
-from guestlist.models import Guest
-from guestlist.models import GuestGroup
-from list.models import List
-from list.models import ListEntry
-
-
-from .forms import IdeaForm
-from .forms import IdeaImportForm
-from .forms import InspirationForm
-from .forms import QuestionForm
-from .forms import TimelineForm
-from .forms import TimelineImportForm
-from .models import Idea
-
-
-from .models import Inspiration
-from .models import Question
-from .models import Timeline
-from .models import WeddingSettings
-from .forms import WeddingSettingsForm
-from .forms import RsvpFormBooleanFormSet
-from .models import RsvpFormBoolean
+from django.shortcuts import get_object_or_404
+from attachments.models import Attachment
+from attachments.forms import AttachmentUploadForm
+import polars as pl
 
 logger = logging.getLogger(__name__)
 
@@ -1304,6 +1277,7 @@ def planning_home(request: HttpRequest) -> HttpResponse:
 @require_http_methods(["GET", "POST"])
 def wedding_settings_edit(request):
     settings = WeddingSettings.load()
+
     context = {
         "breadcrumbs": [
             {"title": "Planning", "url": reverse("core:planning_home")},
@@ -1312,27 +1286,11 @@ def wedding_settings_edit(request):
         ],
         "block_title": "Edit Wedding Settings",
         "title": "Edit Wedding Settings",
-        "settings_form": WeddingSettingsForm(request.POST or None, instance=settings, prefix="settings"),
-        "rsvp_form_boolean_formset": RsvpFormBooleanFormSet(
-            request.POST or None, queryset=RsvpFormBoolean.objects.filter(is_deleted=False), prefix="rsvp_boolean"
-        ),
         "cancel_url": reverse("core:wedding_settings"),
         "submit_text": "Update Settings",
     }
     if request.method == "POST":
-        settings_form = WeddingSettingsForm(request.POST, instance=settings, prefix="settings")
-        if settings_form.is_valid():
-            settings_form.save()
-            messages.success(request, "Wedding settings updated.")
-        rsvp_form_boolean_formset = RsvpFormBooleanFormSet(
-            request.POST, queryset=RsvpFormBoolean.objects.filter(is_deleted=False), prefix="rsvp_boolean"
-        )
-        if rsvp_form_boolean_formset.is_valid():
-            rsvp_form_boolean_formset.save()
-            messages.success(request, "RSVP boolean fields updated.")
-
         return redirect("core:wedding_settings")
-
     return render(request, "core/wedding_settings_form.html", context)
 
 
