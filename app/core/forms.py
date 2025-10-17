@@ -225,3 +225,16 @@ class QuestionForm(forms.ModelForm):
         self.fields["question"].label = "Question"
         self.fields["answer"].label = "Answer"
         self.fields["answer"].required = False
+
+
+class WeddingSettingsForm(ModelForm):
+    """Form for editing wedding settings."""
+
+    class Meta:
+        model = WeddingSettings
+        fields = [
+            "allow_rsvp",
+        ]
+        widgets = {
+            "allow_rsvp": forms.CheckboxInput(attrs={"class": "checkbox checkbox-primary edit-card-field-toggle"}),
+        }

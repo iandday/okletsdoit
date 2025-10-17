@@ -10,6 +10,7 @@ from .forms import (
     QuestionForm,
     TimelineForm,
     TimelineImportForm,
+    WeddingSettingsForm,
 )
 from .models import (
     Idea,
@@ -1286,10 +1287,17 @@ def wedding_settings_edit(request):
         ],
         "block_title": "Edit Wedding Settings",
         "title": "Edit Wedding Settings",
+        "settings_form": WeddingSettingsForm(instance=settings),
         "cancel_url": reverse("core:wedding_settings"),
         "submit_text": "Update Settings",
     }
     if request.method == "POST":
+        form = WeddingSettingsForm(request.POST, instance=settings)
+        if form.is_valid():
+            settings = form.save(commit=False)
+            settings.updated_by = request.user
+            settings.save()
+            messages.success(request, "Wedding settings updated successfully.")
         return redirect("core:wedding_settings")
     return render(request, "core/wedding_settings_form.html", context)
 
