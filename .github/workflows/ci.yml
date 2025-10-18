@@ -105,7 +105,6 @@ jobs:
         run: uv sync --locked --all-extras --dev
 
       - name: Build docs
-        working-directory: 'docs'
         run: |
           uv run --all-groups --inexact mkdocs build --clean
 
