@@ -1,23 +1,8 @@
 import importlib
 from django import forms
-from django.forms import ModelForm, modelformset_factory
-from .models import Idea, Question, Timeline, Inspiration, WeddingSettings, RsvpFormBoolean
+from django.forms import ModelForm
+from .models import Idea, Question, Timeline, Inspiration, WeddingSettings
 from django.core.files.base import ContentFile
-from crispy_formset_modal.helper import ModalEditFormHelper
-from crispy_formset_modal.layout import ModalEditLayout, ModalEditFormsetLayout
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Row, Column, Fieldset, Submit
-
-
-import importlib
-from django import forms
-from django.forms import ModelForm, modelformset_factory
-from .models import Idea, Question, Timeline, Inspiration, WeddingSettings, RsvpFormBoolean
-from django.core.files.base import ContentFile
-from crispy_formset_modal.helper import ModalEditFormHelper
-from crispy_formset_modal.layout import ModalEditLayout, ModalEditFormsetLayout
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Row, Column, Fieldset, Submit
 
 
 class IdeaForm(ModelForm):
@@ -234,7 +219,11 @@ class WeddingSettingsForm(ModelForm):
         model = WeddingSettings
         fields = [
             "allow_rsvp",
+            "wedding_date",
         ]
         widgets = {
             "allow_rsvp": forms.CheckboxInput(attrs={"class": "checkbox checkbox-primary edit-card-field-toggle"}),
+            "wedding_date": forms.DateInput(
+                attrs={"class": "input input-bordered edit-card-field-value", "type": "date"}
+            ),
         }

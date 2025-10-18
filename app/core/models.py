@@ -171,6 +171,7 @@ class Question(models.Model):
 class WeddingSettings(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     allow_rsvp = models.BooleanField(default=False, help_text="Enable or disable RSVP functionality")
+    wedding_date = models.DateField(null=True, blank=True)
 
     def __str__(self):
         return "Wedding Settings"

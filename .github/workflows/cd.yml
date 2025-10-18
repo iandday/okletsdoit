@@ -60,7 +60,7 @@ jobs:
             type=ref,event=pr
             type=raw,value=${{ steps.version.outputs.version }},enable=true
             type=raw,value=v${{ steps.version.outputs.version }},enable=true
-            type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=latest,enable={{ is_default_branch }}
             type=raw,value=${{ github.sha }},enable=true
           labels: |
             org.opencontainers.image.version=${{ steps.version.outputs.version }}

@@ -45,6 +45,16 @@
                         <span class="font-bold">RSVP Enabled:</span>
                         <span>{{ settings.allow_rsvp|yesno:"Yes,No" }}</span>
                     </li>
+                    <li class="list-row">
+                        <span class="font-bold">Wedding Date:</span>
+                        <span>
+                            {% if settings.wedding_date %}
+                                {{ settings.wedding_date|date:"F j, Y" }}
+                            {% else %}
+                                Not Set
+                            {% endif %}
+                        </span>
+                    </li>
                 </ul>
             </div>
         </div>

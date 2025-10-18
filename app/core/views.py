@@ -1,32 +1,48 @@
 import datetime
 import io
-
-from django.contrib.auth.decorators import login_required
-from django.views.decorators.http import require_http_methods
-from django.shortcuts import render, redirect
-from django.urls import reverse
-from django.contrib import messages
-from .forms import (
-    QuestionForm,
-    TimelineForm,
-    TimelineImportForm,
-    WeddingSettingsForm,
-)
-from .models import (
-    Idea,
-    Inspiration,
-    Question,
-    Timeline,
-    WeddingSettings,
-)
+import json
 import logging
-from django.http import HttpRequest, HttpResponse, JsonResponse, QueryDict
-from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_POST
-from django.shortcuts import get_object_or_404
-from attachments.models import Attachment
-from attachments.forms import AttachmentUploadForm
+from decimal import Decimal
+
 import polars as pl
+from attachments.forms import AttachmentUploadForm
+from attachments.models import Attachment
+from deadline.models import Deadline
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.db.models import Q
+from django.db.models import Sum
+from django.http import HttpRequest
+from django.http import HttpResponse
+from django.http import JsonResponse
+from django.http import QueryDict
+from django.shortcuts import get_object_or_404
+from django.shortcuts import redirect
+from django.shortcuts import render
+from django.template.loader import render_to_string
+from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_http_methods
+from django.views.decorators.http import require_POST
+from expenses.models import Category
+from expenses.models import Expense
+from guestlist.models import Guest
+from guestlist.models import GuestGroup
+from list.models import List
+from list.models import ListEntry
+
+from .forms import IdeaForm
+from .forms import IdeaImportForm
+from .forms import InspirationForm
+from .forms import QuestionForm
+from .forms import TimelineForm
+from .forms import TimelineImportForm
+from .forms import WeddingSettingsForm
+from .models import Idea
+from .models import Inspiration
+from .models import Question
+from .models import Timeline
+from .models import WeddingSettings
 
 logger = logging.getLogger(__name__)
 
@@ -309,9 +325,8 @@ def idea_import(request: HttpRequest) -> HttpResponse:
 
                     # Check if idea already exists
                     idea, created = Idea.objects.update_or_create(
-                        slug=slugify(name),
+                        name=name,
                         defaults={
-                            "name": name,
                             "description": description,
                             "created_by": request.user,
                             "updated_by": request.user,
@@ -798,7 +813,7 @@ def timeline_import(request: HttpRequest) -> HttpResponse:
     df = pl.DataFrame(template_data)
 
     # Create Excel file in memory
-    buffer = BytesIO()
+    buffer = io.BytesIO()
     df.write_excel(buffer)
     buffer.seek(0)
 
@@ -1190,7 +1205,7 @@ def planning_home(request: HttpRequest) -> HttpResponse:
     Render the 'Planning Home' page with comprehensive wedding planning summary.
     """
 
-    now = timezone.now()
+    now = datetime.datetime.now()
 
     # Budget & Expenses data
     expenses = Expense.objects.filter(is_deleted=False)
@@ -1217,10 +1232,12 @@ def planning_home(request: HttpRequest) -> HttpResponse:
     published_timeline = timelines.filter(published=True).count()
 
     # TODO Chnage logic to get next event
-    ceremony_event = timelines.filter(Q(name__icontains="ceremony") | Q(name__icontains="wedding")).first()
-    if ceremony_event and ceremony_event.start:
-        wedding_date = ceremony_event.start.date()
+    settings = WeddingSettings.load()
+    if settings.wedding_date:
+        wedding_date = settings.wedding_date
         days_until_wedding = (wedding_date - now.date()).days
+    else:
+        days_until_wedding = 0
 
     # Deadlines data
     deadlines = Deadline.objects.filter(is_deleted=False)
@@ -1237,7 +1254,7 @@ def planning_home(request: HttpRequest) -> HttpResponse:
 
     # Recent Activity
     upcoming_deadline_items = deadlines.filter(
-        due_date__gte=now, due_date__lte=now + timedelta(days=30), completed=False
+        due_date__gte=now, due_date__lte=now + datetime.timedelta(days=30), completed=False
     ).order_by("due_date")[:5]
 
     context = {
