@@ -107,7 +107,7 @@ jobs:
       - name: Build docs
         working-directory: 'docs'
         run: |
-          uv run mkdocs build --clean
+          uv run --all-groups --inexact mkdocs build --clean
 
       - name: Minimize uv cache
         run: uv cache prune --ci
