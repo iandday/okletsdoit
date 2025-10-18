@@ -2,9 +2,7 @@ import datetime
 import io
 import json
 import logging
-from datetime import timedelta
 from decimal import Decimal
-from io import BytesIO
 
 import polars as pl
 from attachments.forms import AttachmentUploadForm
@@ -12,7 +10,6 @@ from attachments.models import Attachment
 from deadline.models import Deadline
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.template.loader import render_to_string
 from django.db.models import Q
 from django.db.models import Sum
 from django.http import HttpRequest
@@ -22,20 +19,17 @@ from django.http import QueryDict
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.shortcuts import render
+from django.template.loader import render_to_string
 from django.urls import reverse
-from django.utils import timezone
-from django.utils.text import slugify
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_http_methods
 from django.views.decorators.http import require_POST
 from expenses.models import Category
-
-
 from expenses.models import Expense
 from guestlist.models import Guest
 from guestlist.models import GuestGroup
 from list.models import List
 from list.models import ListEntry
-
 
 from .forms import IdeaForm
 from .forms import IdeaImportForm
@@ -43,12 +37,12 @@ from .forms import InspirationForm
 from .forms import QuestionForm
 from .forms import TimelineForm
 from .forms import TimelineImportForm
+from .forms import WeddingSettingsForm
 from .models import Idea
-
-
 from .models import Inspiration
 from .models import Question
 from .models import Timeline
+from .models import WeddingSettings
 
 logger = logging.getLogger(__name__)
 
@@ -79,7 +73,13 @@ def rsvp(request: HttpRequest) -> HttpResponse:
     """
     Render the 'RSVP' page of the application.
     """
-    return render(request, "core/rsvp.html")
+    settings = WeddingSettings.load()
+    logger.error(settings.allow_rsvp)
+    context = {}
+    if settings.allow_rsvp:
+        context = {"test": "value"}
+
+    return render(request, "core/rsvp.html", context)
 
 
 def photos(request: HttpRequest) -> HttpResponse:
@@ -325,9 +325,8 @@ def idea_import(request: HttpRequest) -> HttpResponse:
 
                     # Check if idea already exists
                     idea, created = Idea.objects.update_or_create(
-                        slug=slugify(name),
+                        name=name,
                         defaults={
-                            "name": name,
                             "description": description,
                             "created_by": request.user,
                             "updated_by": request.user,
@@ -814,7 +813,7 @@ def timeline_import(request: HttpRequest) -> HttpResponse:
     df = pl.DataFrame(template_data)
 
     # Create Excel file in memory
-    buffer = BytesIO()
+    buffer = io.BytesIO()
     df.write_excel(buffer)
     buffer.seek(0)
 
@@ -1206,7 +1205,7 @@ def planning_home(request: HttpRequest) -> HttpResponse:
     Render the 'Planning Home' page with comprehensive wedding planning summary.
     """
 
-    now = timezone.now()
+    now = datetime.datetime.now()
 
     # Budget & Expenses data
     expenses = Expense.objects.filter(is_deleted=False)
@@ -1233,10 +1232,12 @@ def planning_home(request: HttpRequest) -> HttpResponse:
     published_timeline = timelines.filter(published=True).count()
 
     # TODO Chnage logic to get next event
-    ceremony_event = timelines.filter(Q(name__icontains="ceremony") | Q(name__icontains="wedding")).first()
-    if ceremony_event and ceremony_event.start:
-        wedding_date = ceremony_event.start.date()
+    settings = WeddingSettings.load()
+    if settings.wedding_date:
+        wedding_date = settings.wedding_date
         days_until_wedding = (wedding_date - now.date()).days
+    else:
+        days_until_wedding = 0
 
     # Deadlines data
     deadlines = Deadline.objects.filter(is_deleted=False)
@@ -1253,7 +1254,7 @@ def planning_home(request: HttpRequest) -> HttpResponse:
 
     # Recent Activity
     upcoming_deadline_items = deadlines.filter(
-        due_date__gte=now, due_date__lte=now + timedelta(days=30), completed=False
+        due_date__gte=now, due_date__lte=now + datetime.timedelta(days=30), completed=False
     ).order_by("due_date")[:5]
 
     context = {
@@ -1288,3 +1289,46 @@ def planning_home(request: HttpRequest) -> HttpResponse:
     }
 
     return render(request, "core/planning_home.html", context)
+
+
+@login_required
+@require_http_methods(["GET", "POST"])
+def wedding_settings_edit(request):
+    settings = WeddingSettings.load()
+
+    context = {
+        "breadcrumbs": [
+            {"title": "Planning", "url": reverse("core:planning_home")},
+            {"title": "Wedding Settings", "url": reverse("core:wedding_settings")},
+            {"title": "Edit", "url": None},
+        ],
+        "block_title": "Edit Wedding Settings",
+        "title": "Edit Wedding Settings",
+        "settings_form": WeddingSettingsForm(instance=settings),
+        "cancel_url": reverse("core:wedding_settings"),
+        "submit_text": "Update Settings",
+    }
+    if request.method == "POST":
+        form = WeddingSettingsForm(request.POST, instance=settings)
+        if form.is_valid():
+            settings = form.save(commit=False)
+            settings.updated_by = request.user
+            settings.save()
+            messages.success(request, "Wedding settings updated successfully.")
+        return redirect("core:wedding_settings")
+    return render(request, "core/wedding_settings_form.html", context)
+
+
+def wedding_settings(request):
+    settings = WeddingSettings.load()
+    context = {
+        "block_title": "Wedding Settings",
+        "breadcrumbs": [
+            {"title": "Planning", "url": reverse("core:planning_home")},
+            {"title": "Wedding Settings", "url": None},
+        ],
+        "title": "Wedding Settings",
+        "edit_url": reverse("core:wedding_settings_edit"),
+        "settings": settings,
+    }
+    return render(request, "core/wedding_settings_detail.html", context)

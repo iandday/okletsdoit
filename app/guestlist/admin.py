@@ -26,9 +26,10 @@ class GuestGroupAdmin(admin.ModelAdmin):
         "group_attending_count",
         "created_at",
         "updated_at",
+        "rsvp_code",
     ]
     fieldsets = (
-        ("Basic Information", {"fields": ("name", "slug", "relationship", "priority", "associated_with")}),
+        ("Basic Information", {"fields": ("name", "slug", "rsvp_code", "relationship", "priority", "associated_with")}),
         ("Contact Information", {"fields": ("email", "phone", "address", "city", "state", "zip_code")}),
         (
             "Statistics",

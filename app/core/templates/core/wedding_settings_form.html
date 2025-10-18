@@ -1,0 +1,48 @@
+{% extends "components/layout/base.html" %}
+
+{% load static %}
+
+{% block title %}
+    {{ block_title }}
+{% endblock title %}
+{% block content %}
+    <div class="max-w-4xl mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="edit-card">
+                <div class="edit-card-body">
+                    <form method="post" class="space-y-4" id="wedding-settings-form">
+                        {% csrf_token %}
+                        {{ settings_form.non_field_errors }}
+                        <div class="form-control">
+                            {{ settings_form.allow_rsvp.label_tag }}
+                            {{ settings_form.allow_rsvp }}
+                            {% if settings_form.allow_rsvp.errors %}<div class="text-error">{{ settings_form.allow_rsvp.errors }}</div>{% endif %}
+                        </div>
+                        <div class="form-control">
+                            {{ settings_form.wedding_date.label_tag }}
+                            {{ settings_form.wedding_date }}
+                            {% if settings_form.wedding_date.errors %}
+                                <div class="text-error">{{ settings_form.wedding_date.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="card-actions justify-end py-2">
+                            <a href="{{ cancel_url }}" class="btn">Cancel</a>
+                            <button type="submit" class="btn btn-primary">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     class="h-5 w-5"
+                                     fill="none"
+                                     viewBox="0 0 24 24"
+                                     stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                                {{ submit_text }}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+{% block extra_script %}
+{% endblock extra_script %}

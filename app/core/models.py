@@ -4,7 +4,7 @@ import uuid
 from django.db import models
 from django.utils.text import slugify
 from simple_history.models import HistoricalRecords
-
+from typing import Any
 from users.models import User
 
 
@@ -160,6 +160,70 @@ class Question(models.Model):
             counter = 1
 
             while Question.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+
+            self.slug = slug
+
+        super().save(*args, **kwargs)
+
+
+class WeddingSettings(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    allow_rsvp = models.BooleanField(default=False, help_text="Enable or disable RSVP functionality")
+    wedding_date = models.DateField(null=True, blank=True)
+
+    def __str__(self):
+        return "Wedding Settings"
+
+    class Meta:
+        verbose_name_plural = "Wedding Settings"
+
+    def save(self, *args, **kwargs):  # type: ignore
+        """Save object to the database. All other entries, if any, are removed."""
+        self.__class__.objects.exclude(id=self.id).delete()
+        super().save(*args, **kwargs)
+
+    @classmethod
+    def load(cls) -> Any:
+        """Load the model instance."""
+        obj, _ = cls.objects.get_or_create(id=1)
+        return obj
+
+
+class RsvpFormBoolean(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    slug = models.SlugField(max_length=250, null=True, blank=True, unique=True)
+    setting = models.ForeignKey(
+        WeddingSettings, related_name="rsvp_form_booleans", on_delete=models.CASCADE, null=True, blank=True
+    )
+    question = models.CharField(max_length=250, unique=True)
+    description = models.TextField(blank=True, null=True)
+    required = models.BooleanField(default=False)
+    order = models.PositiveIntegerField(default=0)
+    created_by = models.ForeignKey(User, related_name="created_by_rsvp_form_boolean", on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_by = models.ForeignKey(
+        User, related_name="updated_by_rsvp_form_boolean", on_delete=models.CASCADE, null=True, blank=True
+    )
+    updated_at = models.DateTimeField(auto_now=True)
+    is_deleted = models.BooleanField(default=False)
+    history = HistoricalRecords()
+
+    def __str__(self):
+        return self.question
+
+    class Meta:
+        ordering = ["order", "question"]
+        verbose_name_plural = "RSVP Form Booleans"
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base_slug = slugify(self.question[:50])
+            slug = base_slug
+            counter = 1
+
+            while RsvpFormBoolean.objects.filter(slug=slug).exclude(pk=self.pk).exists():
                 slug = f"{base_slug}-{counter}"
                 counter += 1
 

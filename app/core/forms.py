@@ -1,7 +1,7 @@
 import importlib
 from django import forms
 from django.forms import ModelForm
-from .models import Idea, Question, Timeline, Inspiration
+from .models import Idea, Question, Timeline, Inspiration, WeddingSettings
 from django.core.files.base import ContentFile
 
 
@@ -210,3 +210,20 @@ class QuestionForm(forms.ModelForm):
         self.fields["question"].label = "Question"
         self.fields["answer"].label = "Answer"
         self.fields["answer"].required = False
+
+
+class WeddingSettingsForm(ModelForm):
+    """Form for editing wedding settings."""
+
+    class Meta:
+        model = WeddingSettings
+        fields = [
+            "allow_rsvp",
+            "wedding_date",
+        ]
+        widgets = {
+            "allow_rsvp": forms.CheckboxInput(attrs={"class": "checkbox checkbox-primary edit-card-field-toggle"}),
+            "wedding_date": forms.DateInput(
+                attrs={"class": "input input-bordered edit-card-field-value", "type": "date"}
+            ),
+        }

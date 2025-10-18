@@ -4,6 +4,8 @@ on:
   push:
     branches-ignore:
       - main
+    tags-ignore:
+      - '*'
   pull_request:
     branches:
       - main
@@ -103,9 +105,8 @@ jobs:
         run: uv sync --locked --all-extras --dev
 
       - name: Build docs
-        working-directory: 'docs'
         run: |
-          uv run mkdocs build --clean
+          uv run --all-groups --inexact mkdocs build --clean
 
       - name: Minimize uv cache
         run: uv cache prune --ci
