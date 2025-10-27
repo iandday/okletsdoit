@@ -34,11 +34,11 @@ def site_vars(request):
                 "description": "Located about 20 minutes from the venue, this hotel offers modern amenities and a complimentary breakfast.",
             },
             {
-                "name": "Sleep Inn Logan Ohio-Hocking Hills",
-                "address": "12830 Grey Street, Logan, OH 43138",
-                "phone": "740-279-1258",
-                "website": "https://www.choicehotels.com/ohio/logan/sleep-inn-hotels/oh706?mc=llgoxxpx",
-                "description": "This hotel offers comfortable rooms and is located about 20 minutes from the venue.",
+                "name": "Hocking Hills State Park Lodge",
+                "address": "20020 State Route 664 South, Logan, OH 43138",
+                "phone": "740-270-6100",
+                "website": "https://www.hockinghillsparklodge.com/lodging/guest-rooms",
+                "description": "81 guestrooms full of rustic charm and modern comforts, located within Hocking Hills State Park.",
             },
             {
                 "name": "VRBO",
