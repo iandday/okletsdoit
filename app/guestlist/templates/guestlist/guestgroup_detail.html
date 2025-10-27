@@ -108,29 +108,8 @@
                                 </td>
                                 <td>
                                     <div class="flex gap-1">
-                                        <a href="{% url 'guestlist:guest_detail' guest.slug %}"
-                                           class="btn btn-ghost btn-xs"
-                                           title="View Details">
-                                            <svg xmlns="http://www.w3.org/2000/svg"
-                                                 class="h-4 w-4"
-                                                 fill="none"
-                                                 viewBox="0 0 24 24"
-                                                 stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                            </svg>
-                                        </a>
-                                        <a href="{% url 'guestlist:guest_edit' guest.slug %}"
-                                           class="btn btn-ghost btn-xs"
-                                           title="Edit Guest">
-                                            <svg xmlns="http://www.w3.org/2000/svg"
-                                                 class="h-4 w-4"
-                                                 fill="none"
-                                                 viewBox="0 0 24 24"
-                                                 stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                            </svg>
-                                        </a>
+                                        <c-buttons.edit_child_object child_edit_url="{% url 'guestlist:guest_edit' guest.slug %}" />
+                                        <c-buttons.delete_child_object child_slug="{{ guest.slug }}" />
                                     </div>
                                 </td>
                             </tr>
@@ -168,6 +147,9 @@
     <c-buttons.add_attachment />
     {% if object.email %}<c-buttons.email email="{{ object.email }}" />{% endif %}
     {% if object.phone %}<c-buttons.call phone="{{ object.phone }}" />{% endif %}
+    <c-buttons.add_object add_object_url="{% url 'guestlist:guest_create_for_group' group_slug=object.slug %}">
+    Add Guest
+    </c-buttons.add_object>
     </c-slot>
     </c-parent-detail>
 {% endblock content %}
