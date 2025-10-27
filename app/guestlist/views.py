@@ -417,6 +417,7 @@ def guestgroup_detail(request: HttpRequest, group_slug: str) -> HttpResponse:
         "link_url": None,
         "image_url": None,
         "delete_modal_url": reverse("guestlist:guest_group_delete_modal"),
+        "delete_child_modal_url": reverse("guestlist:guest_delete_modal"),
         "child_item_title": "Guests",
         "attachments": Attachment.objects.attachments_for_object(guest_group).all(),
         "attach_form": AttachmentUploadForm(),

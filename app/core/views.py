@@ -1332,3 +1332,37 @@ def wedding_settings(request):
         "settings": settings,
     }
     return render(request, "core/wedding_settings_detail.html", context)
+
+
+@login_required
+def data_export(request: HttpRequest) -> HttpResponse:
+    """
+    Export all data from all models as an Excel file, one tab per model
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+    Returns:
+        HttpResponse: Excel file download response.
+    """
+    # Create a BytesIO buffer to hold the Excel file in memory
+    buffer = io.BytesIO()
+
+    # models_to_export = [
+    #     (Guest, "Guests"),
+    #     (GuestGroup, "Guest Groups"),
+    #     (Expense, "Expenses"),
+    #     (Category, "Categories"),
+    #     (Timeline, "Timelines"),
+    #     (Deadline, "Deadlines"),
+    #     (List, "Lists"),
+    #     (ListEntry, "List Entries"),
+    #     (Inspiration, "Inspirations"),
+    #     (Question, "Questions"),
+    # ]
+
+    # Prepare the HTTP response with the Excel file
+    response = HttpResponse(
+        buffer.getvalue(), content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
+    response["Content-Disposition"] = 'attachment; filename="wedding_data_export.xlsx"'
+    return response
