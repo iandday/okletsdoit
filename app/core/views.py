@@ -5,7 +5,6 @@ import logging
 from decimal import Decimal
 
 import polars as pl
-import xlsxwriter
 from attachments.forms import AttachmentUploadForm
 from attachments.models import Attachment
 from deadline.models import Deadline
@@ -1348,18 +1347,18 @@ def data_export(request: HttpRequest) -> HttpResponse:
     # Create a BytesIO buffer to hold the Excel file in memory
     buffer = io.BytesIO()
 
-    models_to_export = [
-        (Guest, "Guests"),
-        (GuestGroup, "Guest Groups"),
-        (Expense, "Expenses"),
-        (Category, "Categories"),
-        (Timeline, "Timelines"),
-        (Deadline, "Deadlines"),
-        (List, "Lists"),
-        (ListEntry, "List Entries"),
-        (Inspiration, "Inspirations"),
-        (Question, "Questions"),
-    ]
+    # models_to_export = [
+    #     (Guest, "Guests"),
+    #     (GuestGroup, "Guest Groups"),
+    #     (Expense, "Expenses"),
+    #     (Category, "Categories"),
+    #     (Timeline, "Timelines"),
+    #     (Deadline, "Deadlines"),
+    #     (List, "Lists"),
+    #     (ListEntry, "List Entries"),
+    #     (Inspiration, "Inspirations"),
+    #     (Question, "Questions"),
+    # ]
 
     # Prepare the HTTP response with the Excel file
     response = HttpResponse(
