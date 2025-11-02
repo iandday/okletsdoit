@@ -30,6 +30,7 @@ env = environ.Env(
     DJANGO_ACCOUNT_ALLOW_SOCIAL_REGISTRATION=(bool, True),
     AWS_S3_STATIC_DOMAIN_CSP=(str, ""),
     LOCAL_DEV=(bool, False),
+    LOCAL_DB=(bool, True),
     AWS_SESSION_TOKEN=(str, None),
     AWS_ACCESS_KEY_ID=(str, ""),
     AWS_SECRET_ACCESS_KEY=(str, ""),
@@ -41,6 +42,7 @@ env.read_env(BASE_DIR / ".env", overwrite=True)
 SECRET_KEY = env("SECRET_KEY")
 DEBUG = env("DEBUG")
 LOCAL_DEV = env("LOCAL_DEV")
+LOCAL_DB = env("LOCAL_DB")
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 ALLOWED_CIDR_NETS = env.list("ALLOWED_CIDR_NETS")
 
@@ -136,7 +138,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "okletsdoit.wsgi.application"
 
-if LOCAL_DEV:
+if LOCAL_DB:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
