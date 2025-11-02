@@ -217,7 +217,7 @@
             </div>
         </div>
         <!-- Local Information -->
-        <div class="list-card shadow-xl mb-12">
+        <div class="list-card shadow-xl mb-12 mx-4">
             <div class="list-card-body">
                 <h2 class="list-card-title text-2xl mb-6">
                     <svg xmlns="http://www.w3.org/2000/svg"
@@ -229,25 +229,26 @@
                     </svg>
                     Local Attractions
                 </h2>
-                <div class="carousel w-full">
+                <div class="join join-vertical ">
                     {% for slide in local_attractions %}
-                        <div id="slide{{ forloop.counter }}"
-                             class="carousel-item relative w-full list-card">
-                            <figure>
-                                <img src="{{ slide.image_url }}"
-                                     alt="{{ slide.title }}"
-                                     class="w-full h-64 object-cover" />
-                            </figure>
-                            <div class="list-card-body">
-                                <h2 class="list-card-title">{{ slide.name }}</h2>
-                                <p>{{ slide.description }}</p>
-                                <div class="card-actions justify-end">
-                                    <a class="btn btn-primary" href="{{ slide.url }}">Learn More</a>
+                        <div class="collapse collapse-arrow join-item border-base-300 border">
+                            <input type="radio"
+                                   name="my-accordion-4"
+                                   {% if forloop.first %}checked="checked"{% endif %} />
+                            <div class="collapse-title font-semibold">{{ slide.name }}</div>
+                            <div class="collapse-content text-sm">
+                                <div class="grid grid-cols-1 justify-center gap-4">
+                                    <img src="{{ slide.image_url }}"
+                                         alt="{{ slide.title }}"
+                                         class="w-full h-64 object-cover" />
+                                    {{ slide.description }}
+                                    <div class="flex justify-center">
+                                        <a class="btn btn-primary btn-sm"
+                                           href="{{ slide.url }}"
+                                           target="_blank"
+                                           rel="noopener noreferrer">Learn More</a>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
-                                <a href="#slide{{ slide.previous_index }}" class="btn btn-circle">❮</a>
-                                <a href="#slide{{ slide.next_index }}" class="btn btn-circle">❯</a>
                             </div>
                         </div>
                     {% endfor %}

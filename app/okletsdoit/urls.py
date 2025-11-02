@@ -3,6 +3,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include
 from django.urls import path
+
 # from allauth.account.decorators import secure_admin_login
 
 app_name = "okletsdoit"
@@ -22,6 +23,7 @@ urlpatterns = [
     path("deadline/", include("deadline.urls")),
     path("guestlist/", include("guestlist.urls")),
     path("attachments/", include("attachments.urls")),
+    # path("", include("pwa.urls")),
     path("", include("core.urls")),
 ]
 
