@@ -50,23 +50,23 @@ class GuestGroup(models.Model):
 
     @property
     def group_count(self):
-        return self.guests.count()
+        return self.guests.filter(is_deleted=False).count()
 
     @property
     def group_overnight(self):
-        return self.guests.filter(overnight=True).count()
+        return self.guests.filter(overnight=True, is_deleted=False).count()
 
     @property
     def group_invited_count(self):
-        return self.guests.filter(is_invited=True).count()
+        return self.guests.filter(is_invited=True, is_deleted=False).count()
 
     @property
     def group_attending_count(self):
-        return self.guests.filter(is_attending=True).count()
+        return self.guests.filter(is_attending=True, is_deleted=False).count()
 
     @property
     def group_declined_count(self):
-        return self.guests.filter(is_attending=False, responded=True).count()
+        return self.guests.filter(is_attending=False, responded=True, is_deleted=False).count()
 
     def save(self, *args, **kwargs):
         if not self.slug:

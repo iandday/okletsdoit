@@ -103,6 +103,7 @@ jobs:
             fi
 
       - name: Create GitHub Release
+        id: release
         if: github.ref == 'refs/heads/main' && github.event_name == 'push' && steps.check_tag.outputs.exists == 'false'
         uses: actions/create-release@v1
         env:
@@ -150,4 +151,12 @@ jobs:
         with:
           sarif_file: 'trivy-results.sarif'
 
+  deploy:
+    runs-on: self-hosted
+    needs: build-and-push
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
+      - name: update container
+        run: /home/ansible/deliver-prod.sh
