@@ -30,7 +30,10 @@ class GuestGroupAdmin(admin.ModelAdmin):
     ]
     fieldsets = (
         ("Basic Information", {"fields": ("name", "slug", "rsvp_code", "relationship", "priority", "associated_with")}),
-        ("Contact Information", {"fields": ("email", "phone", "address", "city", "state", "zip_code")}),
+        (
+            "Contact Information",
+            {"fields": ("email", "phone", "address_name", "address", "address_two", "city", "state", "zip_code")},
+        ),
         (
             "Statistics",
             {"fields": ("group_count", "group_invited_count", "group_attending_count"), "classes": ("collapse",)},

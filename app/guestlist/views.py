@@ -1,3 +1,4 @@
+import csv
 import io
 import logging
 
@@ -899,3 +900,28 @@ def guest_delete(request: HttpRequest, guest_slug: str) -> HttpResponse:
         return redirect("guestlist:guestgroup_detail", group_slug=guest_group.slug)
     else:
         return redirect("guestlist:guestlist_summary")
+
+
+@login_required
+def address_csv_export(request: HttpRequest) -> HttpResponse:
+    """
+    Exports the guest list to a CSV file formatted for use with an invitation service.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        HttpResponse: The CSV file response.
+    """
+    guest_groups = GuestGroup.objects.filter(is_deleted=False)
+    response = HttpResponse(content_type="text/csv")
+    response["Content-Disposition"] = 'attachment; filename="guest_list.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(["Name", "Address", "Address2", "City", "State", "Zip", "Email"])
+    for group in guest_groups:
+        writer.writerow(
+            [group.address_name, group.address, group.address_two, group.city, group.state, group.zip_code, group.email]
+        )
+
+    return response

@@ -16,10 +16,26 @@ class GuestlistImportForm(forms.Form):
 class GuestGroupForm(forms.ModelForm):
     class Meta:
         model = GuestGroup
-        fields = ["name", "notes", "email", "phone", "address", "city", "state", "zip_code", "relationship", "priority"]
+        fields = [
+            "name",
+            "notes",
+            "email",
+            "phone",
+            "address_name",
+            "address",
+            "address_two",
+            "city",
+            "state",
+            "zip_code",
+            "relationship",
+            "priority",
+        ]
         widgets = {
             "name": forms.TextInput(
                 attrs={"class": "input input-bordered edit-card-field-value", "placeholder": "Enter group name"}
+            ),
+            "address_name": forms.TextInput(
+                attrs={"class": "input input-bordered edit-card-field-value", "placeholder": "Enter address name"}
             ),
             "notes": forms.Textarea(
                 attrs={
@@ -38,6 +54,12 @@ class GuestGroupForm(forms.ModelForm):
                 attrs={
                     "class": "input input-bordered edit-card-field-value",
                     "placeholder": "Enter address",
+                }
+            ),
+            "address_two": forms.TextInput(
+                attrs={
+                    "class": "input input-bordered edit-card-field-value",
+                    "placeholder": "Enter address line 2",
                 }
             ),
             "city": forms.TextInput(

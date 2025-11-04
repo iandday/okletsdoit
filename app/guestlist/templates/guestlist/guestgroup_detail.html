@@ -8,9 +8,10 @@
 {% block content %}
     <c-parent-detail>
     <!-- Address Information -->
-    {% if object.address or object.city or object.state %}
+    {% if object.address_name or object.address or object.city or object.state %}
         <div class="divider">Address</div>
         <div class="text-sm">
+            {% if object.address_name %}<div>{{ object.address_name }}</div>{% endif %}
             {% if object.address %}<div>{{ object.address }}</div>{% endif %}
             {% if object.city or object.state %}
                 <div>

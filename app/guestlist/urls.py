@@ -20,4 +20,5 @@ urlpatterns = [
     path("guest/<slug:guest_slug>/", views.guest_detail, name="guest_detail"),
     path("guest/<slug:guest_slug>/edit/", views.guest_edit, name="guest_edit"),
     path("guest/<slug:guest_slug>/delete/", views.guest_delete, name="guest_delete"),
+    path("export/address_labels/", views.address_csv_export, name="address_csv_export"),
 ]
