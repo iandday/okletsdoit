@@ -180,7 +180,7 @@ class QuestionForm(forms.ModelForm):
                 attrs={
                     "class": "input input-bordered edit-card-field-value",
                     "placeholder": "Enter question text",
-                    "required": True,
+                    # "required": True,
                 },
             ),
             "answer": forms.Textarea(
@@ -188,14 +188,14 @@ class QuestionForm(forms.ModelForm):
                     "class": "textarea textarea-bordered edit-card-field-value",
                     "rows": 40,
                     "placeholder": "Enter answer text",
-                    "required": True,
+                    # "required": True,
                 }
             ),
             "order": forms.NumberInput(
                 attrs={
                     "class": "input input-bordered edit-card-field-value",
                     "placeholder": "Enter order",
-                    "required": True,
+                    # "required": True,
                 },
             ),
             "published": forms.CheckboxInput(
