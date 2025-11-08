@@ -28,6 +28,7 @@ class GuestGroupForm(forms.ModelForm):
             "state",
             "zip_code",
             "relationship",
+            "associated_with",
             "priority",
         ]
         widgets = {
@@ -72,6 +73,7 @@ class GuestGroupForm(forms.ModelForm):
                 attrs={"class": "input input-bordered edit-card-field-value", "placeholder": "Enter zip code"}
             ),
             "relationship": forms.Select(attrs={"class": "select select-bordered edit-card-field-value"}),
+            "associated_with": forms.Select(attrs={"class": "select select-bordered edit-card-field-value"}),
             "priority": forms.Select(attrs={"class": "select select-bordered edit-card-field-value"}),
         }
 
