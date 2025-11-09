@@ -945,15 +945,15 @@ def rsvp(request: HttpRequest) -> HttpResponse:
             messages.error(request, "Invalid RSVP code. Please try again.")
     else:
         rsvp_code = request.GET.get("code")
-        if rsvp_code:
-            try:
-                context["guest_group"] = GuestGroup.objects.get(rsvp_code=rsvp_code, is_deleted=False)
-            except GuestGroup.DoesNotExist:
-                messages.error(request, "Invalid RSVP code. Please try again.")
-        else:
-            context["form"] = RsvpCodeForm()
-            context["submit_text"] = "Find My Invitation"
-            context["cancel_url"] = reverse("core:home")
+    if rsvp_code:
+        try:
+            context["guest_group"] = GuestGroup.objects.get(rsvp_code=rsvp_code.lstrip().rstrip(), is_deleted=False)
+        except GuestGroup.DoesNotExist:
+            messages.error(request, "Invalid RSVP code. Please try again.")
+
+    context["form"] = RsvpCodeForm()
+    context["submit_text"] = "Find My Invitation"
+    context["cancel_url"] = reverse("core:home")
 
     return render(request, "guestlist/rsvp.html", context)
 
@@ -978,7 +978,7 @@ def rsvp_accept(request: HttpRequest, rsvp_code: str) -> HttpResponse:
                 guest.updated_by = request.user if request.user.is_authenticated else admin_user
                 guest.save()
             messages.success(request, settings.rsvp_accept_success_message)
-            return redirect("core:faq")
+            return redirect(f"{reverse('guestlist:rsvp_complete', args=[guest_group.rsvp_code])}?accepted=true")
         else:
             messages.error(request, "Please correct the errors below.")
 
@@ -995,22 +995,28 @@ def rsvp_accept(request: HttpRequest, rsvp_code: str) -> HttpResponse:
     return render(request, "guestlist/rsvp_accept.html", context)
 
 
-def rsvp_decline(request: HttpRequest, rsvp_code: str) -> HttpResponse:
+def rsvp_complete(request: HttpRequest, rsvp_code: str) -> HttpResponse:
+    """
+    Render the 'RSVP Complete' page of the application.
+    """
     try:
         guest_group = GuestGroup.objects.get(rsvp_code=rsvp_code, is_deleted=False)
     except GuestGroup.DoesNotExist:
         messages.error(request, "Invalid RSVP code. Please try again.")
         return redirect("guestlist:rsvp")
 
-    # Mark all invited guests in the group as not attending
-    invited_guests = guest_group.guests.filter(is_invited=True, is_deleted=False)
-    admin_user = User.objects.filter(is_admin=True).first()
-    for guest in invited_guests:
-        guest.is_attending = False
-        guest.responded = True
-        guest.updated_by = request.user if request.user.is_authenticated else admin_user
-        guest.save()
+    if request.GET.get("accepted", "true").lower() == "true":
+        accepted = True
+    else:
+        accepted = False
+        # Mark all invited guests in the group as not attending
+        invited_guests = guest_group.guests.filter(is_invited=True, is_deleted=False)
+        admin_user = User.objects.filter(is_admin=True).first()
+        for guest in invited_guests:
+            guest.is_attending = False
+            guest.responded = True
+            guest.updated_by = request.user if request.user.is_authenticated else admin_user
+            guest.save()
 
-    settings = WeddingSettings.load()
-    messages.success(request, settings.rsvp_decline_success_message)
-    return redirect("core:home")
+    context = {"accepted": accepted, "guest_group": guest_group}
+    return render(request, "guestlist/rsvp_complete.html", context)

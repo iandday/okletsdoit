@@ -49,6 +49,13 @@
                                 {% endif %}
                             </div>
                             <div class="form-control">
+                                {{ settings_form.rsvp_success_headline.label_tag }}
+                                {{ settings_form.rsvp_success_headline }}
+                                {% if settings_form.rsvp_success_headline.errors %}
+                                    <div class="text-error">{{ settings_form.rsvp_success_headline.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="form-control">
                                 {{ settings_form.rsvp_accept_success_message.label_tag }}
                                 {{ settings_form.rsvp_accept_success_message }}
                                 {% if settings_form.rsvp_accept_success_message.errors %}

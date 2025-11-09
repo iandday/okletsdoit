@@ -23,5 +23,5 @@ urlpatterns = [
     path("export/address_labels/", views.address_csv_export, name="address_csv_export"),
     path("rsvp/", views.rsvp, name="rsvp"),
     path("rsvp/<str:rsvp_code>/accept/", views.rsvp_accept, name="rsvp_accept"),
-    path("rsvp/<str:rsvp_code>/decline/", views.rsvp_decline, name="rsvp_decline"),
+    path("rsvp/<str:rsvp_code>/complete/", views.rsvp_complete, name="rsvp_complete"),
 ]

@@ -178,15 +178,12 @@ class WeddingSettings(models.Model):
     rsvp_attending_label = models.CharField(max_length=100, default="I'll be there!")
     rsvp_overnight_label = models.CharField(max_length=100, default="I'll spend the weekend at the lodge")
     rsvp_accept_intro = models.TextField(default="We're so excited that you can make it!")
-    rsvp_accept_success_message = models.TextField(
-        default="Thank you for your RSVP! We look forward to celebrating with you."
-    )
-    rsvp_decline_success_message = models.TextField(
-        default="Thank you for letting us know. We'll miss you at the celebration."
-    )
+    rsvp_accept_success_message = models.TextField(default="We look forward to celebrating with you.")
+    rsvp_decline_success_message = models.TextField(default="We'll miss you at the celebration.")
     rsvp_accommodation_intro = models.TextField(
         default="Please let us know if you will need accommodation during the wedding weekend."
     )
+    rsvp_success_headline = models.TextField(default="Thank you for your RSVP!")
     history = HistoricalRecords()
 
     def __str__(self):

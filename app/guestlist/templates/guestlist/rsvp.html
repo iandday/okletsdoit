@@ -33,7 +33,7 @@
                                 {{ wedding_config.rsvp_accept_button }}
                             </a>
                             <a class="btn btn-error text-primary-content btn-lg gap-2 w-full sm:w-48 border border-neutral/30"
-                               href="{% url 'guestlist:rsvp_decline' guest_group.rsvp_code %}"
+                               href="{% url 'guestlist:rsvp_complete' guest_group.rsvp_code %}?accepted=false"
                                aria-label="Decline RSVP">
                                 <!-- Cross icon -->
                                 <svg xmlns="http://www.w3.org/2000/svg"

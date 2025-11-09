@@ -235,6 +235,7 @@ class WeddingSettingsForm(ModelForm):
             "rsvp_overnight_label",
             "rsvp_accept_intro",
             "rsvp_accommodation_intro",
+            "rsvp_success_headline",
             "rsvp_accept_success_message",
             "rsvp_decline_success_message",
         ]
@@ -247,6 +248,7 @@ class WeddingSettingsForm(ModelForm):
             "rsvp_overnight_label": "RSVP Overnight Checkbox Label",
             "rsvp_accept_intro": "RSVP Accept Page Intro Paragraph",
             "rsvp_accommodation_intro": "RSVP Accommodation Page Intro Paragraph",
+            "rsvp_success_headline": "RSVP Success Headline",
             "rsvp_accept_success_message": "RSVP Accept Success Message",
             "rsvp_decline_success_message": "RSVP Decline Success Message",
         }
@@ -291,6 +293,12 @@ class WeddingSettingsForm(ModelForm):
                     "class": "textarea textarea-bordered edit-card-field-value",
                     "rows": 10,
                     "placeholder": "Enter RSVP Accommodation Intro Text",
+                }
+            ),
+            "rsvp_success_headline": forms.TextInput(
+                attrs={
+                    "class": "input input-bordered edit-card-field-value",
+                    "placeholder": "Enter RSVP Success Headline",
                 }
             ),
             "rsvp_accept_success_message": forms.Textarea(
