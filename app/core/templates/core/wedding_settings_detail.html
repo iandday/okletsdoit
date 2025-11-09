@@ -51,19 +51,29 @@
                         </svg>
                         Display Details
                     </h2>
-                    <div>
-                        <div class="detail-card-field-name">Wedding Date</div>
-                        <div class="detail-card-field-value">
-                            {% if settings.wedding_date %}
-                                {{ settings.wedding_date|date:"F j, Y" }}
-                            {% else %}
-                                Not Set
-                            {% endif %}
+                    <div class="grid grid-cols-2 gap-4 mt-4">
+                        <div>
+                            <div class="detail-card-field-name">Wedding Date</div>
+                            <div class="detail-card-field-value">
+                                {% if settings.wedding_date %}
+                                    {{ settings.wedding_date|date:"F j, Y" }}
+                                {% else %}
+                                    Not Set
+                                {% endif %}
+                            </div>
                         </div>
-                    </div>
-                    <div>
-                        <div class="detail-card-field-name">Allow RSVP</div>
-                        <div class="detail-card-field-value">{{ settings.allow_rsvp|yesno:"Yes,No" }}</div>
+                        <div>
+                            <div class="detail-card-field-name">Allow RSVP</div>
+                            <div class="detail-card-field-value">{{ settings.allow_rsvp|yesno:"Yes,No" }}</div>
+                        </div>
+                        <div>
+                            <div class="detail-card-field-name">Standard Group Label</div>
+                            <div class="detail-card-field-value">{{ settings.standard_group_label }}</div>
+                        </div>
+                        <div>
+                            <div class="detail-card-field-name">VIP Group Label</div>
+                            <div class="detail-card-field-value">{{ settings.vip_group_label }}</div>
+                        </div>
                     </div>
                 </div>
             </div>

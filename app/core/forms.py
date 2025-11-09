@@ -238,6 +238,8 @@ class WeddingSettingsForm(ModelForm):
             "rsvp_success_headline",
             "rsvp_accept_success_message",
             "rsvp_decline_success_message",
+            "standard_group_label",
+            "vip_group_label",
         ]
         labels = {
             "wedding_date": "Wedding Date",
@@ -251,6 +253,8 @@ class WeddingSettingsForm(ModelForm):
             "rsvp_success_headline": "RSVP Success Headline",
             "rsvp_accept_success_message": "RSVP Accept Success Message",
             "rsvp_decline_success_message": "RSVP Decline Success Message",
+            "standard_group_label": "Standard Group Label",
+            "vip_group_label": "VIP Group Label",
         }
         widgets = {
             "allow_rsvp": forms.CheckboxInput(attrs={"class": "checkbox checkbox-primary edit-card-field-toggle"}),
@@ -313,6 +317,18 @@ class WeddingSettingsForm(ModelForm):
                     "class": "textarea textarea-bordered edit-card-field-value",
                     "rows": 3,
                     "placeholder": "Enter RSVP Decline Success Message",
+                }
+            ),
+            "standard_group_label": forms.TextInput(
+                attrs={
+                    "class": "input input-bordered edit-card-field-value",
+                    "placeholder": "Enter Standard Group Label",
+                }
+            ),
+            "vip_group_label": forms.TextInput(
+                attrs={
+                    "class": "input input-bordered edit-card-field-value",
+                    "placeholder": "Enter VIP Group Label",
                 }
             ),
         }

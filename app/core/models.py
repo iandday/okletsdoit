@@ -184,6 +184,8 @@ class WeddingSettings(models.Model):
         default="Please let us know if you will need accommodation during the wedding weekend."
     )
     rsvp_success_headline = models.TextField(default="Thank you for your RSVP!")
+    standard_group_label = models.CharField(max_length=100, default="Day")
+    vip_group_label = models.CharField(max_length=100, default="Overnight")
     history = HistoricalRecords()
 
     def __str__(self):

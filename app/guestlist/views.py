@@ -341,10 +341,11 @@ def guestlist_summary(request: HttpRequest) -> HttpResponse:
         "delete_modal_url": reverse("guestlist:guest_group_delete_modal"),
         "total_guests": Guest.objects.filter(is_deleted=False).count(),
         "total_invited": Guest.objects.filter(is_deleted=False, is_invited=True).count(),
-        "total_invited_day": Guest.objects.filter(is_deleted=False, is_invited=True, overnight=False).count(),
-        "total_invited_overnight": Guest.objects.filter(is_deleted=False, is_invited=True, overnight=True).count(),
+        "total_invited_standard": Guest.objects.filter(is_deleted=False, is_invited=True, vip=False).count(),
+        "total_invited_vip": Guest.objects.filter(is_deleted=False, is_invited=True, vip=True).count(),
         "total_attending": Guest.objects.filter(is_deleted=False, is_attending=True).count(),
-        "total_attending_day": Guest.objects.filter(is_deleted=False, is_attending=True, overnight=False).count(),
+        "total_attending_standard": Guest.objects.filter(is_deleted=False, is_attending=True, overnight=False).count(),
+        "total_attending_vip": Guest.objects.filter(is_deleted=False, is_attending=True, vip=True).count(),
         "total_attending_overnight": Guest.objects.filter(is_deleted=False, is_attending=True, overnight=True).count(),
         "total_declined": Guest.objects.filter(is_deleted=False, is_attending=False, responded=True).count(),
         "total_pending": Guest.objects.filter(is_deleted=False, responded=False, is_invited=True).count(),
@@ -371,14 +372,17 @@ def all_guests(request: HttpRequest) -> HttpResponse:
     )
 
     context = {
+        "block_title": "All Guests",
+        "title": "All Guests",
         "guests": guests,
         "delete_modal_url": reverse("guestlist:guest_delete_modal"),
         "total_guests": Guest.objects.filter(is_deleted=False).count(),
         "total_invited": Guest.objects.filter(is_deleted=False, is_invited=True).count(),
-        "total_invited_day": Guest.objects.filter(is_deleted=False, is_invited=True, overnight=False).count(),
-        "total_invited_overnight": Guest.objects.filter(is_deleted=False, is_invited=True, overnight=True).count(),
+        "total_invited_standard": Guest.objects.filter(is_deleted=False, is_invited=True, vip=False).count(),
+        "total_invited_vip": Guest.objects.filter(is_deleted=False, is_invited=True, vip=True).count(),
         "total_attending": Guest.objects.filter(is_deleted=False, is_attending=True).count(),
-        "total_attending_day": Guest.objects.filter(is_deleted=False, is_attending=True, overnight=False).count(),
+        "total_attending_standard": Guest.objects.filter(is_deleted=False, is_attending=True, overnight=False).count(),
+        "total_attending_vip": Guest.objects.filter(is_deleted=False, is_attending=True, vip=True).count(),
         "total_attending_overnight": Guest.objects.filter(is_deleted=False, is_attending=True, overnight=True).count(),
         "total_declined": Guest.objects.filter(is_deleted=False, is_attending=False, responded=True).count(),
         "total_pending": Guest.objects.filter(is_deleted=False, responded=False, is_invited=True).count(),
@@ -660,6 +664,7 @@ def guest_data(request: HttpRequest) -> HttpResponse | JsonResponse:
                 "group": guest.group.name,
                 "relationship": guest.group.get_relationship_display(),
                 "plus_one": "Yes" if guest.plus_one else "No",
+                "vip": "Yes" if guest.vip else "No",
                 "overnight": "Yes" if guest.overnight else "No",
                 "rsvp": attending_status,
                 "association": association,
@@ -967,7 +972,6 @@ def rsvp_accept(request: HttpRequest, rsvp_code: str) -> HttpResponse:
     guests = guest_group.guests.filter(is_invited=True, is_deleted=False)
 
     if request.method == "POST":
-        settings = WeddingSettings.load()
         GuestRSVPFormSet = modelformset_factory(Guest, GuestRSVPForm, extra=0)
         guest_formset = GuestRSVPFormSet(request.POST, queryset=guests)
         if guest_formset.is_valid():
@@ -977,13 +981,13 @@ def rsvp_accept(request: HttpRequest, rsvp_code: str) -> HttpResponse:
                 guest.responded = True
                 guest.updated_by = request.user if request.user.is_authenticated else admin_user
                 guest.save()
-            messages.success(request, settings.rsvp_accept_success_message)
             return redirect(f"{reverse('guestlist:rsvp_complete', args=[guest_group.rsvp_code])}?accepted=true")
         else:
             messages.error(request, "Please correct the errors below.")
 
-    GuestRSVPFormSet = modelformset_factory(Guest, GuestRSVPForm, extra=0)
-    guest_formset = GuestRSVPFormSet(queryset=guests)
+    else:
+        GuestRSVPFormSet = modelformset_factory(Guest, GuestRSVPForm, extra=0)
+        guest_formset = GuestRSVPFormSet(queryset=guests)
 
     context = {
         "guest_group": guest_group,

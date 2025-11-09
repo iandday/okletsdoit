@@ -23,6 +23,20 @@
                                 {% endif %}
                             </div>
                             <div class="form-control">
+                                {{ settings_form.standard_group_label.label_tag }}
+                                {{ settings_form.standard_group_label }}
+                                {% if settings_form.standard_group_label.errors %}
+                                    <div class="text-error">{{ settings_form.standard_group_label.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="form-control">
+                                {{ settings_form.vip_group_label.label_tag }}
+                                {{ settings_form.vip_group_label }}
+                                {% if settings_form.vip_group_label.errors %}
+                                    <div class="text-error">{{ settings_form.vip_group_label.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="form-control">
                                 {{ settings_form.allow_rsvp.label_tag }}
                                 {{ settings_form.allow_rsvp }}
                                 {% if settings_form.allow_rsvp.errors %}<div class="text-error">{{ settings_form.allow_rsvp.errors }}</div>{% endif %}

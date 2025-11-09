@@ -5,6 +5,7 @@ The Settings page provides a centralized view of all configurable settings acros
 ## Display Details
 - **Wedding Date**: Date of the wedding. Shown on public pages and used for countdown displays.
 - **Allow RSVP**: When enabled the public RSVP flow is visible to guests.
+- **Standard Group Label** & **VIP Group Label**: Labels used to designate guests in the application.  This was originally implemented to identify guests who would be offered weekend accommodations as part of the event.
 
 
 ## RSVP Settings
