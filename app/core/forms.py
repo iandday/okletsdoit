@@ -1,7 +1,16 @@
 import importlib
 from django import forms
-from django.forms import ModelForm
-from .models import Idea, Question, Timeline, Inspiration, WeddingSettings
+from django.forms import ModelForm, inlineformset_factory
+from .models import (
+    Idea,
+    Question,
+    RsvpFormBoolean,
+    RsvpFormInput,
+    RsvpFormInput,
+    Timeline,
+    Inspiration,
+    WeddingSettings,
+)
 from django.core.files.base import ContentFile
 
 
@@ -218,12 +227,170 @@ class WeddingSettingsForm(ModelForm):
     class Meta:
         model = WeddingSettings
         fields = [
-            "allow_rsvp",
             "wedding_date",
+            "allow_rsvp",
+            "rsvp_accept_button",
+            "rsvp_decline_button",
+            "rsvp_attending_label",
+            "rsvp_overnight_label",
+            "rsvp_accept_intro",
+            "rsvp_accommodation_intro",
+            "rsvp_accept_success_message",
+            "rsvp_decline_success_message",
         ]
+        labels = {
+            "wedding_date": "Wedding Date",
+            "allow_rsvp": "Allow RSVP",
+            "rsvp_accept_button": "RSVP Accept Button Text",
+            "rsvp_decline_button": "RSVP Decline Button Text",
+            "rsvp_attending_label": "RSVP Attending Checkbox Label",
+            "rsvp_overnight_label": "RSVP Overnight Checkbox Label",
+            "rsvp_accept_intro": "RSVP Accept Page Intro Paragraph",
+            "rsvp_accommodation_intro": "RSVP Accommodation Page Intro Paragraph",
+            "rsvp_accept_success_message": "RSVP Accept Success Message",
+            "rsvp_decline_success_message": "RSVP Decline Success Message",
+        }
         widgets = {
             "allow_rsvp": forms.CheckboxInput(attrs={"class": "checkbox checkbox-primary edit-card-field-toggle"}),
             "wedding_date": forms.DateInput(
                 attrs={"class": "input input-bordered edit-card-field-value", "type": "date"}
             ),
+            "rsvp_accept_button": forms.TextInput(
+                attrs={
+                    "class": "input input-bordered edit-card-field-value",
+                    "placeholder": "Enter RSVP Accept Button Text",
+                }
+            ),
+            "rsvp_decline_button": forms.TextInput(
+                attrs={
+                    "class": "input input-bordered edit-card-field-value",
+                    "placeholder": "Enter RSVP Decline Button Text",
+                }
+            ),
+            "rsvp_attending_label": forms.TextInput(
+                attrs={
+                    "class": "input input-bordered edit-card-field-value",
+                    "placeholder": "Enter RSVP Attending Label Text",
+                }
+            ),
+            "rsvp_overnight_label": forms.TextInput(
+                attrs={
+                    "class": "input input-bordered edit-card-field-value",
+                    "placeholder": "Enter RSVP Overnight Label Text",
+                }
+            ),
+            "rsvp_accept_intro": forms.Textarea(
+                attrs={
+                    "class": "textarea textarea-bordered edit-card-field-value",
+                    "rows": 10,
+                    "placeholder": "Enter RSVP Accept Intro Text",
+                }
+            ),
+            "rsvp_accommodation_intro": forms.Textarea(
+                attrs={
+                    "class": "textarea textarea-bordered edit-card-field-value",
+                    "rows": 10,
+                    "placeholder": "Enter RSVP Accommodation Intro Text",
+                }
+            ),
+            "rsvp_accept_success_message": forms.Textarea(
+                attrs={
+                    "class": "textarea textarea-bordered edit-card-field-value",
+                    "rows": 3,
+                    "placeholder": "Enter RSVP Accept Success Message",
+                }
+            ),
+            "rsvp_decline_success_message": forms.Textarea(
+                attrs={
+                    "class": "textarea textarea-bordered edit-card-field-value",
+                    "rows": 3,
+                    "placeholder": "Enter RSVP Decline Success Message",
+                }
+            ),
         }
+
+
+class RsvpFormBooleanForm(ModelForm):
+    """Form for creating and editing RSVP boolean questions."""
+
+    class Meta:
+        model = RsvpFormBoolean
+        fields = ["question", "description", "order", "required", "published"]
+        widgets = {
+            "question": forms.TextInput(
+                attrs={
+                    "class": "input input-bordered edit-card-field-value",
+                    "placeholder": "Enter question text",
+                },
+            ),
+            "description": forms.Textarea(
+                attrs={
+                    "class": "textarea textarea-bordered edit-card-field-value",
+                    "rows": 3,
+                    "placeholder": "Enter question description (optional)",
+                }
+            ),
+            "order": forms.NumberInput(
+                attrs={
+                    "class": "input input-bordered edit-card-field-value",
+                    "placeholder": "Enter order",
+                },
+            ),
+            "required": forms.CheckboxInput(
+                attrs={
+                    "class": "checkbox checkbox-primary edit-card-field-toggle",
+                }
+            ),
+            "published": forms.CheckboxInput(
+                attrs={
+                    "class": "checkbox checkbox-primary edit-card-field-toggle",
+                }
+            ),
+        }
+
+
+class RsvpFormInputForm(ModelForm):
+    """Form for creating and editing RSVP input questions."""
+
+    class Meta:
+        model = RsvpFormInput
+        fields = ["question", "description", "order", "required", "published"]
+        widgets = {
+            "question": forms.TextInput(
+                attrs={
+                    "class": "input input-bordered edit-card-field-value",
+                    "placeholder": "Enter question text",
+                },
+            ),
+            "description": forms.Textarea(
+                attrs={
+                    "class": "textarea textarea-bordered edit-card-field-value",
+                    "rows": 3,
+                    "placeholder": "Enter question description (optional)",
+                }
+            ),
+            "order": forms.NumberInput(
+                attrs={
+                    "class": "input input-bordered edit-card-field-value",
+                    "placeholder": "Enter order",
+                },
+            ),
+            "required": forms.CheckboxInput(
+                attrs={
+                    "class": "checkbox checkbox-primary edit-card-field-toggle",
+                }
+            ),
+            "published": forms.CheckboxInput(
+                attrs={
+                    "class": "checkbox checkbox-primary edit-card-field-toggle",
+                }
+            ),
+        }
+
+
+RsvpFormBooleanFormSet = inlineformset_factory(
+    WeddingSettings, RsvpFormBoolean, form=RsvpFormBooleanForm, extra=0, can_delete=True
+)
+RsvpFormInputFormSet = inlineformset_factory(
+    WeddingSettings, RsvpFormInput, form=RsvpFormInputForm, extra=0, can_delete=True
+)

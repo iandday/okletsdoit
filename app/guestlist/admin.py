@@ -59,6 +59,7 @@ class GuestAdmin(admin.ModelAdmin):
         "group",
         "plus_one",
         "is_invited",
+        "responded",
         "is_attending",
         "overnight",
         "created_at",
@@ -79,7 +80,7 @@ class GuestAdmin(admin.ModelAdmin):
     readonly_fields = ["id", "slug", "created_at", "updated_at"]
     fieldsets = (
         ("Basic Information", {"fields": ("first_name", "last_name", "slug", "group", "plus_one", "overnight")}),
-        ("RSVP Status", {"fields": ("is_invited", "is_attending")}),
+        ("RSVP Status", {"fields": ("is_invited", "responded", "is_attending")}),
         ("Notes", {"fields": ("notes", "response_notes")}),
         (
             "System Information",

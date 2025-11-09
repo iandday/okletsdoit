@@ -1,0 +1,99 @@
+{% extends "components/layout/base.html" %}
+
+{% load static %}
+
+{% block title %}
+    RSVP
+{% endblock title %}
+{% block content %}
+    <img src="{% static 'core/img/rsvp.png' %}"
+         alt="rsvp"
+         class="max-w-sm rounded-lg justify-self-center" />
+    <div class="flex flex-col items-center justify-center mx-auto px-4 py-8">
+        {% if wedding_config.allow_rsvp %}
+            {% if guest_group %}
+                <div class="card w-full max-w-2xl bg-base-200 shadow-xl">
+                    <div class="card-body items-center text-center">
+                        <h2 class="card-title text-2xl">{{ guest_group.address_name }}, we'd love to hear from you</h2>
+                        <p class="text-sm text-base-content/70">Please let us know whether you will be joining us on the wedding day.</p>
+                        <div class="flex flex-row gap-4 mt-6">
+                            <a class="btn btn-primary btn-lg gap-2 w-full sm:w-48"
+                               href="{% url 'guestlist:rsvp_accept' guest_group.rsvp_code %}"
+                               aria-label="Accept RSVP">
+                                <!-- Heart/Check icon -->
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     class="h-5 w-5"
+                                     fill="none"
+                                     viewBox="0 0 24 24"
+                                     stroke="currentColor"
+                                     stroke-width="2"
+                                     aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                                </svg>
+                                {{ wedding_config.rsvp_accept_button }}
+                            </a>
+                            <a class="btn btn-error text-primary-content btn-lg gap-2 w-full sm:w-48 border border-neutral/30"
+                               href="{% url 'guestlist:rsvp_decline' guest_group.rsvp_code %}"
+                               aria-label="Decline RSVP">
+                                <!-- Cross icon -->
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     class="h-5 w-5"
+                                     fill="none"
+                                     viewBox="0 0 24 24"
+                                     stroke="currentColor"
+                                     stroke-width="2"
+                                     aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                                {{ wedding_config.rsvp_decline_button }}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="edit-card" id="rsvp-lookup">
+                    <div class="edit-card-body">
+                        <form method="post"
+                              id="objectForm"
+                              {% if file %}enctype="multipart/form-data"{% endif %}>
+                            {% csrf_token %}
+                            {% for field in form %}
+                                <div class="form-control w-full py-2">
+                                    <label class="label">
+                                        <span class="edit-card-field-name">{{ field.label }}</span>
+                                        <!-- if the field is required-->
+                                        {% if field.required %}<span class="label-text-alt text-error">Required</span>{% endif %}
+                                    </label>
+                                    {{ field }}
+                                    {% if field.errors %}
+                                        <label class="label">
+                                            <span class="label-text-alt text-error">
+                                                {% for error in field.errors %}{{ error }}{% endfor %}
+                                            </span>
+                                        </label>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                            <!-- Form Actions -->
+                            <div class="card-actions justify-center py-2">
+                                <a href="{{ cancel_url }}" class="btn">Cancel</a>
+                                <button type="submit" class="btn btn-primary">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         class="h-5 w-5"
+                                         fill="none"
+                                         viewBox="0 0 24 24"
+                                         stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    {{ submit_text }}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            {% endif %}
+        {% else %}
+            <p class="text-center">Coming Soon</p>
+        {% endif %}
+    </div>
+{% endblock content %}

@@ -31,7 +31,7 @@ from guestlist.models import GuestGroup
 from list.models import List
 from list.models import ListEntry
 
-from .forms import IdeaForm
+from .forms import IdeaForm, RsvpFormBooleanFormSet, RsvpFormInputFormSet
 from .forms import IdeaImportForm
 from .forms import InspirationForm
 from .forms import QuestionForm
@@ -41,6 +41,7 @@ from .forms import WeddingSettingsForm
 from .models import Idea
 from .models import Inspiration
 from .models import Question
+
 from .models import Timeline
 from .models import WeddingSettings
 
@@ -67,19 +68,6 @@ def our_story(request: HttpRequest) -> HttpResponse:
     Render the 'Our Story' page of the application.
     """
     return render(request, "core/our_story.html")
-
-
-def rsvp(request: HttpRequest) -> HttpResponse:
-    """
-    Render the 'RSVP' page of the application.
-    """
-    settings = WeddingSettings.load()
-    logger.error(settings.allow_rsvp)
-    context = {}
-    if settings.allow_rsvp:
-        context = {"test": "value"}
-
-    return render(request, "core/rsvp.html", context)
 
 
 def photos(request: HttpRequest) -> HttpResponse:
@@ -1290,35 +1278,11 @@ def planning_home(request: HttpRequest) -> HttpResponse:
 
 
 @login_required
-@require_http_methods(["GET", "POST"])
-def wedding_settings_edit(request):
-    settings = WeddingSettings.load()
-
-    context = {
-        "breadcrumbs": [
-            {"title": "Planning", "url": reverse("core:planning_home")},
-            {"title": "Wedding Settings", "url": reverse("core:wedding_settings")},
-            {"title": "Edit", "url": None},
-        ],
-        "block_title": "Edit Wedding Settings",
-        "title": "Edit Wedding Settings",
-        "settings_form": WeddingSettingsForm(instance=settings),
-        "cancel_url": reverse("core:wedding_settings"),
-        "submit_text": "Update Settings",
-    }
-    if request.method == "POST":
-        form = WeddingSettingsForm(request.POST, instance=settings)
-        if form.is_valid():
-            settings = form.save(commit=False)
-            settings.updated_by = request.user
-            settings.save()
-            messages.success(request, "Wedding settings updated successfully.")
-        return redirect("core:wedding_settings")
-    return render(request, "core/wedding_settings_form.html", context)
-
-
 def wedding_settings(request):
     settings = WeddingSettings.load()
+    rsvp_boolean_questions = settings.rsvp_form_booleans.filter(is_deleted=False).order_by("order")
+    rsvp_input_questions = settings.rsvp_form_inputs.filter(is_deleted=False).order_by("order")
+
     context = {
         "block_title": "Wedding Settings",
         "breadcrumbs": [
@@ -1328,8 +1292,53 @@ def wedding_settings(request):
         "title": "Wedding Settings",
         "edit_url": reverse("core:wedding_settings_edit"),
         "settings": settings,
+        "rsvp_boolean_questions": rsvp_boolean_questions,
+        "rsvp_input_questions": rsvp_input_questions,
     }
     return render(request, "core/wedding_settings_detail.html", context)
+
+
+@login_required
+@require_http_methods(["GET", "POST"])
+def wedding_settings_edit(request):
+    settings = WeddingSettings.load()
+
+    if request.method == "POST":
+        form = WeddingSettingsForm(request.POST, instance=settings)
+        rsvp_form_boolean_formset = RsvpFormBooleanFormSet(request.POST, instance=settings, prefix="boolean")
+        rsvp_form_input_formset = RsvpFormInputFormSet(request.POST, instance=settings, prefix="input")
+        if form.is_valid() and rsvp_form_boolean_formset.is_valid():
+            settings = form.save(commit=False)
+            settings.updated_by = request.user
+            settings.save()
+            messages.success(request, "Wedding settings updated successfully.")
+            rsvp_form_boolean_formset.save()
+            messages.success(request, "RSVP form yes/no questions updated successfully.")
+            rsvp_form_input_formset.save()
+            messages.success(request, "RSVP form text input questions updated successfully.")
+            return redirect("core:wedding_settings")
+        else:
+            messages.error(request, "There were errors updating the RSVP form yes/no questions.")
+            pass
+
+    else:
+        rsvp_form_boolean_formset = RsvpFormBooleanFormSet(instance=settings, prefix="boolean")
+        rsvp_form_input_formset = RsvpFormInputFormSet(instance=settings, prefix="input")
+    context = {
+        "breadcrumbs": [
+            {"title": "Planning", "url": reverse("core:planning_home")},
+            {"title": "Wedding Settings", "url": reverse("core:wedding_settings")},
+            {"title": "Edit", "url": None},
+        ],
+        "block_title": "Edit Wedding Settings",
+        "title": "Edit Wedding Settings",
+        "settings_form": WeddingSettingsForm(instance=settings),
+        "rsvp_form_boolean_formset": rsvp_form_boolean_formset,
+        "rsvp_form_input_formset": rsvp_form_input_formset,
+        "cancel_url": reverse("core:wedding_settings"),
+        "submit_text": "Update Settings",
+    }
+    return render(request, "core/wedding_settings_form.html", context)
 
 
 @login_required

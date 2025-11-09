@@ -1,0 +1,102 @@
+{% extends "components/layout/base.html" %}
+
+{% load static %}
+
+{% block title %}
+    RSVP
+{% endblock title %}
+{% block content %}
+    <div class="max-w-3xl mx-auto py-8 px-4">
+        <div class="flex flex-col items-center">
+            <img src="{% static 'core/img/rsvp.png' %}"
+                 alt="rsvp"
+                 class="max-w-sm rounded-lg mb-6" />
+            <div class="prose pb-6">{{ wedding_config.rsvp_accept_intro|safe }}</div>
+            {% if show_accommodations %}
+                <div role="alert" class="alert alert-primary py-6 ">
+                    <div class="prose">{{ wedding_config.rsvp_accommodation_intro|safe }}</div>
+                </div>
+            {% endif %}
+        </div>
+        <form method="post"
+              enctype="multipart/form-data"
+              class="space-y-6 py-6"
+              novalidate>
+            {% csrf_token %}
+            {{ guest_formset.management_form }}
+            {% if guest_formset.non_form_errors %}
+                <div role="alert" class="alert alert-error">
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             class="stroke-current flex-shrink-0 h-6 w-6"
+                             fill="none"
+                             viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636L5.636 18.364M18.364 18.364L5.636 5.636" />
+                        </svg>
+                        <span>{{ guest_formset.non_form_errors }}</span>
+                    </div>
+                </div>
+            {% endif %}
+            <div id="guest-forms" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {% for form in guest_formset %}
+                    <div class="edit-card">
+                        <div class="edit-card-body">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="label">
+                                            <span class="label-text">First name</span>
+                                        </label>
+                                        {{ form.first_name }}
+                                        {% if form.first_name.errors %}<p class="text-error text-sm mt-1">{{ form.first_name.errors.as_text }}</p>{% endif %}
+                                    </div>
+                                    <div>
+                                        <label class="label">
+                                            <span class="label-text">Last name</span>
+                                        </label>
+                                        {{ form.last_name }}
+                                        {% if form.last_name.errors %}<p class="text-error text-sm mt-1">{{ form.last_name.errors.as_text }}</p>{% endif %}
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 gap-2">
+                                    <div class="flex items-center gap-2">
+                                        {{ form.is_attending }}
+                                        <label class="label cursor-pointer mb-0">
+                                            <span class="label-text">{{ wedding_config.rsvp_attending_label }}</span>
+                                        </label>
+                                    </div>
+                                    {% if show_accommodations %}
+                                        <div class="flex items-center gap-2">
+                                            {{ form.overnight }}
+                                            <label class="label cursor-pointer mb-0">
+                                                <span class="label-text">{{ wedding_config.rsvp_overnight_label }}</span>
+                                            </label>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <label class="label">
+                                    <span class="label-text">Notes</span>
+                                </label>
+                                {{ form.response_notes }}
+                                {% if form.response_notes.errors %}
+                                    <p class="text-error text-sm mt-1">{{ form.response_notes.errors.as_text }}</p>
+                                {% endif %}
+                            </div>
+                            <div class="sr-only">
+                                {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
+                            </div>
+                            {% if form.non_field_errors %}<div class="text-error text-sm mt-2">{{ form.non_field_errors }}</div>{% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="flex justify-end gap-3">
+                <a href="{% url 'core:planning_home' %}"
+                   class="btn btn-error text-primary-content">Cancel</a>
+                <button type="submit" class="btn btn-primary " id="submit-rsvp">Submit RSVP</button>
+            </div>
+        </form>
+    </div>
+{% endblock content %}

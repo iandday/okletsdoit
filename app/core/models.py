@@ -170,8 +170,24 @@ class Question(models.Model):
 
 class WeddingSettings(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    default_data_loaded = models.BooleanField(default=False)
     allow_rsvp = models.BooleanField(default=False, help_text="Enable or disable RSVP functionality")
     wedding_date = models.DateField(null=True, blank=True)
+    rsvp_accept_button = models.TextField(default="Lets' Do This", null=True)
+    rsvp_decline_button = models.TextField(default="No Thanks", null=True)
+    rsvp_attending_label = models.CharField(max_length=100, default="I'll be there!")
+    rsvp_overnight_label = models.CharField(max_length=100, default="I'll spend the weekend at the lodge")
+    rsvp_accept_intro = models.TextField(default="We're so excited that you can make it!")
+    rsvp_accept_success_message = models.TextField(
+        default="Thank you for your RSVP! We look forward to celebrating with you."
+    )
+    rsvp_decline_success_message = models.TextField(
+        default="Thank you for letting us know. We'll miss you at the celebration."
+    )
+    rsvp_accommodation_intro = models.TextField(
+        default="Please let us know if you will need accommodation during the wedding weekend."
+    )
+    history = HistoricalRecords()
 
     def __str__(self):
         return "Wedding Settings"
@@ -201,6 +217,7 @@ class RsvpFormBoolean(models.Model):
     description = models.TextField(blank=True, null=True)
     required = models.BooleanField(default=False)
     order = models.PositiveIntegerField(default=0)
+    published = models.BooleanField(default=False)
     created_by = models.ForeignKey(User, related_name="created_by_rsvp_form_boolean", on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_by = models.ForeignKey(
@@ -224,6 +241,48 @@ class RsvpFormBoolean(models.Model):
             counter = 1
 
             while RsvpFormBoolean.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+
+            self.slug = slug
+
+        super().save(*args, **kwargs)
+
+
+class RsvpFormInput(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    slug = models.SlugField(max_length=250, null=True, blank=True, unique=True)
+    setting = models.ForeignKey(
+        WeddingSettings, related_name="rsvp_form_inputs", on_delete=models.CASCADE, null=True, blank=True
+    )
+    question = models.CharField(max_length=250, unique=True)
+    description = models.TextField(blank=True, null=True)
+    required = models.BooleanField(default=False)
+    order = models.PositiveIntegerField(default=0)
+    published = models.BooleanField(default=False)
+    created_by = models.ForeignKey(User, related_name="created_by_rsvp_form_input", on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_by = models.ForeignKey(
+        User, related_name="updated_by_rsvp_form_input", on_delete=models.CASCADE, null=True, blank=True
+    )
+    updated_at = models.DateTimeField(auto_now=True)
+    is_deleted = models.BooleanField(default=False)
+    history = HistoricalRecords()
+
+    def __str__(self):
+        return self.question
+
+    class Meta:
+        ordering = ["order", "question"]
+        verbose_name_plural = "RSVP Form Text Inputs"
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base_slug = slugify(self.question[:50])
+            slug = base_slug
+            counter = 1
+
+            while RsvpFormInput.objects.filter(slug=slug).exclude(pk=self.pk).exists():
                 slug = f"{base_slug}-{counter}"
                 counter += 1
 

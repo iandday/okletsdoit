@@ -1,8 +1,8 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import include
-from django.urls import path
+from django.urls import path, re_path, include
+from django.views.generic.base import RedirectView
 
 # from allauth.account.decorators import secure_admin_login
 
@@ -23,7 +23,11 @@ urlpatterns = [
     path("deadline/", include("deadline.urls")),
     path("guestlist/", include("guestlist.urls")),
     path("attachments/", include("attachments.urls")),
-    # path("", include("pwa.urls")),
+    re_path(
+        r"^(?P<code>[0-9A-F]{10})$",
+        RedirectView.as_view(url="/guestlist/rsvp/?code=%(code)s", permanent=False),
+        name="rsvp_redirect",
+    ),
     path("", include("core.urls")),
 ]
 

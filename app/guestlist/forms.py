@@ -13,6 +13,19 @@ class GuestlistImportForm(forms.Form):
     )
 
 
+class RsvpCodeForm(forms.Form):
+    rsvp_code = forms.CharField(
+        max_length=10,
+        widget=forms.TextInput(
+            attrs={
+                "class": "input input-bordered edit-card-field-value",
+                "placeholder": "Enter your RSVP code",
+            }
+        ),
+        label="Please provide your RSVP code to respond",
+    )
+
+
 class GuestGroupForm(forms.ModelForm):
     class Meta:
         model = GuestGroup
@@ -124,6 +137,36 @@ class GuestForm(forms.ModelForm):
                     "class": "textarea textarea-bordered edit-card-field-value",
                     "placeholder": "Enter response notes (optional)",
                     "rows": 2,
+                }
+            ),
+        }
+
+
+class GuestRSVPForm(forms.ModelForm):
+    class Meta:
+        model = Guest
+        fields = [
+            "first_name",
+            "last_name",
+            "is_attending",
+            "overnight",
+            "response_notes",
+        ]
+
+        widgets = {
+            "first_name": forms.TextInput(
+                attrs={"class": "input input-bordered edit-card-field-value", "placeholder": "Enter first name"}
+            ),
+            "last_name": forms.TextInput(
+                attrs={"class": "input input-bordered edit-card-field-value", "placeholder": "Enter last name"}
+            ),
+            "is_attending": forms.CheckboxInput(attrs={"class": "checkbox checkbox-primary"}),
+            "overnight": forms.CheckboxInput(attrs={"class": "checkbox checkbox-primary"}),
+            "response_notes": forms.Textarea(
+                attrs={
+                    "class": "textarea textarea-bordered edit-card-field-value",
+                    "placeholder": "Enter any notes or special requests (optional)",
+                    "rows": 3,
                 }
             ),
         }

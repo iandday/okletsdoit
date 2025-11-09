@@ -1,10 +1,13 @@
 import csv
 import io
 import logging
+from typing import Any
 
 import polars as pl
 from attachments.forms import AttachmentUploadForm
 from attachments.models import Attachment
+from core.models import WeddingSettings
+from django.forms import modelformset_factory
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
@@ -15,11 +18,11 @@ from django.http import QueryDict
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.shortcuts import render
-from django.urls import reverse
 from django.template.loader import render_to_string
+from django.urls import reverse
 from users.models import User
 
-from .forms import GuestForm
+from .forms import GuestForm, GuestRSVPForm, RsvpCodeForm
 from .forms import GuestGroupForm
 from .forms import GuestlistImportForm
 from .models import Guest
@@ -925,3 +928,89 @@ def address_csv_export(request: HttpRequest) -> HttpResponse:
         )
 
     return response
+
+
+def rsvp(request: HttpRequest) -> HttpResponse:
+    """
+    Render the 'RSVP' page of the application.
+    """
+
+    context: dict[str, Any] = {"guest_group": None}
+    if request.method == "POST":
+        # process submitted RSVP form
+        rsvp_code = request.POST.get("rsvp_code")
+        try:
+            context["guest_group"] = GuestGroup.objects.get(rsvp_code=rsvp_code, is_deleted=False)
+        except GuestGroup.DoesNotExist:
+            messages.error(request, "Invalid RSVP code. Please try again.")
+    else:
+        rsvp_code = request.GET.get("code")
+        if rsvp_code:
+            try:
+                context["guest_group"] = GuestGroup.objects.get(rsvp_code=rsvp_code, is_deleted=False)
+            except GuestGroup.DoesNotExist:
+                messages.error(request, "Invalid RSVP code. Please try again.")
+        else:
+            context["form"] = RsvpCodeForm()
+            context["submit_text"] = "Find My Invitation"
+            context["cancel_url"] = reverse("core:home")
+
+    return render(request, "guestlist/rsvp.html", context)
+
+
+def rsvp_accept(request: HttpRequest, rsvp_code: str) -> HttpResponse:
+    try:
+        guest_group = GuestGroup.objects.get(rsvp_code=rsvp_code, is_deleted=False)
+    except GuestGroup.DoesNotExist:
+        messages.error(request, "Invalid RSVP code. Please try again.")
+        return redirect("guestlist:rsvp")
+    guests = guest_group.guests.filter(is_invited=True, is_deleted=False)
+
+    if request.method == "POST":
+        settings = WeddingSettings.load()
+        GuestRSVPFormSet = modelformset_factory(Guest, GuestRSVPForm, extra=0)
+        guest_formset = GuestRSVPFormSet(request.POST, queryset=guests)
+        if guest_formset.is_valid():
+            admin_user = User.objects.filter(is_admin=True).first()
+            for form in guest_formset:
+                guest: Guest = form.save(commit=False)
+                guest.responded = True
+                guest.updated_by = request.user if request.user.is_authenticated else admin_user
+                guest.save()
+            messages.success(request, settings.rsvp_accept_success_message)
+            return redirect("core:faq")
+        else:
+            messages.error(request, "Please correct the errors below.")
+
+    GuestRSVPFormSet = modelformset_factory(Guest, GuestRSVPForm, extra=0)
+    guest_formset = GuestRSVPFormSet(queryset=guests)
+
+    context = {
+        "guest_group": guest_group,
+        "guests": guests,
+        "guest_formset": guest_formset,
+        "show_accommodations": guests.filter(overnight=True).exists(),
+    }
+
+    return render(request, "guestlist/rsvp_accept.html", context)
+
+
+def rsvp_decline(request: HttpRequest, rsvp_code: str) -> HttpResponse:
+    try:
+        guest_group = GuestGroup.objects.get(rsvp_code=rsvp_code, is_deleted=False)
+    except GuestGroup.DoesNotExist:
+        messages.error(request, "Invalid RSVP code. Please try again.")
+        return redirect("guestlist:rsvp")
+
+    # Mark all invited guests in the group as not attending
+    invited_guests = guest_group.guests.filter(is_invited=True, is_deleted=False)
+    admin_user = User.objects.filter(is_admin=True).first()
+    for guest in invited_guests:
+        guest.is_attending = False
+        guest.responded = True
+        guest.updated_by = request.user if request.user.is_authenticated else admin_user
+        guest.save()
+
+    settings = WeddingSettings.load()
+    messages.success(request, settings.rsvp_decline_success_message)
+    return redirect("core:home")
