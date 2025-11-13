@@ -109,10 +109,13 @@ class Guest(models.Model):
     is_invited = models.BooleanField(default=False)
     is_attending = models.BooleanField(default=False)
     responded = models.BooleanField(default=False, help_text="Indicates if this guest has responded to the invitation")
-    overnight = models.BooleanField(default=False, help_text="Indicates if this guest will use overnight accommodation")
+    accept_accommodation = models.BooleanField(default=False, help_text="Indicates if this guest accepts accommodation")
+    accept_vip = models.BooleanField(default=False, help_text="Indicates if this guest accepts VIP status")
+    accommodation = models.BooleanField(
+        default=False, help_text="Indicates if this guest will use overnight accommodation"
+    )
     vip = models.BooleanField(default=False, help_text="Indicates if this guest is a VIP")
     notes = models.TextField(blank=True)
-    response_notes = models.TextField(blank=True, null=True)
     created_by = models.ForeignKey(User, related_name="created_by_guest", on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_by = models.ForeignKey(
@@ -138,3 +141,51 @@ class Guest(models.Model):
             self.slug = slug
 
         super().save(*args, **kwargs)
+
+
+class RsvpSubmission(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    guest_group = models.ForeignKey(GuestGroup, on_delete=models.CASCADE, related_name="rsvp_submissions")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    notes = models.TextField(blank=True)
+    history = HistoricalRecords()
+
+    @property
+    def accept_accommodation_count(self):
+        return self.guest_group.guests.filter(responded=True, accept_accommodation=True, is_deleted=False).count()
+
+    @property
+    def accept_vip_count(self):
+        return self.guest_group.guests.filter(responded=True, accept_vip=True, is_deleted=False).count()
+
+    class Meta:
+        unique_together = ("guest_group",)
+
+
+class RsvpBooleanAnswer(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    submission = models.ForeignKey(RsvpSubmission, on_delete=models.CASCADE, related_name="boolean_answers")
+    question = models.ForeignKey("core.RsvpFormBoolean", on_delete=models.PROTECT)
+    value = models.BooleanField()
+    question_text = models.CharField(max_length=255, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    history = HistoricalRecords()
+
+    class Meta:
+        unique_together = ("submission", "question")
+
+
+class RsvpInputAnswer(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    submission = models.ForeignKey(RsvpSubmission, on_delete=models.CASCADE, related_name="input_answers")
+    question = models.ForeignKey("core.RsvpFormInput", on_delete=models.PROTECT)
+    value = models.TextField(blank=True)
+    question_text = models.CharField(max_length=255, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    history = HistoricalRecords()
+
+    class Meta:
+        unique_together = ("submission", "question")

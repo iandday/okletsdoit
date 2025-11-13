@@ -176,13 +176,19 @@ class WeddingSettings(models.Model):
     rsvp_accept_button = models.TextField(default="Lets' Do This", null=True)
     rsvp_decline_button = models.TextField(default="No Thanks", null=True)
     rsvp_attending_label = models.CharField(max_length=100, default="I'll be there!")
-    rsvp_overnight_label = models.CharField(max_length=100, default="I'll spend the weekend at the lodge")
+    rsvp_accommodation_label = models.CharField(max_length=100, default="I'll spend the weekend at the lodge")
+    rsvp_vip_label = models.CharField(max_length=100, default="I'll join the VIP experience")
     rsvp_accept_intro = models.TextField(default="We're so excited that you can make it!")
     rsvp_accept_success_message = models.TextField(default="We look forward to celebrating with you.")
     rsvp_decline_success_message = models.TextField(default="We'll miss you at the celebration.")
     rsvp_accommodation_intro = models.TextField(
         default="Please let us know if you will need accommodation during the wedding weekend."
     )
+    rsvp_vip_intro = models.TextField(
+        default="Please let us know if you will be joining us for the VIP overnight experience."
+    )
+    rsvp_show_accommodation_intro = models.BooleanField(default=False)
+    rsvp_show_vip_intro = models.BooleanField(default=False)
     rsvp_success_headline = models.TextField(default="Thank you for your RSVP!")
     standard_group_label = models.CharField(max_length=100, default="Day")
     vip_group_label = models.CharField(max_length=100, default="Overnight")

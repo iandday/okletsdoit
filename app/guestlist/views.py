@@ -6,7 +6,7 @@ from typing import Any
 import polars as pl
 from attachments.forms import AttachmentUploadForm
 from attachments.models import Attachment
-from core.models import WeddingSettings
+from core.models import WeddingSettings, RsvpFormBoolean, RsvpFormInput
 from django.forms import modelformset_factory
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -22,10 +22,10 @@ from django.template.loader import render_to_string
 from django.urls import reverse
 from users.models import User
 
-from .forms import GuestForm, GuestRSVPForm, RsvpCodeForm
+from .forms import GuestForm, GuestRSVPForm, RsvpCodeForm, RsvpSubmissionForm
 from .forms import GuestGroupForm
 from .forms import GuestlistImportForm
-from .models import Guest
+from .models import Guest, RsvpSubmission
 from .models import GuestGroup
 
 logger = logging.getLogger(__name__)
@@ -974,13 +974,18 @@ def rsvp_accept(request: HttpRequest, rsvp_code: str) -> HttpResponse:
     if request.method == "POST":
         GuestRSVPFormSet = modelformset_factory(Guest, GuestRSVPForm, extra=0)
         guest_formset = GuestRSVPFormSet(request.POST, queryset=guests)
-        if guest_formset.is_valid():
+        submission_form = RsvpSubmissionForm(request.POST, prefix="rsvp_submission")
+        if guest_formset.is_valid() and submission_form.is_valid():
             admin_user = User.objects.filter(is_admin=True).first()
             for form in guest_formset:
                 guest: Guest = form.save(commit=False)
                 guest.responded = True
                 guest.updated_by = request.user if request.user.is_authenticated else admin_user
                 guest.save()
+            rsvp_submission = RsvpSubmission.objects.update_or_create(
+                guest_group=guest_group,
+                defaults={"notes": submission_form.cleaned_data["notes"]},
+            )
             return redirect(f"{reverse('guestlist:rsvp_complete', args=[guest_group.rsvp_code])}?accepted=true")
         else:
             messages.error(request, "Please correct the errors below.")
@@ -993,7 +998,11 @@ def rsvp_accept(request: HttpRequest, rsvp_code: str) -> HttpResponse:
         "guest_group": guest_group,
         "guests": guests,
         "guest_formset": guest_formset,
-        "show_accommodations": guests.filter(overnight=True).exists(),
+        "rsvp_submission_form": RsvpSubmissionForm(prefix="rsvp_submission"),
+        "show_accommodation": guests.filter(accommodation=True).exists(),
+        "show_vip": guests.filter(vip=True).exists(),
+        "input_questions": RsvpFormInput.objects.filter(is_deleted=True).order_by("order"),
+        "boolean_questions": RsvpFormBoolean.objects.filter(is_deleted=True).order_by("order"),
     }
 
     return render(request, "guestlist/rsvp_accept.html", context)

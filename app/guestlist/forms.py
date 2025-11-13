@@ -1,5 +1,5 @@
 from django import forms
-from .models import GuestGroup, Guest
+from .models import GuestGroup, Guest, RsvpSubmission
 
 
 class GuestlistImportForm(forms.Form):
@@ -102,9 +102,10 @@ class GuestForm(forms.ModelForm):
             "is_invited",
             "is_attending",
             "responded",
-            "overnight",
+            "accept_accommodation",
+            "accept_vip",
+            "accommodation",
             "notes",
-            "response_notes",
         ]
 
         labels = {
@@ -124,19 +125,14 @@ class GuestForm(forms.ModelForm):
             "is_invited": forms.CheckboxInput(attrs={"class": "edit-card-field-toggle"}),
             "is_attending": forms.CheckboxInput(attrs={"class": "edit-card-field-toggle"}),
             "responded": forms.CheckboxInput(attrs={"class": "edit-card-field-toggle"}),
-            "overnight": forms.CheckboxInput(attrs={"class": "edit-card-field-toggle"}),
+            "accommodation": forms.CheckboxInput(attrs={"class": "edit-card-field-toggle"}),
+            "accept_accommodation": forms.CheckboxInput(attrs={"class": "edit-card-field-toggle"}),
+            "accept_vip": forms.CheckboxInput(attrs={"class": "edit-card-field-toggle"}),
             "notes": forms.Textarea(
                 attrs={
                     "class": "textarea textarea-bordered edit-card-field-value",
                     "placeholder": "Enter notes (optional)",
                     "rows": 3,
-                }
-            ),
-            "response_notes": forms.Textarea(
-                attrs={
-                    "class": "textarea textarea-bordered edit-card-field-value",
-                    "placeholder": "Enter response notes (optional)",
-                    "rows": 2,
                 }
             ),
         }
@@ -149,8 +145,8 @@ class GuestRSVPForm(forms.ModelForm):
             "first_name",
             "last_name",
             "is_attending",
-            "overnight",
-            "response_notes",
+            "accept_accommodation",
+            "accept_vip",
         ]
 
         widgets = {
@@ -161,11 +157,23 @@ class GuestRSVPForm(forms.ModelForm):
                 attrs={"class": "input input-bordered edit-card-field-value", "placeholder": "Enter last name"}
             ),
             "is_attending": forms.CheckboxInput(attrs={"class": "checkbox checkbox-primary"}),
-            "overnight": forms.CheckboxInput(attrs={"class": "checkbox checkbox-primary"}),
-            "response_notes": forms.Textarea(
+            "accept_accommodation": forms.CheckboxInput(attrs={"class": "checkbox checkbox-primary"}),
+            "accept_vip": forms.CheckboxInput(attrs={"class": "checkbox checkbox-primary"}),
+        }
+
+
+class RsvpSubmissionForm(forms.ModelForm):
+    class Meta:
+        model = RsvpSubmission
+        fields = [
+            "notes",
+        ]
+
+        widgets = {
+            "notes": forms.Textarea(
                 attrs={
                     "class": "textarea textarea-bordered edit-card-field-value",
-                    "placeholder": "Enter any notes or special requests (optional)",
+                    "placeholder": "Enter any additional notes (optional)",
                     "rows": 3,
                 }
             ),

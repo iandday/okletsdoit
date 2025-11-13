@@ -232,14 +232,18 @@ class WeddingSettingsForm(ModelForm):
             "rsvp_accept_button",
             "rsvp_decline_button",
             "rsvp_attending_label",
-            "rsvp_overnight_label",
+            "rsvp_accommodation_label",
+            "rsvp_vip_label",
             "rsvp_accept_intro",
             "rsvp_accommodation_intro",
+            "rsvp_vip_intro",
             "rsvp_success_headline",
             "rsvp_accept_success_message",
             "rsvp_decline_success_message",
             "standard_group_label",
             "vip_group_label",
+            "rsvp_show_accommodation_intro",
+            "rsvp_show_vip_intro",
         ]
         labels = {
             "wedding_date": "Wedding Date",
@@ -247,14 +251,18 @@ class WeddingSettingsForm(ModelForm):
             "rsvp_accept_button": "RSVP Accept Button Text",
             "rsvp_decline_button": "RSVP Decline Button Text",
             "rsvp_attending_label": "RSVP Attending Checkbox Label",
-            "rsvp_overnight_label": "RSVP Overnight Checkbox Label",
-            "rsvp_accept_intro": "RSVP Accept Page Intro Paragraph",
-            "rsvp_accommodation_intro": "RSVP Accommodation Page Intro Paragraph",
+            "rsvp_accommodation_label": "RSVP Accommodation Checkbox Label",
+            "rsvp_vip_label": "RSVP VIP Checkbox Label",
+            "rsvp_accept_intro": "RSVP Accept Page Intro Section",
+            "rsvp_accommodation_intro": "RSVP Accept Page Accommodation Intro Section",
+            "rsvp_vip_intro": "RSVP Accept Page VIP Intro Section",
             "rsvp_success_headline": "RSVP Success Headline",
             "rsvp_accept_success_message": "RSVP Accept Success Message",
             "rsvp_decline_success_message": "RSVP Decline Success Message",
             "standard_group_label": "Standard Group Label",
             "vip_group_label": "VIP Group Label",
+            "rsvp_show_accommodation_intro": "Show Accommodation Intro on RSVP Form",
+            "rsvp_show_vip_intro": "Show VIP Intro on RSVP Form",
         }
         widgets = {
             "allow_rsvp": forms.CheckboxInput(attrs={"class": "checkbox checkbox-primary edit-card-field-toggle"}),
@@ -279,10 +287,16 @@ class WeddingSettingsForm(ModelForm):
                     "placeholder": "Enter RSVP Attending Label Text",
                 }
             ),
-            "rsvp_overnight_label": forms.TextInput(
+            "rsvp_accommodation_label": forms.TextInput(
                 attrs={
                     "class": "input input-bordered edit-card-field-value",
                     "placeholder": "Enter RSVP Overnight Label Text",
+                }
+            ),
+            "rsvp_vip_label": forms.TextInput(
+                attrs={
+                    "class": "input input-bordered edit-card-field-value",
+                    "placeholder": "Enter RSVP VIP Label Text",
                 }
             ),
             "rsvp_accept_intro": forms.Textarea(
@@ -297,6 +311,13 @@ class WeddingSettingsForm(ModelForm):
                     "class": "textarea textarea-bordered edit-card-field-value",
                     "rows": 10,
                     "placeholder": "Enter RSVP Accommodation Intro Text",
+                }
+            ),
+            "rsvp_vip_intro": forms.Textarea(
+                attrs={
+                    "class": "textarea textarea-bordered edit-card-field-value",
+                    "rows": 10,
+                    "placeholder": "Enter RSVP VIP Intro Text",
                 }
             ),
             "rsvp_success_headline": forms.TextInput(
@@ -329,6 +350,16 @@ class WeddingSettingsForm(ModelForm):
                 attrs={
                     "class": "input input-bordered edit-card-field-value",
                     "placeholder": "Enter VIP Group Label",
+                }
+            ),
+            "rsvp_show_accommodation_intro": forms.CheckboxInput(
+                attrs={
+                    "class": "checkbox checkbox-primary edit-card-field-toggle",
+                }
+            ),
+            "rsvp_show_vip_intro": forms.CheckboxInput(
+                attrs={
+                    "class": "checkbox checkbox-primary edit-card-field-toggle",
                 }
             ),
         }

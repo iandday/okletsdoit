@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import GuestGroup, Guest
+from .models import GuestGroup, Guest, RsvpSubmission
 
 
 @admin.register(GuestGroup)
@@ -59,15 +59,19 @@ class GuestAdmin(admin.ModelAdmin):
         "group",
         "plus_one",
         "is_invited",
+        "accommodation",
+        "vip",
         "responded",
         "is_attending",
-        "overnight",
+        "accept_accommodation",
+        "accept_vip",
         "created_at",
         "is_deleted",
     ]
     list_filter = [
         "plus_one",
-        "overnight",
+        "accommodation",
+        "vip",
         "is_invited",
         "is_attending",
         "is_deleted",
@@ -76,12 +80,14 @@ class GuestAdmin(admin.ModelAdmin):
         "created_at",
         "updated_at",
     ]
-    search_fields = ["first_name", "last_name", "group__name", "notes", "response_notes"]
+    search_fields = ["first_name", "last_name", "group__name", "notes"]
     readonly_fields = ["id", "slug", "created_at", "updated_at"]
     fieldsets = (
-        ("Basic Information", {"fields": ("first_name", "last_name", "slug", "group", "plus_one", "overnight")}),
-        ("RSVP Status", {"fields": ("is_invited", "responded", "is_attending")}),
-        ("Notes", {"fields": ("notes", "response_notes")}),
+        (
+            "Basic Information",
+            {"fields": ("first_name", "last_name", "slug", "group", "plus_one", "accommodation", "vip", "notes")},
+        ),
+        ("RSVP Status", {"fields": ("is_invited", "responded", "is_attending", "accept_accommodation", "accept_vip")}),
         (
             "System Information",
             {
@@ -96,3 +102,39 @@ class GuestAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         return super().get_queryset(request).select_related("group")
+
+
+@admin.register(RsvpSubmission)
+class RsvpSubmissionAdmin(admin.ModelAdmin):
+    list_display = [
+        "guest_group",
+        "created_at",
+        "updated_at",
+    ]
+    list_filter = [
+        "created_at",
+        "updated_at",
+    ]
+    search_fields = [
+        "guest_group__name",
+    ]
+    readonly_fields = [
+        "id",
+        "created_at",
+        "updated_at",
+    ]
+    fieldsets = (
+        (
+            "Basic Information",
+            {"fields": ("guest_group", "notes")},
+        ),
+        (
+            "System Information",
+            {
+                "fields": ("id", "created_at", "updated_at"),
+                "classes": ("collapse",),
+            },
+        ),
+    )
+    ordering = ["-created_at"]
+    date_hierarchy = "created_at"

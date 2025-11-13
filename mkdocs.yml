@@ -31,6 +31,7 @@ nav:
       - RSVP: public/rsvp.md
   - Private:
       - Dashboard: private/dashboard.md
+      - Giuest List: private/guestlist.md
       - Settings: private/settings.md
   - Development:
       - Roadmap: dev/roadmap.md

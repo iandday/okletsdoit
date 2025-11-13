@@ -98,17 +98,31 @@
                                 {% endif %}
                             </div>
                             <div class="form-control">
-                                {{ settings_form.rsvp_overnight_label.label_tag }}
-                                {{ settings_form.rsvp_overnight_label }}
-                                {% if settings_form.rsvp_overnight_label.errors %}
-                                    <div class="text-error">{{ settings_form.rsvp_overnight_label.errors }}</div>
-                                {% endif %}
-                            </div>
-                            <div class="form-control">
                                 {{ settings_form.rsvp_accept_intro.label_tag }}
                                 {{ settings_form.rsvp_accept_intro }}
                                 {% if settings_form.rsvp_accept_intro.errors %}
                                     <div class="text-error">{{ settings_form.rsvp_accept_intro.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="edit-card col-span-2" id="rsvp-accept-settings-accommodations">
+                    <div class="edit-card-body">
+                        <h2 class="edit-card-title">RSVP Accept Settings: Accommodations</h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div class="form-control">
+                                {{ settings_form.rsvp_show_accommodation_intro.label_tag }}
+                                {{ settings_form.rsvp_show_accommodation_intro }}
+                                {% if settings_form.rsvp_show_accommodation_intro.errors %}
+                                    <div class="text-error">{{ settings_form.rsvp_show_accommodation_intro.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="form-control">
+                                {{ settings_form.rsvp_accommodation_label.label_tag }}
+                                {{ settings_form.rsvp_accommodation_label }}
+                                {% if settings_form.rsvp_accommodation_label.errors %}
+                                    <div class="text-error">{{ settings_form.rsvp_accommodation_label.errors }}</div>
                                 {% endif %}
                             </div>
                             <div class="form-control">
@@ -116,6 +130,34 @@
                                 {{ settings_form.rsvp_accommodation_intro }}
                                 {% if settings_form.rsvp_accommodation_intro.errors %}
                                     <div class="text-error">{{ settings_form.rsvp_accommodation_intro.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="edit-card col-span-2" id="rsvp-accept-settings-vip">
+                    <div class="edit-card-body">
+                        <h2 class="edit-card-title">RSVP Accept Settings: VIP</h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div class="form-control">
+                                {{ settings_form.rsvp_show_vip_intro.label_tag }}
+                                {{ settings_form.rsvp_show_vip_intro }}
+                                {% if settings_form.rsvp_show_vip_intro.errors %}
+                                    <div class="text-error">{{ settings_form.rsvp_show_vip_intro.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="form-control">
+                                {{ settings_form.rsvp_vip_label.label_tag }}
+                                {{ settings_form.rsvp_vip_label }}
+                                {% if settings_form.rsvp_vip_label.errors %}
+                                    <div class="text-error">{{ settings_form.rsvp_vip_label.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="form-control">
+                                {{ settings_form.rsvp_vip_intro.label_tag }}
+                                {{ settings_form.rsvp_vip_intro }}
+                                {% if settings_form.rsvp_vip_intro.errors %}
+                                    <div class="text-error">{{ settings_form.rsvp_vip_intro.errors }}</div>
                                 {% endif %}
                             </div>
                         </div>
@@ -237,7 +279,7 @@
       const useDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
       const isSmallScreen = window.matchMedia('(max-width: 1023.5px)').matches;
       hugerte.init({
-        selector: '#id_rsvp_accommodation_intro, #id_rsvp_accept_intro',
+        selector: '#id_rsvp_accommodation_intro, #id_rsvp_vip_intro, #id_rsvp_accept_intro',
         height: 500,
         plugins: [
           'advlist', 'autolink', 'lists', 'link', 'charmap',

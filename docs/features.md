@@ -28,6 +28,7 @@
     * Guest Group detail
     * Guest detail
     * Listing of all Guests
+    * RSVP Status
   * Timeline
     * Timeline listing
     * Timeline detail
@@ -37,3 +38,4 @@
   * FAQ
     * FAQ Summary
     * FAQ Detail
+  * Settings

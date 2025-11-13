@@ -63,10 +63,6 @@
                             </div>
                         </div>
                         <div>
-                            <div class="detail-card-field-name">Allow RSVP</div>
-                            <div class="detail-card-field-value">{{ settings.allow_rsvp|yesno:"Yes,No" }}</div>
-                        </div>
-                        <div>
                             <div class="detail-card-field-name">Standard Group Label</div>
                             <div class="detail-card-field-value">{{ settings.standard_group_label }}</div>
                         </div>
@@ -91,6 +87,18 @@
                     </h2>
                     <div class="grid grid-cols-2 gap-4 mt-4">
                         <div>
+                            <div class="detail-card-field-name">Allow RSVP</div>
+                            <div class="detail-card-field-value">{{ settings.allow_rsvp|yesno:"Yes,No" }}</div>
+                        </div>
+                        <div>
+                            <div class="detail-card-field-name">Use Accommodation Tracker</div>
+                            <div class="detail-card-field-value">{{ settings.rsvp_show_accommodation_intro|yesno:"Yes,No" }}</div>
+                        </div>
+                        <div>
+                            <div class="detail-card-field-name">Use VIP Tracker</div>
+                            <div class="detail-card-field-value">{{ settings.rsvp_show_vip_intro|yesno:"Yes,No" }}</div>
+                        </div>
+                        <div>
                             <div class="detail-card-field-name">RSVP Accept Button Text</div>
                             <div class="detail-card-field-value">{{ settings.rsvp_accept_button }}</div>
                         </div>
@@ -98,6 +106,22 @@
                             <div class="detail-card-field-name">RSVP Decline Button Text</div>
                             <div class="detail-card-field-value">{{ settings.rsvp_decline_button }}</div>
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div class="detail-card" id="rsvp-settings-success">
+                <div class="detail-card-body">
+                    <h2 class="detail-card-title mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             class="h-6 w-6"
+                             fill="none"
+                             viewBox="0 0 24 24"
+                             stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        RSVP Settings: Success Messages
+                    </h2>
+                    <div class="grid grid-cols-2 gap-4 mt-4">
                         <div>
                             <div class="detail-card-field-name">RSVP Success Headline</div>
                             <div class="detail-card-field-value">{{ settings.rsvp_success_headline }}</div>
@@ -130,21 +154,65 @@
                             <div class="detail-card-field-name">RSVP Attending Checkbox Label</div>
                             <div class="detail-card-field-value">{{ settings.rsvp_attending_label }}</div>
                         </div>
-                        <div>
-                            <div class="detail-card-field-name">RSVP Overnight Checkbox Label</div>
-                            <div class="detail-card-field-value">{{ settings.rsvp_overnight_label }}</div>
-                        </div>
                         <div class="col-span-2">
                             <div class="detail-card-field-name">RSVP Accept Page Intro Paragraph</div>
                             <div class="detail-card-field-value">{{ settings.rsvp_accept_intro|safe }}</div>
                         </div>
-                        <div class="col-span-2">
-                            <div class="detail-card-field-name">RSVP Accept Page Accommodation Intro Paragraph</div>
-                            <div class="detail-card-field-value">{{ settings.rsvp_accommodation_intro|safe }}</div>
-                        </div>
                     </div>
                 </div>
             </div>
+            {% if settings.rsvp_show_accommodation_intro %}
+                <div class="detail-card" id="rsvp-accept-settings-accommodations">
+                    <div class="detail-card-body">
+                        <h2 class="detail-card-title mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 class="h-6 w-6"
+                                 fill="none"
+                                 viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            RSVP Accept Page Settings: Accommodations
+                        </h2>
+                        <div class="grid grid-cols-2 gap-4 mt-4">
+                            <div>
+                                <div class="detail-card-field-name">RSVP Accommodation Checkbox Label</div>
+                                <div class="detail-card-field-value">{{ settings.rsvp_accommodation_label }}</div>
+                            </div>
+                            <div class="col-span-2">
+                                <div class="detail-card-field-name">RSVP Accept Page Accommodation Intro Paragraph</div>
+                                <div class="detail-card-field-value">{{ settings.rsvp_accommodation_intro|safe }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            {% if settings.rsvp_show_vip_intro %}
+                <div class="detail-card" id="rsvp-accept-settings-vip">
+                    <div class="detail-card-body">
+                        <h2 class="detail-card-title mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 class="h-6 w-6"
+                                 fill="none"
+                                 viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            RSVP Accept Page Settings: VIP
+                        </h2>
+                        <div class="grid grid-cols-2 gap-4 mt-4">
+                            <div>
+                                <div class="detail-card-field-name">RSVP VIP Checkbox Label</div>
+                                <div class="detail-card-field-value">{{ settings.rsvp_vip_label }}</div>
+                            </div>
+                            <div class="col-span-2">
+                                <div class="detail-card-field-name">RSVP Accept Page VIP Intro Paragraph</div>
+                                <div class="detail-card-field-value">{{ settings.rsvp_vip_intro|safe }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
             <div class="detail-card" id="rsvp-boolean-questions">
                 <div class="detail-card-body">
                     <h2 class="detail-card-title mb-4">

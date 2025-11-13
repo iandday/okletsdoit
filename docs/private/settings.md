@@ -1,72 +1,89 @@
 # Wedding Settings
 
-The Settings page provides a centralized view of all configurable settings across the entire application.  Default data has been configured at first launch, now it's time to make it your own!
+This page explains the fields shown on the Wedding Settings screen. Use it as a guide when updating the settings so your guests see the right information during the RSVP flow.
+
+Quick notes
+- These settings control what guests see on the public RSVP pages.
+- Changes take effect after you save the form.
+- Keep text short and clear — guests respond faster to concise labels and instructions.
 
 ## Display Details
-- **Wedding Date**: Date of the wedding. Shown on public pages and used for countdown displays.
-- **Allow RSVP**: When enabled the public RSVP flow is visible to guests.
-- **Standard Group Label** & **VIP Group Label**: Labels used to designate guests in the application.  This was originally implemented to identify guests who would be offered weekend accommodations as part of the event.
-
+- **Wedding Date** — Date of the wedding. Shown on public pages and used in countdowns. Use YYYY‑MM‑DD.
+- **Site Title / Headings** — Short strings used for page titles and breadcrumb headings.
 
 ## RSVP Settings
+These values control the top-level RSVP experience.
 
-These fields control the display for the begining and end of the RSVP process
+- **Allow RSVP** — Toggle to show or hide the RSVP flow to guests.
+- **RSVP Accept Button Text** — The label on the button guests press to accept (e.g. "Yes, I'll be there").
+- **RSVP Decline Button Text** — The label on the button guests press to decline (e.g. "Sorry, can't make it").
+- **RSVP Accept Success Message** — Short confirmation shown after a guest accepts.
+- **RSVP Decline Success Message** — Short confirmation shown after a guest declines.
 
-- **RSVP Accept Button Text**: Text shown on the primary button guests click to accept (e.g. "Yes, attending").
-- **RSVP Decline Button Text**: Text shown on the button guests click to decline (e.g. "Sorry, can't make it").
-- **RSVP Accept Success Message**: Short confirmation message shown after a guest accepts.
-- **RSVP Decline Success Message**: Short confirmation message shown after a guest declines.
-
+Practical tip: use friendly, action‑oriented text for buttons (e.g. "Count me in") and short confirmations (one sentence).
 
 ## RSVP Accept Page Settings
+These fields appear during the multi‑step acceptance flow.
 
-These fields control the content of the multi‑step RSVP acceptance flow.
+- **RSVP Attending Checkbox Label** — The text next to the main attending checkbox (e.g. "Will you attend the wedding?").
+- **RSVP Overnight Checkbox Label** — The text for the overnight/accommodation checkbox (e.g. "Do you need accommodation?").
+- **RSVP Accept Page Intro Paragraph** — Intro text shown at the start of the accept flow (use 1–3 short paragraphs).
+- **RSVP Accommodation Intro Paragraph** — Text shown on the accommodation step (short instructions or options).
 
-- **RSVP Attending Checkbox Label**: Label next to the attending checkbox (e.g. "Will you attend?").
-- **RSVP Overnight Checkbox Label**: Label for overnight attendance or accommodation checkbox (e.g. "Will you stay with us?").
-- **RSVP Accept Page Intro Paragraph**: Intro text shown at the start of the accept flow.
-- **RSVP Accept Page Accommodation Intro Paragraph**: Paragraph shown if the guests are being offered accommodations.
+Writing tip: keep intro paragraphs scannable. Avoid long blocks of text.
 
+## RSVP Yes/No Questions (Boolean)
+These are the checkbox or toggle questions shown during RSVP.
 
-## RSVP Yes/No Questions
-
-Custom questions which appear as checkboxes in the RSVP acceptance flow. Each question contains the following data points:
-
-- **Question**: The question text guests see (required).
-- **Description**: Optional helper text shown beneath the question.
-- **Required**: If enabled, guests must answer this question before submitting.
-- **Order**: Integer used to sort questions; lower values appear first.
-- **Published**: Toggle to show/hide the question in the RSVP acceptance flow.
-
-Example:
-
-- **Question**: `Will you attend the rehearsal dinner?`
-- **Description**: `Optional: join us for the rehearsal dinner at 6pm`
-- **Required**: `No`
-- **Order**: `10`
-- **Published**: `Yes`
-
-## RSVP Input Questions
-
-Free‑text questions collected during the RSVP acceptance flow. Each question contains the following data points:
-
-- **Question**: The question text guests see (required).
-- **Description**: Optional helper text shown beneath the question.
-- **Required**: If enabled, guests must answer this question before submitting.
-- **Order**: Integer used to sort questions; lower values appear first.
-- **Published**: Toggle to show/hide the question in the RSVP acceptance flow.
+- **Question** — The question guests will answer (required).
+- **Description** — Optional helper text or hint under the question.
+- **Required** — If enabled, guests must answer this question to submit.
+- **Order** — Integer that controls where the question appears (lower numbers appear first).
+- **Published** — Toggle to publish/unpublish the question.
 
 Example:
-- **Question**: `Do you have any dietary requirements?`
-- **Required**: `No`
-- **Order**: `20`
-- **Published**: `Yes`
+- **Question** — `Will you attend the rehearsal dinner?`
+- **Description** — `Optional – starts at 6pm`
+- **Required** — `No`
+- **Order** — `10`
+- **Published** — `Yes`
 
----
+Design guidance: use boolean questions for quick yes/no choices (e.g. attendance, plus-one, shuttle needed).
 
+## RSVP Input Questions (Free text / specific)
+These collect typed answers from guests.
 
-Tips for better responses
+- **Question** — The label for the input field (required).
+- **Description** — Optional help text or constraints.
+- **Field Type** — Choose the input type that matches expected data (text, email, number, phone).
+- **Placeholder** — Short inline hint inside the input.
+- **Required** — If enabled, guests must complete the field.
+- **Order** — Controls display position.
+- **Published** — Toggle visibility in the public flow.
 
-- **Use short, clear question text and button labels**: so guests understand actions quickly.
-- **Mark only essential fields as Required**: to reduce submission friction.
-- **For long intro paragraphs, preview formatting**: on the public RSVP page before finalizing.
+Example:
+- **Question** — `Dietary requirements`
+- **Field Type** — `text`
+- **Placeholder** — `e.g. vegetarian, no nuts`
+- **Required** — `No`
+- **Order** — `20`
+- **Published** — `Yes`
+
+Use case: prefer input fields for names, emails, dietary notes and other details.
+
+## How to edit settings
+1. Open the Wedding Settings edit screen in the admin or settings UI.
+2. Update labels and intro text where needed.
+3. Add, reorder (via Order value), publish/unpublish RSVP questions.
+4. Save and preview the public RSVP page to confirm changes.
+
+## Practical tips for better responses
+- **Keep labels short and clear** — guests skim rather than read.
+- **Minimize required fields** — only mark essential fields required to reduce friction.
+- **Preview changes** — always preview the public RSVP flow after saving.
+- **Use helpful placeholders and descriptions** — they guide guest responses and reduce errors.
+
+## Accessibility & formatting
+- Use plain language and avoid emojis in labels for screen reader clarity.
+- Intro fields may support simple formatting; keep it semantic and short.
+

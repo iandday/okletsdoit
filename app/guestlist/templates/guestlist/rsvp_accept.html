@@ -12,9 +12,14 @@
                  alt="rsvp"
                  class="max-w-sm rounded-lg mb-6" />
             <div class="prose pb-6">{{ wedding_config.rsvp_accept_intro|safe }}</div>
-            {% if show_accommodations %}
-                <div role="alert" class="alert alert-primary py-6 ">
+            {% if wedding_config.rsvp_show_accommodation_intro %}
+                <div role="alert" class="alert alert-primary py-6 px-6 mb-6">
                     <div class="prose">{{ wedding_config.rsvp_accommodation_intro|safe }}</div>
+                </div>
+            {% endif %}
+            {% if wedding_config.rsvp_show_vip_intro %}
+                <div role="alert" class="alert alert-primary py-6 px-6 mb-6">
+                    <div class="prose">{{ wedding_config.rsvp_vip_intro|safe }}</div>
                 </div>
             {% endif %}
         </div>
@@ -41,8 +46,8 @@
                 {% for form in guest_formset %}
                     <div class="edit-card">
                         <div class="edit-card-body">
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
                                         <label class="label">
                                             <span class="label-text">First name</span>
@@ -65,24 +70,23 @@
                                             <span class="label-text">{{ wedding_config.rsvp_attending_label }}</span>
                                         </label>
                                     </div>
-                                    {% if show_accommodations %}
+                                    {% if show_accommodation %}
                                         <div class="flex items-center gap-2">
-                                            {{ form.overnight }}
+                                            {{ form.accept_accommodation }}
                                             <label class="label cursor-pointer mb-0">
-                                                <span class="label-text">{{ wedding_config.rsvp_overnight_label }}</span>
+                                                <span class="label-text">{{ wedding_config.rsvp_accommodation_label }}</span>
+                                            </label>
+                                        </div>
+                                    {% endif %}
+                                    {% if show_vip %}
+                                        <div class="flex items-center gap-2">
+                                            {{ form.accept_vip }}
+                                            <label class="label cursor-pointer mb-0">
+                                                <span class="label-text">{{ wedding_config.rsvp_vip_label }}</span>
                                             </label>
                                         </div>
                                     {% endif %}
                                 </div>
-                            </div>
-                            <div class="mt-4">
-                                <label class="label">
-                                    <span class="label-text">Notes</span>
-                                </label>
-                                {{ form.response_notes }}
-                                {% if form.response_notes.errors %}
-                                    <p class="text-error text-sm mt-1">{{ form.response_notes.errors.as_text }}</p>
-                                {% endif %}
                             </div>
                             <div class="sr-only">
                                 {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
@@ -91,6 +95,17 @@
                         </div>
                     </div>
                 {% endfor %}
+            </div>
+            <div class="edit-card">
+                <div class="edit-card-body">
+                    <label class="label">
+                        <span class="label-text">Additional Notes</span>
+                    </label>
+                    {{ rsvp_submission_form.notes }}
+                    {% if rsvp_submission_form.notes.errors %}
+                        <p class="text-error text-sm mt-1">{{ rsvp_submission_form.notes.errors.as_text }}</p>
+                    {% endif %}
+                </div>
             </div>
             <div class="flex justify-end gap-3">
                 <a href="{% url 'core:planning_home' %}"
