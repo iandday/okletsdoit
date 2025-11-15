@@ -1,5 +1,9 @@
 from django import forms
-from .models import GuestGroup, Guest, RsvpSubmission
+from django.forms import modelformset_factory
+
+from .models import Guest
+from .models import GuestGroup
+from .models import RsvpSubmission
 
 
 class GuestlistImportForm(forms.Form):
@@ -167,6 +171,8 @@ class RsvpSubmissionForm(forms.ModelForm):
         model = RsvpSubmission
         fields = [
             "notes",
+            "email_updates",
+            "email_address",
         ]
 
         widgets = {
@@ -176,5 +182,9 @@ class RsvpSubmissionForm(forms.ModelForm):
                     "placeholder": "Enter any additional notes (optional)",
                     "rows": 3,
                 }
+            ),
+            "email_updates": forms.CheckboxInput(attrs={"class": "checkbox checkbox-primary"}),
+            "email_address": forms.EmailInput(
+                attrs={"class": "input input-bordered edit-card-field-value", "placeholder": "Enter your email address"}
             ),
         }

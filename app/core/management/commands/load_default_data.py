@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from django.core.management.base import BaseCommand
-from core.models import RsvpFormBoolean, WeddingSettings, RsvpFormInput
+from core.models import WeddingSettings
 from django.contrib.auth import get_user_model
 
 
@@ -25,34 +25,26 @@ class Command(BaseCommand):
             User = get_user_model()
             admin_user = User.objects.filter(is_admin=True).first()
 
-            default_boolean_questions = [
-                {
-                    "question": "Do you want to receive email updates about the wedding?",
-                    "description": "Opt-in to receive email updates and announcements regarding the wedding.",
-                },
-            ]
+            # default_boolean_questions = []
 
-            default_input_questions = [
-                {
-                    "question": "Email Address",
-                    "description": "Where should we send wedding-related emails?",
-                },
-            ]
-            for question in default_boolean_questions:
-                RsvpFormBoolean.objects.get_or_create(
-                    question=question["question"],
-                    description=question["description"],
-                    setting=settings,
-                    created_by=admin_user,
-                )
+            # default_input_questions = [
+            #     "Do you have any food allergies or dietary restrictions?",
+            #     "Do you have any accessibility requirements we should be aware of?",
+            #     "Wedding planning is hard—can you tell us a joke?",
+            # ]
+            # for question in default_boolean_questions:
+            #     RsvpFormBoolean.objects.get_or_create(
+            #         question=question,
+            #         setting=settings,
+            #         created_by=admin_user,
+            #     )
 
-            for question in default_input_questions:
-                RsvpFormInput.objects.get_or_create(
-                    question=question["question"],
-                    description=question["description"],
-                    setting=settings,
-                    created_by=admin_user,
-                )
+            # for question in default_input_questions:
+            #     RsvpFormInput.objects.get_or_create(
+            #         question=question,
+            #         setting=settings,
+            #         created_by=admin_user,
+            #     )
 
             settings.default_data_loaded = True
             settings.save()

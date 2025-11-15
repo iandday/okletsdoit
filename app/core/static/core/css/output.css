@@ -3335,6 +3335,16 @@
   .sticky {
     position: sticky;
   }
+  .tooltip-right {
+    > .tooltip-content, &[data-tip]:before {
+      transform: translateX(calc(var(--tt-pos, -0.25rem) + 0.25rem)) translateY(-50%);
+      inset: 50% auto auto var(--tt-off);
+    }
+    &:after {
+      transform: translateX(var(--tt-pos, -0.25rem)) translateY(-50%) rotate(90deg);
+      inset: 50% auto auto calc(var(--tt-tail) + 1px);
+    }
+  }
   .inset-0 {
     inset: calc(var(--spacing) * 0);
   }
@@ -5530,6 +5540,9 @@
   .w-80 {
     width: calc(var(--spacing) * 80);
   }
+  .w-100 {
+    width: calc(var(--spacing) * 100);
+  }
   .w-full {
     width: 100%;
   }
@@ -6526,6 +6539,9 @@
   }
   .text-center {
     text-align: center;
+  }
+  .text-right {
+    text-align: right;
   }
   .font-mono {
     font-family: var(--font-mono);

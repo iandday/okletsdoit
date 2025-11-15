@@ -158,6 +158,14 @@
                             <div class="detail-card-field-name">RSVP Accept Page Intro Paragraph</div>
                             <div class="detail-card-field-value">{{ settings.rsvp_accept_intro|safe }}</div>
                         </div>
+                        <div>
+                            <div class="detail-card-field-name">Enable Email Updates Option</div>
+                            <div class="detail-card-field-value">{{ settings.rsvp_enable_email_updates|yesno:"Yes,No" }}</div>
+                        </div>
+                        <div>
+                            <div class="detail-card-field-name">Email Updates Opt-in Label</div>
+                            <div class="detail-card-field-value">{{ settings.rsvp_email_update_label }}</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -225,82 +233,7 @@
                         </svg>
                         RSVP Yes/No Questions
                     </h2>
-                    <div class="grid grid-cols-1 gap-4 mt-4">
-                        {% for question in rsvp_boolean_questions %}
-                            <div class="grid grid-cols-2 gap-4 mt-4">
-                                <div>
-                                    <div class="detail-card-field-name">Question</div>
-                                    <div class="detail-card-field-value">{{ question.question }}</div>
-                                </div>
-                                <div>
-                                    <div class="detail-card-field-name">Description</div>
-                                    <div class="detail-card-field-value">{{ question.description }}</div>
-                                </div>
-                                <div class="col-span-2 flex flex-row justify-between px-4">
-                                    <div class="flex flex-row">
-                                        <div class="detail-card-field-name">Order:&nbsp;</div>
-                                        <div class="detail-card-field-value">{{ question.order }}</div>
-                                    </div>
-                                    <div class="flex flex-row">
-                                        <div class="detail-card-field-name">Required:&nbsp;</div>
-                                        <div class="detail-card-field-value">{{ question.required|yesno:"Yes,No" }}</div>
-                                    </div>
-                                    <div class="flex flex-row">
-                                        <div class="detail-card-field-name">Published:&nbsp;</div>
-                                        <div class="detail-card-field-value">{{ question.published|yesno:"Yes,No" }}</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="divider divider-primary"></div>
-                        {% empty %}
-                            <p class="col-span-2 text-center text-base-content/70">No RSVP Yes/No Questions configured.</p>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-            <div class="detail-card" id="rsvp-input-questions">
-                <div class="detail-card-body">
-                    <h2 class="detail-card-title mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             class="h-6 w-6"
-                             fill="none"
-                             viewBox="0 0 24 24"
-                             stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
-                        RSVP Input Questions
-                    </h2>
-                    <div class="grid grid-cols-1 gap-4 mt-4">
-                        {% for question in rsvp_input_questions %}
-                            <div class="grid grid-cols-2 gap-4 mt-4">
-                                <div>
-                                    <div class="detail-card-field-name">Question</div>
-                                    <div class="detail-card-field-value">{{ question.question }}</div>
-                                </div>
-                                <div>
-                                    <div class="detail-card-field-name">Description</div>
-                                    <div class="detail-card-field-value">{{ question.description }}</div>
-                                </div>
-                                <div class="col-span-2 flex flex-row justify-between px-4">
-                                    <div class="flex flex-row">
-                                        <div class="detail-card-field-name">Order:&nbsp;</div>
-                                        <div class="detail-card-field-value">{{ question.order }}</div>
-                                    </div>
-                                    <div class="flex flex-row">
-                                        <div class="detail-card-field-name">Required:&nbsp;</div>
-                                        <div class="detail-card-field-value">{{ question.required|yesno:"Yes,No" }}</div>
-                                    </div>
-                                    <div class="flex flex-row">
-                                        <div class="detail-card-field-name">Published:&nbsp;</div>
-                                        <div class="detail-card-field-value">{{ question.published|yesno:"Yes,No" }}</div>
-                                    </div>
-                                </div>
-                                <div class="divider divider-primary col-span-2"></div>
-                            {% empty %}
-                                <p class="col-span-2 text-center text-base-content/70">No RSVP Yes/No Questions configured.</p>
-                            {% endfor %}
-                        </div>
-                    </div>
+                    <div class="grid grid-cols-1 gap-4 mt-4"></div>
                 </div>
             </div>
         </div>

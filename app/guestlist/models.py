@@ -3,6 +3,7 @@ from django.db import models
 from django_stubs_ext.db.models.manager import RelatedManager
 from simple_history.models import HistoricalRecords
 from django.utils.text import slugify
+from core.models import RsvpQuestion, RsvpQuestionChoice
 from users.models import User
 
 
@@ -148,6 +149,8 @@ class RsvpSubmission(models.Model):
     guest_group = models.ForeignKey(GuestGroup, on_delete=models.CASCADE, related_name="rsvp_submissions")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    email_updates = models.BooleanField(default=False)
+    email_address = models.EmailField(blank=True)
     notes = models.TextField(blank=True)
     history = HistoricalRecords()
 
@@ -163,29 +166,26 @@ class RsvpSubmission(models.Model):
         unique_together = ("guest_group",)
 
 
-class RsvpBooleanAnswer(models.Model):
+class RsvpQuestionResponse(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    submission = models.ForeignKey(RsvpSubmission, on_delete=models.CASCADE, related_name="boolean_answers")
-    question = models.ForeignKey("core.RsvpFormBoolean", on_delete=models.PROTECT)
-    value = models.BooleanField()
-    question_text = models.CharField(max_length=255, blank=True)
+    submission = models.ForeignKey(RsvpSubmission, related_name="question_responses", on_delete=models.CASCADE)
+    question = models.ForeignKey(RsvpQuestion, related_name="responses", on_delete=models.CASCADE)
+    response_text = models.TextField(blank=True, null=True)
+    choice_answer = models.ForeignKey(
+        RsvpQuestionChoice,
+        on_delete=models.SET_NULL,  # If a choice is deleted, don't delete the answer
+        blank=True,
+        null=True,
+        related_name="responses",
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    is_deleted = models.BooleanField(default=False)
     history = HistoricalRecords()
 
     class Meta:
         unique_together = ("submission", "question")
 
-
-class RsvpInputAnswer(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    submission = models.ForeignKey(RsvpSubmission, on_delete=models.CASCADE, related_name="input_answers")
-    question = models.ForeignKey("core.RsvpFormInput", on_delete=models.PROTECT)
-    value = models.TextField(blank=True)
-    question_text = models.CharField(max_length=255, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    history = HistoricalRecords()
-
-    class Meta:
-        unique_together = ("submission", "question")
+    def __str__(self):
+        return f"Response to {self.question.text} for submission {self.submission.id}"

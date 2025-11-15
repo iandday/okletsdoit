@@ -6,7 +6,7 @@ from typing import Any
 import polars as pl
 from attachments.forms import AttachmentUploadForm
 from attachments.models import Attachment
-from core.models import WeddingSettings, RsvpFormBoolean, RsvpFormInput
+from core.models import WeddingSettings
 from django.forms import modelformset_factory
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -22,7 +22,12 @@ from django.template.loader import render_to_string
 from django.urls import reverse
 from users.models import User
 
-from .forms import GuestForm, GuestRSVPForm, RsvpCodeForm, RsvpSubmissionForm
+from .forms import (
+    GuestForm,
+    GuestRSVPForm,
+    RsvpCodeForm,
+    RsvpSubmissionForm,
+)
 from .forms import GuestGroupForm
 from .forms import GuestlistImportForm
 from .models import Guest, RsvpSubmission
@@ -975,6 +980,7 @@ def rsvp_accept(request: HttpRequest, rsvp_code: str) -> HttpResponse:
         GuestRSVPFormSet = modelformset_factory(Guest, GuestRSVPForm, extra=0)
         guest_formset = GuestRSVPFormSet(request.POST, queryset=guests)
         submission_form = RsvpSubmissionForm(request.POST, prefix="rsvp_submission")
+
         if guest_formset.is_valid() and submission_form.is_valid():
             admin_user = User.objects.filter(is_admin=True).first()
             for form in guest_formset:
@@ -984,7 +990,11 @@ def rsvp_accept(request: HttpRequest, rsvp_code: str) -> HttpResponse:
                 guest.save()
             rsvp_submission = RsvpSubmission.objects.update_or_create(
                 guest_group=guest_group,
-                defaults={"notes": submission_form.cleaned_data["notes"]},
+                defaults={
+                    "notes": submission_form.cleaned_data["notes"],
+                    "email_updates": submission_form.cleaned_data.get("email_updates", False),
+                    "email_address": submission_form.cleaned_data.get("email_address", ""),
+                },
             )
             return redirect(f"{reverse('guestlist:rsvp_complete', args=[guest_group.rsvp_code])}?accepted=true")
         else:
@@ -994,6 +1004,8 @@ def rsvp_accept(request: HttpRequest, rsvp_code: str) -> HttpResponse:
         GuestRSVPFormSet = modelformset_factory(Guest, GuestRSVPForm, extra=0)
         guest_formset = GuestRSVPFormSet(queryset=guests)
 
+        rsvp_submission, created = RsvpSubmission.objects.get_or_create(guest_group=guest_group)
+
     context = {
         "guest_group": guest_group,
         "guests": guests,
@@ -1001,8 +1013,6 @@ def rsvp_accept(request: HttpRequest, rsvp_code: str) -> HttpResponse:
         "rsvp_submission_form": RsvpSubmissionForm(prefix="rsvp_submission"),
         "show_accommodation": guests.filter(accommodation=True).exists(),
         "show_vip": guests.filter(vip=True).exists(),
-        "input_questions": RsvpFormInput.objects.filter(is_deleted=True).order_by("order"),
-        "boolean_questions": RsvpFormBoolean.objects.filter(is_deleted=True).order_by("order"),
     }
 
     return render(request, "guestlist/rsvp_accept.html", context)

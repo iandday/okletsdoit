@@ -12,12 +12,12 @@
                  alt="rsvp"
                  class="max-w-sm rounded-lg mb-6" />
             <div class="prose pb-6">{{ wedding_config.rsvp_accept_intro|safe }}</div>
-            {% if wedding_config.rsvp_show_accommodation_intro %}
+            {% if show_accommodation %}
                 <div role="alert" class="alert alert-primary py-6 px-6 mb-6">
                     <div class="prose">{{ wedding_config.rsvp_accommodation_intro|safe }}</div>
                 </div>
             {% endif %}
-            {% if wedding_config.rsvp_show_vip_intro %}
+            {% if show_vip %}
                 <div role="alert" class="alert alert-primary py-6 px-6 mb-6">
                     <div class="prose">{{ wedding_config.rsvp_vip_intro|safe }}</div>
                 </div>
@@ -98,12 +98,29 @@
             </div>
             <div class="edit-card">
                 <div class="edit-card-body">
-                    <label class="label">
-                        <span class="label-text">Additional Notes</span>
-                    </label>
-                    {{ rsvp_submission_form.notes }}
-                    {% if rsvp_submission_form.notes.errors %}
-                        <p class="text-error text-sm mt-1">{{ rsvp_submission_form.notes.errors.as_text }}</p>
+                    <div class="mb-4 w-full">
+                        <label class="label">
+                            <span class="label-text">Additional Notes</span>
+                        </label>
+                        {{ rsvp_submission_form.notes }}
+                        {% if rsvp_submission_form.notes.errors %}
+                            <p class="text-error text-sm mt-1">{{ rsvp_submission_form.notes.errors.as_text }}</p>
+                        {% endif %}
+                    </div>
+                    {% if wedding_config.rsvp_enable_email_updates %}
+                        <div class="mb-4 w-full">
+                            <label class="label mt-4 flex items-center gap-2">
+                                {{ rsvp_submission_form.email_updates }}
+                                <span class="label-text">I would like to receive email updates about the wedding</span>
+                            </label>
+                            <label class="label">
+                                <span class="label-text">Email Address</span>
+                            </label>
+                            {{ rsvp_submission_form.email_address }}
+                            {% if rsvp_submission_form.email_address.errors %}
+                                <p class="text-error text-sm mt-1">{{ rsvp_submission_form.email_address.errors.as_text }}</p>
+                            {% endif %}
+                        </div>
                     {% endif %}
                 </div>
             </div>

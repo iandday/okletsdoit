@@ -31,7 +31,7 @@ from guestlist.models import GuestGroup
 from list.models import List
 from list.models import ListEntry
 
-from .forms import IdeaForm, RsvpFormBooleanFormSet, RsvpFormInputFormSet
+from .forms import IdeaForm
 from .forms import IdeaImportForm
 from .forms import InspirationForm
 from .forms import QuestionForm
@@ -1280,8 +1280,8 @@ def planning_home(request: HttpRequest) -> HttpResponse:
 @login_required
 def wedding_settings(request):
     settings = WeddingSettings.load()
-    rsvp_boolean_questions = settings.rsvp_form_booleans.filter(is_deleted=False).order_by("order")
-    rsvp_input_questions = settings.rsvp_form_inputs.filter(is_deleted=False).order_by("order")
+    # rsvp_boolean_questions = settings.rsvp_form_booleans.filter(is_deleted=False).order_by("order")
+    # rsvp_input_questions = settings.rsvp_form_inputs.filter(is_deleted=False).order_by("order")
 
     context = {
         "block_title": "Wedding Settings",
@@ -1292,8 +1292,8 @@ def wedding_settings(request):
         "title": "Wedding Settings",
         "edit_url": reverse("core:wedding_settings_edit"),
         "settings": settings,
-        "rsvp_boolean_questions": rsvp_boolean_questions,
-        "rsvp_input_questions": rsvp_input_questions,
+        # "rsvp_boolean_questions": rsvp_boolean_questions,
+        # "rsvp_input_questions": rsvp_input_questions,
     }
     return render(request, "core/wedding_settings_detail.html", context)
 
@@ -1305,25 +1305,32 @@ def wedding_settings_edit(request):
 
     if request.method == "POST":
         form = WeddingSettingsForm(request.POST, instance=settings)
-        rsvp_form_boolean_formset = RsvpFormBooleanFormSet(request.POST, instance=settings, prefix="boolean")
-        rsvp_form_input_formset = RsvpFormInputFormSet(request.POST, instance=settings, prefix="input")
-        if form.is_valid() and rsvp_form_boolean_formset.is_valid():
+        # rsvp_form_boolean_formset = RsvpFormBooleanFormSet(request.POST, instance=settings, prefix="boolean")
+        # rsvp_form_input_formset = RsvpFormInputFormSet(request.POST, instance=settings, prefix="input")
+        if form.is_valid():  # and rsvp_form_boolean_formset.is_valid():
             settings = form.save(commit=False)
             settings.updated_by = request.user
             settings.save()
             messages.success(request, "Wedding settings updated successfully.")
-            rsvp_form_boolean_formset.save()
-            messages.success(request, "RSVP form yes/no questions updated successfully.")
-            rsvp_form_input_formset.save()
-            messages.success(request, "RSVP form text input questions updated successfully.")
+
+            # for rsvp_boolean_form in rsvp_form_boolean_formset:
+            #     rsvp_boolean_form.instance.created_by = request.user
+            #     rsvp_boolean_form.instance.updated_by = request.user
+            # rsvp_form_boolean_formset.save()
+            # messages.success(request, "RSVP form yes/no questions updated successfully.")
+            # for rsvp_input_form in rsvp_form_input_formset:
+            #     rsvp_input_form.instance.created_by = request.user
+            #     rsvp_input_form.instance.updated_by = request.user
+            # rsvp_form_input_formset.save()
+            # messages.success(request, "RSVP form text input questions updated successfully.")
             return redirect("core:wedding_settings")
         else:
             messages.error(request, "There were errors updating the RSVP form yes/no questions.")
             pass
 
-    else:
-        rsvp_form_boolean_formset = RsvpFormBooleanFormSet(instance=settings, prefix="boolean")
-        rsvp_form_input_formset = RsvpFormInputFormSet(instance=settings, prefix="input")
+    # else:
+    # rsvp_form_boolean_formset = RsvpFormBooleanFormSet(instance=settings, prefix="boolean")
+    # rsvp_form_input_formset = RsvpFormInputFormSet(instance=settings, prefix="input")
     context = {
         "breadcrumbs": [
             {"title": "Planning", "url": reverse("core:planning_home")},
@@ -1333,8 +1340,8 @@ def wedding_settings_edit(request):
         "block_title": "Edit Wedding Settings",
         "title": "Edit Wedding Settings",
         "settings_form": WeddingSettingsForm(instance=settings),
-        "rsvp_form_boolean_formset": rsvp_form_boolean_formset,
-        "rsvp_form_input_formset": rsvp_form_input_formset,
+        # "rsvp_form_boolean_formset": rsvp_form_boolean_formset,
+        # "rsvp_form_input_formset": rsvp_form_input_formset,
         "cancel_url": reverse("core:wedding_settings"),
         "submit_text": "Update Settings",
     }

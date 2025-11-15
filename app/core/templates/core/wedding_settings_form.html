@@ -104,6 +104,20 @@
                                     <div class="text-error">{{ settings_form.rsvp_accept_intro.errors }}</div>
                                 {% endif %}
                             </div>
+                            <div class="form-control">
+                                {{ settings_form.rsvp_enable_email_updates.label_tag }}
+                                {{ settings_form.rsvp_enable_email_updates }}
+                                {% if settings_form.rsvp_enable_email_updates.errors %}
+                                    <div class="text-error">{{ settings_form.rsvp_enable_email_updates.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="form-control">
+                                {{ settings_form.rsvp_email_update_label.label_tag }}
+                                {{ settings_form.rsvp_email_update_label }}
+                                {% if settings_form.rsvp_email_update_label.errors %}
+                                    <div class="text-error">{{ settings_form.rsvp_email_update_label.errors }}</div>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -164,97 +178,6 @@
                     </div>
                 </div>
                 <div class="divider col-span-2"></div>
-                <div class="card col-span-2" id="rsvp-form-boolean-questions">
-                    <div class="card-body">
-                        <h2 class="card-title">RSVP Form Yes/No Questions</h2>
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 divide-x divide-y divide-yellow-300">
-                            {{ rsvp_form_boolean_formset.management_form }}
-                            {% for form in rsvp_form_boolean_formset.forms %}
-                                <div class="edit-card">
-                                    <div class="edit-card-body">
-                                        {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
-                                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                                            <div class="form-control">
-                                                {{ form.question.label_tag }}
-                                                {{ form.question }}
-                                                {% if form.question.errors %}<div class="text-error">{{ form.question.errors }}</div>{% endif %}
-                                            </div>
-                                            <div class="form-control">
-                                                {{ form.description.label_tag }}
-                                                {{ form.description }}
-                                                {% if form.description.errors %}<div class="text-error">{{ form.description.errors }}</div>{% endif %}
-                                            </div>
-                                            <div class="col-span-2 flex flex-row justify-between px-4">
-                                                <div class="form-control">
-                                                    {{ form.order.label_tag }}
-                                                    {{ form.order }}
-                                                    {% if form.order.errors %}<div class="text-error">{{ form.order.errors }}</div>{% endif %}
-                                                </div>
-                                                <div class="form-control">
-                                                    {{ form.required.label_tag }}
-                                                    {{ form.required }}
-                                                    {% if form.required.errors %}<div class="text-error">{{ form.required.errors }}</div>{% endif %}
-                                                </div>
-                                                <div class="form-control">
-                                                    {{ form.published.label_tag }}
-                                                    {{ form.published }}
-                                                    {% if form.published.errors %}<div class="text-error">{{ form.published.errors }}</div>{% endif %}
-                                                </div>
-                                                <div class="form-control">{{ form.DELETE }} Delete</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
-                <div class="divider col-span-2"></div>
-                <div class="card col-span-2" id="rsvp-form-input-questions">
-                    <div class="card-body">
-                        <h2 class="card-title">RSVP Form Text Input Questions</h2>
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                            {{ rsvp_form_input_formset.management_form }}
-                            {% for form in rsvp_form_input_formset.forms %}
-                                <div class="edit-card">
-                                    <div class="edit-card-body">
-                                        {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
-                                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                                            <div class="form-control">
-                                                {{ form.question.label_tag }}
-                                                {{ form.question }}
-                                                {% if form.question.errors %}<div class="text-error">{{ form.question.errors }}</div>{% endif %}
-                                            </div>
-                                            <div class="form-control">
-                                                {{ form.description.label_tag }}
-                                                {{ form.description }}
-                                                {% if form.description.errors %}<div class="text-error">{{ form.description.errors }}</div>{% endif %}
-                                            </div>
-                                            <div class="col-span-2 flex flex-row justify-between px-4">
-                                                <div class="form-control">
-                                                    {{ form.order.label_tag }}
-                                                    {{ form.order }}
-                                                    {% if form.order.errors %}<div class="text-error">{{ form.order.errors }}</div>{% endif %}
-                                                </div>
-                                                <div class="form-control">
-                                                    {{ form.required.label_tag }}
-                                                    {{ form.required }}
-                                                    {% if form.required.errors %}<div class="text-error">{{ form.required.errors }}</div>{% endif %}
-                                                </div>
-                                                <div class="form-control">
-                                                    {{ form.published.label_tag }}
-                                                    {{ form.published }}
-                                                    {% if form.published.errors %}<div class="text-error">{{ form.published.errors }}</div>{% endif %}
-                                                </div>
-                                                <div class="form-control">{{ form.DELETE }} Delete</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
                 <div class="card-actions justify-end py-2">
                     <a href="{{ cancel_url }}" class="btn">Cancel</a>
                     <button type="submit" class="btn btn-primary">
@@ -268,34 +191,129 @@
                         {{ submit_text }}
                     </button>
                 </div>
-            </form>
+                <div id="rsvp-boolean-empty-form-template"
+                     class="hidden"
+                     aria-hidden="true">
+                    <div class="edit-card-body">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div class="form-control">
+                                {{ rsvp_form_boolean_formset.empty_form.question.label_tag }}
+                                {{ rsvp_form_boolean_formset.empty_form.question }}
+                                {% if rsvp_form_boolean_formset.empty_form.question.errors %}
+                                    <div class="text-error">{{ rsvp_form_boolean_formset.empty_form.question.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="form-control">
+                                {{ rsvp_form_boolean_formset.empty_form.description.label_tag }}
+                                {{ rsvp_form_boolean_formset.empty_form.description }}
+                                {% if rsvp_form_boolean_formset.empty_form.description.errors %}
+                                    <div class="text-error">{{ rsvp_form_boolean_formset.empty_form.description.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-span-2 flex flex-row justify-between px-4">
+                                <div class="form-control">
+                                    {{ rsvp_form_boolean_formset.empty_form.order.label_tag }}
+                                    {{ rsvp_form_boolean_formset.empty_form.order }}
+                                    {% if rsvp_form_boolean_formset.empty_form.order.errors %}
+                                        <div class="text-error">{{ rsvp_form_boolean_formset.empty_form.order.errors }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="form-control">
+                                    {{ rsvp_form_boolean_formset.empty_form.required.label_tag }}
+                                    {{ rsvp_form_boolean_formset.empty_form.required }}
+                                    {% if rsvp_form_boolean_formset.empty_form.required.errors %}
+                                        <div class="text-error">{{ rsvp_form_boolean_formset.empty_form.required.errors }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="form-control">
+                                    {{ rsvp_form_boolean_formset.empty_form.published.label_tag }}
+                                    {{ rsvp_form_boolean_formset.empty_form.published }}
+                                    {% if rsvp_form_boolean_formset.empty_form.published.errors %}
+                                        <div class="text-error">{{ rsvp_form_boolean_formset.empty_form.published.errors }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="form-control">{{ rsvp_form_boolean_formset.empty_form.DELETE }} Delete</div>
+                            </div>
+                            <div class="sr-only">
+                                {% for hidden in rsvp_form_boolean_formset.empty_form.hidden_fields %}{{ hidden }}{% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
-{% endblock content %}
-{% block extra_script %}
-    <script src="https://cdn.jsdelivr.net/npm/hugerte@1/hugerte.min.js"
-            nonce="{{ request.csp_nonce }}"></script>
-    <script nonce="{{ request.csp_nonce }}">
-      const useDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      const isSmallScreen = window.matchMedia('(max-width: 1023.5px)').matches;
-      hugerte.init({
-        selector: '#id_rsvp_accommodation_intro, #id_rsvp_vip_intro, #id_rsvp_accept_intro',
-        height: 500,
-        plugins: [
-          'advlist', 'autolink', 'lists', 'link', 'charmap',
-          'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-          'insertdatetime', 'table', 'help', 'wordcount'
-        ],
-        toolbar_mode: 'sliding',
-        contextmenu: 'link image table',
-        skin: useDarkMode ? 'oxide-dark' : 'oxide',
-        content_css: useDarkMode ? 'dark' : 'default',
-        menubar: 'edit view insert format table help',
-        toolbar: 'undo redo | blocks | ' +
-          'bold italic backcolor | alignleft aligncenter ' +
-          'alignright alignjustify | bullist numlist outdent indent | ' +
-          'removeformat | help',
-        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
-      });
-    </script>
-{% endblock extra_script %}
+    {% endblock content %}
+    {% block extra_script %}
+        <script src="https://cdn.jsdelivr.net/npm/hugerte@1/hugerte.min.js"
+                nonce="{{ request.csp_nonce }}"></script>
+        <script nonce="{{ request.csp_nonce }}">
+          const useDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          const isSmallScreen = window.matchMedia('(max-width: 1023.5px)').matches;
+          hugerte.init({
+            selector: '#id_rsvp_accommodation_intro, #id_rsvp_vip_intro, #id_rsvp_accept_intro',
+            height: 500,
+            plugins: [
+              'advlist', 'autolink', 'lists', 'link', 'charmap',
+              'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+              'insertdatetime', 'table', 'help', 'wordcount'
+            ],
+            toolbar_mode: 'sliding',
+            contextmenu: 'link image table',
+            skin: useDarkMode ? 'oxide-dark' : 'oxide',
+            content_css: useDarkMode ? 'dark' : 'default',
+            menubar: 'edit view insert format table help',
+            toolbar: 'undo redo | blocks | ' +
+              'bold italic backcolor | alignleft aligncenter ' +
+              'alignright alignjustify | bullist numlist outdent indent | ' +
+              'removeformat | help',
+            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
+          });
+        </script>
+        <script nonce="{{ request.csp_nonce }}">
+          document.addEventListener('DOMContentLoaded', function() {
+            const addBtn = document.getElementById('add-rsvp-boolean-btn');
+            if (!addBtn) return;
+
+            const formsContainer = document.getElementById('rsvp-boolean-forms');
+            const emptyTemplateContainer = document.getElementById('rsvp-boolean-empty-form-template');
+            if (!formsContainer || !emptyTemplateContainer) return;
+
+            // management form inputs (use the same prefix the view used)
+            const prefix = "{{ rsvp_form_boolean_formset.prefix }}";
+            const totalFormsInput = document.querySelector(`input[name="${prefix}-TOTAL_FORMS"]`);
+            if (!totalFormsInput) return;
+
+            // raw HTML of empty_form (contains __prefix__)
+            const emptyHtml = emptyTemplateContainer.innerHTML;
+
+            addBtn.addEventListener('click', function() {
+              const formIndex = parseInt(totalFormsInput.value, 10);
+
+              // replace __prefix__ placeholders with the new index
+              const newFormHtml = emptyHtml.replace(/__prefix__/g, formIndex);
+
+              // Wrap new form in a card to match existing forms
+              const wrapper = document.createElement('div');
+              wrapper.className = 'edit-card';
+              wrapper.innerHTML = newFormHtml;
+
+              // Clear any values that may be present in the template (safety)
+              wrapper.querySelectorAll('input, textarea, select').forEach((el) => {
+                if (el.type === 'checkbox' || el.type === 'radio') {
+                  el.checked = false;
+                } else {
+                  el.value = '';
+                }
+              });
+
+              // Append the new form and increment TOTAL_FORMS
+              formsContainer.appendChild(wrapper);
+              totalFormsInput.value = formIndex + 1;
+
+              // optional: focus the first text input in the new form
+              const firstInput = wrapper.querySelector('input[type="text"], textarea, input[type="number"], input[type="email"]');
+              if (firstInput) firstInput.focus();
+            });
+          });
+        </script>
+    {% endblock extra_script %}

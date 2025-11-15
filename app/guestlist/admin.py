@@ -1,140 +1,28 @@
 from django.contrib import admin
+
 from .models import GuestGroup, Guest, RsvpSubmission
-
-
-@admin.register(GuestGroup)
-class GuestGroupAdmin(admin.ModelAdmin):
-    list_display = [
-        "name",
-        "relationship",
-        "priority",
-        "group_count",
-        "group_invited_count",
-        "group_attending_count",
-        "email",
-        "phone",
-        "created_at",
-        "is_deleted",
-    ]
-    list_filter = ["relationship", "priority", "is_deleted", "created_at", "updated_at"]
-    search_fields = ["name", "email", "phone", "city", "state", "notes"]
-    readonly_fields = [
-        "id",
-        "slug",
-        "group_count",
-        "group_invited_count",
-        "group_attending_count",
-        "created_at",
-        "updated_at",
-        "rsvp_code",
-    ]
-    fieldsets = (
-        ("Basic Information", {"fields": ("name", "slug", "rsvp_code", "relationship", "priority", "associated_with")}),
-        (
-            "Contact Information",
-            {"fields": ("email", "phone", "address_name", "address", "address_two", "city", "state", "zip_code")},
-        ),
-        (
-            "Statistics",
-            {"fields": ("group_count", "group_invited_count", "group_attending_count"), "classes": ("collapse",)},
-        ),
-        ("Additional Information", {"fields": ("notes",)}),
-        (
-            "System Information",
-            {
-                "fields": ("id", "created_by", "created_at", "updated_by", "updated_at", "is_deleted"),
-                "classes": ("collapse",),
-            },
-        ),
-    )
-    ordering = ["name"]
-    date_hierarchy = "created_at"
-
-
-@admin.register(Guest)
-class GuestAdmin(admin.ModelAdmin):
-    list_display = [
-        "first_name",
-        "last_name",
-        "group",
-        "plus_one",
-        "is_invited",
-        "accommodation",
-        "vip",
-        "responded",
-        "is_attending",
-        "accept_accommodation",
-        "accept_vip",
-        "created_at",
-        "is_deleted",
-    ]
-    list_filter = [
-        "plus_one",
-        "accommodation",
-        "vip",
-        "is_invited",
-        "is_attending",
-        "is_deleted",
-        "group__relationship",
-        "group__priority",
-        "created_at",
-        "updated_at",
-    ]
-    search_fields = ["first_name", "last_name", "group__name", "notes"]
-    readonly_fields = ["id", "slug", "created_at", "updated_at"]
-    fieldsets = (
-        (
-            "Basic Information",
-            {"fields": ("first_name", "last_name", "slug", "group", "plus_one", "accommodation", "vip", "notes")},
-        ),
-        ("RSVP Status", {"fields": ("is_invited", "responded", "is_attending", "accept_accommodation", "accept_vip")}),
-        (
-            "System Information",
-            {
-                "fields": ("id", "created_by", "created_at", "updated_by", "updated_at", "is_deleted"),
-                "classes": ("collapse",),
-            },
-        ),
-    )
-    ordering = ["group__name", "last_name", "first_name"]
-    date_hierarchy = "created_at"
-    list_select_related = ["group"]
-
-    def get_queryset(self, request):
-        return super().get_queryset(request).select_related("group")
 
 
 @admin.register(RsvpSubmission)
 class RsvpSubmissionAdmin(admin.ModelAdmin):
-    list_display = [
-        "guest_group",
-        "created_at",
-        "updated_at",
-    ]
-    list_filter = [
-        "created_at",
-        "updated_at",
-    ]
-    search_fields = [
-        "guest_group__name",
-    ]
-    readonly_fields = [
-        "id",
-        "created_at",
-        "updated_at",
-    ]
-    fieldsets = (
-        (
-            "Basic Information",
-            {"fields": ("guest_group", "notes")},
-        ),
-        (
-            "System Information",
-            {
-                "fields": ("id", "created_at", "updated_at"),
-                "classes": ("collapse",),
-            },
-        ),
-    )
-    ordering = ["-created_at"]
-    date_hierarchy = "created_at"
+    list_display = ("guest_group", "created_at", "email_updates", "email_address")
+    list_filter = ("email_updates",)
+    search_fields = ("guest_group__name", "email_address")
+    readonly_fields = ("created_at", "updated_at")
+    ordering = ("-created_at",)
+
+    # def get_queryset(self, request):
+    #    qs = super().get_queryset(request)
+    #    return qs.select_related("guest_group").prefetch_related("boolean_answers__question", "input_answers__question")
+
+
+@admin.register(GuestGroup)
+class GuestGroupAdmin(admin.ModelAdmin):
+    list_display = ("name", "rsvp_code", "group_count", "group_attending_count")
+    search_fields = ("name", "rsvp_code")
+
+
+@admin.register(Guest)
+class GuestAdmin(admin.ModelAdmin):
+    list_display = ("first_name", "last_name", "group", "is_invited", "is_attending")
+    search_fields = ("first_name", "last_name", "group__name")

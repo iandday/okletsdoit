@@ -1,12 +1,10 @@
 import importlib
+from typing import Any
 from django import forms
-from django.forms import ModelForm, inlineformset_factory
+from django.forms import BaseInlineFormSet, ModelForm, inlineformset_factory
 from .models import (
     Idea,
     Question,
-    RsvpFormBoolean,
-    RsvpFormInput,
-    RsvpFormInput,
     Timeline,
     Inspiration,
     WeddingSettings,
@@ -244,6 +242,8 @@ class WeddingSettingsForm(ModelForm):
             "vip_group_label",
             "rsvp_show_accommodation_intro",
             "rsvp_show_vip_intro",
+            "rsvp_enable_email_updates",
+            "rsvp_email_update_label",
         ]
         labels = {
             "wedding_date": "Wedding Date",
@@ -263,6 +263,8 @@ class WeddingSettingsForm(ModelForm):
             "vip_group_label": "VIP Group Label",
             "rsvp_show_accommodation_intro": "Show Accommodation Intro on RSVP Form",
             "rsvp_show_vip_intro": "Show VIP Intro on RSVP Form",
+            "rsvp_enable_email_updates": "Enable Email Updates Option in RSVP",
+            "rsvp_email_update_label": "Email Updates Opt-in Label",
         }
         widgets = {
             "allow_rsvp": forms.CheckboxInput(attrs={"class": "checkbox checkbox-primary edit-card-field-toggle"}),
@@ -362,90 +364,15 @@ class WeddingSettingsForm(ModelForm):
                     "class": "checkbox checkbox-primary edit-card-field-toggle",
                 }
             ),
-        }
-
-
-class RsvpFormBooleanForm(ModelForm):
-    """Form for creating and editing RSVP boolean questions."""
-
-    class Meta:
-        model = RsvpFormBoolean
-        fields = ["question", "description", "order", "required", "published"]
-        widgets = {
-            "question": forms.TextInput(
-                attrs={
-                    "class": "input input-bordered edit-card-field-value",
-                    "placeholder": "Enter question text",
-                },
-            ),
-            "description": forms.Textarea(
-                attrs={
-                    "class": "textarea textarea-bordered edit-card-field-value",
-                    "rows": 3,
-                    "placeholder": "Enter question description (optional)",
-                }
-            ),
-            "order": forms.NumberInput(
-                attrs={
-                    "class": "input input-bordered edit-card-field-value",
-                    "placeholder": "Enter order",
-                },
-            ),
-            "required": forms.CheckboxInput(
+            "rsvp_enable_email_updates": forms.CheckboxInput(
                 attrs={
                     "class": "checkbox checkbox-primary edit-card-field-toggle",
                 }
             ),
-            "published": forms.CheckboxInput(
+            "rsvp_email_update_label": forms.TextInput(
                 attrs={
-                    "class": "checkbox checkbox-primary edit-card-field-toggle",
+                    "class": "input input-bordered edit-card-field-value",
+                    "placeholder": "Enter Email Updates Opt-in Label",
                 }
             ),
         }
-
-
-class RsvpFormInputForm(ModelForm):
-    """Form for creating and editing RSVP input questions."""
-
-    class Meta:
-        model = RsvpFormInput
-        fields = ["question", "description", "order", "required", "published"]
-        widgets = {
-            "question": forms.TextInput(
-                attrs={
-                    "class": "input input-bordered edit-card-field-value",
-                    "placeholder": "Enter question text",
-                },
-            ),
-            "description": forms.Textarea(
-                attrs={
-                    "class": "textarea textarea-bordered edit-card-field-value",
-                    "rows": 3,
-                    "placeholder": "Enter question description (optional)",
-                }
-            ),
-            "order": forms.NumberInput(
-                attrs={
-                    "class": "input input-bordered edit-card-field-value",
-                    "placeholder": "Enter order",
-                },
-            ),
-            "required": forms.CheckboxInput(
-                attrs={
-                    "class": "checkbox checkbox-primary edit-card-field-toggle",
-                }
-            ),
-            "published": forms.CheckboxInput(
-                attrs={
-                    "class": "checkbox checkbox-primary edit-card-field-toggle",
-                }
-            ),
-        }
-
-
-RsvpFormBooleanFormSet = inlineformset_factory(
-    WeddingSettings, RsvpFormBoolean, form=RsvpFormBooleanForm, extra=0, can_delete=True
-)
-RsvpFormInputFormSet = inlineformset_factory(
-    WeddingSettings, RsvpFormInput, form=RsvpFormInputForm, extra=0, can_delete=True
-)

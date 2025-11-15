@@ -3,7 +3,7 @@ from django.utils.html import format_html
 from import_export.admin import ImportExportModelAdmin
 from simple_history.admin import SimpleHistoryAdmin
 from django.db import models
-from .models import Idea, Timeline, Inspiration, Question, RsvpFormBoolean
+from .models import Idea, Timeline, Inspiration, Question
 
 
 @admin.register(Idea)
@@ -195,24 +195,6 @@ class QuestionAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
             obj.created_by = request.user
         obj.updated_by = request.user
         super().save_model(request, obj, form, change)
-
-
-@admin.register(RsvpFormBoolean)
-class RsvpFormBooleanAdmin(admin.ModelAdmin):
-    list_display = (
-        "question",
-        "required",
-        "order",
-        "setting",
-        "created_by",
-        "created_at",
-        "updated_by",
-        "updated_at",
-        "is_deleted",
-    )
-    search_fields = ("question", "description")
-    list_filter = ("required", "setting", "is_deleted")
-    ordering = ("order", "question")
 
 
 admin.site.site_header = "Wedding Planning Manager"
