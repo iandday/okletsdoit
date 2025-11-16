@@ -38,7 +38,7 @@ from .forms import QuestionForm
 from .forms import TimelineForm
 from .forms import TimelineImportForm
 from .forms import WeddingSettingsForm
-from .models import Idea
+from .models import Idea, RsvpQuestion
 from .models import Inspiration
 from .models import Question
 
@@ -1280,8 +1280,6 @@ def planning_home(request: HttpRequest) -> HttpResponse:
 @login_required
 def wedding_settings(request):
     settings = WeddingSettings.load()
-    # rsvp_boolean_questions = settings.rsvp_form_booleans.filter(is_deleted=False).order_by("order")
-    # rsvp_input_questions = settings.rsvp_form_inputs.filter(is_deleted=False).order_by("order")
 
     context = {
         "block_title": "Wedding Settings",
@@ -1292,8 +1290,7 @@ def wedding_settings(request):
         "title": "Wedding Settings",
         "edit_url": reverse("core:wedding_settings_edit"),
         "settings": settings,
-        # "rsvp_boolean_questions": rsvp_boolean_questions,
-        # "rsvp_input_questions": rsvp_input_questions,
+        "rsvp_questions": RsvpQuestion.objects.filter(is_deleted=False).order_by("order"),
     }
     return render(request, "core/wedding_settings_detail.html", context)
 

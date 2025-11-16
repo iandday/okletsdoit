@@ -231,9 +231,25 @@
                              stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
-                        RSVP Yes/No Questions
+                        RSVP Questions
                     </h2>
-                    <div class="grid grid-cols-1 gap-4 mt-4"></div>
+                    <div class="grid grid-cols-1 gap-4 mt-4">
+                        {% for question in rsvp_questions %}
+                            <div>
+                                <div class="detail-card-field-name">Question {{ question.order }}</div>
+                                <div class="detail-card-field-value">{{ question.text }}</div>
+                                {% if question.choices.exists %}
+                                    <div class="ml-8 detail-card-field-name mt-2">Choices</div>
+                                    {% for choice in question.choices.all %}
+                                        <div class="detail-card-field-value">{{ choice.choice_text }}</div>
+                                    {% endfor %}
+                                {% endif %}
+                                <div class="divider"></div>
+                            </div>
+                        {% empty %}
+                            <p>No RSVP questions have been added yet.</p>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>
