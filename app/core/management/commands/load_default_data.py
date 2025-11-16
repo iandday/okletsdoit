@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from django.core.management.base import BaseCommand
-from core.models import WeddingSettings
+from core.models import RsvpQuestion, RsvpQuestionChoice, WeddingSettings
 from django.contrib.auth import get_user_model
 
 
@@ -25,26 +25,48 @@ class Command(BaseCommand):
             User = get_user_model()
             admin_user = User.objects.filter(is_admin=True).first()
 
-            # default_boolean_questions = []
+            questions = [
+                {"type": "text", "text": "Do you have any food allergies or dietary restrictions?"},
+                {"type": "text", "text": "Do you have any accessibility requirements we should be aware of?"},
+                {"type": "text", "text": "Wedding planning is hard—can you tell us a joke?"},
+                {
+                    "type": "multiple_choice",
+                    "text": "Will you be attending the wedding ceremony?",
+                    "choices": ["Yes", "No"],
+                },
+                {
+                    "type": "multiple_choice",
+                    "text": "Will you be attending the wedding reception?",
+                    "choices": ["Yes", "No"],
+                },
+            ]
 
-            # default_input_questions = [
-            #     "Do you have any food allergies or dietary restrictions?",
-            #     "Do you have any accessibility requirements we should be aware of?",
-            #     "Wedding planning is hard—can you tell us a joke?",
-            # ]
-            # for question in default_boolean_questions:
-            #     RsvpFormBoolean.objects.get_or_create(
-            #         question=question,
-            #         setting=settings,
-            #         created_by=admin_user,
-            #     )
-
-            # for question in default_input_questions:
-            #     RsvpFormInput.objects.get_or_create(
-            #         question=question,
-            #         setting=settings,
-            #         created_by=admin_user,
-            #     )
+            for idx, question in enumerate(questions, start=1):
+                if question["type"] == "text":
+                    RsvpQuestion.objects.update_or_create(
+                        text=question["text"],
+                        defaults={
+                            "order": idx,
+                            "question_type": RsvpQuestion.QUESTION_TYPE_CHOICES.TEXT,
+                            "published": True,
+                            "created_by": admin_user,
+                        },
+                    )
+                elif question["type"] == "multiple_choice":
+                    q, _ = RsvpQuestion.objects.update_or_create(
+                        text=question["text"],
+                        defaults={
+                            "order": idx,
+                            "question_type": RsvpQuestion.QUESTION_TYPE_CHOICES.MULTIPLE_CHOICE,
+                            "published": True,
+                            "created_by": admin_user,
+                        },
+                    )
+                    for choice in question["choices"]:
+                        RsvpQuestionChoice.objects.update_or_create(
+                            question=q,
+                            choice_text=choice,
+                        )
 
             settings.default_data_loaded = True
             settings.save()

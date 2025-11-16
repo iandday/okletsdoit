@@ -171,11 +171,9 @@ class RsvpQuestionResponse(models.Model):
     submission = models.ForeignKey(RsvpSubmission, related_name="question_responses", on_delete=models.CASCADE)
     question = models.ForeignKey(RsvpQuestion, related_name="responses", on_delete=models.CASCADE)
     response_text = models.TextField(blank=True, null=True)
-    choice_answer = models.ForeignKey(
+    response_choices = models.ManyToManyField(
         RsvpQuestionChoice,
-        on_delete=models.SET_NULL,  # If a choice is deleted, don't delete the answer
         blank=True,
-        null=True,
         related_name="responses",
     )
 
@@ -188,4 +186,4 @@ class RsvpQuestionResponse(models.Model):
         unique_together = ("submission", "question")
 
     def __str__(self):
-        return f"Response to {self.question.text} for submission {self.submission.id}"
+        return f"Response to {self.question} for submission {self.submission}"

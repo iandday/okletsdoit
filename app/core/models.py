@@ -1,6 +1,7 @@
 import datetime
 import uuid
 
+from click import Choice
 from django.db import models
 from django.utils.text import slugify
 from simple_history.models import HistoricalRecords
@@ -251,87 +252,3 @@ class RsvpQuestionChoice(models.Model):
 
     def __str__(self):
         return self.choice_text
-
-
-# class RsvpFormBoolean(models.Model):
-#     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-#     slug = models.SlugField(max_length=250, null=True, blank=True, unique=True)
-#     setting = models.ForeignKey(
-#         WeddingSettings, related_name="rsvp_form_booleans", on_delete=models.CASCADE, null=True, blank=True
-#     )
-#     question = models.CharField(max_length=250, unique=True)
-#     description = models.TextField(blank=True, null=True)
-#     required = models.BooleanField(default=False)
-#     order = models.PositiveIntegerField(default=0)
-#     published = models.BooleanField(default=False)
-#     created_by = models.ForeignKey(User, related_name="created_by_rsvp_form_boolean", on_delete=models.CASCADE)
-#     created_at = models.DateTimeField(auto_now_add=True)
-#     updated_by = models.ForeignKey(
-#         User, related_name="updated_by_rsvp_form_boolean", on_delete=models.CASCADE, null=True, blank=True
-#     )
-#     updated_at = models.DateTimeField(auto_now=True)
-#     is_deleted = models.BooleanField(default=False)
-#     history = HistoricalRecords()
-
-#     def __str__(self):
-#         return self.question
-
-#     class Meta:
-#         ordering = ["order", "question"]
-#         verbose_name_plural = "RSVP Form Booleans"
-
-#     def save(self, *args, **kwargs):
-#         if not self.slug:
-#             base_slug = slugify(self.question[:50])
-#             slug = base_slug
-#             counter = 1
-
-#             while RsvpFormBoolean.objects.filter(slug=slug).exclude(pk=self.pk).exists():
-#                 slug = f"{base_slug}-{counter}"
-#                 counter += 1
-
-#             self.slug = slug
-
-#         super().save(*args, **kwargs)
-
-
-# class RsvpFormInput(models.Model):
-#     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-#     slug = models.SlugField(max_length=250, null=True, blank=True, unique=True)
-#     setting = models.ForeignKey(
-#         WeddingSettings, related_name="rsvp_form_inputs", on_delete=models.CASCADE, null=True, blank=True
-#     )
-#     question = models.CharField(max_length=250, unique=True)
-#     description = models.TextField(blank=True, null=True)
-#     required = models.BooleanField(default=False)
-#     order = models.PositiveIntegerField(default=0)
-#     published = models.BooleanField(default=False)
-#     created_by = models.ForeignKey(User, related_name="created_by_rsvp_form_input", on_delete=models.CASCADE)
-#     created_at = models.DateTimeField(auto_now_add=True)
-#     updated_by = models.ForeignKey(
-#         User, related_name="updated_by_rsvp_form_input", on_delete=models.CASCADE, null=True, blank=True
-#     )
-#     updated_at = models.DateTimeField(auto_now=True)
-#     is_deleted = models.BooleanField(default=False)
-#     history = HistoricalRecords()
-
-#     def __str__(self):
-#         return self.question
-
-#     class Meta:
-#         ordering = ["order", "question"]
-#         verbose_name_plural = "RSVP Form Text Inputs"
-
-#     def save(self, *args, **kwargs):
-#         if not self.slug:
-#             base_slug = slugify(self.question[:50])
-#             slug = base_slug
-#             counter = 1
-
-#             while RsvpFormInput.objects.filter(slug=slug).exclude(pk=self.pk).exists():
-#                 slug = f"{base_slug}-{counter}"
-#                 counter += 1
-
-#             self.slug = slug
-
-#         super().save(*args, **kwargs)
