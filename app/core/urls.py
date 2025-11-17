@@ -14,6 +14,11 @@ urlpatterns = [
     path("settings/", views.wedding_settings, name="wedding_settings"),
     path("settings/edit", views.wedding_settings_edit, name="wedding_settings_edit"),
     path("settings/export/", views.data_export, name="data_export"),
+    path(
+        "settings/<uuid:rsvp_question_uuid>/edit_choices",
+        views.edit_rsvp_question_choices,
+        name="edit_rsvp_question_choices",
+    ),
     path("timeline/", views.timeline_summary, name="timeline_summary"),
     path("timeline_data/", views.timeline_data, name="timeline_data"),
     path("timeline_delete_modal/", views.timeline_delete_modal, name="timeline_delete_modal"),

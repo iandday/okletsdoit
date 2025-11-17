@@ -248,7 +248,15 @@ class RsvpQuestion(models.Model):
 class RsvpQuestionChoice(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     question = models.ForeignKey(RsvpQuestion, on_delete=models.CASCADE, related_name="choices")
-    choice_text = models.CharField(max_length=100)
+    choice_text = models.CharField(max_length=500)
+    created_by = models.ForeignKey(User, related_name="created_by_rsvp_question_choice", on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_by = models.ForeignKey(
+        User, related_name="updated_by_rsvp_question_choice", on_delete=models.CASCADE, null=True, blank=True
+    )
+    updated_at = models.DateTimeField(auto_now=True)
+    is_deleted = models.BooleanField(default=False)
+    history = HistoricalRecords()
 
     def __str__(self):
         return self.choice_text

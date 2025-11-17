@@ -4,18 +4,25 @@
 
 {% block content %}
     <div class="container mx-auto px-4 py-8">
-        <div class="breadcrumbs mb-6">
-            <ul>
-                {% for crumb in breadcrumbs %}
-                    <li>
-                        {% if crumb.url %}
-                            <a href="{{ crumb.url }}" class="link">{{ crumb.title }}</a>
-                        {% else %}
-                            {{ crumb.title }}
-                        {% endif %}
-                    </li>
-                {% endfor %}
-            </ul>
+        <!-- Header -->
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
+            <div>
+                <div class="text-sm breadcrumbs mb-2">
+                    <ul>
+                        {% for crumb in breadcrumbs %}
+                            {% if crumb.url %}
+                                <li>
+                                    <a href="{{ crumb.url }}" class="link link-hover">{{ crumb.title }}</a>
+                                </li>
+                            {% else %}
+                                <li class="text-base-content">{{ crumb.title }}</li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+                <h1 class="text-3xl font-bold text-base-content">{{ title }}</h1>
+                <p class="text-base-content/60 mt-2">{{ intro }}</p>
+            </div>
         </div>
         <!-- Title -->
         <div class="mb-6 flex items-center justify-between">
@@ -221,7 +228,7 @@
                     </div>
                 </div>
             {% endif %}
-            <div class="detail-card" id="rsvp-boolean-questions">
+            <div class="detail-card col-span-2" id="rsvp-boolean-questions">
                 <div class="detail-card-body">
                     <h2 class="detail-card-title mb-4">
                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -233,16 +240,22 @@
                         </svg>
                         RSVP Questions
                     </h2>
-                    <div class="grid grid-cols-1 gap-4 mt-4">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
                         {% for question in rsvp_questions %}
-                            <div>
+                            <div class="border border-primary p-2">
                                 <div class="detail-card-field-name">Question {{ question.order }}</div>
                                 <div class="detail-card-field-value">{{ question.text }}</div>
-                                {% if question.choices.exists %}
-                                    <div class="ml-8 detail-card-field-name mt-2">Choices</div>
-                                    {% for choice in question.choices.all %}
-                                        <div class="detail-card-field-value">{{ choice.choice_text }}</div>
-                                    {% endfor %}
+                                {% if question.question_type == 'multiple_choice' %}
+                                    <div class="flex flex-row justify-between items-center mt-2">
+                                        <div class="ml-8 detail-card-field-name mt-2">Choices</div>
+                                        <a href="{% url 'core:edit_rsvp_question_choices' question.id %}"
+                                           class="btn btn-sm">Edit Choices</a>
+                                    </div>
+                                    {% spaceless %}
+                                        {% for choice in question.choices.all %}
+                                            {% if not choice.is_deleted %}<div class="detail-card-field-value">{{ choice.choice_text }}</div>{% endif %}
+                                        {% endfor %}
+                                    {% endspaceless %}
                                 {% endif %}
                                 <div class="divider"></div>
                             </div>

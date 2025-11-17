@@ -4,6 +4,7 @@ import json
 import logging
 from decimal import Decimal
 
+from django.forms import inlineformset_factory, modelformset_factory
 import polars as pl
 from attachments.forms import AttachmentUploadForm
 from attachments.models import Attachment
@@ -31,14 +32,14 @@ from guestlist.models import GuestGroup
 from list.models import List
 from list.models import ListEntry
 
-from .forms import IdeaForm
+from .forms import RsvpQuestionChoiceChildFormSet, IdeaForm, RsvpQuestionChoiceForm, RsvpQuestionForm
 from .forms import IdeaImportForm
 from .forms import InspirationForm
 from .forms import QuestionForm
 from .forms import TimelineForm
 from .forms import TimelineImportForm
 from .forms import WeddingSettingsForm
-from .models import Idea, RsvpQuestion
+from .models import Idea, RsvpQuestion, RsvpQuestionChoice
 from .models import Inspiration
 from .models import Question
 
@@ -1298,36 +1299,44 @@ def wedding_settings(request):
 @login_required
 @require_http_methods(["GET", "POST"])
 def wedding_settings_edit(request):
+    RsvpQuestionFormSet = modelformset_factory(
+        RsvpQuestion,
+        form=RsvpQuestionForm,
+        extra=1,
+        can_delete=True,
+    )
+
     settings = WeddingSettings.load()
+    question_queryset = RsvpQuestion.objects.filter(is_deleted=False).order_by("order")
 
     if request.method == "POST":
         form = WeddingSettingsForm(request.POST, instance=settings)
-        # rsvp_form_boolean_formset = RsvpFormBooleanFormSet(request.POST, instance=settings, prefix="boolean")
-        # rsvp_form_input_formset = RsvpFormInputFormSet(request.POST, instance=settings, prefix="input")
-        if form.is_valid():  # and rsvp_form_boolean_formset.is_valid():
+        rsvp_question_formset = RsvpQuestionFormSet(request.POST, queryset=question_queryset, prefix="rsvp_questions")
+        if form.is_valid() and rsvp_question_formset.is_valid():
             settings = form.save(commit=False)
             settings.updated_by = request.user
             settings.save()
             messages.success(request, "Wedding settings updated successfully.")
 
-            # for rsvp_boolean_form in rsvp_form_boolean_formset:
-            #     rsvp_boolean_form.instance.created_by = request.user
-            #     rsvp_boolean_form.instance.updated_by = request.user
-            # rsvp_form_boolean_formset.save()
-            # messages.success(request, "RSVP form yes/no questions updated successfully.")
-            # for rsvp_input_form in rsvp_form_input_formset:
-            #     rsvp_input_form.instance.created_by = request.user
-            #     rsvp_input_form.instance.updated_by = request.user
-            # rsvp_form_input_formset.save()
-            # messages.success(request, "RSVP form text input questions updated successfully.")
+            for form in rsvp_question_formset:
+                question: RsvpQuestion = form.save(commit=False)
+                if form.cleaned_data.get("DELETE", False):
+                    question.is_deleted = True
+                if not question.pk:
+                    question.created_by = request.user
+                else:
+                    question.updated_by = request.user
+                question.save()
+            messages.success(request, "RSVP questions updated successfully.")
             return redirect("core:wedding_settings")
         else:
-            messages.error(request, "There were errors updating the RSVP form yes/no questions.")
-            pass
+            messages.error(request, "There were errors updating the settings and RSVP questions.")
 
-    # else:
-    # rsvp_form_boolean_formset = RsvpFormBooleanFormSet(instance=settings, prefix="boolean")
-    # rsvp_form_input_formset = RsvpFormInputFormSet(instance=settings, prefix="input")
+    else:
+        rsvp_question_formset = RsvpQuestionFormSet(
+            queryset=question_queryset, prefix="rsvp_questions", initial=[{"created_by": request.user}]
+        )
+
     context = {
         "breadcrumbs": [
             {"title": "Planning", "url": reverse("core:planning_home")},
@@ -1337,12 +1346,69 @@ def wedding_settings_edit(request):
         "block_title": "Edit Wedding Settings",
         "title": "Edit Wedding Settings",
         "settings_form": WeddingSettingsForm(instance=settings),
-        # "rsvp_form_boolean_formset": rsvp_form_boolean_formset,
-        # "rsvp_form_input_formset": rsvp_form_input_formset,
+        "rsvp_question_formset": rsvp_question_formset,
         "cancel_url": reverse("core:wedding_settings"),
         "submit_text": "Update Settings",
     }
     return render(request, "core/wedding_settings_form.html", context)
+
+
+@login_required
+def edit_rsvp_question_choices(request: HttpRequest, rsvp_question_uuid: str) -> HttpResponse:
+    try:
+        question = RsvpQuestion.objects.get(id=rsvp_question_uuid, is_deleted=False)
+    except RsvpQuestion.DoesNotExist:
+        messages.error(request, "RSVP Question not found.")
+        return redirect("core:wedding_settings")
+
+    RsvpQuestionChoiceInlineFormSet = inlineformset_factory(
+        parent_model=RsvpQuestion,
+        model=RsvpQuestionChoice,
+        form=RsvpQuestionChoiceForm,
+        formset=RsvpQuestionChoiceChildFormSet,
+        extra=1,
+        can_delete=True,
+        min_num=0,
+        validate_min=False,
+    )
+    if request.method == "POST":
+        question_choices_formset = RsvpQuestionChoiceInlineFormSet(request.POST, instance=question, prefix="choices")
+        if question_choices_formset.is_valid():
+            instances = question_choices_formset.save(commit=False)
+            for choice in question_choices_formset.deleted_objects:
+                choice.is_deleted = True
+                choice.updated_by = request.user
+                choice.save()
+            for choice in instances:
+                if not choice.created_by_id:  # pyright: ignore[reportAttributeAccessIssue]
+                    choice.created_by = request.user
+                else:
+                    choice.updated_by = request.user
+                choice.save()
+            messages.success(request, "RSVP question choices updated successfully.")
+            return redirect("core:wedding_settings")
+        else:
+            messages.error(request, "There were errors updating the RSVP question choices.")
+            for form in question_choices_formset:
+                for field, errors in form.errors.items():
+                    for error in errors:
+                        messages.error(request, f"{field}: {error}")
+    else:
+        question_choices_formset = RsvpQuestionChoiceInlineFormSet(instance=question, prefix="choices")
+
+    context = {
+        "block_title": "Edit RSVP Question Choices",
+        "breadcrumbs": [
+            {"title": "Planning", "url": reverse("core:planning_home")},
+            {"title": "Wedding Settings", "url": reverse("core:wedding_settings")},
+            {"title": f"Edit Choices for '{question}'", "url": None},
+        ],
+        "title": f"Edit Choices for '{question}'",
+        "question_choices_formset": question_choices_formset,
+        "cancel_url": reverse("core:wedding_settings"),
+        "submit_text": "Update Choices",
+    }
+    return render(request, "core/rsvp_question_choices_form.html", context)
 
 
 @login_required

@@ -1,13 +1,17 @@
 import importlib
 from typing import Any
+
 from django import forms
-from django.forms import BaseInlineFormSet, ModelForm, inlineformset_factory
+from django.forms import BaseInlineFormSet, BaseModelFormSet, ModelForm, modelformset_factory, inlineformset_factory
+
 from .models import (
     Idea,
     Question,
     Timeline,
     Inspiration,
     WeddingSettings,
+    RsvpQuestion,
+    RsvpQuestionChoice,
 )
 from django.core.files.base import ContentFile
 
@@ -376,3 +380,61 @@ class WeddingSettingsForm(ModelForm):
                 }
             ),
         }
+
+
+class RsvpQuestionForm(ModelForm):
+    class Meta:
+        model = RsvpQuestion
+        fields = ["text", "question_type", "order", "published", "created_by"]
+        widgets = {
+            "text": forms.TextInput(
+                attrs={
+                    "class": "input input-bordered edit-card-field-value",
+                    "placeholder": "Enter the question text shown to guests",
+                }
+            ),
+            "question_type": forms.Select(
+                attrs={"class": "select select-bordered edit-card-field-value w-48"},
+            ),
+            "order": forms.NumberInput(attrs={"class": "input input-bordered edit-card-field-value w-24"}),
+            "published": forms.CheckboxInput(attrs={"class": "checkbox checkbox-primary edit-card-field-toggle"}),
+            "created_by": forms.HiddenInput(),
+        }
+        labels = {
+            "text": "Question",
+            "question_type": "Question Type",
+            "order": "Order",
+            "published": "Published",
+        }
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+        # Make the text field larger in admin-like UIs
+        self.fields["text"].widget.attrs.setdefault("rows", 2)
+
+
+class RsvpQuestionChoiceForm(ModelForm):
+    class Meta:
+        model = RsvpQuestionChoice
+        fields = ["choice_text"]
+        labels = {"choice_text": "Choice"}
+        widgets = {
+            "choice_text": forms.TextInput(
+                attrs={
+                    "class": "input input-bordered edit-card-field-value",
+                    "placeholder": "Choice (e.g. Yes)",
+                }
+            ),
+            # "created_by": forms.HiddenInput(),
+        }
+        labels = {"choice_text": "Choice"}
+
+
+class RsvpQuestionChoiceChildFormSet(BaseInlineFormSet):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Filter the initial queryset here
+        # Example: only show children that meet a specific condition
+        self.queryset = RsvpQuestionChoice.objects.filter(is_deleted=False)  # Apply your specific filter
+        # Note: When used with an inlineformset, Django further filters this
+        # queryset by the parent instance provided in
