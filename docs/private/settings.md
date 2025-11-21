@@ -32,15 +32,8 @@ These fields appear during the multi‑step acceptance flow.
 
 Writing tip: keep intro paragraphs scannable. Avoid long blocks of text.
 
-## RSVP Yes/No Questions (Boolean)
-These are the checkbox or toggle questions shown during RSVP.
-
-- **Question** — The question guests will answer (required).
-- **Description** — Optional helper text or hint under the question.
-- **Required** — If enabled, guests must answer this question to submit.
-- **Order** — Integer that controls where the question appears (lower numbers appear first).
-- **Published** — Toggle to publish/unpublish the question.
-
+## RSVP Questions
+Questions are either text response, single select, or mulit-select
 Example:
 - **Question** — `Will you attend the rehearsal dinner?`
 - **Description** — `Optional – starts at 6pm`
@@ -50,16 +43,7 @@ Example:
 
 Design guidance: use boolean questions for quick yes/no choices (e.g. attendance, plus-one, shuttle needed).
 
-## RSVP Input Questions (Free text / specific)
-These collect typed answers from guests.
 
-- **Question** — The label for the input field (required).
-- **Description** — Optional help text or constraints.
-- **Field Type** — Choose the input type that matches expected data (text, email, number, phone).
-- **Placeholder** — Short inline hint inside the input.
-- **Required** — If enabled, guests must complete the field.
-- **Order** — Controls display position.
-- **Published** — Toggle visibility in the public flow.
 
 Example:
 - **Question** — `Dietary requirements`
@@ -69,7 +53,7 @@ Example:
 - **Order** — `20`
 - **Published** — `Yes`
 
-Use case: prefer input fields for names, emails, dietary notes and other details.
+
 
 ## How to edit settings
 1. Open the Wedding Settings edit screen in the admin or settings UI.

@@ -6,7 +6,7 @@ from typing import Any
 import polars as pl
 from attachments.forms import AttachmentUploadForm
 from attachments.models import Attachment
-from core.models import WeddingSettings
+from core.models import RsvpQuestion, WeddingSettings
 from django.forms import modelformset_factory
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -26,11 +26,12 @@ from .forms import (
     GuestForm,
     GuestRSVPForm,
     RsvpCodeForm,
+    RsvpQuestionResponseForm,
     RsvpSubmissionForm,
 )
 from .forms import GuestGroupForm
 from .forms import GuestlistImportForm
-from .models import Guest, RsvpSubmission
+from .models import Guest, RsvpQuestionResponse, RsvpSubmission
 from .models import GuestGroup
 
 logger = logging.getLogger(__name__)
@@ -976,12 +977,32 @@ def rsvp_accept(request: HttpRequest, rsvp_code: str) -> HttpResponse:
         return redirect("guestlist:rsvp")
     guests = guest_group.guests.filter(is_invited=True, is_deleted=False)
 
+    rsvp_submission, created = RsvpSubmission.objects.get_or_create(guest_group=guest_group)
+    # create RsvpQuestionResponse objects for any questions that don't have responses yet
+    for question in RsvpQuestion.objects.filter(is_deleted=False, published=True).order_by("order"):
+        RsvpQuestionResponse.objects.update_or_create(
+            submission=rsvp_submission,
+            question=question,
+        )
+    question_queryset = RsvpQuestionResponse.objects.filter(
+        submission=rsvp_submission, question__published=True
+    ).order_by("question__order")
+
+    RsvpQuestionResponseFormSet = modelformset_factory(
+        RsvpQuestionResponse,
+        form=RsvpQuestionResponseForm,
+        extra=0,
+        can_delete=False,
+    )
+
     if request.method == "POST":
         GuestRSVPFormSet = modelformset_factory(Guest, GuestRSVPForm, extra=0)
         guest_formset = GuestRSVPFormSet(request.POST, queryset=guests)
         submission_form = RsvpSubmissionForm(request.POST, prefix="rsvp_submission")
-
-        if guest_formset.is_valid() and submission_form.is_valid():
+        question_formset = RsvpQuestionResponseFormSet(
+            request.POST, queryset=question_queryset, prefix="rsvp_questions"
+        )
+        if guest_formset.is_valid() and submission_form.is_valid() and question_formset.is_valid():
             admin_user = User.objects.filter(is_admin=True).first()
             for form in guest_formset:
                 guest: Guest = form.save(commit=False)
@@ -996,20 +1017,25 @@ def rsvp_accept(request: HttpRequest, rsvp_code: str) -> HttpResponse:
                     "email_address": submission_form.cleaned_data.get("email_address", ""),
                 },
             )
+            question_formset.save()
             return redirect(f"{reverse('guestlist:rsvp_complete', args=[guest_group.rsvp_code])}?accepted=true")
         else:
             messages.error(request, "Please correct the errors below.")
+            for error in question_formset.errors:
+                for field, field_errors in error.items():
+                    for field_error in field_errors:
+                        messages.error(request, f"Question Error - {field}: {field_error}")
 
     else:
         GuestRSVPFormSet = modelformset_factory(Guest, GuestRSVPForm, extra=0)
         guest_formset = GuestRSVPFormSet(queryset=guests)
-
-        rsvp_submission, created = RsvpSubmission.objects.get_or_create(guest_group=guest_group)
+        question_formset = RsvpQuestionResponseFormSet(queryset=question_queryset, prefix="rsvp_questions")
 
     context = {
         "guest_group": guest_group,
         "guests": guests,
         "guest_formset": guest_formset,
+        "question_formset": question_formset,
         "rsvp_submission_form": RsvpSubmissionForm(prefix="rsvp_submission"),
         "show_accommodation": guests.filter(accommodation=True).exists(),
         "show_vip": guests.filter(vip=True).exists(),

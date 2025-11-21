@@ -1291,7 +1291,7 @@ def wedding_settings(request):
         "title": "Wedding Settings",
         "edit_url": reverse("core:wedding_settings_edit"),
         "settings": settings,
-        "rsvp_questions": RsvpQuestion.objects.filter(is_deleted=False).order_by("order"),
+        "rsvp_questions": RsvpQuestion.objects.filter(is_deleted=False).order_by("-published", "order"),
     }
     return render(request, "core/wedding_settings_detail.html", context)
 
@@ -1302,7 +1302,7 @@ def wedding_settings_edit(request):
     RsvpQuestionFormSet = modelformset_factory(
         RsvpQuestion,
         form=RsvpQuestionForm,
-        extra=1,
+        extra=0,
         can_delete=True,
     )
 
@@ -1317,20 +1317,60 @@ def wedding_settings_edit(request):
             settings.updated_by = request.user
             settings.save()
             messages.success(request, "Wedding settings updated successfully.")
-
             for form in rsvp_question_formset:
-                question: RsvpQuestion = form.save(commit=False)
-                if form.cleaned_data.get("DELETE", False):
-                    question.is_deleted = True
-                if not question.pk:
-                    question.created_by = request.user
-                else:
-                    question.updated_by = request.user
-                question.save()
+                if form.cleaned_data:
+                    # remove empty forms
+                    if not form.cleaned_data.get("text", None):
+                        continue
+                    question: RsvpQuestion = form.save(commit=False)
+                    logger.error(f"Processing question: {question} with data: {form.cleaned_data}")
+                    if form.cleaned_data.get("DELETE", False):
+                        question.is_deleted = True
+                    else:
+                        if not question.created_by_id:  # pyright: ignore[reportAttributeAccessIssue]
+                            question.created_by = request.user
+                        else:
+                            question.updated_by = request.user
+                        question.save()
+                        if question.question_type == RsvpQuestion.QUESTION_TYPE_CHOICES.YES_NO:
+                            # create Yes and No choices
+                            yes_choice, _ = RsvpQuestionChoice.objects.update_or_create(
+                                question=question,
+                                choice_text="Yes",
+                                order=1,
+                                created_by=request.user,
+                                updated_by=request.user,
+                            )
+                            no_choice, _ = RsvpQuestionChoice.objects.update_or_create(
+                                question=question,
+                                choice_text="No",
+                                order=2,
+                                created_by=request.user,
+                                updated_by=request.user,
+                            )
+                            # remove any other choices
+                            RsvpQuestionChoice.objects.filter(question=question, is_deleted=False).exclude(
+                                id__in=[yes_choice.id, no_choice.id]
+                            ).update(is_deleted=True, updated_by=request.user)
+
+                        # dont publish if choices are not defined
+                        elif question.question_type in [
+                            RsvpQuestion.QUESTION_TYPE_CHOICES.SINGLE_CHOICE,
+                            RsvpQuestion.QUESTION_TYPE_CHOICES.MULTIPLE_CHOICE,
+                        ]:
+                            if not RsvpQuestionChoice.objects.filter(question=question, is_deleted=False).exists():
+                                question.published = False
+                            question.save()
+
+                    question.save()
             messages.success(request, "RSVP questions updated successfully.")
             return redirect("core:wedding_settings")
         else:
             messages.error(request, "There were errors updating the settings and RSVP questions.")
+            for error in rsvp_question_formset.errors:
+                for field, field_errors in error.items():  # pyright: ignore[reportAttributeAccessIssue]
+                    for field_error in field_errors:
+                        messages.error(request, f"{field}: {field_error}")
 
     else:
         rsvp_question_formset = RsvpQuestionFormSet(

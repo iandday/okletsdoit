@@ -1,8 +1,9 @@
+from core.models import RsvpQuestion, RsvpQuestionChoice
 from django import forms
-from django.forms import modelformset_factory
 
 from .models import Guest
 from .models import GuestGroup
+from .models import RsvpQuestionResponse
 from .models import RsvpSubmission
 
 
@@ -188,3 +189,45 @@ class RsvpSubmissionForm(forms.ModelForm):
                 attrs={"class": "input input-bordered edit-card-field-value", "placeholder": "Enter your email address"}
             ),
         }
+
+
+class RsvpQuestionResponseForm(forms.ModelForm):
+    question_type = forms.CharField(widget=forms.HiddenInput())
+    response_choices = forms.ModelMultipleChoiceField(
+        queryset=RsvpQuestionChoice.objects.filter(is_deleted=False),
+        widget=forms.CheckboxSelectMultiple(attrs={"class": "space-y-2 checkbox-group"}),
+        required=False,
+    )
+
+    class Meta:
+        model = RsvpQuestionResponse
+        fields = [
+            "submission",
+            "question",
+            "response_text",
+            "response_choices",
+        ]
+
+        widgets = {
+            "submission": forms.HiddenInput(),
+            "response_text": forms.Textarea(
+                attrs={
+                    "class": "textarea textarea-bordered edit-card-field-value",
+                    "placeholder": "Enter your response",
+                    "rows": 3,
+                }
+            ),
+            "question": forms.HiddenInput(),
+        }
+
+    # populate dynamic labels and initial values
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        q_id = self.initial.get("question") or self.data.get(self.add_prefix("question"))
+        if q_id:
+            q_obj = RsvpQuestion.objects.filter(pk=q_id).first()
+            if q_obj:
+                self.fields["response_choices"].queryset = RsvpQuestionChoice.objects.filter(question=q_obj)  # pyright: ignore[reportAttributeAccessIssue]
+                self.fields["response_text"].label = q_obj.text
+                self.fields["response_choices"].label = q_obj.text
+                self.fields["question_type"].initial = q_obj.question_type

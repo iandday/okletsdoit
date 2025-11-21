@@ -176,7 +176,6 @@ class RsvpQuestionResponse(models.Model):
         blank=True,
         related_name="responses",
     )
-
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     is_deleted = models.BooleanField(default=False)

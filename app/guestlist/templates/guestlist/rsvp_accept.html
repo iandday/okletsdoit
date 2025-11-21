@@ -122,10 +122,31 @@
                             {% endif %}
                         </div>
                     {% endif %}
+                    {{ question_formset.management_form }}
+                    {% for question in question_formset %}
+                        <div class="mb-4 w-full">
+                            {% if question.question_type.value == 'text' %}
+                                <label class="label">
+                                    <span class="label-text font-semibold">{{ question.response_text.label_tag }}</span>
+                                </label>
+                                {{ question.response_text }}
+                            {% elif question.question_type.value == 'multiple_choice' or question.question_type.value == 'yes_no' or question.question_type.value == 'single_choice' %}
+                                <label class="label">
+                                    <span class="label-text font-semibold">{{ question.response_choices.label_tag }}</span>
+                                </label>
+                                {{ question.response_choices }}
+                            {% endif %}
+                            {% if question.non_field_errors %}
+                                <div class="text-error text-sm mt-2">{{ question.non_field_errors }}</div>
+                            {% endif %}
+                            {% for field in question.hidden_fields %}{{ field }}{% endfor %}
+                            {{ question.question_type }}
+                        </div>
+                    {% endfor %}
                 </div>
             </div>
             <div class="flex justify-end gap-3">
-                <a href="{% url 'core:planning_home' %}"
+                <a href="{% url 'core:home' %}"
                    class="btn btn-error text-primary-content">Cancel</a>
                 <button type="submit" class="btn btn-primary " id="submit-rsvp">Submit RSVP</button>
             </div>

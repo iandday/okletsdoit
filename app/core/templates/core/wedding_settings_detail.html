@@ -243,13 +243,22 @@
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
                         {% for question in rsvp_questions %}
                             <div class="border border-primary p-2">
-                                <div class="detail-card-field-name">Question {{ question.order }}</div>
+                                <div class="detail-card-field-name">
+                                    Question {{ question.order }}
+                                    {% if question.published %}
+                                        (Published)
+                                    {% else %}
+                                        (Unpublished)
+                                    {% endif %}
+                                </div>
                                 <div class="detail-card-field-value">{{ question.text }}</div>
-                                {% if question.question_type == 'multiple_choice' %}
+                                {% if question.question_type == 'multiple_choice' or question.question_type == 'single_choice' or question.question_type == 'yes_no' %}
                                     <div class="flex flex-row justify-between items-center mt-2">
                                         <div class="ml-8 detail-card-field-name mt-2">Choices</div>
-                                        <a href="{% url 'core:edit_rsvp_question_choices' question.id %}"
-                                           class="btn btn-sm">Edit Choices</a>
+                                        {% if question.question_type == 'multiple_choice' or question.question_type == 'single_choice' %}
+                                            <a href="{% url 'core:edit_rsvp_question_choices' question.id %}"
+                                               class="btn btn-sm">Edit Choices</a>
+                                        {% endif %}
                                     </div>
                                     {% spaceless %}
                                         {% for choice in question.choices.all %}

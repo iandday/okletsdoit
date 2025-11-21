@@ -220,6 +220,8 @@ class WeddingSettings(models.Model):
 class RsvpQuestion(models.Model):
     class QUESTION_TYPE_CHOICES(models.TextChoices):
         TEXT = "text", "Text Response"
+        YES_NO = "yes_no", "Yes/No"
+        SINGLE_CHOICE = "single_choice", "Single Choice"
         MULTIPLE_CHOICE = "multiple_choice", "Multiple Choice"
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -249,6 +251,7 @@ class RsvpQuestionChoice(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     question = models.ForeignKey(RsvpQuestion, on_delete=models.CASCADE, related_name="choices")
     choice_text = models.CharField(max_length=500)
+    order = models.PositiveIntegerField(default=0)
     created_by = models.ForeignKey(User, related_name="created_by_rsvp_question_choice", on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_by = models.ForeignKey(

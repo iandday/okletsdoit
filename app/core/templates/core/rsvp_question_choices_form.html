@@ -42,104 +42,108 @@
                                         {{ form.choice_text }}
                                         {% if form.choice_text.errors %}<div class="text-error">{{ form.choice_text.errors }}</div>{% endif %}
                                     </div>
-                                    <div class="form-control">{{ form.DELETE }} Delete</div>
-                                    {% for hidden_field in form.hidden_fields %}{{ hidden_field }}{% endfor %}
+                                    <div class="form-control">
+                                        {{ form.order.label_tag }}
+                                        {{ form.order }}
+                                        {% if form.order.errors %}<div class="text-error">{{ form.order.errors }}</div>{% endif %}
+                                        <div class="form-control">{{ form.DELETE }} Delete</div>
+                                        {% for hidden_field in form.hidden_fields %}{{ hidden_field }}{% endfor %}
+                                    </div>
                                 </div>
-                            </div>
-                        {% endfor %}
+                            {% endfor %}
+                        </div>
                     </div>
+                    <div class="card-actions justify-end py-4">
+                        <button type="button" class="btn btn-primary" id="add-question-choice-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 class="h-5 w-5"
+                                 fill="none"
+                                 viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                            </svg>
+                            Add Question
+                        </button>
+                    </div>
+                    <div class="card-actions justify-end py-2">
+                        <a href="{{ cancel_url }}" class="btn">Cancel</a>
+                        <button type="submit" class="btn btn-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 class="h-5 w-5"
+                                 fill="none"
+                                 viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            {{ submit_text }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div id="question-choice-empty-form-template"
+                 class="hidden"
+                 aria-hidden="true">
+                <div class="edit-card-body">
+                    <div class="form-control">
+                        {{ question_choices_formset.empty_form.choice_text.label_tag }}
+                        {{ question_choices_formset.empty_form.choice_text }}
+                        {% if question_choices_formset.empty_form.choice_text.errors %}
+                            <div class="text-error">{{ question_choices_formset.empty_form.choice_text.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="form-control">{{ question_choices_formset.empty_form.DELETE }} Delete</div>
+                    {% for hidden_field in question_choices_formset.empty_form.hidden_fields %}{{ hidden_field }}{% endfor %}
                 </div>
-                <div class="card-actions justify-end py-4">
-                    <button type="button" class="btn btn-primary" id="add-question-choice-btn">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             class="h-5 w-5"
-                             fill="none"
-                             viewBox="0 0 24 24"
-                             stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                        </svg>
-                        Add Question
-                    </button>
-                </div>
-                <div class="card-actions justify-end py-2">
-                    <a href="{{ cancel_url }}" class="btn">Cancel</a>
-                    <button type="submit" class="btn btn-primary">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             class="h-5 w-5"
-                             fill="none"
-                             viewBox="0 0 24 24"
-                             stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                        </svg>
-                        {{ submit_text }}
-                    </button>
-                </div>
-            </form>
-        </div>
-        <div id="question-choice-empty-form-template"
-             class="hidden"
-             aria-hidden="true">
-            <div class="edit-card-body">
-                <div class="form-control">
-                    {{ question_choices_formset.empty_form.choice_text.label_tag }}
-                    {{ question_choices_formset.empty_form.choice_text }}
-                    {% if question_choices_formset.empty_form.choice_text.errors %}
-                        <div class="text-error">{{ question_choices_formset.empty_form.choice_text.errors }}</div>
-                    {% endif %}
-                </div>
-                <div class="form-control">{{ question_choices_formset.empty_form.DELETE }} Delete</div>
-                {% for hidden_field in question_choices_formset.empty_form.hidden_fields %}{{ hidden_field }}{% endfor %}
             </div>
         </div>
-    </div>
-{% endblock content %}
-{% block extra_script %}
-    <script nonce="{{ request.csp_nonce }}">
-      document.addEventListener('DOMContentLoaded', function() {
+    {% endblock content %}
+    {% block extra_script %}
+        <script nonce="{{ request.csp_nonce }}">
+          document.addEventListener('DOMContentLoaded', function() {
 
-        const addBtn = document.getElementById('add-question-choice-btn');
-        if (!addBtn) return;
+            const addBtn = document.getElementById('add-question-choice-btn');
+            if (!addBtn) return;
 
-        const formsContainer = document.getElementById('rsvp-question-choices-form');
-        const emptyTemplateContainer = document.getElementById('question-choice-empty-form-template');
-        if (!formsContainer || !emptyTemplateContainer) return;
+            const formsContainer = document.getElementById('rsvp-question-choices-form');
+            const emptyTemplateContainer = document.getElementById('question-choice-empty-form-template');
+            if (!formsContainer || !emptyTemplateContainer) return;
 
-        // management form inputs (use the same prefix the view used)
-        const prefix = "{{ question_choices_formset.prefix }}";
-        const totalFormsInput = document.querySelector(`input[name="${prefix}-TOTAL_FORMS"]`);
-        if (!totalFormsInput) return;
+            // management form inputs (use the same prefix the view used)
+            const prefix = "{{ question_choices_formset.prefix }}";
+            const totalFormsInput = document.querySelector(`input[name="${prefix}-TOTAL_FORMS"]`);
+            if (!totalFormsInput) return;
 
-        // raw HTML of empty_form (contains __prefix__)
-        const emptyHtml = emptyTemplateContainer.innerHTML;
+            // raw HTML of empty_form (contains __prefix__)
+            const emptyHtml = emptyTemplateContainer.innerHTML;
 
-        addBtn.addEventListener('click', function() {
-          const formIndex = parseInt(totalFormsInput.value, 10);
+            addBtn.addEventListener('click', function() {
+              const formIndex = parseInt(totalFormsInput.value, 10);
 
-          // replace __prefix__ placeholders with the new index
-          const newFormHtml = emptyHtml.replace(/__prefix__/g, formIndex);
+              // replace __prefix__ placeholders with the new index
+              const newFormHtml = emptyHtml.replace(/__prefix__/g, formIndex);
 
-          // Wrap new form in a card to match existing forms
-          const wrapper = document.createElement('div');
-          wrapper.className = 'edit-card card-border';
-          wrapper.innerHTML = newFormHtml;
+              // Wrap new form in a card to match existing forms
+              const wrapper = document.createElement('div');
+              wrapper.className = 'edit-card card-border';
+              wrapper.innerHTML = newFormHtml;
 
-          // Clear any values that may be present in the template (safety)
-          wrapper.querySelectorAll('input, textarea, select').forEach((el) => {
-            if (el.type === 'checkbox' || el.type === 'radio') {
-              el.checked = false;
-            } else {
-              el.value = '';
-            }
+              // Clear any values that may be present in the template (safety)
+              wrapper.querySelectorAll('input, textarea, select').forEach((el) => {
+                if (el.type === 'checkbox' || el.type === 'radio') {
+                  el.checked = false;
+                } else {
+                  el.value = '';
+                }
+              });
+
+              // Append the new form and increment TOTAL_FORMS
+              formsContainer.appendChild(wrapper);
+              totalFormsInput.value = formIndex + 1;
+
+              // optional: focus the first text input in the new form
+              const firstInput = wrapper.querySelector('input[type="text"], textarea, input[type="number"], input[type="email"]');
+              if (firstInput) firstInput.focus();
+            });
           });
-
-          // Append the new form and increment TOTAL_FORMS
-          formsContainer.appendChild(wrapper);
-          totalFormsInput.value = formIndex + 1;
-
-          // optional: focus the first text input in the new form
-          const firstInput = wrapper.querySelector('input[type="text"], textarea, input[type="number"], input[type="email"]');
-          if (firstInput) firstInput.focus();
-        });
-      });
-    </script>
-{% endblock extra_script %}
+        </script>
+    {% endblock extra_script %}
