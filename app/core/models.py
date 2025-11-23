@@ -1,7 +1,6 @@
 import datetime
 import uuid
 
-from click import Choice
 from django.db import models
 from django.utils.text import slugify
 from simple_history.models import HistoricalRecords

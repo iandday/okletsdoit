@@ -6,7 +6,7 @@ from typing import Any
 import polars as pl
 from attachments.forms import AttachmentUploadForm
 from attachments.models import Attachment
-from core.models import RsvpQuestion, WeddingSettings
+from core.models import RsvpQuestion
 from django.forms import modelformset_factory
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required

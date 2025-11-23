@@ -3,10 +3,11 @@
 ## New Functionality
 - [ ] Customized Settings
     * [ ] Timezone
-    * [ ] Allow RSVP
+    * [x] Allow RSVP
 - [ ] Guestlist
     * [ ] RSVP Form Configuration (Private)
     * [ ] RSVP Form (Public)
+    * [ ] RSVP Preview
 - [ ] Settings Page
 - [ ] Photo Upload
     * [ ] Upload form (Public)
