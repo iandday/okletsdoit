@@ -47,3 +47,20 @@ class SocialAccountAdapter(DefaultSocialAccountAdapter):
                 user.last_name = parts[1]
         # You can also handle other fields here if needed
         return user
+
+    def get_login_redirect_url(
+        self,
+        request: HttpRequest,
+        sociallogin: SocialLogin,
+    ) -> str:
+        """
+        Returns the redirect URL after successful social login.
+
+        This method checks for a 'redirect' parameter in the request's GET parameters
+        and uses it as the redirect URL if present. Otherwise, it falls back to the
+        default behavior.
+        """
+        redirect_url = request.GET.get("redirect")
+        if redirect_url:
+            return redirect_url
+        return super().get_login_redirect_url(request, sociallogin)

@@ -36,6 +36,7 @@ env = environ.Env(
     AWS_SECRET_ACCESS_KEY=(str, ""),
     AWS_REGION=(str, "us-east-1"),
     ALLOWED_CIDR_NETS=(list, []),
+    NGINX_SERVER_NAME=(str, "dev.internal"),
 )
 env.read_env(BASE_DIR / ".env", overwrite=True)
 
@@ -55,6 +56,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "corsheaders",
     "django_extensions",
     "constance",
     "django_celery_beat",
@@ -72,6 +74,7 @@ INSTALLED_APPS = [
     "allauth_ui",
     "allauth",
     "allauth.account",
+    "allauth.headless",
     # "allauth.mfa",
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
@@ -101,6 +104,7 @@ if DEBUG:
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -237,7 +241,7 @@ ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_EMAIL_VERIFICATION = "none"
 ACCOUNT_FORMS = {"signup": "users.forms.UserSignupForm"}
 ACCOUNT_ADAPTER = "users.adapters.AccountAdapter"
-SOCIALACCOUNT_ONLY = True
+SOCIALACCOUNT_ONLY = False
 SOCIALACCOUNT_ADAPTER = "users.adapters.SocialAccountAdapter"
 SOCIALACCOUNT_FORMS = {"signup": "users.forms.UserSocialSignupForm"}
 SOCIAL_PROVIDERS = "allauth.socialaccount.providers.openid_connect"
@@ -256,6 +260,14 @@ SOCIALACCOUNT_PROVIDERS = {
         ],
     },
 }
+
+# django-allauth headless
+HEADLESS_ONLY = False
+HEADLESS_SERVE_SPECIFICATION = True
+HEADLESS_FRONTEND_URLS = {
+    "account_confirm_email": f"https://{env('NGINX_SERVER_NAME')}/auth/verify-email/" + "{key}",
+}
+
 # ADMIN
 ADMIN_URL = "admin/"
 
@@ -263,6 +275,8 @@ LANGUAGE_CODE = "en-us"
 TIME_ZONE = env("TIMEZONE")
 USE_I18N = False
 USE_TZ = True
+APPEND_SLASH = False
+PREPEND_WWW = False
 
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
@@ -313,6 +327,41 @@ CONTENT_SECURITY_POLICY = {
         "include-nonce": True,
     },
 }
+
+# CORS Settings
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",  # SvelteKit dev server
+    "http://localhost:4173",  # SvelteKit preview
+    f"https://{env('NGINX_SERVER_NAME')}",
+]
+
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+]
+CORS_ALLOW_METHODS = [
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+]
+CORS_PREFLIGHT_MAX_AGE = 86400
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = "Lax"
+CSRF_COOKIE_HTTPONLY = False
+CSRF_COOKIE_SAMESITE = "Lax"
+CSRF_COOKIE_NAME = "csrftoken"
+CSRF_HEADER_NAME = "HTTP_X_CSRFTOKEN"
 
 # django debug toolbar
 INTERNAL_IPS = ["127.0.0.1", "10.0.2.2", "host.docker.internal", "localhost", "dev.internal"]
@@ -378,37 +427,3 @@ CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 CELERY_WORKER_SEND_TASK_EVENTS = True
 CELERY_TASK_SEND_SENT_EVENT = True
 CELERY_WORKER_HIJACK_ROOT_LOGGER = False
-
-# PWA
-# PWA_SERVICE_WORKER_PATH = Path(BASE_DIR, "static/js", "serviceworker.js")
-# PWA_APP_NAME = "Aboutdayumtime"
-# PWA_APP_DESCRIPTION = "Aboutdayumtime PWA"
-# PWA_APP_THEME_COLOR = "#000000"
-# PWA_APP_BACKGROUND_COLOR = "#ffffff"
-# PWA_APP_DISPLAY = "standalone"
-# PWA_APP_SCOPE = "/"
-# PWA_APP_ORIENTATION = "any"
-# PWA_APP_START_URL = "/"
-# PWA_APP_STATUS_BAR_COLOR = "default"
-# PWA_APP_ICONS = [
-#     {
-#         "src": "/static/images/icon-160x160.png",
-#         "sizes": "160x160",
-#         "type": "image/png",
-#     }
-# ]
-# PWA_APP_ICONS_APPLE = [
-#     {
-#         "src": "/static/images/icon-160x160.png",
-#         "sizes": "160x160",
-#         "type": "image/png",
-#     }
-# ]
-# PWA_APP_SPLASH_SCREEN = [
-#     {
-#         "src": "/static/images/icon.png",
-#         "media": "(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)",
-#     }
-# ]
-# PWA_APP_DIR = "ltr"
-# PWA_APP_LANG = "en-US"

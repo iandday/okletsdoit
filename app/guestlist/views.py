@@ -350,9 +350,13 @@ def guestlist_summary(request: HttpRequest) -> HttpResponse:
         "total_invited_standard": Guest.objects.filter(is_deleted=False, is_invited=True, vip=False).count(),
         "total_invited_vip": Guest.objects.filter(is_deleted=False, is_invited=True, vip=True).count(),
         "total_attending": Guest.objects.filter(is_deleted=False, is_attending=True).count(),
-        "total_attending_standard": Guest.objects.filter(is_deleted=False, is_attending=True, overnight=False).count(),
+        "total_attending_standard": Guest.objects.filter(
+            is_deleted=False, is_attending=True, accept_accommodation=False
+        ).count(),
         "total_attending_vip": Guest.objects.filter(is_deleted=False, is_attending=True, vip=True).count(),
-        "total_attending_overnight": Guest.objects.filter(is_deleted=False, is_attending=True, overnight=True).count(),
+        "total_attending_overnight": Guest.objects.filter(
+            is_deleted=False, is_attending=True, accept_accommodation=True
+        ).count(),
         "total_declined": Guest.objects.filter(is_deleted=False, is_attending=False, responded=True).count(),
         "total_pending": Guest.objects.filter(is_deleted=False, responded=False, is_invited=True).count(),
     }
@@ -387,9 +391,13 @@ def all_guests(request: HttpRequest) -> HttpResponse:
         "total_invited_standard": Guest.objects.filter(is_deleted=False, is_invited=True, vip=False).count(),
         "total_invited_vip": Guest.objects.filter(is_deleted=False, is_invited=True, vip=True).count(),
         "total_attending": Guest.objects.filter(is_deleted=False, is_attending=True).count(),
-        "total_attending_standard": Guest.objects.filter(is_deleted=False, is_attending=True, overnight=False).count(),
+        "total_attending_standard": Guest.objects.filter(
+            is_deleted=False, is_attending=True, accept_accommodation=False
+        ).count(),
         "total_attending_vip": Guest.objects.filter(is_deleted=False, is_attending=True, vip=True).count(),
-        "total_attending_overnight": Guest.objects.filter(is_deleted=False, is_attending=True, overnight=True).count(),
+        "total_attending_overnight": Guest.objects.filter(
+            is_deleted=False, is_attending=True, accept_accommodation=True
+        ).count(),
         "total_declined": Guest.objects.filter(is_deleted=False, is_attending=False, responded=True).count(),
         "total_pending": Guest.objects.filter(is_deleted=False, responded=False, is_invited=True).count(),
     }
