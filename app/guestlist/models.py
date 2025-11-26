@@ -65,7 +65,7 @@ class GuestGroup(models.Model):
 
     @property
     def group_overnight(self):
-        return self.guests.filter(overnight=True, is_deleted=False).count()
+        return self.guests.filter(accommodation=True, is_deleted=False).count()
 
     @property
     def group_invited_count(self):
