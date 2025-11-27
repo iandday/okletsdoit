@@ -5,11 +5,11 @@ from . import views
 app_name = "core"
 
 urlpatterns = [
-    path("", views.home, name="home"),
-    path("venue/", views.venue, name="venue"),
-    path("our-story/", views.our_story, name="our_story"),
-    path("photos/", views.photos, name="photos"),
-    path("faq/", views.faq, name="faq"),
+    # path("", views.home, name="home"),
+    # path("venue/", views.venue, name="venue"),
+    # path("our-story/", views.our_story, name="our_story"),
+    # path("photos/", views.photos, name="photos"),
+    # path("faq/", views.faq, name="faq"),
     path("planning/", views.planning_home, name="planning_home"),
     path("settings/", views.wedding_settings, name="wedding_settings"),
     path("settings/edit", views.wedding_settings_edit, name="wedding_settings_edit"),

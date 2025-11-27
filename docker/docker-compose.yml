@@ -32,8 +32,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.nginx-secure.entrypoints=web-secure"
-      - "traefik.http.routers.nginx-secure.rule=Host(`dev.internal`) && PathRegexp(`/(admin/|static/|media/|api/|accounts/|_allauth/|planning/|inspiration/|idea/|contacts/|lists.*/|deadline.*/|expenses/|guestlist.*/|timeline.*/|question/|settings/).*`)"
-      - "traefik.http.routers.nginx-secure.priority=10"
+      - "traefik.http.routers.nginx-secure.rule=Host(`dev.internal`) && (PathPrefix(`/admin`) || PathPrefix(`/static`) || PathPrefix(`/media`) || PathPrefix(`/api`) || PathPrefix(`/accounts`) || PathPrefix(`/_allauth`) || PathPrefix(`/planning`) || PathPrefix(`/inspiration`) || PathPrefix(`/idea`) || PathPrefix(`/contacts`) || PathPrefix(`/lists`) || PathPrefix(`/deadline`) || PathPrefix(`/expenses`) || PathPrefix(`/guestlist`) || PathPrefix(`/timeline`) || PathPrefix(`/question`) || PathPrefix(`/settings`))"
       - "traefik.http.routers.nginx-secure.tls=true"
       - "traefik.http.services.nginx-secure.loadbalancer.server.port=80"
     depends_on:
