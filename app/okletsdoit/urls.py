@@ -1,21 +1,17 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import include
-from django.urls import path
+from django.urls import path, re_path, include
+from django.views.generic.base import RedirectView
 
-# from allauth.account.decorators import secure_admin_login
 
 app_name = "okletsdoit"
-
-# authentik login
-# admin.autodiscover()
-# admin.site.login = secure_admin_login(admin.site.login)
 
 urlpatterns = [
     path("admin/doc/", include("django.contrib.admindocs.urls")),
     path("admin/", admin.site.urls),
     path("accounts/", include("allauth.urls")),
+    path("_allauth/", include("allauth.headless.urls")),
     path("health/", include("health_check.urls")),
     path("expenses/", include("expenses.urls")),
     path("contacts/", include("contacts.urls")),
@@ -23,7 +19,11 @@ urlpatterns = [
     path("deadline/", include("deadline.urls")),
     path("guestlist/", include("guestlist.urls")),
     path("attachments/", include("attachments.urls")),
-    # path("", include("pwa.urls")),
+    re_path(
+        r"^(?P<code>[0-9A-F]{10})$",
+        RedirectView.as_view(url="/guestlist/rsvp/?code=%(code)s", permanent=False),
+        name="rsvp_redirect",
+    ),
     path("", include("core.urls")),
 ]
 

@@ -5,16 +5,20 @@ from . import views
 app_name = "core"
 
 urlpatterns = [
-    path("", views.home, name="home"),
-    path("venue/", views.venue, name="venue"),
-    path("our-story/", views.our_story, name="our_story"),
-    path("photos/", views.photos, name="photos"),
-    path("rsvp/", views.rsvp, name="rsvp"),
-    path("faq/", views.faq, name="faq"),
+    # path("", views.home, name="home"),
+    # path("venue/", views.venue, name="venue"),
+    # path("our-story/", views.our_story, name="our_story"),
+    # path("photos/", views.photos, name="photos"),
+    # path("faq/", views.faq, name="faq"),
     path("planning/", views.planning_home, name="planning_home"),
     path("settings/", views.wedding_settings, name="wedding_settings"),
     path("settings/edit", views.wedding_settings_edit, name="wedding_settings_edit"),
     path("settings/export/", views.data_export, name="data_export"),
+    path(
+        "settings/<uuid:rsvp_question_uuid>/edit_choices",
+        views.edit_rsvp_question_choices,
+        name="edit_rsvp_question_choices",
+    ),
     path("timeline/", views.timeline_summary, name="timeline_summary"),
     path("timeline_data/", views.timeline_data, name="timeline_data"),
     path("timeline_delete_modal/", views.timeline_delete_modal, name="timeline_delete_modal"),

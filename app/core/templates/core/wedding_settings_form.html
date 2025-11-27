@@ -6,43 +6,378 @@
     {{ block_title }}
 {% endblock title %}
 {% block content %}
-    <div class="max-w-4xl mx-auto px-4 py-8">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div class="edit-card">
-                <div class="edit-card-body">
-                    <form method="post" class="space-y-4" id="wedding-settings-form">
-                        {% csrf_token %}
-                        {{ settings_form.non_field_errors }}
-                        <div class="form-control">
-                            {{ settings_form.allow_rsvp.label_tag }}
-                            {{ settings_form.allow_rsvp }}
-                            {% if settings_form.allow_rsvp.errors %}<div class="text-error">{{ settings_form.allow_rsvp.errors }}</div>{% endif %}
-                        </div>
-                        <div class="form-control">
-                            {{ settings_form.wedding_date.label_tag }}
-                            {{ settings_form.wedding_date }}
-                            {% if settings_form.wedding_date.errors %}
-                                <div class="text-error">{{ settings_form.wedding_date.errors }}</div>
+    <div class="mx-auto px-4 py-4">
+        <!-- Header -->
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
+            <div>
+                <div class="text-sm breadcrumbs mb-2">
+                    <ul>
+                        {% for crumb in breadcrumbs %}
+                            {% if crumb.url %}
+                                <li>
+                                    <a href="{{ crumb.url }}" class="link link-hover">{{ crumb.title }}</a>
+                                </li>
+                            {% else %}
+                                <li class="text-base-content">{{ crumb.title }}</li>
                             {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+                <h1 class="text-3xl font-bold text-base-content">{{ title }}</h1>
+                <p class="text-base-content/60 mt-2">{{ intro }}</p>
+            </div>
+        </div>
+        <form method="post" class="space-y-4" id="wedding-settings-form">
+            {% csrf_token %}
+            {{ settings_form.non_field_errors }}
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="edit-card" id="display-details">
+                    <h2 class="edit-card-title">Display Details</h2>
+                    <div class="edit-card-body">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div class="form-control">
+                                {{ settings_form.wedding_date.label_tag }}
+                                {{ settings_form.wedding_date }}
+                                {% if settings_form.wedding_date.errors %}
+                                    <div class="text-error">{{ settings_form.wedding_date.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="form-control">
+                                {{ settings_form.standard_group_label.label_tag }}
+                                {{ settings_form.standard_group_label }}
+                                {% if settings_form.standard_group_label.errors %}
+                                    <div class="text-error">{{ settings_form.standard_group_label.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="form-control">
+                                {{ settings_form.vip_group_label.label_tag }}
+                                {{ settings_form.vip_group_label }}
+                                {% if settings_form.vip_group_label.errors %}
+                                    <div class="text-error">{{ settings_form.vip_group_label.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="form-control">
+                                {{ settings_form.allow_rsvp.label_tag }}
+                                {{ settings_form.allow_rsvp }}
+                                {% if settings_form.allow_rsvp.errors %}<div class="text-error">{{ settings_form.allow_rsvp.errors }}</div>{% endif %}
+                            </div>
                         </div>
-                        <div class="card-actions justify-end py-2">
-                            <a href="{{ cancel_url }}" class="btn">Cancel</a>
-                            <button type="submit" class="btn btn-primary">
+                    </div>
+                </div>
+                <div class="edit-card" id="rsvp-settings">
+                    <div class="edit-card-body">
+                        <h2 class="edit-card-title">RSVP Settings</h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div class="form-control">
+                                {{ settings_form.rsvp_accept_button.label_tag }}
+                                {{ settings_form.rsvp_accept_button }}
+                                {% if settings_form.rsvp_accept_button.errors %}
+                                    <div class="text-error">{{ settings_form.rsvp_accept_button.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="form-control">
+                                {{ settings_form.rsvp_decline_button.label_tag }}
+                                {{ settings_form.rsvp_decline_button }}
+                                {% if settings_form.rsvp_decline_button.errors %}
+                                    <div class="text-error">{{ settings_form.rsvp_decline_button.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="form-control">
+                                {{ settings_form.rsvp_success_headline.label_tag }}
+                                {{ settings_form.rsvp_success_headline }}
+                                {% if settings_form.rsvp_success_headline.errors %}
+                                    <div class="text-error">{{ settings_form.rsvp_success_headline.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="form-control">
+                                {{ settings_form.rsvp_accept_success_message.label_tag }}
+                                {{ settings_form.rsvp_accept_success_message }}
+                                {% if settings_form.rsvp_accept_success_message.errors %}
+                                    <div class="text-error">{{ settings_form.rsvp_accept_success_message.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="form-control">
+                                {{ settings_form.rsvp_decline_success_message.label_tag }}
+                                {{ settings_form.rsvp_decline_success_message }}
+                                {% if settings_form.rsvp_decline_success_message.errors %}
+                                    <div class="text-error">{{ settings_form.rsvp_decline_success_message.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="edit-card col-span-2" id="rsvp-accept-settings">
+                    <div class="edit-card-body">
+                        <h2 class="edit-card-title">RSVP Accept Settings</h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div class="form-control">
+                                {{ settings_form.rsvp_attending_label.label_tag }}
+                                {{ settings_form.rsvp_attending_label }}
+                                {% if settings_form.rsvp_attending_label.errors %}
+                                    <div class="text-error">{{ settings_form.rsvp_attending_label.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="form-control">
+                                {{ settings_form.rsvp_accept_intro.label_tag }}
+                                {{ settings_form.rsvp_accept_intro }}
+                                {% if settings_form.rsvp_accept_intro.errors %}
+                                    <div class="text-error">{{ settings_form.rsvp_accept_intro.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="form-control">
+                                {{ settings_form.rsvp_enable_email_updates.label_tag }}
+                                {{ settings_form.rsvp_enable_email_updates }}
+                                {% if settings_form.rsvp_enable_email_updates.errors %}
+                                    <div class="text-error">{{ settings_form.rsvp_enable_email_updates.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="form-control">
+                                {{ settings_form.rsvp_email_update_label.label_tag }}
+                                {{ settings_form.rsvp_email_update_label }}
+                                {% if settings_form.rsvp_email_update_label.errors %}
+                                    <div class="text-error">{{ settings_form.rsvp_email_update_label.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="edit-card col-span-2" id="rsvp-accept-settings-accommodations">
+                    <div class="edit-card-body">
+                        <h2 class="edit-card-title">RSVP Accept Settings: Accommodations</h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div class="form-control">
+                                {{ settings_form.rsvp_show_accommodation_intro.label_tag }}
+                                {{ settings_form.rsvp_show_accommodation_intro }}
+                                {% if settings_form.rsvp_show_accommodation_intro.errors %}
+                                    <div class="text-error">{{ settings_form.rsvp_show_accommodation_intro.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="form-control">
+                                {{ settings_form.rsvp_accommodation_label.label_tag }}
+                                {{ settings_form.rsvp_accommodation_label }}
+                                {% if settings_form.rsvp_accommodation_label.errors %}
+                                    <div class="text-error">{{ settings_form.rsvp_accommodation_label.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="form-control">
+                                {{ settings_form.rsvp_accommodation_intro.label_tag }}
+                                {{ settings_form.rsvp_accommodation_intro }}
+                                {% if settings_form.rsvp_accommodation_intro.errors %}
+                                    <div class="text-error">{{ settings_form.rsvp_accommodation_intro.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="edit-card col-span-2" id="rsvp-accept-settings-vip">
+                    <div class="edit-card-body">
+                        <h2 class="edit-card-title">RSVP Accept Settings: VIP</h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div class="form-control">
+                                {{ settings_form.rsvp_show_vip_intro.label_tag }}
+                                {{ settings_form.rsvp_show_vip_intro }}
+                                {% if settings_form.rsvp_show_vip_intro.errors %}
+                                    <div class="text-error">{{ settings_form.rsvp_show_vip_intro.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="form-control">
+                                {{ settings_form.rsvp_vip_label.label_tag }}
+                                {{ settings_form.rsvp_vip_label }}
+                                {% if settings_form.rsvp_vip_label.errors %}
+                                    <div class="text-error">{{ settings_form.rsvp_vip_label.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="form-control">
+                                {{ settings_form.rsvp_vip_intro.label_tag }}
+                                {{ settings_form.rsvp_vip_intro }}
+                                {% if settings_form.rsvp_vip_intro.errors %}
+                                    <div class="text-error">{{ settings_form.rsvp_vip_intro.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="divider col-span-2"></div>
+                <div class="edit-card col-span-2" id="rsvp-questions">
+                    <div class="edit-card-body ">
+                        <h2 class="edit-card-title">RSVP Questions</h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6"
+                             id="rsvp-questions-form">
+                            {{ rsvp_question_formset.management_form }}
+                            {% for form in rsvp_question_formset %}
+                                <div class="edit-card card-border">
+                                    <div class="edit-card-body">
+                                        <div class="form-control">
+                                            {{ form.text.label_tag }}
+                                            {{ form.text }}
+                                            {% if form.text.errors %}<div class="text-error">{{ form.text.errors }}</div>{% endif %}
+                                        </div>
+                                        <div class="flex flex-row gap-4 mt-2">
+                                            <div class="form-control">
+                                                {{ form.question_type.label_tag }}
+                                                {{ form.question_type }}
+                                                {% if form.question_type.errors %}<div class="text-error">{{ form.question_type.errors }}</div>{% endif %}
+                                            </div>
+                                            <div class="form-control">
+                                                {{ form.order.label_tag }}
+                                                {{ form.order }}
+                                                {% if form.order.errors %}<div class="text-error">{{ form.order.errors }}</div>{% endif %}
+                                            </div>
+                                            <div class="form-control">
+                                                {{ form.published.label_tag }}
+                                                {{ form.published }}
+                                                {% if form.published.errors %}<div class="text-error">{{ form.published.errors }}</div>{% endif %}
+                                            </div>
+                                            <div class="form-control">{{ form.DELETE }} Delete</div>
+                                            {% for hidden_field in form.hidden_fields %}{{ hidden_field }}{% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="card-actions justify-end py-4">
+                            <button type="button" class="btn btn-primary" id="add-rsvp-question-btn">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                      class="h-5 w-5"
                                      fill="none"
                                      viewBox="0 0 24 24"
                                      stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                                 </svg>
-                                {{ submit_text }}
+                                Add Question
                             </button>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
+        </div>
+        <div class="card-actions justify-end py-2">
+            <a href="{{ cancel_url }}" class="btn">Cancel</a>
+            <button type="submit" class="btn btn-primary">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     class="h-5 w-5"
+                     fill="none"
+                     viewBox="0 0 24 24"
+                     stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                {{ submit_text }}
+            </button>
+        </div>
+        <div id="rsvp-question-empty-form-template"
+             class="hidden"
+             aria-hidden="true">
+            <div class="edit-card-body">
+                <div class="form-control">
+                    {{ rsvp_question_formset.empty_form.text.label_tag }}
+                    {{ rsvp_question_formset.empty_form.text }}
+                    {% if rsvp_question_formset.empty_form.text.errors %}
+                        <div class="text-error">{{ rsvp_question_formset.empty_form.text.errors }}</div>
+                    {% endif %}
+                </div>
+                <div class="flex flex-row gap-4 mt-2">
+                    <div class="form-control">
+                        {{ rsvp_question_formset.empty_form.question_type.label_tag }}
+                        {{ rsvp_question_formset.empty_form.question_type }}
+                        {% if rsvp_question_formset.empty_form.question_type.errors %}
+                            <div class="text-error">{{ rsvp_question_formset.empty_form.question_type.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="form-control">
+                        {{ rsvp_question_formset.empty_form.order.label_tag }}
+                        {{ rsvp_question_formset.empty_form.order }}
+                        {% if rsvp_question_formset.empty_form.order.errors %}
+                            <div class="text-error">{{ rsvp_question_formset.empty_form.order.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="form-control">
+                        {{ rsvp_question_formset.empty_form.published.label_tag }}
+                        {{ rsvp_question_formset.empty_form.published }}
+                        {% if rsvp_question_formset.empty_form.published.errors %}
+                            <div class="text-error">{{ rsvp_question_formset.empty_form.published.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="form-control">{{ rsvp_question_formset.empty_form.DELETE }} Delete</div>
+                </div>
+                <div class="sr-only">
+                    {% for hidden_field in rsvp_question_formset.empty_form.hidden_fields %}{{ hidden_field }}{% endfor %}
+                </div>
+            </form>
         </div>
     </div>
 {% endblock content %}
 {% block extra_script %}
+    <script src="https://cdn.jsdelivr.net/npm/hugerte@1/hugerte.min.js"
+            nonce="{{ request.csp_nonce }}"></script>
+    <script nonce="{{ request.csp_nonce }}">
+      const useDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const isSmallScreen = window.matchMedia('(max-width: 1023.5px)').matches;
+      hugerte.init({
+        selector: '#id_rsvp_accommodation_intro, #id_rsvp_vip_intro, #id_rsvp_accept_intro',
+        height: 500,
+        plugins: [
+          'advlist', 'autolink', 'lists', 'link', 'charmap',
+          'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+          'insertdatetime', 'table', 'help', 'wordcount'
+        ],
+        toolbar_mode: 'sliding',
+        contextmenu: 'link image table',
+        skin: useDarkMode ? 'oxide-dark' : 'oxide',
+        content_css: useDarkMode ? 'dark' : 'default',
+        menubar: 'edit view insert format table help',
+        toolbar: 'undo redo | blocks | ' +
+          'bold italic backcolor | alignleft aligncenter ' +
+          'alignright alignjustify | bullist numlist outdent indent | ' +
+          'removeformat | help',
+        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
+      });
+    </script>
+    <script nonce="{{ request.csp_nonce }}">
+      document.addEventListener('DOMContentLoaded', function() {
+
+        const addBtn = document.getElementById('add-rsvp-question-btn');
+        if (!addBtn) return;
+
+        const formsContainer = document.getElementById('rsvp-questions-form');
+        const emptyTemplateContainer = document.getElementById('rsvp-question-empty-form-template');
+        if (!formsContainer || !emptyTemplateContainer) return;
+
+        // management form inputs (use the same prefix the view used)
+        const prefix = "{{ rsvp_question_formset.prefix }}";
+        const totalFormsInput = document.querySelector(`input[name="${prefix}-TOTAL_FORMS"]`);
+        if (!totalFormsInput) return;
+
+        // raw HTML of empty_form (contains __prefix__)
+        const emptyHtml = emptyTemplateContainer.innerHTML;
+
+        addBtn.addEventListener('click', function() {
+          const formIndex = parseInt(totalFormsInput.value, 10);
+
+          // replace __prefix__ placeholders with the new index
+          const newFormHtml = emptyHtml.replace(/__prefix__/g, formIndex);
+
+          // Wrap new form in a card to match existing forms
+          const wrapper = document.createElement('div');
+          wrapper.className = 'edit-card';
+          wrapper.innerHTML = newFormHtml;
+
+          // Clear any values that may be present in the template (safety)
+          wrapper.querySelectorAll('input, textarea, select').forEach((el) => {
+            if (el.type === 'checkbox' || el.type === 'radio') {
+              el.checked = false;
+            } else {
+              el.value = '';
+            }
+          });
+
+          // Append the new form and increment TOTAL_FORMS
+          formsContainer.appendChild(wrapper);
+          totalFormsInput.value = formIndex + 1;
+
+          // optional: focus the first text input in the new form
+          const firstInput = wrapper.querySelector('input[type="text"], textarea, input[type="number"], input[type="email"]');
+          if (firstInput) firstInput.focus();
+        });
+      });
+    </script>
 {% endblock extra_script %}

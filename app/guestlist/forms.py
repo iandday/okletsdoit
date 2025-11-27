@@ -1,5 +1,10 @@
+from core.models import RsvpQuestion, RsvpQuestionChoice
 from django import forms
-from .models import GuestGroup, Guest
+
+from .models import Guest
+from .models import GuestGroup
+from .models import RsvpQuestionResponse
+from .models import RsvpSubmission
 
 
 class GuestlistImportForm(forms.Form):
@@ -10,6 +15,19 @@ class GuestlistImportForm(forms.Form):
                 "accept": ".xlsx,.xls",
             }
         )
+    )
+
+
+class RsvpCodeForm(forms.Form):
+    rsvp_code = forms.CharField(
+        max_length=10,
+        widget=forms.TextInput(
+            attrs={
+                "class": "input input-bordered edit-card-field-value",
+                "placeholder": "Enter your RSVP code",
+            }
+        ),
+        label="Please provide your RSVP code to respond",
     )
 
 
@@ -28,6 +46,7 @@ class GuestGroupForm(forms.ModelForm):
             "state",
             "zip_code",
             "relationship",
+            "associated_with",
             "priority",
         ]
         widgets = {
@@ -72,6 +91,7 @@ class GuestGroupForm(forms.ModelForm):
                 attrs={"class": "input input-bordered edit-card-field-value", "placeholder": "Enter zip code"}
             ),
             "relationship": forms.Select(attrs={"class": "select select-bordered edit-card-field-value"}),
+            "associated_with": forms.Select(attrs={"class": "select select-bordered edit-card-field-value"}),
             "priority": forms.Select(attrs={"class": "select select-bordered edit-card-field-value"}),
         }
 
@@ -87,9 +107,10 @@ class GuestForm(forms.ModelForm):
             "is_invited",
             "is_attending",
             "responded",
-            "overnight",
+            "accept_accommodation",
+            "accept_vip",
+            "accommodation",
             "notes",
-            "response_notes",
         ]
 
         labels = {
@@ -109,7 +130,9 @@ class GuestForm(forms.ModelForm):
             "is_invited": forms.CheckboxInput(attrs={"class": "edit-card-field-toggle"}),
             "is_attending": forms.CheckboxInput(attrs={"class": "edit-card-field-toggle"}),
             "responded": forms.CheckboxInput(attrs={"class": "edit-card-field-toggle"}),
-            "overnight": forms.CheckboxInput(attrs={"class": "edit-card-field-toggle"}),
+            "accommodation": forms.CheckboxInput(attrs={"class": "edit-card-field-toggle"}),
+            "accept_accommodation": forms.CheckboxInput(attrs={"class": "edit-card-field-toggle"}),
+            "accept_vip": forms.CheckboxInput(attrs={"class": "edit-card-field-toggle"}),
             "notes": forms.Textarea(
                 attrs={
                     "class": "textarea textarea-bordered edit-card-field-value",
@@ -117,11 +140,94 @@ class GuestForm(forms.ModelForm):
                     "rows": 3,
                 }
             ),
-            "response_notes": forms.Textarea(
+        }
+
+
+class GuestRSVPForm(forms.ModelForm):
+    class Meta:
+        model = Guest
+        fields = [
+            "first_name",
+            "last_name",
+            "is_attending",
+            "accept_accommodation",
+            "accept_vip",
+        ]
+
+        widgets = {
+            "first_name": forms.TextInput(
+                attrs={"class": "input input-bordered edit-card-field-value", "placeholder": "Enter first name"}
+            ),
+            "last_name": forms.TextInput(
+                attrs={"class": "input input-bordered edit-card-field-value", "placeholder": "Enter last name"}
+            ),
+            "is_attending": forms.CheckboxInput(attrs={"class": "checkbox checkbox-primary"}),
+            "accept_accommodation": forms.CheckboxInput(attrs={"class": "checkbox checkbox-primary"}),
+            "accept_vip": forms.CheckboxInput(attrs={"class": "checkbox checkbox-primary"}),
+        }
+
+
+class RsvpSubmissionForm(forms.ModelForm):
+    class Meta:
+        model = RsvpSubmission
+        fields = [
+            "notes",
+            "email_updates",
+            "email_address",
+        ]
+
+        widgets = {
+            "notes": forms.Textarea(
                 attrs={
                     "class": "textarea textarea-bordered edit-card-field-value",
-                    "placeholder": "Enter response notes (optional)",
-                    "rows": 2,
+                    "placeholder": "Enter any additional notes (optional)",
+                    "rows": 3,
                 }
             ),
+            "email_updates": forms.CheckboxInput(attrs={"class": "checkbox checkbox-primary"}),
+            "email_address": forms.EmailInput(
+                attrs={"class": "input input-bordered edit-card-field-value", "placeholder": "Enter your email address"}
+            ),
         }
+
+
+class RsvpQuestionResponseForm(forms.ModelForm):
+    question_type = forms.CharField(widget=forms.HiddenInput())
+    response_choices = forms.ModelMultipleChoiceField(
+        queryset=RsvpQuestionChoice.objects.filter(is_deleted=False),
+        widget=forms.CheckboxSelectMultiple(attrs={"class": "space-y-2 checkbox-group"}),
+        required=False,
+    )
+
+    class Meta:
+        model = RsvpQuestionResponse
+        fields = [
+            "submission",
+            "question",
+            "response_text",
+            "response_choices",
+        ]
+
+        widgets = {
+            "submission": forms.HiddenInput(),
+            "response_text": forms.Textarea(
+                attrs={
+                    "class": "textarea textarea-bordered edit-card-field-value",
+                    "placeholder": "Enter your response",
+                    "rows": 3,
+                }
+            ),
+            "question": forms.HiddenInput(),
+        }
+
+    # populate dynamic labels and initial values
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        q_id = self.initial.get("question") or self.data.get(self.add_prefix("question"))
+        if q_id:
+            q_obj = RsvpQuestion.objects.filter(pk=q_id).first()
+            if q_obj:
+                self.fields["response_choices"].queryset = RsvpQuestionChoice.objects.filter(question=q_obj)  # pyright: ignore[reportAttributeAccessIssue]
+                self.fields["response_text"].label = q_obj.text
+                self.fields["response_choices"].label = q_obj.text
+                self.fields["question_type"].initial = q_obj.question_type

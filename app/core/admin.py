@@ -3,7 +3,18 @@ from django.utils.html import format_html
 from import_export.admin import ImportExportModelAdmin
 from simple_history.admin import SimpleHistoryAdmin
 from django.db import models
-from .models import Idea, Timeline, Inspiration, Question, RsvpFormBoolean
+from .models import Idea, RsvpQuestion, Timeline, Inspiration, Question, RsvpQuestionChoice
+
+
+class RsvpQuestionChoiceInline(admin.TabularInline):
+    model = RsvpQuestionChoice
+    fk_name = "question"
+    extra = 1
+    min_num = 0
+    verbose_name = "Choice"
+    verbose_name_plural = "Choices"
+    fields = ("choice_text",)
+    show_change_link = False
 
 
 @admin.register(Idea)
@@ -197,22 +208,46 @@ class QuestionAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
         super().save_model(request, obj, form, change)
 
 
-@admin.register(RsvpFormBoolean)
-class RsvpFormBooleanAdmin(admin.ModelAdmin):
-    list_display = (
-        "question",
-        "required",
-        "order",
-        "setting",
-        "created_by",
-        "created_at",
-        "updated_by",
-        "updated_at",
-        "is_deleted",
+@admin.register(RsvpQuestion)
+class RsvpQuestionAdmin(admin.ModelAdmin):
+    """
+    Admin for RsvpQuestion. If editing an existing question of type MULTIPLE_CHOICE,
+    the inline choices are shown so you can manage possible answers directly.
+    """
+
+    list_display = ("text", "question_type", "published", "order", "created_at")
+    list_filter = ("question_type", "published")
+    search_fields = ("text",)
+    ordering = ("order", "text")
+    inlines = (RsvpQuestionChoiceInline,)
+    fieldsets = (
+        (None, {"fields": ("text", "question_type", "order", "published")}),
+        (
+            "Audit",
+            {
+                "fields": ("created_by", "created_at", "updated_by", "updated_at"),
+                "classes": ("collapse",),
+            },
+        ),
     )
-    search_fields = ("question", "description")
-    list_filter = ("required", "setting", "is_deleted")
-    ordering = ("order", "question")
+    readonly_fields = ("created_at", "updated_at")
+
+    def get_inline_instances(self, request, obj=None):
+        """
+        Only show the choices inline when the question is (or will be) a multiple-choice question.
+        When editing an existing question that is not multiple choice, hide the inline to avoid confusion.
+        """
+        # If editing an existing object and it's not multiple choice, don't show the choices inline.
+        if obj is not None and obj.question_type != RsvpQuestion.QUESTION_TYPE_CHOICES.MULTIPLE_CHOICE:
+            return []
+        return super().get_inline_instances(request, obj)
+
+
+@admin.register(RsvpQuestionChoice)
+class RsvpQuestionChoiceAdmin(admin.ModelAdmin):
+    list_display = ("choice_text", "question")
+    search_fields = ("choice_text", "question__text")
+    ordering = ("question__text", "choice_text")
 
 
 admin.site.site_header = "Wedding Planning Manager"

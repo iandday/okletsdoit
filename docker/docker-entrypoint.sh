@@ -47,6 +47,9 @@ else:
 "
     fi
 
+    echo "Loading default data..."
+    /app/.venv/bin/python manage.py load_default_data
+
     if [[ ${LOCAL_DEV} == "True" ]]; then
         /app/.venv/bin/python manage.py runserver_plus 0.0.0.0:8000
     else

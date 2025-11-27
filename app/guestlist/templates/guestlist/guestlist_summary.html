@@ -14,14 +14,17 @@
                 <p class="text-base-content/70">Total Guests: {{ total_guests }}</p>
                 <p class="text-base-content/70">Invited</p>
                 <div class="gap-2">
-                    <div class="badge badge-secondary">Day: {{ total_invited_day }}</div>
-                    <div class="badge badge-secondary">Overnight: {{ total_invited_overnight }}</div>
+                    <div class="badge badge-secondary">{{ wedding_config.standard_group_label }}: {{ total_invited_standard }}</div>
+                    <div class="badge badge-secondary">{{ wedding_config.vip_group_label }}: {{ total_invited_vip }}</div>
                     <div class="badge badge-secondary">Total: {{ total_invited }}</div>
                 </div>
                 <p class="text-base-content/70">Responses</p>
                 <div class="gap-2">
-                    <div class="badge badge-secondary">Day: {{ total_attending_day }}</div>
-                    <div class="badge badge-secondary">Overnight: {{ total_attending_overnight }}</div>
+                    <div class="badge badge-secondary">{{ wedding_config.standard_group_label }}: {{ total_attending_standard }}</div>
+                    <div class="badge badge-secondary">{{ wedding_config.vip_group_label }}: {{ total_attending_vip }}</div>
+                    <div class="badge badge-secondary">Confirmed Overnight: {{ total_attending_overnight }}</div>
+                </div>
+                <div class="gap-2">
                     <div class="badge badge-secondary">Total: {{ total_attending }}</div>
                     <div class="badge badge-secondary">Declined: {{ total_declined }}</div>
                     <div class="badge badge-secondary">Pending: {{ total_pending }}</div>
@@ -118,19 +121,13 @@
                                     {% endif %}
                                 </div>
                                 <!-- RSVP Stats -->
-                                <div class="flex justify-between items-center mb-4">
-                                    <div class="flex gap-2">
-                                        <div class="badge badge-neutral">Total: {{ guest_group.group_count }}</div>
-                                        {% if guest_group.group_invited_count > 0 %}
-                                            <div class="badge badge-neutral">Invited: {{ guest_group.group_invited_count }}</div>
-                                        {% endif %}
-                                        {% if guest_group.group_overnight > 0 %}
-                                            <div class="badge badge-neutral">Overnight: {{ guest_group.group_overnight }}</div>
-                                        {% endif %}
-                                        {% if guest_group.group_attending_count > 0 %}
-                                            <div class="badge badge-neutral">Attending: {{ guest_group.group_attending_count }}</div>
-                                        {% endif %}
-                                    </div>
+                                <div class="flex justify-center mb-4 gap-2">
+                                    <div class="badge badge-neutral">Total: {{ guest_group.group_count }}</div>
+                                    <div class="badge badge-neutral">Invited: {{ guest_group.group_invited_count }}</div>
+                                </div>
+                                <div class="flex justify-center mb-4 gap-2">
+                                    <div class="badge badge-neutral">Attending: {{ guest_group.group_attending_count }}</div>
+                                    <div class="badge badge-neutral">Overnight: {{ guest_group.group_overnight }}</div>
                                 </div>
                                 <!-- Contact Info -->
                                 {% if guest_group.email or guest_group.phone %}

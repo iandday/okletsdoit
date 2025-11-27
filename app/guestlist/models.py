@@ -3,6 +3,7 @@ from django.db import models
 from django_stubs_ext.db.models.manager import RelatedManager
 from simple_history.models import HistoricalRecords
 from django.utils.text import slugify
+from core.models import RsvpQuestion, RsvpQuestionChoice
 from users.models import User
 
 
@@ -55,8 +56,16 @@ class GuestGroup(models.Model):
         return self.guests.filter(is_deleted=False).count()
 
     @property
+    def group_standard(self):
+        return self.guests.filter(vip=False, is_deleted=False).count()
+
+    @property
+    def group_vip(self):
+        return self.guests.filter(vip=True, is_deleted=False).count()
+
+    @property
     def group_overnight(self):
-        return self.guests.filter(overnight=True, is_deleted=False).count()
+        return self.guests.filter(accommodation=True, is_deleted=False).count()
 
     @property
     def group_invited_count(self):
@@ -94,16 +103,20 @@ class GuestGroup(models.Model):
 class Guest(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     slug = models.SlugField(max_length=250, null=True, blank=True, unique=True)
-    first_name = models.CharField(max_length=50, blank=True, null=True)
-    last_name = models.CharField(max_length=50, blank=True, null=True)
+    first_name = models.CharField(max_length=50, default="Guest")
+    last_name = models.CharField(max_length=50, default="Guest")
     plus_one = models.BooleanField(default=False, help_text="Indicates if this guest is a plus one of another guest")
     group = models.ForeignKey(GuestGroup, on_delete=models.SET_NULL, null=True, blank=True, related_name="guests")
     is_invited = models.BooleanField(default=False)
     is_attending = models.BooleanField(default=False)
     responded = models.BooleanField(default=False, help_text="Indicates if this guest has responded to the invitation")
-    overnight = models.BooleanField(default=False, help_text="Indicates if this guest will use overnight accommodation")
+    accept_accommodation = models.BooleanField(default=False, help_text="Indicates if this guest accepts accommodation")
+    accept_vip = models.BooleanField(default=False, help_text="Indicates if this guest accepts VIP status")
+    accommodation = models.BooleanField(
+        default=False, help_text="Indicates if this guest will use overnight accommodation"
+    )
+    vip = models.BooleanField(default=False, help_text="Indicates if this guest is a VIP")
     notes = models.TextField(blank=True)
-    response_notes = models.TextField(blank=True, null=True)
     created_by = models.ForeignKey(User, related_name="created_by_guest", on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_by = models.ForeignKey(
@@ -129,3 +142,47 @@ class Guest(models.Model):
             self.slug = slug
 
         super().save(*args, **kwargs)
+
+
+class RsvpSubmission(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    guest_group = models.ForeignKey(GuestGroup, on_delete=models.CASCADE, related_name="rsvp_submissions")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    email_updates = models.BooleanField(default=False)
+    email_address = models.EmailField(blank=True)
+    notes = models.TextField(blank=True)
+    history = HistoricalRecords()
+
+    @property
+    def accept_accommodation_count(self):
+        return self.guest_group.guests.filter(responded=True, accept_accommodation=True, is_deleted=False).count()
+
+    @property
+    def accept_vip_count(self):
+        return self.guest_group.guests.filter(responded=True, accept_vip=True, is_deleted=False).count()
+
+    class Meta:
+        unique_together = ("guest_group",)
+
+
+class RsvpQuestionResponse(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    submission = models.ForeignKey(RsvpSubmission, related_name="question_responses", on_delete=models.CASCADE)
+    question = models.ForeignKey(RsvpQuestion, related_name="responses", on_delete=models.CASCADE)
+    response_text = models.TextField(blank=True, null=True)
+    response_choices = models.ManyToManyField(
+        RsvpQuestionChoice,
+        blank=True,
+        related_name="responses",
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    is_deleted = models.BooleanField(default=False)
+    history = HistoricalRecords()
+
+    class Meta:
+        unique_together = ("submission", "question")
+
+    def __str__(self):
+        return f"Response to {self.question} for submission {self.submission}"

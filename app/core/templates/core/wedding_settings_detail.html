@@ -4,18 +4,25 @@
 
 {% block content %}
     <div class="container mx-auto px-4 py-8">
-        <div class="breadcrumbs mb-6">
-            <ul>
-                {% for crumb in breadcrumbs %}
-                    <li>
-                        {% if crumb.url %}
-                            <a href="{{ crumb.url }}" class="link">{{ crumb.title }}</a>
-                        {% else %}
-                            {{ crumb.title }}
-                        {% endif %}
-                    </li>
-                {% endfor %}
-            </ul>
+        <!-- Header -->
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
+            <div>
+                <div class="text-sm breadcrumbs mb-2">
+                    <ul>
+                        {% for crumb in breadcrumbs %}
+                            {% if crumb.url %}
+                                <li>
+                                    <a href="{{ crumb.url }}" class="link link-hover">{{ crumb.title }}</a>
+                                </li>
+                            {% else %}
+                                <li class="text-base-content">{{ crumb.title }}</li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+                <h1 class="text-3xl font-bold text-base-content">{{ title }}</h1>
+                <p class="text-base-content/60 mt-2">{{ intro }}</p>
+            </div>
         </div>
         <!-- Title -->
         <div class="mb-6 flex items-center justify-between">
@@ -38,34 +45,234 @@
             </div>
         </div>
         <!-- Main Content -->
-        <div class="detail-card" id="main-info">
-            <div class="detail-card-body">
-                <h2 class="detail-card-title mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                         class="h-6 w-6"
-                         fill="none"
-                         viewBox="0 0 24 24"
-                         stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                    Display Details
-                </h2>
-                <ul class="list">
-                    <li class="list-row">
-                        <span class="font-bold">RSVP Enabled:</span>
-                        <span>{{ settings.allow_rsvp|yesno:"Yes,No" }}</span>
-                    </li>
-                    <li class="list-row">
-                        <span class="font-bold">Wedding Date:</span>
-                        <span>
-                            {% if settings.wedding_date %}
-                                {{ settings.wedding_date|date:"F j, Y" }}
-                            {% else %}
-                                Not Set
-                            {% endif %}
-                        </span>
-                    </li>
-                </ul>
+        <div class="grid md:grid-cols-2 gap-6">
+            <div class="detail-card col-span-2" id="main-info">
+                <div class="detail-card-body">
+                    <h2 class="detail-card-title mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             class="h-6 w-6"
+                             fill="none"
+                             viewBox="0 0 24 24"
+                             stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        Display Details
+                    </h2>
+                    <div class="grid grid-cols-2 gap-4 mt-4">
+                        <div>
+                            <div class="detail-card-field-name">Wedding Date</div>
+                            <div class="detail-card-field-value">
+                                {% if settings.wedding_date %}
+                                    {{ settings.wedding_date|date:"F j, Y" }}
+                                {% else %}
+                                    Not Set
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div>
+                            <div class="detail-card-field-name">Standard Group Label</div>
+                            <div class="detail-card-field-value">{{ settings.standard_group_label }}</div>
+                        </div>
+                        <div>
+                            <div class="detail-card-field-name">VIP Group Label</div>
+                            <div class="detail-card-field-value">{{ settings.vip_group_label }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="detail-card" id="rsvp-settings">
+                <div class="detail-card-body">
+                    <h2 class="detail-card-title mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             class="h-6 w-6"
+                             fill="none"
+                             viewBox="0 0 24 24"
+                             stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        RSVP Settings
+                    </h2>
+                    <div class="grid grid-cols-2 gap-4 mt-4">
+                        <div>
+                            <div class="detail-card-field-name">Allow RSVP</div>
+                            <div class="detail-card-field-value">{{ settings.allow_rsvp|yesno:"Yes,No" }}</div>
+                        </div>
+                        <div>
+                            <div class="detail-card-field-name">Use Accommodation Tracker</div>
+                            <div class="detail-card-field-value">{{ settings.rsvp_show_accommodation_intro|yesno:"Yes,No" }}</div>
+                        </div>
+                        <div>
+                            <div class="detail-card-field-name">Use VIP Tracker</div>
+                            <div class="detail-card-field-value">{{ settings.rsvp_show_vip_intro|yesno:"Yes,No" }}</div>
+                        </div>
+                        <div>
+                            <div class="detail-card-field-name">RSVP Accept Button Text</div>
+                            <div class="detail-card-field-value">{{ settings.rsvp_accept_button }}</div>
+                        </div>
+                        <div>
+                            <div class="detail-card-field-name">RSVP Decline Button Text</div>
+                            <div class="detail-card-field-value">{{ settings.rsvp_decline_button }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="detail-card" id="rsvp-settings-success">
+                <div class="detail-card-body">
+                    <h2 class="detail-card-title mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             class="h-6 w-6"
+                             fill="none"
+                             viewBox="0 0 24 24"
+                             stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        RSVP Settings: Success Messages
+                    </h2>
+                    <div class="grid grid-cols-2 gap-4 mt-4">
+                        <div>
+                            <div class="detail-card-field-name">RSVP Success Headline</div>
+                            <div class="detail-card-field-value">{{ settings.rsvp_success_headline }}</div>
+                        </div>
+                        <div>
+                            <div class="detail-card-field-name">RSVP Accept Success Message</div>
+                            <div class="detail-card-field-value">{{ settings.rsvp_accept_success_message }}</div>
+                        </div>
+                        <div>
+                            <div class="detail-card-field-name">RSVP Decline Success Message</div>
+                            <div class="detail-card-field-value">{{ settings.rsvp_decline_success_message }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="detail-card" id="rsvp-accept-settings">
+                <div class="detail-card-body">
+                    <h2 class="detail-card-title mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             class="h-6 w-6"
+                             fill="none"
+                             viewBox="0 0 24 24"
+                             stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        RSVP Accept Page Settings
+                    </h2>
+                    <div class="grid grid-cols-2 gap-4 mt-4">
+                        <div>
+                            <div class="detail-card-field-name">RSVP Attending Checkbox Label</div>
+                            <div class="detail-card-field-value">{{ settings.rsvp_attending_label }}</div>
+                        </div>
+                        <div class="col-span-2">
+                            <div class="detail-card-field-name">RSVP Accept Page Intro Paragraph</div>
+                            <div class="detail-card-field-value">{{ settings.rsvp_accept_intro|safe }}</div>
+                        </div>
+                        <div>
+                            <div class="detail-card-field-name">Enable Email Updates Option</div>
+                            <div class="detail-card-field-value">{{ settings.rsvp_enable_email_updates|yesno:"Yes,No" }}</div>
+                        </div>
+                        <div>
+                            <div class="detail-card-field-name">Email Updates Opt-in Label</div>
+                            <div class="detail-card-field-value">{{ settings.rsvp_email_update_label }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% if settings.rsvp_show_accommodation_intro %}
+                <div class="detail-card" id="rsvp-accept-settings-accommodations">
+                    <div class="detail-card-body">
+                        <h2 class="detail-card-title mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 class="h-6 w-6"
+                                 fill="none"
+                                 viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            RSVP Accept Page Settings: Accommodations
+                        </h2>
+                        <div class="grid grid-cols-2 gap-4 mt-4">
+                            <div>
+                                <div class="detail-card-field-name">RSVP Accommodation Checkbox Label</div>
+                                <div class="detail-card-field-value">{{ settings.rsvp_accommodation_label }}</div>
+                            </div>
+                            <div class="col-span-2">
+                                <div class="detail-card-field-name">RSVP Accept Page Accommodation Intro Paragraph</div>
+                                <div class="detail-card-field-value">{{ settings.rsvp_accommodation_intro|safe }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            {% if settings.rsvp_show_vip_intro %}
+                <div class="detail-card" id="rsvp-accept-settings-vip">
+                    <div class="detail-card-body">
+                        <h2 class="detail-card-title mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 class="h-6 w-6"
+                                 fill="none"
+                                 viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            RSVP Accept Page Settings: VIP
+                        </h2>
+                        <div class="grid grid-cols-2 gap-4 mt-4">
+                            <div>
+                                <div class="detail-card-field-name">RSVP VIP Checkbox Label</div>
+                                <div class="detail-card-field-value">{{ settings.rsvp_vip_label }}</div>
+                            </div>
+                            <div class="col-span-2">
+                                <div class="detail-card-field-name">RSVP Accept Page VIP Intro Paragraph</div>
+                                <div class="detail-card-field-value">{{ settings.rsvp_vip_intro|safe }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            <div class="detail-card col-span-2" id="rsvp-boolean-questions">
+                <div class="detail-card-body">
+                    <h2 class="detail-card-title mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             class="h-6 w-6"
+                             fill="none"
+                             viewBox="0 0 24 24"
+                             stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        RSVP Questions
+                    </h2>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
+                        {% for question in rsvp_questions %}
+                            <div class="border border-primary p-2">
+                                <div class="detail-card-field-name">
+                                    Question {{ question.order }}
+                                    {% if question.published %}
+                                        (Published)
+                                    {% else %}
+                                        (Unpublished)
+                                    {% endif %}
+                                </div>
+                                <div class="detail-card-field-value">{{ question.text }}</div>
+                                {% if question.question_type == 'multiple_choice' or question.question_type == 'single_choice' or question.question_type == 'yes_no' %}
+                                    <div class="flex flex-row justify-between items-center mt-2">
+                                        <div class="ml-8 detail-card-field-name mt-2">Choices</div>
+                                        {% if question.question_type == 'multiple_choice' or question.question_type == 'single_choice' %}
+                                            <a href="{% url 'core:edit_rsvp_question_choices' question.id %}"
+                                               class="btn btn-sm">Edit Choices</a>
+                                        {% endif %}
+                                    </div>
+                                    {% spaceless %}
+                                        {% for choice in question.choices.all %}
+                                            {% if not choice.is_deleted %}<div class="detail-card-field-value">{{ choice.choice_text }}</div>{% endif %}
+                                        {% endfor %}
+                                    {% endspaceless %}
+                                {% endif %}
+                                <div class="divider"></div>
+                            </div>
+                        {% empty %}
+                            <p>No RSVP questions have been added yet.</p>
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
         </div>
     </div>

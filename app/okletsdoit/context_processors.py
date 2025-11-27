@@ -108,7 +108,7 @@ def site_vars(request):
             {"view_name": "core:our_story", "icon": "fa-heart", "text": "Our Story"},
             {"view_name": "core:venue", "icon": "fa-hotel", "text": "Venue"},
             {"view_name": "core:faq", "icon": "fa-question", "text": "FAQ"},
-            {"view_name": "core:rsvp", "icon": "fa-pen-to-square", "text": "RSVP"},
+            {"view_name": "guestlist:rsvp", "icon": "fa-pen-to-square", "text": "RSVP"},
             {"view_name": "core:photos", "icon": "fa-camera", "text": "Upload Photos"},
         ],
         "planning_links": [
