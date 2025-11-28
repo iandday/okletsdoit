@@ -1,9 +1,6 @@
 name: Build and Publish Docker Image
 
 on:
-  push:
-    branches:
-      - main
   release:
     types: [published]
 
@@ -92,45 +89,6 @@ jobs:
     #       subject-digest: ${{ steps.build.outputs.digest }}
     #       push-to-registry: true
 
-      - name: Check if tag already exists
-        id: check_tag
-        run: |
-            TAG="v${{ steps.version.outputs.version }}"
-            if git ls-remote --tags origin | grep -q "refs/tags/$TAG$"; then
-            echo "exists=true" >> $GITHUB_OUTPUT
-            else
-            echo "exists=false" >> $GITHUB_OUTPUT
-            fi
-
-      - name: Create GitHub Release
-        id: release
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push' && steps.check_tag.outputs.exists == 'false'
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: v${{ steps.version.outputs.version }}
-          release_name: Release v${{ steps.version.outputs.version }}
-          body: |
-            ## Changes in v${{ steps.version.outputs.version }}
-            
-            🚀 **Django Wedding Website with daisyUI 5**
-            
-            ### Docker Images
-            - `ghcr.io/${{ github.repository }}:${{ steps.version.outputs.version }}`
-            - `ghcr.io/${{ github.repository }}:v${{ steps.version.outputs.version }}`
-            - `ghcr.io/${{ github.repository }}:latest`
-            
-            ### Features
-            - Django 5.2+ backend
-            - daisyUI 5 frontend components
-            - PostgreSQL database support
-            - Traefik reverse proxy ready
-            - Multi-platform Docker images (AMD64/ARM64)
-            
-            Built from commit: ${{ github.sha }}
-          draft: false
-          prerelease: false
   security-scan:
     runs-on: ubuntu-latest
     needs: build-and-push
