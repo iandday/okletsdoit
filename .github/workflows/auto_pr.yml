@@ -71,10 +71,11 @@ jobs:
       - name: Generate PR description
         id: pr_body
         run: |
-          cat > pr_body.md << 'EOF'
+          TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          cat > pr_body.md << EOF
           ## Summary
           
-          This PR contains changes from the `${{ steps.branch_info.outputs.branch_name }}` branch.
+          This PR contains changes from the \`${{ steps.branch_info.outputs.branch_name }}\` branch.
           
           **Latest commit:** ${{ steps.branch_info.outputs.latest_commit }}
           
@@ -85,9 +86,9 @@ jobs:
           ## Stats
           
           - **Total commits:** ${{ steps.branch_info.outputs.commit_count }}
-          - **Branch:** `${{ steps.branch_info.outputs.branch_name }}`
-          - **Base:** `main`
-          - **Last updated:** $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          - **Branch:** \`${{ steps.branch_info.outputs.branch_name }}\`
+          - **Base:** \`main\`
+          - **Last updated:** ${TIMESTAMP}
           
           ---
           
