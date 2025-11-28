@@ -98,13 +98,13 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Create or Update Pull Request
-        uses: peter-evans/create-pull-request@v7
+        uses: repo-sync/pull-request@v2
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ steps.branch_info.outputs.branch_name }}
-          base: main
-          title: ${{ steps.branch_info.outputs.pr_title }}
-          body: ${{ steps.pr_body.outputs.body }}
-          labels: |
-            auto-pr
-          draft: false
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          source_branch: ${{ steps.branch_info.outputs.branch_name }}
+          destination_branch: main
+          pr_title: ${{ steps.branch_info.outputs.pr_title }}
+          pr_body: ${{ steps.pr_body.outputs.body }}
+          pr_label: auto-pr
+          pr_draft: false
+          pr_allow_empty: false
