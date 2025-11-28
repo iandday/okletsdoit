@@ -101,12 +101,14 @@ jobs:
 
       - name: Create or Update Pull Request
         uses: actions/github-script@v7
+        env:
+          PR_BODY: ${{ steps.pr_body.outputs.body }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const branchName = '${{ steps.branch_info.outputs.branch_name }}';
-            const prTitle = `${{ steps.branch_info.outputs.pr_title }}`;
-            const prBody = `${{ steps.pr_body.outputs.body }}`;
+            const prTitle = '${{ steps.branch_info.outputs.pr_title }}';
+            const prBody = process.env.PR_BODY;
             
             // Check if PR already exists
             const { data: pulls } = await github.rest.pulls.list({
