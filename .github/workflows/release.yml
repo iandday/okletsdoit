@@ -28,3 +28,11 @@ jobs:
         uses: python-semantic-release/python-semantic-release@v9.14.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Sync changes back to develop
+        if: steps.release.outputs.released == 'true'
+        run: |
+          git fetch origin develop
+          git checkout develop
+          git merge --no-ff main -m "chore: sync release changes from main [skip ci]"
+          git push origin develop
