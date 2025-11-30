@@ -106,3 +106,9 @@ CVE-2021-45346   # sqlite: information disclosure via crafted SQL (low)
 
 # zlib - disputed/will_not_fix
 CVE-2023-45853   # zlib: heap buffer overflow in minizip (will_not_fix)
+
+secrets:
+  - id: jwt-token
+    path: "/app/.venv/lib/python3.14/site-packages/PyJWT-2.10.1.dist-info/METADATA"
+    reason: "False positive: metadata file from PyJWT package"
+    expires: "2026-02-01"
