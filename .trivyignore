@@ -79,15 +79,13 @@ CVE-2025-6297
 
 # gpg - low impact DoS
 CVE-2022-3219
-
-# No Fix yet available vulnerabilities
 CVE-2025-30258   # gnupg: verification DoS due to malicious subkey (affected)
 
 # curl/libcurl - no fix available yet
 CVE-2025-10148   # curl: predictable WebSocket mask (will_not_fix)
 CVE-2025-9086    # curl: out of bounds read for cookie path (affected)
 
-# linux-pam - no fix available yet in Debian 12
+# linux-pam - no fix available yet
 CVE-2025-6020    # libpam: directory traversal (affected)
 CVE-2024-10041   # libpam: read hashed password (will_not_fix)
 CVE-2024-22365   # libpam: unprivileged user namespace blocking (affected)
@@ -96,10 +94,10 @@ CVE-2024-22365   # libpam: unprivileged user namespace blocking (affected)
 CVE-2023-2953    # openldap: null pointer dereference in ber_memalloc_x (affected)
 
 # postgresql - newly discovered, awaiting Debian fix
-CVE-2025-12818   # postgresql: libpq integer wraparound (affected)
+CVE-2025-12818   # postgresql: libpq integer wraparound (HIGH - affected, no fix available)
 CVE-2025-12817   # postgresql: CREATE STATISTICS privilege check (affected)
 
-# sqlite - no fix available in Debian 12
+# sqlite - no fix available
 CVE-2025-7458    # sqlite: integer overflow (CRITICAL but affected)
 CVE-2025-7709    # sqlite: FTS5 integer overflow (affected)
 CVE-2025-29088   # sqlite: DoS vulnerability (affected)
