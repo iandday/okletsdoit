@@ -2,8 +2,8 @@ name: Auto PR
 
 on:
   push:
-    branches-ignore:
-      - main
+    branches:
+      - develop
 
 permissions:
   contents: write

@@ -1,11 +1,6 @@
 name: CI/CD
 
 on:
-  push:
-    branches-ignore:
-      - main
-    tags-ignore:
-      - '*'
   pull_request:
     branches:
       - main
