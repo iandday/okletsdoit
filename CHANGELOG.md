@@ -1,6 +1,108 @@
 # CHANGELOG
 
 
+## v0.3.1 (2025-11-30)
+
+### Bug Fixes
+
+- D
+  ([`a8b4f01`](https://github.com/iandday/okletsdoit/commit/a8b4f0148718a40149e87a136875f715c726f9d4))
+
+
+## v0.3.0 (2025-11-30)
+
+### Bug Fixes
+
+- None
+  ([`ea18f7a`](https://github.com/iandday/okletsdoit/commit/ea18f7a1015380dea627e04a19af860cca9266d0))
+
+- **CI**: Fix build
+  ([`a6eb82c`](https://github.com/iandday/okletsdoit/commit/a6eb82c9c678f978c7bf5d590409b1af1d1a3b3a))
+
+- Ti
+  ([`e5e6452`](https://github.com/iandday/okletsdoit/commit/e5e64526dea6fa5b8d6098408304f972a988f6be))
+
+- Trivyignore format
+  ([`a55bb1d`](https://github.com/iandday/okletsdoit/commit/a55bb1decc4681104e3d721a1afda42aa8d4531f))
+
+- Update trivyignore
+  ([`a419d52`](https://github.com/iandday/okletsdoit/commit/a419d525502d9ced47cbdd70281c50a5bbe47cab))
+
+- **Core**: :art: t
+  ([`ab9bf7b`](https://github.com/iandday/okletsdoit/commit/ab9bf7bd979ff759009b0e2481afb6f3db006581))
+
+- **CI**: Troubleshooting
+  ([`d75d021`](https://github.com/iandday/okletsdoit/commit/d75d021ecd6bf43a224f4386da6db376d9f642d8))
+
+- **CI**: Continue on error
+  ([`d0a4c1d`](https://github.com/iandday/okletsdoit/commit/d0a4c1da242db980333ef01937461f722d168055))
+
+- Bump pip
+  ([`aa4d71a`](https://github.com/iandday/okletsdoit/commit/aa4d71adf74de2d244666c9ac7fc47d892ffd19d))
+
+- Working 3.12 bookworm
+  ([`d00abdd`](https://github.com/iandday/okletsdoit/commit/d00abdd9fd9bf2406ea374dc2022e9ef7ac66a15))
+
+- **Core**: :art: fix layout for legacy pages
+  ([`fc2c571`](https://github.com/iandday/okletsdoit/commit/fc2c5718c92f0c177cdd976f94520211155b9f76))
+
+- **CI**: :rocket: registry login
+  ([`263b4dd`](https://github.com/iandday/okletsdoit/commit/263b4dd77ffa2c421b8684888cd74d782b73149c))
+
+- **CI**: :rocket: concurrency
+  ([`ca21fea`](https://github.com/iandday/okletsdoit/commit/ca21fea7c53d5e26d249392e879d69b91b91ee85))
+
+- **CI**: :rocket: condense workflows
+  ([`aebcbb0`](https://github.com/iandday/okletsdoit/commit/aebcbb06208c9248686e545ce93ac944a0ffafcf))
+
+- **CI**: :rocket: concurrency
+  ([`f372ea9`](https://github.com/iandday/okletsdoit/commit/f372ea97a8563b447f895f520aa27b46c54f3470))
+
+- **CI**: Version update
+  ([`7cd0676`](https://github.com/iandday/okletsdoit/commit/7cd0676cdc0466bbf1df0907ddcc54140767da13))
+
+- **CI**: :bug: update uv.lock
+  ([`058ea07`](https://github.com/iandday/okletsdoit/commit/058ea07f0cae778d3b1f3a96b7e350980d15f984))
+
+- **Core**: :ambulance: move cors to env variables
+  ([`45e4c3e`](https://github.com/iandday/okletsdoit/commit/45e4c3eb69106fab43be7d2a30b79f5a34ee0e73))
+
+### Build System
+
+- :rocket: only build if CI passes
+  ([`0388482`](https://github.com/iandday/okletsdoit/commit/0388482141d98796051100ad56087d0e7d0fa311))
+
+### Chores
+
+- Sync release changes from main [skip ci]
+  ([`32f004b`](https://github.com/iandday/okletsdoit/commit/32f004b7a4653c5513405a29fe111e78865dea6d))
+
+### Continuous Integration
+
+- **CI**: :rocket: reduce build time
+  ([`073cd60`](https://github.com/iandday/okletsdoit/commit/073cd6038b98a9851aec12329877a02588d61735))
+
+- **CI**: :rocket: push images
+  ([`35e1aef`](https://github.com/iandday/okletsdoit/commit/35e1aefce61b5d1a9fee4e189c7dcef672d6b649))
+
+- **CI**: :bug: remove filter
+  ([`8f41f05`](https://github.com/iandday/okletsdoit/commit/8f41f055ff28193ac6fd4820eda679c8982e240c))
+
+- **CI**: :rocket: more concurrency
+  ([`bc9a09c`](https://github.com/iandday/okletsdoit/commit/bc9a09cfb45f78ab237e070ac224e1ee1aad655f))
+
+- **CI**: :zap: string
+  ([`07c3812`](https://github.com/iandday/okletsdoit/commit/07c38124b2b642473c1b943a81384f65c9cf3f4c))
+
+### Features
+
+- :rocket: python 3.14 and debian 13
+  ([`98ed37e`](https://github.com/iandday/okletsdoit/commit/98ed37ee8bd129cf1a0654435b18cb429edf94ec))
+
+- **CI**: :rocket: update auto PR
+  ([`2d7dc3d`](https://github.com/iandday/okletsdoit/commit/2d7dc3d890d1dd6427c18ac3694ff85f81414cfc))
+
+
 ## v0.2.0 (2025-11-28)
 
 ### Bug Fixes
