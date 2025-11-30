@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.3.1 (2025-11-30)
+
+### Bug Fixes
+
+- D
+  ([`a8b4f01`](https://github.com/iandday/okletsdoit/commit/a8b4f0148718a40149e87a136875f715c726f9d4))
+
+
 ## v0.3.0 (2025-11-30)
 
 ### Bug Fixes
