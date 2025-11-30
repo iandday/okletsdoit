@@ -1,0 +1,110 @@
+# Trivy ignore file for unfixable/low-priority vulnerabilities
+# See: https://aquasecurity.github.io/trivy/latest/docs/configuration/filtering/
+
+# Debian base OS vulnerabilities with no fix available (status: will_not_fix or affected)
+CVE-2011-3374    # apt/libapt-pkg - disputed/low impact
+CVE-2011-4116    # perl - low impact temp file handling
+CVE-2022-27943   # gcc/binutils - low impact, requires specific crafted input
+CVE-2024-2379    # curl - requires wolfSSL backend (not used)
+CVE-2025-0725    # curl - requires zlib overflow (unlikely)
+CVE-2025-10966   # curl - requires wolfSSH backend (not used)
+CVE-2016-2781    # coreutils - low impact chroot escape
+CVE-2017-18018   # coreutils - race condition, low exploitability
+CVE-2025-5278    # coreutils - low impact heap underread
+
+# glibc - old CVEs, low exploitability or disputed
+CVE-2010-4756
+CVE-2018-20796
+CVE-2019-1010022
+CVE-2019-1010023
+CVE-2019-1010024
+CVE-2019-1010025
+CVE-2019-9192
+
+# libgcrypt - low impact
+CVE-2018-6829    # ElGamal semantic security
+CVE-2024-2236    # Marvin Attack (theoretical)
+
+# OpenLDAP - older CVEs with low impact
+CVE-2015-3276
+CVE-2017-14159
+CVE-2017-17740
+CVE-2020-15719
+
+# Kerberos - minor memory leaks
+CVE-2018-5709
+CVE-2024-26458
+CVE-2024-26461
+
+# systemd - old CVEs with low impact
+CVE-2013-4392
+CVE-2023-31437
+CVE-2023-31438
+CVE-2023-31439
+
+# shadow-utils - configuration issues
+CVE-2007-5686
+CVE-2024-56433
+TEMP-0628843-DBAD28
+
+# util-linux - low impact
+CVE-2022-0563
+
+# tar - old low-impact CVEs
+CVE-2005-2541
+TEMP-0290435-0B57B5
+
+# bash - theoretical privilege escalation
+TEMP-0841856-B18BAF
+
+# OpenSSL - PowerPC specific (not our architecture)
+CVE-2025-27587
+
+# GnuTLS - disputed/low impact
+CVE-2011-3389   # BEAST attack (mitigated at protocol level)
+CVE-2025-9820   # Awaiting more information
+
+# ncurses - low impact segfaults
+CVE-2023-50495
+CVE-2025-6141
+
+# perl HTTP::Tiny - test/dev only issue
+CVE-2023-31486
+
+# sysvinit - installer only issue
+TEMP-0517018-A83CE6
+
+# dpkg - low impact directory sanitization
+CVE-2025-6297
+
+# gpg - low impact DoS
+CVE-2022-3219
+
+# No Fix yet available vulnerabilities
+CVE-2025-30258   # gnupg: verification DoS due to malicious subkey (affected)
+
+# curl/libcurl - no fix available yet
+CVE-2025-10148   # curl: predictable WebSocket mask (will_not_fix)
+CVE-2025-9086    # curl: out of bounds read for cookie path (affected)
+
+# linux-pam - no fix available yet in Debian 12
+CVE-2025-6020    # libpam: directory traversal (affected)
+CVE-2024-10041   # libpam: read hashed password (will_not_fix)
+CVE-2024-22365   # libpam: unprivileged user namespace blocking (affected)
+
+# openldap - no fix available
+CVE-2023-2953    # openldap: null pointer dereference in ber_memalloc_x (affected)
+
+# postgresql - newly discovered, awaiting Debian fix
+CVE-2025-12818   # postgresql: libpq integer wraparound (affected)
+CVE-2025-12817   # postgresql: CREATE STATISTICS privilege check (affected)
+
+# sqlite - no fix available in Debian 12
+CVE-2025-7458    # sqlite: integer overflow (CRITICAL but affected)
+CVE-2025-7709    # sqlite: FTS5 integer overflow (affected)
+CVE-2025-29088   # sqlite: DoS vulnerability (affected)
+CVE-2025-52099   # sqlite: integer overflow (affected)
+CVE-2021-45346   # sqlite: information disclosure via crafted SQL (low)
+
+# zlib - disputed/will_not_fix
+CVE-2023-45853   # zlib: heap buffer overflow in minizip (will_not_fix)

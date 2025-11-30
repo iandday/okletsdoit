@@ -7,11 +7,14 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 RUN apt-get update \
     && apt-get upgrade -y \
     && apt-get install -y --no-install-recommends \
-    postgresql-client \
-    libpq5 \
+    postgresql-client-15=15.14-0+deb12u1 \
+    libpq5=15.14-0+deb12u1 \
+    libsqlite3-0 \
+    libpam-modules \
+    libpam-runtime \
     curl \
-    && rm -rf /var/lib/apt/lists/* \
-    && apt-get clean
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Create user
 RUN groupadd -r django && useradd -r -g django -s /bin/false django
@@ -55,9 +58,10 @@ RUN apt-get update \
     && apt-get upgrade -y \
     && apt-get install -y --no-install-recommends \
     build-essential \
-    libpq-dev \
+    libpq-dev=15.14-0+deb12u1 \
     gcc \
-    && rm -rf /var/lib/apt/lists/*
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Install uv
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
@@ -81,11 +85,14 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 RUN apt-get update \
     && apt-get upgrade -y \
     && apt-get install -y --no-install-recommends \
-    postgresql-client \
-    libpq5 \
+    postgresql-client-15=15.14-0+deb12u1 \
+    libpq5=15.14-0+deb12u1 \
+    libsqlite3-0 \
+    libpam-modules \
+    libpam-runtime \
     curl \
-    && rm -rf /var/lib/apt/lists/* \
-    && apt-get clean
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Create user
 RUN groupadd -r django && useradd -r -g django -s /bin/false django
