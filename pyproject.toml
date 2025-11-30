@@ -166,3 +166,6 @@ exclude_commit_patterns = []
 allowed_tags = ["feat", "fix", "docs", "style", "refactor", "perf", "test", "build", "ci", "chore", "revert"]
 minor_tags = ["feat"]
 patch_tags = ["fix", "perf"]
+
+[tool.setuptools.packages.find]
+where = ["app"] 
