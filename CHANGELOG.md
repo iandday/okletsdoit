@@ -1,6 +1,17 @@
 # CHANGELOG
 
 
+## v0.3.5 (2025-11-30)
+
+### Bug Fixes
+
+- Lock
+  ([`52615fa`](https://github.com/iandday/okletsdoit/commit/52615fafdede543f60f16e157c5e008ea483acd1))
+
+- **CI**: Combine jobs
+  ([`14709aa`](https://github.com/iandday/okletsdoit/commit/14709aa93e252b31693a1c65c01afbad79c03a1a))
+
+
 ## v0.3.4 (2025-11-30)
 
 ### Bug Fixes
