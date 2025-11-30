@@ -1,6 +1,19 @@
 # CHANGELOG
 
 
+## v0.3.3 (2025-11-30)
+
+### Bug Fixes
+
+- Fix
+  ([`5f5decc`](https://github.com/iandday/okletsdoit/commit/5f5decc958d5bd28aa612609564f01304e55d3f5))
+
+### Chores
+
+- Sync release changes from main [skip ci]
+  ([`0ede7a9`](https://github.com/iandday/okletsdoit/commit/0ede7a905b02c97c24fbb30ddd9deb3e6daa4719))
+
+
 ## v0.3.2 (2025-11-30)
 
 ### Bug Fixes
