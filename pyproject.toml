@@ -147,7 +147,7 @@ branch = "main"
 upload_to_vcs_release = true
 build_command = """
     python -m pip install -e '.[build]'
-    uv lock --upgrade-package "$PACKAGE_NAME"
+    uv lock --upgrade-package "okletsdoit"
     git add uv.lock
     uv build
 """
