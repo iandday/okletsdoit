@@ -1,6 +1,17 @@
 # CHANGELOG
 
 
+## v0.3.4 (2025-11-30)
+
+### Bug Fixes
+
+- Lock
+  ([`406724e`](https://github.com/iandday/okletsdoit/commit/406724e6378793d73c915c0f3b1aaca8caac9623))
+
+- Release
+  ([`6889277`](https://github.com/iandday/okletsdoit/commit/6889277d50a2d0cb40dc6fbeddad999b3ae5a83a))
+
+
 ## v0.3.3 (2025-11-30)
 
 ### Bug Fixes
