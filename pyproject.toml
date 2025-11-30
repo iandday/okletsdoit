@@ -145,11 +145,7 @@ indent_size = 2
 version_toml = ["pyproject.toml:project.version"]
 branch = "main"
 upload_to_vcs_release = true
-build_command = """
-    python -m pip install -e '.[build]'
-    uv lock --upgrade-package "okletsdoit"
-    git add uv.lock
-"""
+build_command = "echo 'No build required'"
 major_on_zero = false
 tag_format = "v{version}"
 
