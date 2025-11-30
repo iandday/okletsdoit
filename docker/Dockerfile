@@ -19,6 +19,9 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+# Upgrade pip to address security vulnerabilities
+RUN pip install --no-cache-dir --upgrade "pip>=25.3"
+
 # Create user
 RUN groupadd -r django && useradd -r -g django -s /bin/false django
 
@@ -67,6 +70,9 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+# Upgrade pip to address security vulnerabilities
+RUN pip install --no-cache-dir --upgrade "pip>=25.3"
+
 # Install uv
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 
@@ -97,6 +103,9 @@ RUN apt-get update \
     curl \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Upgrade pip to address security vulnerabilities
+RUN pip install --no-cache-dir --upgrade "pip>=25.3"
 
 # Create user
 RUN groupadd -r django && useradd -r -g django -s /bin/false django
