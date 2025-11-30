@@ -66,6 +66,7 @@ class Command(BaseCommand):
                         RsvpQuestionChoice.objects.update_or_create(
                             question=q,
                             choice_text=choice,
+                            created_by=admin_user,
                         )
 
             settings.default_data_loaded = True
