@@ -27,16 +27,24 @@ jobs:
           BRANCH_NAME="${GITHUB_REF#refs/heads/}"
           echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
           
-          # Get commit count since branching from main
-          COMMIT_COUNT=$(git rev-list --count origin/main..HEAD)
+          # Determine base branch: develop → main, everything else → develop
+          if [ "$BRANCH_NAME" = "develop" ]; then
+            BASE_BRANCH="main"
+          else
+            BASE_BRANCH="develop"
+          fi
+          echo "base_branch=$BASE_BRANCH" >> $GITHUB_OUTPUT
+          
+          # Get commit count since branching from base
+          COMMIT_COUNT=$(git rev-list --count origin/$BASE_BRANCH..HEAD)
           echo "commit_count=$COMMIT_COUNT" >> $GITHUB_OUTPUT
           
           # Get latest commit message
           LATEST_COMMIT=$(git log -1 --pretty=format:"%s")
           echo "latest_commit=$LATEST_COMMIT" >> $GITHUB_OUTPUT
           
-          # Get all commits since branching
-          COMMITS=$(git log origin/main..HEAD --pretty=format:"- %h %s (%an)" | head -20)
+          # Get all commits since branching from base
+          COMMITS=$(git log origin/$BASE_BRANCH..HEAD --pretty=format:"- %h %s (%an)" | head -20)
           echo "commits<<EOF" >> $GITHUB_OUTPUT
           echo "$COMMITS" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
@@ -87,7 +95,7 @@ jobs:
           
           - **Total commits:** ${{ steps.branch_info.outputs.commit_count }}
           - **Branch:** \`${{ steps.branch_info.outputs.branch_name }}\`
-          - **Base:** \`main\`
+          - **Base:** \`${{ steps.branch_info.outputs.base_branch }}\`
           - **Last updated:** ${TIMESTAMP}
           
           ---
@@ -107,6 +115,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const branchName = '${{ steps.branch_info.outputs.branch_name }}';
+            const baseBranch = '${{ steps.branch_info.outputs.base_branch }}';
             const prTitle = '${{ steps.branch_info.outputs.pr_title }}';
             const prBody = process.env.PR_BODY;
             
@@ -115,7 +124,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               head: `${context.repo.owner}:${branchName}`,
-              base: 'main',
+              base: baseBranch,
               state: 'open'
             });
             
@@ -137,7 +146,7 @@ jobs:
                 repo: context.repo.repo,
                 title: prTitle,
                 head: branchName,
-                base: 'main',
+                base: baseBranch,
                 body: prBody
               });
               

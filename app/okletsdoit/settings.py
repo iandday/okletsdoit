@@ -37,6 +37,7 @@ env = environ.Env(
     AWS_REGION=(str, "us-east-1"),
     ALLOWED_CIDR_NETS=(list, []),
     NGINX_SERVER_NAME=(str, "dev.internal"),
+    DJANGO_CORS_ALLOWED_ORIGINS=(list, ["http://localhost:5173", "http://localhost:4173", "dev.internal"]),
 )
 env.read_env(BASE_DIR / ".env", overwrite=True)
 
@@ -329,12 +330,7 @@ CONTENT_SECURITY_POLICY = {
 }
 
 # CORS Settings
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",  # SvelteKit dev server
-    "http://localhost:4173",  # SvelteKit preview
-    f"https://{env('NGINX_SERVER_NAME')}",
-]
-
+CORS_ALLOWED_ORIGINS = env("DJANGO_CORS_ALLOWED_ORIGINS")
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = [
     "accept",

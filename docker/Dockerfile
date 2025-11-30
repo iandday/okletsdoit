@@ -1,4 +1,4 @@
-FROM python:3.12-slim-bookworm AS development
+FROM python:3.14-slim-trixie AS development
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     DJANGO_SETTINGS_MODULE=okletsdoit.settings \
@@ -7,11 +7,20 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 RUN apt-get update \
     && apt-get upgrade -y \
     && apt-get install -y --no-install-recommends \
-    postgresql-client \
+    python3-dev \
+    libffi-dev \
+    postgresql-client-17 \
     libpq5 \
+    libsqlite3-0 \
+    libpam-modules \
+    libpam-runtime \
     curl \
-    && rm -rf /var/lib/apt/lists/* \
-    && apt-get clean
+    gcc \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Upgrade pip to address security vulnerabilities
+RUN pip install --no-cache-dir --upgrade "pip>=25.3"
 
 # Create user
 RUN groupadd -r django && useradd -r -g django -s /bin/false django
@@ -44,7 +53,7 @@ WORKDIR /app/app
 ENTRYPOINT ["../docker-entrypoint.sh"]
 
 # Build stage
-FROM python:3.12-slim-bookworm AS prod-builder
+FROM python:3.14-slim-trixie AS prod-builder
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
@@ -54,10 +63,15 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 RUN apt-get update \
     && apt-get upgrade -y \
     && apt-get install -y --no-install-recommends \
-    build-essential \
+    python3-dev \
+    libffi-dev \
     libpq-dev \
     gcc \
-    && rm -rf /var/lib/apt/lists/*
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Upgrade pip to address security vulnerabilities
+RUN pip install --no-cache-dir --upgrade "pip>=25.3"
 
 # Install uv
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
@@ -71,7 +85,7 @@ RUN uv sync --frozen --no-cache
 # Copy source code
 COPY app/ .
 
-FROM python:3.12-slim-bookworm AS production
+FROM python:3.14-slim-trixie AS production
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
@@ -81,11 +95,17 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 RUN apt-get update \
     && apt-get upgrade -y \
     && apt-get install -y --no-install-recommends \
-    postgresql-client \
+    postgresql-client-17 \
     libpq5 \
+    libsqlite3-0 \
+    libpam-modules \
+    libpam-runtime \
     curl \
-    && rm -rf /var/lib/apt/lists/* \
-    && apt-get clean
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Upgrade pip to address security vulnerabilities
+RUN pip install --no-cache-dir --upgrade "pip>=25.3"
 
 # Create user
 RUN groupadd -r django && useradd -r -g django -s /bin/false django
