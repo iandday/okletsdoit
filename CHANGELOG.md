@@ -1,6 +1,19 @@
 # CHANGELOG
 
 
+## v0.3.2 (2025-11-30)
+
+### Bug Fixes
+
+- **Core**: :art: fix default data load
+  ([`3e0eaa0`](https://github.com/iandday/okletsdoit/commit/3e0eaa0c524ffa924aee5ea47a5cb0d482d5ac35))
+
+### Chores
+
+- Sync release changes from main [skip ci]
+  ([`c08c8c2`](https://github.com/iandday/okletsdoit/commit/c08c8c29ce1e6c553977e60692f5d6d076fbc6af))
+
+
 ## v0.3.1 (2025-11-30)
 
 ### Bug Fixes
