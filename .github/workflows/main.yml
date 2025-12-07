@@ -191,7 +191,7 @@ jobs:
           ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
-          trivyignores: '.trivyignore'
+          trivyignores: '.trivyignore.yaml'
           output: 'trivy-results.sarif'
 
       - name: Upload Trivy scan results to GitHub Security tab
