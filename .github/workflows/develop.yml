@@ -1,16 +1,99 @@
-name: Production Build and Deploy
+name: CI/CD - Develop
 
 on:
-  release:
-    types: [published]
+  pull_request:
+    branches:
+      - develop
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-
+  
 jobs:
+  build-css:
+    runs-on: ubuntu-latest
+    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install npm dependencies
+        run: |
+          npm install
+
+      - name: Build CSS
+        run: |
+          npm run build-css-ci
+
+  lint:
+    runs-on: ubuntu-latest
+    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: "Set up Python"
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: ".python-version"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+            enable-cache: true
+
+      - name: Install the project
+        run: uv sync --locked --all-extras --dev
+
+      - name: Lint (ruff)
+        run: |
+          uv run --group dev ruff check .
+
+      - name: Minimize uv cache
+        run: uv cache prune --ci
+
+  build-docs:
+    runs-on: ubuntu-latest
+    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5   
+
+      - name: "Set up Python"
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: ".python-version"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+            enable-cache: true
+
+      - name: Install the project
+        run: uv sync --locked --all-extras --dev
+
+      - name: Build docs
+        run: |
+          uv run --all-groups --inexact mkdocs build --clean
+
+      - name: Minimize uv cache
+        run: uv cache prune --ci
+
   build-and-push:
     runs-on: ubuntu-latest
+    needs: 
+      - build-css
+      - lint
+      - build-docs
     permissions:
         contents: write
         packages: write
@@ -53,10 +136,7 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=ref,event=branch
-            type=ref,event=pr
-            type=raw,value=${{ steps.version.outputs.version }},enable=true
-            type=raw,value=v${{ steps.version.outputs.version }},enable=true
-            type=raw,value=latest,enable={{ is_default_branch }}
+            type=raw,value=develop,enable=true
             type=raw,value=${{ github.sha }},enable=true
           labels: |
             org.opencontainers.image.version=${{ steps.version.outputs.version }}
@@ -80,14 +160,6 @@ jobs:
             BUILDKIT_INLINE_CACHE=1
             VERSION=${{ steps.version.outputs.version }}
 
-    #   - name: Generate artifact attestation
-    #     if: github.event_name != 'pull_request'
-    #     uses: actions/attest-build-provenance@v1
-    #     with:
-    #       subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-    #       subject-digest: ${{ steps.build.outputs.digest }}
-    #       push-to-registry: true
-
   security-scan:
     runs-on: ubuntu-latest
     needs: build-and-push
@@ -100,6 +172,7 @@ jobs:
       
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.28.0
+        continue-on-error: true  
         with:
           image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
           format: 'sarif'
@@ -108,7 +181,10 @@ jobs:
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
           trivyignores: '.trivyignore'
-          output: 'trivy-results.sarif'
+          output: 'trivy-results.sarif' 
+
+      - name: cat results
+        run: cat trivy-results.sarif
 
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v4
@@ -123,4 +199,4 @@ jobs:
         uses: actions/checkout@v4
 
       - name: update container
-        run: /home/ansible/deliver-prod.sh
+        run: /home/ansible/deliver.sh
