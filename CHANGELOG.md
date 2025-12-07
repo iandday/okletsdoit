@@ -1,6 +1,22 @@
 # CHANGELOG
 
 
+## v0.4.0 (2025-12-07)
+
+### Bug Fixes
+
+- **CI**: Update lock file
+  ([`67aed8b`](https://github.com/iandday/okletsdoit/commit/67aed8b860b206187d749c63895c6d59fcaf3062))
+
+- **CI**: :bug: fix build stage
+  ([`ab4c316`](https://github.com/iandday/okletsdoit/commit/ab4c316cf834c9c26cfe08402ff4c7b0a93aaf7f))
+
+### Features
+
+- **CI**: :rocket: update builds
+  ([`f70f74d`](https://github.com/iandday/okletsdoit/commit/f70f74d635b6199e39cbd22a48e986e4ebb00cf5))
+
+
 ## v0.3.5 (2025-11-30)
 
 ### Bug Fixes
