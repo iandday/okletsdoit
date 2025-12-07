@@ -6,7 +6,7 @@ on:
       - develop
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 env:
@@ -180,7 +180,7 @@ jobs:
           ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
-          trivyignores: '.trivyignore'
+          trivyignores: '.trivyignore.yaml'
           output: 'trivy-results.sarif' 
 
       - name: cat results
