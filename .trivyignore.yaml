@@ -140,4 +140,4 @@ secrets:
   # Secrets - false positives from package metadata
   - id: jwt-token
     paths:
-      - app/.venv/lib/python3.14/site-packages/PyJWT-2.10.1.dist-info/METADATA
+      - /app/.venv/lib/python3.14/site-packages/PyJWT-2.10.1.dist-info/METADATA
