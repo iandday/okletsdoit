@@ -43,6 +43,14 @@ test:
 pre-commit:
     uv run --group dev pre-commit run --all-files
 
+local-scan:
+    @echo "Scanning local Docker image for vulnerabilities..."
+    docker build -f docker/Dockerfile --target production -t okletsdoit:test .
+    docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+        -v "$(pwd)/.trivyignore.yaml:/work/.trivyignore.yaml" \
+        -w /work \
+        aquasec/trivy image okletsdoit:test --ignore-unfixed \
+        --vuln-type os,library --severity CRITICAL,HIGH
 
 #----Build commands----#
 css-prod:
