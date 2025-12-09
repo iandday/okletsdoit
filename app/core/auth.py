@@ -5,7 +5,6 @@ Custom authentication classes for Django Ninja API
 from ninja.security import APIKeyHeader
 from django.contrib.auth.models import AnonymousUser
 from django.conf import settings
-from allauth.headless.adapter import get_adapter
 from allauth.headless.contrib.ninja.security import x_session_token_auth
 
 
