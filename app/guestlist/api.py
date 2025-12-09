@@ -1,0 +1,414 @@
+from ninja import FilterSchema, Query, Router, Schema
+from ninja.pagination import paginate, PageNumberPagination
+from typing import List, Optional
+from uuid import UUID
+from datetime import datetime
+from django.shortcuts import get_object_or_404
+from django.db import transaction
+
+from core.auth import multi_auth
+from .models import GuestGroup, Guest, RsvpSubmission, RsvpQuestionResponse
+
+router = Router(tags=["Guestlist"], auth=multi_auth)
+
+
+# Schemas
+class GuestGroupSchema(Schema):
+    id: UUID
+    slug: str
+    name: str
+    address_name: str
+    notes: str
+    email: str
+    phone: str
+    address: str
+    address_two: str
+    city: str
+    state: str
+    zip_code: str
+    relationship: str
+    priority: int
+    rsvp_code: str
+    group_count: int
+    group_standard: int
+    group_vip: int
+    group_overnight: int
+    group_invited_count: int
+    group_attending_count: int
+    group_declined_count: int
+    created_at: datetime
+    updated_at: datetime
+
+
+class GuestGroupFilterSchema(FilterSchema):
+    name: Optional[str] = None
+    email: Optional[str] = None
+    phone: Optional[str] = None
+    city: Optional[str] = None
+    state: Optional[str] = None
+    zip_code: Optional[str] = None
+    relationship: Optional[str] = None
+    priority: Optional[int] = None
+    rsvp_code: Optional[str] = None
+
+
+class GuestGroupCreateSchema(Schema):
+    name: str
+    address_name: Optional[str] = ""
+    notes: Optional[str] = ""
+    email: Optional[str] = ""
+    phone: Optional[str] = ""
+    address: Optional[str] = ""
+    address_two: Optional[str] = ""
+    city: Optional[str] = ""
+    state: Optional[str] = ""
+    zip_code: Optional[str] = ""
+    relationship: Optional[str] = "Rel"
+    priority: Optional[int] = 2
+
+
+class GuestGroupUpdateSchema(Schema):
+    name: Optional[str] = None
+    address_name: Optional[str] = None
+    notes: Optional[str] = None
+    email: Optional[str] = None
+    phone: Optional[str] = None
+    address: Optional[str] = None
+    address_two: Optional[str] = None
+    city: Optional[str] = None
+    state: Optional[str] = None
+    zip_code: Optional[str] = None
+    relationship: Optional[str] = None
+    priority: Optional[int] = None
+
+
+class GuestSchema(Schema):
+    id: UUID
+    slug: str
+    first_name: str
+    last_name: str
+    plus_one: bool
+    group_id: Optional[UUID] = None
+    is_invited: bool
+    is_attending: bool
+    responded: bool
+    accept_accommodation: bool
+    accept_vip: bool
+    accommodation: bool
+    vip: bool
+    notes: str
+    created_at: datetime
+    updated_at: datetime
+
+
+class GuestCreateSchema(Schema):
+    first_name: str
+    last_name: str
+    plus_one: Optional[bool] = False
+    group_id: Optional[UUID] = None
+    is_invited: Optional[bool] = False
+    is_attending: Optional[bool] = False
+    responded: Optional[bool] = False
+    accept_accommodation: Optional[bool] = False
+    accept_vip: Optional[bool] = False
+    accommodation: Optional[bool] = False
+    vip: Optional[bool] = False
+    notes: Optional[str] = ""
+
+
+class GuestUpdateSchema(Schema):
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    plus_one: Optional[bool] = None
+    group_id: Optional[UUID] = None
+    is_invited: Optional[bool] = None
+    is_attending: Optional[bool] = None
+    responded: Optional[bool] = None
+    accept_accommodation: Optional[bool] = None
+    accept_vip: Optional[bool] = None
+    accommodation: Optional[bool] = None
+    vip: Optional[bool] = None
+    notes: Optional[str] = None
+
+
+class RsvpSubmissionSchema(Schema):
+    id: UUID
+    guest_group_id: UUID
+    email_updates: bool
+    email_address: str
+    notes: str
+    accept_accommodation_count: int
+    accept_vip_count: int
+    created_at: datetime
+    updated_at: datetime
+
+
+class RsvpSubmissionCreateSchema(Schema):
+    guest_group_id: UUID
+    email_updates: Optional[bool] = False
+    email_address: Optional[str] = ""
+    notes: Optional[str] = ""
+
+
+class RsvpSubmissionUpdateSchema(Schema):
+    email_updates: Optional[bool] = None
+    email_address: Optional[str] = None
+    notes: Optional[str] = None
+
+
+class RsvpQuestionResponseSchema(Schema):
+    id: UUID
+    submission_id: UUID
+    question_id: UUID
+    response_text: Optional[str] = None
+    response_choice_ids: List[UUID]
+    created_at: datetime
+    updated_at: datetime
+
+
+class RsvpQuestionResponseCreateSchema(Schema):
+    submission_id: UUID
+    question_id: UUID
+    response_text: Optional[str] = None
+    response_choice_ids: Optional[List[UUID]] = []
+
+
+class RsvpQuestionResponseUpdateSchema(Schema):
+    response_text: Optional[str] = None
+    response_choice_ids: Optional[List[UUID]] = None
+
+
+# GuestGroup CRUD Endpoints
+@router.get("/guest-groups", response=List[GuestGroupSchema])
+@paginate(PageNumberPagination, page_size=50)
+def list_guest_groups(request, filters: GuestGroupFilterSchema = Query(...)):  # pyright: ignore[reportCallIssue]
+    """List all guest groups (non-deleted)"""
+    return GuestGroup.objects.filter(is_deleted=False).order_by("-created_at")
+
+
+@router.get("/guest-groups/{group_id}", response=GuestGroupSchema)
+def get_guest_group(request, group_id: UUID):
+    """Get a specific guest group by ID"""
+    return get_object_or_404(GuestGroup, id=group_id, is_deleted=False)
+
+
+@router.post("/guest-groups", response=GuestGroupSchema)
+def create_guest_group(request, payload: GuestGroupCreateSchema):
+    """Create a new guest group"""
+    guest_group = GuestGroup.objects.create(
+        **payload.dict(),
+        created_by=request.user,
+    )
+    return guest_group
+
+
+@router.put("/guest-groups/{group_id}", response=GuestGroupSchema)
+def update_guest_group(request, group_id: UUID, payload: GuestGroupUpdateSchema):
+    """Update a guest group"""
+    guest_group = get_object_or_404(GuestGroup, id=group_id, is_deleted=False)
+
+    for attr, value in payload.dict(exclude_unset=True).items():
+        setattr(guest_group, attr, value)
+
+    guest_group.updated_by = request.user
+    guest_group.save()
+    return guest_group
+
+
+@router.delete("/guest-groups/{group_id}")
+def delete_guest_group(request, group_id: UUID):
+    """Soft delete a guest group"""
+    guest_group = get_object_or_404(GuestGroup, id=group_id, is_deleted=False)
+    guest_group.is_deleted = True
+    guest_group.updated_by = request.user
+    guest_group.save()
+    return {"success": True, "message": "Guest group deleted successfully"}
+
+
+# Guest CRUD Endpoints
+@router.get("/guests", response=List[GuestSchema])
+@paginate(PageNumberPagination, page_size=50)
+def list_guests(request, group_id: Optional[UUID] = None):
+    """List all guests, optionally filtered by group"""
+    queryset = Guest.objects.filter(is_deleted=False)
+    if group_id:
+        queryset = queryset.filter(group_id=group_id)
+    return queryset.order_by("-created_at")
+
+
+@router.get("/guests/{guest_id}", response=GuestSchema)
+def get_guest(request, guest_id: UUID):
+    """Get a specific guest by ID"""
+    return get_object_or_404(Guest, id=guest_id, is_deleted=False)
+
+
+@router.post("/guests", response=GuestSchema)
+def create_guest(request, payload: GuestCreateSchema):
+    """Create a new guest"""
+    data = payload.dict()
+    group_id = data.pop("group_id", None)
+
+    guest = Guest.objects.create(
+        **data,
+        group_id=group_id,
+        created_by=request.user,
+    )
+    return guest
+
+
+@router.put("/guests/{guest_id}", response=GuestSchema)
+def update_guest(request, guest_id: UUID, payload: GuestUpdateSchema):
+    """Update a guest"""
+    guest = get_object_or_404(Guest, id=guest_id, is_deleted=False)
+
+    for attr, value in payload.dict(exclude_unset=True).items():
+        setattr(guest, attr, value)
+
+    guest.updated_by = request.user
+    guest.save()
+    return guest
+
+
+@router.delete("/guests/{guest_id}")
+def delete_guest(request, guest_id: UUID):
+    """Soft delete a guest"""
+    guest = get_object_or_404(Guest, id=guest_id, is_deleted=False)
+    guest.is_deleted = True
+    guest.updated_by = request.user
+    guest.save()
+    return {"success": True, "message": "Guest deleted successfully"}
+
+
+# RsvpSubmission CRUD Endpoints
+@router.get("/rsvp-submissions", response=List[RsvpSubmissionSchema])
+@paginate(PageNumberPagination, page_size=50)
+def list_rsvp_submissions(request):
+    """List all RSVP submissions"""
+    return RsvpSubmission.objects.all().order_by("-created_at")
+
+
+@router.get("/rsvp-submissions/{submission_id}", response=RsvpSubmissionSchema)
+def get_rsvp_submission(request, submission_id: UUID):
+    """Get a specific RSVP submission by ID"""
+    return get_object_or_404(RsvpSubmission, id=submission_id)
+
+
+@router.post("/rsvp-submissions", response=RsvpSubmissionSchema)
+@transaction.atomic
+def create_rsvp_submission(request, payload: RsvpSubmissionCreateSchema):
+    """Create a new RSVP submission"""
+    data = payload.dict()
+    guest_group_id = data.pop("guest_group_id")
+
+    submission = RsvpSubmission.objects.create(guest_group_id=guest_group_id, **data)
+    return submission
+
+
+@router.put("/rsvp-submissions/{submission_id}", response=RsvpSubmissionSchema)
+def update_rsvp_submission(request, submission_id: UUID, payload: RsvpSubmissionUpdateSchema):
+    """Update an RSVP submission"""
+    submission = get_object_or_404(RsvpSubmission, id=submission_id)
+
+    for attr, value in payload.dict(exclude_unset=True).items():
+        setattr(submission, attr, value)
+
+    submission.save()
+    return submission
+
+
+@router.delete("/rsvp-submissions/{submission_id}")
+def delete_rsvp_submission(request, submission_id: UUID):
+    """Delete an RSVP submission"""
+    submission = get_object_or_404(RsvpSubmission, id=submission_id)
+    submission.delete()
+    return {"success": True, "message": "RSVP submission deleted successfully"}
+
+
+# RsvpQuestionResponse CRUD Endpoints
+@router.get("/rsvp-responses", response=List[RsvpQuestionResponseSchema])
+@paginate(PageNumberPagination, page_size=50)
+def list_rsvp_responses(request, submission_id: Optional[UUID] = None):
+    """List all RSVP question responses, optionally filtered by submission"""
+    queryset = RsvpQuestionResponse.objects.filter(is_deleted=False)
+    if submission_id:
+        queryset = queryset.filter(submission_id=submission_id)
+    return queryset.order_by("-created_at")
+
+
+@router.get("/rsvp-responses/{response_id}", response=RsvpQuestionResponseSchema)
+def get_rsvp_response(request, response_id: UUID):
+    """Get a specific RSVP question response by ID"""
+    response = get_object_or_404(RsvpQuestionResponse, id=response_id, is_deleted=False)
+    return {
+        "id": response.id,
+        "submission_id": response.submission.id,
+        "question_id": response.question.id,
+        "response_text": response.response_text,
+        "response_choice_ids": list(response.response_choices.values_list("id", flat=True)),
+        "created_at": response.created_at,
+        "updated_at": response.updated_at,
+    }
+
+
+@router.post("/rsvp-responses", response=RsvpQuestionResponseSchema)
+@transaction.atomic
+def create_rsvp_response(request, payload: RsvpQuestionResponseCreateSchema):
+    """Create a new RSVP question response"""
+    data = payload.dict()
+    choice_ids = data.pop("response_choice_ids", [])
+
+    response = RsvpQuestionResponse.objects.create(
+        submission_id=data["submission_id"],
+        question_id=data["question_id"],
+        response_text=data.get("response_text"),
+    )
+
+    if choice_ids:
+        response.response_choices.set(choice_ids)
+
+    return {
+        "id": response.id,
+        "submission_id": response.submission.id,
+        "question_id": response.question.id,
+        "response_text": response.response_text,
+        "response_choice_ids": list(response.response_choices.values_list("id", flat=True)),
+        "created_at": response.created_at,
+        "updated_at": response.updated_at,
+    }
+
+
+@router.put("/rsvp-responses/{response_id}", response=RsvpQuestionResponseSchema)
+@transaction.atomic
+def update_rsvp_response(request, response_id: UUID, payload: RsvpQuestionResponseUpdateSchema):
+    """Update an RSVP question response"""
+    response = get_object_or_404(RsvpQuestionResponse, id=response_id, is_deleted=False)
+
+    data = payload.dict(exclude_unset=True)
+    choice_ids = data.pop("response_choice_ids", None)
+
+    for attr, value in data.items():
+        setattr(response, attr, value)
+
+    if choice_ids is not None:
+        response.response_choices.set(choice_ids)
+
+    response.save()
+
+    return {
+        "id": response.id,
+        "submission_id": response.submission.id,
+        "question_id": response.question.id,
+        "response_text": response.response_text,
+        "response_choice_ids": list(response.response_choices.values_list("id", flat=True)),
+        "created_at": response.created_at,
+        "updated_at": response.updated_at,
+    }
+
+
+@router.delete("/rsvp-responses/{response_id}")
+def delete_rsvp_response(request, response_id: UUID):
+    """Soft delete an RSVP question response"""
+    response = get_object_or_404(RsvpQuestionResponse, id=response_id, is_deleted=False)
+    response.is_deleted = True
+    response.save()
+    return {"success": True, "message": "RSVP response deleted successfully"}
