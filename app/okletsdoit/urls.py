@@ -3,7 +3,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, re_path, include
 from django.views.generic.base import RedirectView
-
+from .api import api
 
 app_name = "okletsdoit"
 
@@ -24,6 +24,7 @@ urlpatterns = [
         RedirectView.as_view(url="/guestlist/rsvp/?code=%(code)s", permanent=False),
         name="rsvp_redirect",
     ),
+    path("api/", api.urls),
     path("", include("core.urls")),
 ]
 

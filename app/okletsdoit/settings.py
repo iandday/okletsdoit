@@ -42,6 +42,7 @@ env = environ.Env(
 env.read_env(BASE_DIR / ".env", overwrite=True)
 
 SECRET_KEY = env("SECRET_KEY")
+SERVICE_TOKEN = env("SERVICE_TOKEN")
 DEBUG = env("DEBUG")
 LOCAL_DEV = env("LOCAL_DEV")
 LOCAL_DB = env("LOCAL_DB")
@@ -88,6 +89,7 @@ INSTALLED_APPS = [
     "crispy_formset_modal",  # https://blasferna.github.io/django-crispy-formset-modal/installation/
     "extra_views",  # https://django-extra-views.readthedocs.io/en/latest/pages/getting-started.html#installation
     # "pwa",  # https://django-pwa.readthedocs.io/en/latest/installation.html
+    "ninja",
     "core",
     "attachments",
     "users",
@@ -293,7 +295,6 @@ CSRF_TRUSTED_ORIGINS = env.list("DJANGO_CSRF_TRUSTED_ORIGINS")
 
 style_src = [
     SELF,
-    env("AWS_S3_STATIC_DOMAIN_CSP"),
     "cdnjs.cloudflare.com",
     "cdn.ckeditor.com",
     "fonts.googleapis.com",
@@ -302,7 +303,7 @@ style_src = [
     "'unsafe-inline'",  # Required for daisyUI 5 theme switching
 ]
 if env("AWS_S3_STATIC_DOMAIN_CSP") != "":
-    style_src.append(env("AWS_S3_STATIC_DOMAIN_CSP"))
+    style_src.append(str(env("AWS_S3_STATIC_DOMAIN_CSP")))
 
 CONTENT_SECURITY_POLICY = {
     "EXCLUDE_URL_PREFIXES": ["/excluded-path/"],
@@ -328,6 +329,10 @@ CONTENT_SECURITY_POLICY = {
         "include-nonce": True,
     },
 }
+
+if env("AWS_S3_STATIC_DOMAIN_CSP") != "":
+    CONTENT_SECURITY_POLICY["DIRECTIVES"]["script-src"].append(str(env("AWS_S3_STATIC_DOMAIN_CSP")))
+
 
 # CORS Settings
 CORS_ALLOWED_ORIGINS = env("DJANGO_CORS_ALLOWED_ORIGINS")
