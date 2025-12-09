@@ -47,7 +47,7 @@ services:
     volumes:
       - ../_persist/postgres:/var/lib/postgresql/data
     env_file:
-      - ../app/.env
+      - ../backend/.env
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER}" ]
       interval: 30s
@@ -71,11 +71,11 @@ services:
       dockerfile: ./docker/Dockerfile
       target: development
     volumes:
-      - ../app:/app/app
+      - ../backend:/app/app
     environment:
       - CONTAINER_ROLE=server
     env_file:
-      - ../app/.env
+      - ../backend/.env
     ports:
       - "8000:8000"
     healthcheck:
@@ -92,11 +92,11 @@ services:
       dockerfile: ./docker/Dockerfile
       target: development
     volumes:
-      - ../app:/app/app
+      - ../backend:/app/app
     environment:
       - CONTAINER_ROLE=beats
     env_file:
-      - ../app/.env
+      - ../backend/.env
     depends_on:
       - django-server
       - postgres
@@ -109,11 +109,11 @@ services:
       dockerfile: ./docker/Dockerfile
       target: development
     volumes:
-      - ../app:/app/app
+      - ../backend:/app/app
     environment:
       - CONTAINER_ROLE=worker
     env_file:
-      - ../app/.env
+      - ../backend/.env
     depends_on:
       - django-server
       - postgres
