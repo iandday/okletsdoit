@@ -15,6 +15,8 @@ jobs:
   backend-build-css:
     runs-on: ubuntu-latest
     if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
+    needs:
+      - backend-lint
     defaults:
       run:
         working-directory: ./backend
