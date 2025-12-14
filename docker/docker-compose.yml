@@ -129,13 +129,16 @@ services:
       dockerfile: ./docker/Dockerfile-Frontend
       target: development
     environment:
-      - PUBLIC_API_URL=https://dev.internal
+      - PUBLIC_API_URL=http://django-server:8000
       - SERVICE_TOKEN=your-secure-random-token-here
       - CHOKIDAR_USEPOLLING=true
       - VITE_ALLOWED_HOSTS=dev.internal
+      - NODE_ENV=development
     volumes:
       - ../frontend:/app
       - /app/node_modules
+    depends_on:
+      - django-server
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.frontend-secure.entrypoints=web-secure"
