@@ -106,6 +106,7 @@ if DEBUG:
     ]
 
 MIDDLEWARE = [
+    "core.middleware.ServiceTokenSecurityMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -286,7 +287,10 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # HTTPS redirect
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+# Disable SSL redirect for service token requests (internal container communication)
+# The ServiceTokenSecurityMiddleware will mark internal requests
 SECURE_SSL_REDIRECT = True
+SECURE_REDIRECT_EXEMPT = [r"^api/"]  # Exempt API endpoints from SSL redirect
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 

@@ -1,7 +1,7 @@
 import { redirect } from "@sveltejs/kit";
 import type { Handle } from "@sveltejs/kit";
 
-const API_URL = process.env.VITE_API_URL || "http://localhost:8000";
+const API_URL = process.env.VITE_API_URL;
 
 // Routes that require authentication
 const protectedRoutes: string[] = [];
