@@ -5,6 +5,7 @@ from uuid import UUID
 from datetime import datetime
 from django.shortcuts import get_object_or_404
 from django.db import transaction
+from django.db.models import Q
 
 from core.auth import multi_auth
 from .models import GuestGroup, Guest, RsvpSubmission, RsvpQuestionResponse
@@ -183,7 +184,9 @@ class RsvpQuestionResponseUpdateSchema(Schema):
 @paginate(PageNumberPagination, page_size=50)
 def list_guest_groups(request, filters: GuestGroupFilterSchema = Query(...)):  # pyright: ignore[reportCallIssue]
     """List all guest groups (non-deleted)"""
-    return GuestGroup.objects.filter(is_deleted=False).order_by("-created_at")
+    q = Q(is_deleted=False)
+    q &= filters.get_filter_expression()
+    return GuestGroup.objects.filter(q).order_by("-created_at")
 
 
 @router.get("/guest-groups/{group_id}", response=GuestGroupSchema)
