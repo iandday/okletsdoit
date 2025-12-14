@@ -19,6 +19,9 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     restart: unless-stopped
+    depends_on:
+      - frontend
+      - django-server
   nginx:
     image: nginx:latest
     volumes:
@@ -121,16 +124,22 @@ services:
       - "traefik.enable=false"
     restart: unless-stopped
   frontend:
-    image: my-sveltekit-bun-app
+    build:
+      context: ..
+      dockerfile: ./docker/Dockerfile-Frontend
+      target: development
     environment:
       - PUBLIC_API_URL=https://dev.internal
       - SERVICE_TOKEN=your-secure-random-token-here
+      - CHOKIDAR_USEPOLLING=true
+      - VITE_ALLOWED_HOSTS=dev.internal
+    volumes:
+      - ../frontend:/app
+      - /app/node_modules
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.frontend-secure.entrypoints=web-secure"
       - "traefik.http.routers.frontend-secure.rule=Host(`dev.internal`)"
       - "traefik.http.routers.frontend-secure.priority=5"
       - "traefik.http.routers.frontend-secure.tls=true"
-      - "traefik.http.services.frontend-secure.loadbalancer.server.port=3000"
-    depends_on:
-      - traefik
+      - "traefik.http.services.frontend-secure.loadbalancer.server.port=5173"

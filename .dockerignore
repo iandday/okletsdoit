@@ -59,3 +59,20 @@ Thumbs.db
 *.swo
 
 backend/.en*
+
+node_modules
+Dockerfile*
+docker-compose*
+.dockerignore
+.git
+.gitignore
+README.md
+LICENSE
+.vscode
+Makefile
+helm-charts
+.env
+.editorconfig
+.idea
+coverage*
+.vscode
