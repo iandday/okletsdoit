@@ -5,25 +5,27 @@ This project uses `openapi-typescript` and `openapi-fetch` for type-safe API com
 ## Setup
 
 1. **Ensure Django backend is running:**
-   ```bash
-   cd /Users/ianday/git/okletsdoit
-   just up
-   ```
+
+    ```bash
+    cd /Users/ianday/git/okletsdoit
+    just up
+    ```
 
 2. **Generate TypeScript types from OpenAPI spec:**
-   ```bash
-   cd /Users/ianday/git/okletsdoit_web
-   bun run openapi:generate
-   ```
 
-   This will create `src/lib/api/schema.d.ts` with all the API types.
+    ```bash
+    cd /Users/ianday/git/okletsdoit_web
+    bun run openapi:generate
+    ```
+
+    This will create `src/lib/api/schema.d.ts` with all the API types.
 
 3. **Configure environment variables:**
-   ```bash
-   # .env (already configured)
-   PUBLIC_API_URL=http://localhost:8000
-   SERVICE_TOKEN=your-secure-service-token-here
-   ```
+    ```bash
+    # .env (already configured)
+    PUBLIC_API_URL=http://localhost:8000
+    SERVICE_TOKEN=your-secure-service-token-here
+    ```
 
 ## Usage
 
@@ -32,16 +34,16 @@ This project uses `openapi-typescript` and `openapi-fetch` for type-safe API com
 Use the typed client in `+page.server.ts` or `+server.ts` files:
 
 ```typescript
-import { apiClient } from '$lib/server/client';
+import { apiClient } from "$lib/server/client";
 
 export const load = async () => {
     // Fully typed request and response
     const { data, error } = await apiClient.GET("/guestlist/guest-groups");
-    
+
     if (error) {
         throw error(500, "Failed to fetch guest groups");
     }
-    
+
     return { guestGroups: data };
 };
 ```
@@ -52,12 +54,12 @@ For client-side requests with user session tokens, create a similar client:
 
 ```typescript
 // src/lib/client/api.ts
-import createClient from "openapi-fetch";
 import type { paths } from "$lib/api/schema";
+import createClient from "openapi-fetch";
 
 export function createUserApiClient(sessionToken: string) {
     return createClient<paths>({
-        baseUrl: "/api",  // Proxied through SvelteKit
+        baseUrl: "/api", // Proxied through SvelteKit
         headers: {
             "X-Session-Token": sessionToken,
         },

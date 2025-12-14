@@ -1,4 +1,4 @@
-name: Generate pull requests to develop branch
+name: Generate Development Pull Request
 
 on:
   push:
@@ -26,8 +26,9 @@ jobs:
         id: branch_info
         run: |
           BRANCH_NAME="${GITHUB_REF#refs/heads/}"
+          BASE_BRANCH="develop"
           echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
-          echo "base_branch=developH" >> $GITHUB_OUTPUT
+          echo "base_branch=$BASE_BRANCH" >> $GITHUB_OUTPUT
           
           # Get commit count since branching from base
           COMMIT_COUNT=$(git rev-list --count origin/$BASE_BRANCH..HEAD)
