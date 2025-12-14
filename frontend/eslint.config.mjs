@@ -34,6 +34,9 @@ export default ts.config(
                 },
             ],
         },
+        linterOptions: {
+            reportUnusedDisableDirectives: "off",
+        },
     },
     {
         files: ["**/*.svelte"],

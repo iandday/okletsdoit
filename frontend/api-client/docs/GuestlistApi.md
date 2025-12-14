@@ -1,31 +1,29 @@
 # GuestlistApi
 
-All URIs are relative to *http://localhost*
+All URIs are relative to _http://localhost_
 
-| Method | HTTP request | Description |
-|------------- | ------------- | -------------|
-| [**guestlistApiCreateGuest**](GuestlistApi.md#guestlistapicreateguest) | **POST** /api/guestlist/guests | Create Guest |
-| [**guestlistApiCreateGuestGroup**](GuestlistApi.md#guestlistapicreateguestgroup) | **POST** /api/guestlist/guest-groups | Create Guest Group |
-| [**guestlistApiCreateRsvpResponse**](GuestlistApi.md#guestlistapicreatersvpresponse) | **POST** /api/guestlist/rsvp-responses | Create Rsvp Response |
-| [**guestlistApiCreateRsvpSubmission**](GuestlistApi.md#guestlistapicreatersvpsubmission) | **POST** /api/guestlist/rsvp-submissions | Create Rsvp Submission |
-| [**guestlistApiDeleteGuest**](GuestlistApi.md#guestlistapideleteguest) | **DELETE** /api/guestlist/guests/{guest_id} | Delete Guest |
-| [**guestlistApiDeleteGuestGroup**](GuestlistApi.md#guestlistapideleteguestgroup) | **DELETE** /api/guestlist/guest-groups/{group_id} | Delete Guest Group |
-| [**guestlistApiDeleteRsvpResponse**](GuestlistApi.md#guestlistapideletersvpresponse) | **DELETE** /api/guestlist/rsvp-responses/{response_id} | Delete Rsvp Response |
+| Method                                                                                   | HTTP request                                               | Description            |
+| ---------------------------------------------------------------------------------------- | ---------------------------------------------------------- | ---------------------- |
+| [**guestlistApiCreateGuest**](GuestlistApi.md#guestlistapicreateguest)                   | **POST** /api/guestlist/guests                             | Create Guest           |
+| [**guestlistApiCreateGuestGroup**](GuestlistApi.md#guestlistapicreateguestgroup)         | **POST** /api/guestlist/guest-groups                       | Create Guest Group     |
+| [**guestlistApiCreateRsvpResponse**](GuestlistApi.md#guestlistapicreatersvpresponse)     | **POST** /api/guestlist/rsvp-responses                     | Create Rsvp Response   |
+| [**guestlistApiCreateRsvpSubmission**](GuestlistApi.md#guestlistapicreatersvpsubmission) | **POST** /api/guestlist/rsvp-submissions                   | Create Rsvp Submission |
+| [**guestlistApiDeleteGuest**](GuestlistApi.md#guestlistapideleteguest)                   | **DELETE** /api/guestlist/guests/{guest_id}                | Delete Guest           |
+| [**guestlistApiDeleteGuestGroup**](GuestlistApi.md#guestlistapideleteguestgroup)         | **DELETE** /api/guestlist/guest-groups/{group_id}          | Delete Guest Group     |
+| [**guestlistApiDeleteRsvpResponse**](GuestlistApi.md#guestlistapideletersvpresponse)     | **DELETE** /api/guestlist/rsvp-responses/{response_id}     | Delete Rsvp Response   |
 | [**guestlistApiDeleteRsvpSubmission**](GuestlistApi.md#guestlistapideletersvpsubmission) | **DELETE** /api/guestlist/rsvp-submissions/{submission_id} | Delete Rsvp Submission |
-| [**guestlistApiGetGuest**](GuestlistApi.md#guestlistapigetguest) | **GET** /api/guestlist/guests/{guest_id} | Get Guest |
-| [**guestlistApiGetGuestGroup**](GuestlistApi.md#guestlistapigetguestgroup) | **GET** /api/guestlist/guest-groups/{group_id} | Get Guest Group |
-| [**guestlistApiGetRsvpResponse**](GuestlistApi.md#guestlistapigetrsvpresponse) | **GET** /api/guestlist/rsvp-responses/{response_id} | Get Rsvp Response |
-| [**guestlistApiGetRsvpSubmission**](GuestlistApi.md#guestlistapigetrsvpsubmission) | **GET** /api/guestlist/rsvp-submissions/{submission_id} | Get Rsvp Submission |
-| [**guestlistApiListGuestGroups**](GuestlistApi.md#guestlistapilistguestgroups) | **GET** /api/guestlist/guest-groups | List Guest Groups |
-| [**guestlistApiListGuests**](GuestlistApi.md#guestlistapilistguests) | **GET** /api/guestlist/guests | List Guests |
-| [**guestlistApiListRsvpResponses**](GuestlistApi.md#guestlistapilistrsvpresponses) | **GET** /api/guestlist/rsvp-responses | List Rsvp Responses |
-| [**guestlistApiListRsvpSubmissions**](GuestlistApi.md#guestlistapilistrsvpsubmissions) | **GET** /api/guestlist/rsvp-submissions | List Rsvp Submissions |
-| [**guestlistApiUpdateGuest**](GuestlistApi.md#guestlistapiupdateguest) | **PUT** /api/guestlist/guests/{guest_id} | Update Guest |
-| [**guestlistApiUpdateGuestGroup**](GuestlistApi.md#guestlistapiupdateguestgroup) | **PUT** /api/guestlist/guest-groups/{group_id} | Update Guest Group |
-| [**guestlistApiUpdateRsvpResponse**](GuestlistApi.md#guestlistapiupdatersvpresponse) | **PUT** /api/guestlist/rsvp-responses/{response_id} | Update Rsvp Response |
-| [**guestlistApiUpdateRsvpSubmission**](GuestlistApi.md#guestlistapiupdatersvpsubmission) | **PUT** /api/guestlist/rsvp-submissions/{submission_id} | Update Rsvp Submission |
-
-
+| [**guestlistApiGetGuest**](GuestlistApi.md#guestlistapigetguest)                         | **GET** /api/guestlist/guests/{guest_id}                   | Get Guest              |
+| [**guestlistApiGetGuestGroup**](GuestlistApi.md#guestlistapigetguestgroup)               | **GET** /api/guestlist/guest-groups/{group_id}             | Get Guest Group        |
+| [**guestlistApiGetRsvpResponse**](GuestlistApi.md#guestlistapigetrsvpresponse)           | **GET** /api/guestlist/rsvp-responses/{response_id}        | Get Rsvp Response      |
+| [**guestlistApiGetRsvpSubmission**](GuestlistApi.md#guestlistapigetrsvpsubmission)       | **GET** /api/guestlist/rsvp-submissions/{submission_id}    | Get Rsvp Submission    |
+| [**guestlistApiListGuestGroups**](GuestlistApi.md#guestlistapilistguestgroups)           | **GET** /api/guestlist/guest-groups                        | List Guest Groups      |
+| [**guestlistApiListGuests**](GuestlistApi.md#guestlistapilistguests)                     | **GET** /api/guestlist/guests                              | List Guests            |
+| [**guestlistApiListRsvpResponses**](GuestlistApi.md#guestlistapilistrsvpresponses)       | **GET** /api/guestlist/rsvp-responses                      | List Rsvp Responses    |
+| [**guestlistApiListRsvpSubmissions**](GuestlistApi.md#guestlistapilistrsvpsubmissions)   | **GET** /api/guestlist/rsvp-submissions                    | List Rsvp Submissions  |
+| [**guestlistApiUpdateGuest**](GuestlistApi.md#guestlistapiupdateguest)                   | **PUT** /api/guestlist/guests/{guest_id}                   | Update Guest           |
+| [**guestlistApiUpdateGuestGroup**](GuestlistApi.md#guestlistapiupdateguestgroup)         | **PUT** /api/guestlist/guest-groups/{group_id}             | Update Guest Group     |
+| [**guestlistApiUpdateRsvpResponse**](GuestlistApi.md#guestlistapiupdatersvpresponse)     | **PUT** /api/guestlist/rsvp-responses/{response_id}        | Update Rsvp Response   |
+| [**guestlistApiUpdateRsvpSubmission**](GuestlistApi.md#guestlistapiupdatersvpsubmission) | **PUT** /api/guestlist/rsvp-submissions/{submission_id}    | Update Rsvp Submission |
 
 ## guestlistApiCreateGuest
 
@@ -67,10 +65,9 @@ example().catch(console.error);
 
 ### Parameters
 
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **guestCreateSchema** | [GuestCreateSchema](GuestCreateSchema.md) |  | |
+| Name                  | Type                                      | Description | Notes |
+| --------------------- | ----------------------------------------- | ----------- | ----- |
+| **guestCreateSchema** | [GuestCreateSchema](GuestCreateSchema.md) |             |       |
 
 ### Return type
 
@@ -85,14 +82,13 @@ No authorization required
 - **Content-Type**: `application/json`
 - **Accept**: `application/json`
 
-
 ### HTTP response details
+
 | Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | OK |  -  |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
-
 
 ## guestlistApiCreateGuestGroup
 
@@ -134,10 +130,9 @@ example().catch(console.error);
 
 ### Parameters
 
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **guestGroupCreateSchema** | [GuestGroupCreateSchema](GuestGroupCreateSchema.md) |  | |
+| Name                       | Type                                                | Description | Notes |
+| -------------------------- | --------------------------------------------------- | ----------- | ----- |
+| **guestGroupCreateSchema** | [GuestGroupCreateSchema](GuestGroupCreateSchema.md) |             |       |
 
 ### Return type
 
@@ -152,14 +147,13 @@ No authorization required
 - **Content-Type**: `application/json`
 - **Accept**: `application/json`
 
-
 ### HTTP response details
+
 | Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | OK |  -  |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
-
 
 ## guestlistApiCreateRsvpResponse
 
@@ -201,10 +195,9 @@ example().catch(console.error);
 
 ### Parameters
 
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **rsvpQuestionResponseCreateSchema** | [RsvpQuestionResponseCreateSchema](RsvpQuestionResponseCreateSchema.md) |  | |
+| Name                                 | Type                                                                    | Description | Notes |
+| ------------------------------------ | ----------------------------------------------------------------------- | ----------- | ----- |
+| **rsvpQuestionResponseCreateSchema** | [RsvpQuestionResponseCreateSchema](RsvpQuestionResponseCreateSchema.md) |             |       |
 
 ### Return type
 
@@ -219,14 +212,13 @@ No authorization required
 - **Content-Type**: `application/json`
 - **Accept**: `application/json`
 
-
 ### HTTP response details
+
 | Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | OK |  -  |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
-
 
 ## guestlistApiCreateRsvpSubmission
 
@@ -268,10 +260,9 @@ example().catch(console.error);
 
 ### Parameters
 
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **rsvpSubmissionCreateSchema** | [RsvpSubmissionCreateSchema](RsvpSubmissionCreateSchema.md) |  | |
+| Name                           | Type                                                        | Description | Notes |
+| ------------------------------ | ----------------------------------------------------------- | ----------- | ----- |
+| **rsvpSubmissionCreateSchema** | [RsvpSubmissionCreateSchema](RsvpSubmissionCreateSchema.md) |             |       |
 
 ### Return type
 
@@ -286,14 +277,13 @@ No authorization required
 - **Content-Type**: `application/json`
 - **Accept**: `application/json`
 
-
 ### HTTP response details
+
 | Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | OK |  -  |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
-
 
 ## guestlistApiDeleteGuest
 
@@ -335,10 +325,9 @@ example().catch(console.error);
 
 ### Parameters
 
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **guestId** | `string` |  | [Defaults to `undefined`] |
+| Name        | Type     | Description | Notes                     |
+| ----------- | -------- | ----------- | ------------------------- |
+| **guestId** | `string` |             | [Defaults to `undefined`] |
 
 ### Return type
 
@@ -353,14 +342,13 @@ No authorization required
 - **Content-Type**: Not defined
 - **Accept**: Not defined
 
-
 ### HTTP response details
+
 | Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | OK |  -  |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
-
 
 ## guestlistApiDeleteGuestGroup
 
@@ -402,10 +390,9 @@ example().catch(console.error);
 
 ### Parameters
 
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **groupId** | `string` |  | [Defaults to `undefined`] |
+| Name        | Type     | Description | Notes                     |
+| ----------- | -------- | ----------- | ------------------------- |
+| **groupId** | `string` |             | [Defaults to `undefined`] |
 
 ### Return type
 
@@ -420,14 +407,13 @@ No authorization required
 - **Content-Type**: Not defined
 - **Accept**: Not defined
 
-
 ### HTTP response details
+
 | Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | OK |  -  |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
-
 
 ## guestlistApiDeleteRsvpResponse
 
@@ -469,10 +455,9 @@ example().catch(console.error);
 
 ### Parameters
 
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **responseId** | `string` |  | [Defaults to `undefined`] |
+| Name           | Type     | Description | Notes                     |
+| -------------- | -------- | ----------- | ------------------------- |
+| **responseId** | `string` |             | [Defaults to `undefined`] |
 
 ### Return type
 
@@ -487,14 +472,13 @@ No authorization required
 - **Content-Type**: Not defined
 - **Accept**: Not defined
 
-
 ### HTTP response details
+
 | Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | OK |  -  |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
-
 
 ## guestlistApiDeleteRsvpSubmission
 
@@ -536,10 +520,9 @@ example().catch(console.error);
 
 ### Parameters
 
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **submissionId** | `string` |  | [Defaults to `undefined`] |
+| Name             | Type     | Description | Notes                     |
+| ---------------- | -------- | ----------- | ------------------------- |
+| **submissionId** | `string` |             | [Defaults to `undefined`] |
 
 ### Return type
 
@@ -554,14 +537,13 @@ No authorization required
 - **Content-Type**: Not defined
 - **Accept**: Not defined
 
-
 ### HTTP response details
+
 | Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | OK |  -  |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
-
 
 ## guestlistApiGetGuest
 
@@ -603,10 +585,9 @@ example().catch(console.error);
 
 ### Parameters
 
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **guestId** | `string` |  | [Defaults to `undefined`] |
+| Name        | Type     | Description | Notes                     |
+| ----------- | -------- | ----------- | ------------------------- |
+| **guestId** | `string` |             | [Defaults to `undefined`] |
 
 ### Return type
 
@@ -621,14 +602,13 @@ No authorization required
 - **Content-Type**: Not defined
 - **Accept**: `application/json`
 
-
 ### HTTP response details
+
 | Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | OK |  -  |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
-
 
 ## guestlistApiGetGuestGroup
 
@@ -670,10 +650,9 @@ example().catch(console.error);
 
 ### Parameters
 
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **groupId** | `string` |  | [Defaults to `undefined`] |
+| Name        | Type     | Description | Notes                     |
+| ----------- | -------- | ----------- | ------------------------- |
+| **groupId** | `string` |             | [Defaults to `undefined`] |
 
 ### Return type
 
@@ -688,14 +667,13 @@ No authorization required
 - **Content-Type**: Not defined
 - **Accept**: `application/json`
 
-
 ### HTTP response details
+
 | Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | OK |  -  |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
-
 
 ## guestlistApiGetRsvpResponse
 
@@ -737,10 +715,9 @@ example().catch(console.error);
 
 ### Parameters
 
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **responseId** | `string` |  | [Defaults to `undefined`] |
+| Name           | Type     | Description | Notes                     |
+| -------------- | -------- | ----------- | ------------------------- |
+| **responseId** | `string` |             | [Defaults to `undefined`] |
 
 ### Return type
 
@@ -755,14 +732,13 @@ No authorization required
 - **Content-Type**: Not defined
 - **Accept**: `application/json`
 
-
 ### HTTP response details
+
 | Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | OK |  -  |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
-
 
 ## guestlistApiGetRsvpSubmission
 
@@ -804,10 +780,9 @@ example().catch(console.error);
 
 ### Parameters
 
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **submissionId** | `string` |  | [Defaults to `undefined`] |
+| Name             | Type     | Description | Notes                     |
+| ---------------- | -------- | ----------- | ------------------------- |
+| **submissionId** | `string` |             | [Defaults to `undefined`] |
 
 ### Return type
 
@@ -822,14 +797,13 @@ No authorization required
 - **Content-Type**: Not defined
 - **Accept**: `application/json`
 
-
 ### HTTP response details
+
 | Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | OK |  -  |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
-
 
 ## guestlistApiListGuestGroups
 
@@ -842,47 +816,44 @@ List all guest groups (non-deleted)
 ### Example
 
 ```ts
-import {
-  Configuration,
-  GuestlistApi,
-} from '';
-import type { GuestlistApiListGuestGroupsRequest } from '';
+import { Configuration, GuestlistApi } from "";
+import type { GuestlistApiListGuestGroupsRequest } from "";
 
 async function example() {
-  console.log("🚀 Testing  SDK...");
-  const api = new GuestlistApi();
+    console.log("🚀 Testing  SDK...");
+    const api = new GuestlistApi();
 
-  const body = {
-    // string (optional)
-    name: name_example,
-    // string (optional)
-    email: email_example,
-    // string (optional)
-    phone: phone_example,
-    // string (optional)
-    city: city_example,
-    // string (optional)
-    state: state_example,
-    // string (optional)
-    zipCode: zipCode_example,
-    // string (optional)
-    relationship: relationship_example,
-    // number (optional)
-    priority: 56,
-    // string (optional)
-    rsvpCode: rsvpCode_example,
-    // number (optional)
-    page: 56,
-    // number (optional)
-    pageSize: 56,
-  } satisfies GuestlistApiListGuestGroupsRequest;
+    const body = {
+        // string (optional)
+        name: name_example,
+        // string (optional)
+        email: email_example,
+        // string (optional)
+        phone: phone_example,
+        // string (optional)
+        city: city_example,
+        // string (optional)
+        state: state_example,
+        // string (optional)
+        zipCode: zipCode_example,
+        // string (optional)
+        relationship: relationship_example,
+        // number (optional)
+        priority: 56,
+        // string (optional)
+        rsvpCode: rsvpCode_example,
+        // number (optional)
+        page: 56,
+        // number (optional)
+        pageSize: 56,
+    } satisfies GuestlistApiListGuestGroupsRequest;
 
-  try {
-    const data = await api.guestlistApiListGuestGroups(body);
-    console.log(data);
-  } catch (error) {
-    console.error(error);
-  }
+    try {
+        const data = await api.guestlistApiListGuestGroups(body);
+        console.log(data);
+    } catch (error) {
+        console.error(error);
+    }
 }
 
 // Run the test
@@ -891,20 +862,19 @@ example().catch(console.error);
 
 ### Parameters
 
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **name** | `string` |  | [Optional] [Defaults to `undefined`] |
-| **email** | `string` |  | [Optional] [Defaults to `undefined`] |
-| **phone** | `string` |  | [Optional] [Defaults to `undefined`] |
-| **city** | `string` |  | [Optional] [Defaults to `undefined`] |
-| **state** | `string` |  | [Optional] [Defaults to `undefined`] |
-| **zipCode** | `string` |  | [Optional] [Defaults to `undefined`] |
-| **relationship** | `string` |  | [Optional] [Defaults to `undefined`] |
-| **priority** | `number` |  | [Optional] [Defaults to `undefined`] |
-| **rsvpCode** | `string` |  | [Optional] [Defaults to `undefined`] |
-| **page** | `number` |  | [Optional] [Defaults to `1`] |
-| **pageSize** | `number` |  | [Optional] [Defaults to `undefined`] |
+| Name             | Type     | Description | Notes                                |
+| ---------------- | -------- | ----------- | ------------------------------------ |
+| **name**         | `string` |             | [Optional] [Defaults to `undefined`] |
+| **email**        | `string` |             | [Optional] [Defaults to `undefined`] |
+| **phone**        | `string` |             | [Optional] [Defaults to `undefined`] |
+| **city**         | `string` |             | [Optional] [Defaults to `undefined`] |
+| **state**        | `string` |             | [Optional] [Defaults to `undefined`] |
+| **zipCode**      | `string` |             | [Optional] [Defaults to `undefined`] |
+| **relationship** | `string` |             | [Optional] [Defaults to `undefined`] |
+| **priority**     | `number` |             | [Optional] [Defaults to `undefined`] |
+| **rsvpCode**     | `string` |             | [Optional] [Defaults to `undefined`] |
+| **page**         | `number` |             | [Optional] [Defaults to `1`]         |
+| **pageSize**     | `number` |             | [Optional] [Defaults to `undefined`] |
 
 ### Return type
 
@@ -919,14 +889,13 @@ No authorization required
 - **Content-Type**: Not defined
 - **Accept**: `application/json`
 
-
 ### HTTP response details
+
 | Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | OK |  -  |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
-
 
 ## guestlistApiListGuests
 
@@ -972,12 +941,11 @@ example().catch(console.error);
 
 ### Parameters
 
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **groupId** | `string` |  | [Optional] [Defaults to `undefined`] |
-| **page** | `number` |  | [Optional] [Defaults to `1`] |
-| **pageSize** | `number` |  | [Optional] [Defaults to `undefined`] |
+| Name         | Type     | Description | Notes                                |
+| ------------ | -------- | ----------- | ------------------------------------ |
+| **groupId**  | `string` |             | [Optional] [Defaults to `undefined`] |
+| **page**     | `number` |             | [Optional] [Defaults to `1`]         |
+| **pageSize** | `number` |             | [Optional] [Defaults to `undefined`] |
 
 ### Return type
 
@@ -992,14 +960,13 @@ No authorization required
 - **Content-Type**: Not defined
 - **Accept**: `application/json`
 
-
 ### HTTP response details
+
 | Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | OK |  -  |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
-
 
 ## guestlistApiListRsvpResponses
 
@@ -1045,12 +1012,11 @@ example().catch(console.error);
 
 ### Parameters
 
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **submissionId** | `string` |  | [Optional] [Defaults to `undefined`] |
-| **page** | `number` |  | [Optional] [Defaults to `1`] |
-| **pageSize** | `number` |  | [Optional] [Defaults to `undefined`] |
+| Name             | Type     | Description | Notes                                |
+| ---------------- | -------- | ----------- | ------------------------------------ |
+| **submissionId** | `string` |             | [Optional] [Defaults to `undefined`] |
+| **page**         | `number` |             | [Optional] [Defaults to `1`]         |
+| **pageSize**     | `number` |             | [Optional] [Defaults to `undefined`] |
 
 ### Return type
 
@@ -1065,14 +1031,13 @@ No authorization required
 - **Content-Type**: Not defined
 - **Accept**: `application/json`
 
-
 ### HTTP response details
+
 | Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | OK |  -  |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
-
 
 ## guestlistApiListRsvpSubmissions
 
@@ -1085,29 +1050,26 @@ List all RSVP submissions
 ### Example
 
 ```ts
-import {
-  Configuration,
-  GuestlistApi,
-} from '';
-import type { GuestlistApiListRsvpSubmissionsRequest } from '';
+import { Configuration, GuestlistApi } from "";
+import type { GuestlistApiListRsvpSubmissionsRequest } from "";
 
 async function example() {
-  console.log("🚀 Testing  SDK...");
-  const api = new GuestlistApi();
+    console.log("🚀 Testing  SDK...");
+    const api = new GuestlistApi();
 
-  const body = {
-    // number (optional)
-    page: 56,
-    // number (optional)
-    pageSize: 56,
-  } satisfies GuestlistApiListRsvpSubmissionsRequest;
+    const body = {
+        // number (optional)
+        page: 56,
+        // number (optional)
+        pageSize: 56,
+    } satisfies GuestlistApiListRsvpSubmissionsRequest;
 
-  try {
-    const data = await api.guestlistApiListRsvpSubmissions(body);
-    console.log(data);
-  } catch (error) {
-    console.error(error);
-  }
+    try {
+        const data = await api.guestlistApiListRsvpSubmissions(body);
+        console.log(data);
+    } catch (error) {
+        console.error(error);
+    }
 }
 
 // Run the test
@@ -1116,11 +1078,10 @@ example().catch(console.error);
 
 ### Parameters
 
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **page** | `number` |  | [Optional] [Defaults to `1`] |
-| **pageSize** | `number` |  | [Optional] [Defaults to `undefined`] |
+| Name         | Type     | Description | Notes                                |
+| ------------ | -------- | ----------- | ------------------------------------ |
+| **page**     | `number` |             | [Optional] [Defaults to `1`]         |
+| **pageSize** | `number` |             | [Optional] [Defaults to `undefined`] |
 
 ### Return type
 
@@ -1135,14 +1096,13 @@ No authorization required
 - **Content-Type**: Not defined
 - **Accept**: `application/json`
 
-
 ### HTTP response details
+
 | Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | OK |  -  |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
-
 
 ## guestlistApiUpdateGuest
 
@@ -1186,11 +1146,10 @@ example().catch(console.error);
 
 ### Parameters
 
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **guestId** | `string` |  | [Defaults to `undefined`] |
-| **guestUpdateSchema** | [GuestUpdateSchema](GuestUpdateSchema.md) |  | |
+| Name                  | Type                                      | Description | Notes                     |
+| --------------------- | ----------------------------------------- | ----------- | ------------------------- |
+| **guestId**           | `string`                                  |             | [Defaults to `undefined`] |
+| **guestUpdateSchema** | [GuestUpdateSchema](GuestUpdateSchema.md) |             |                           |
 
 ### Return type
 
@@ -1205,14 +1164,13 @@ No authorization required
 - **Content-Type**: `application/json`
 - **Accept**: `application/json`
 
-
 ### HTTP response details
+
 | Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | OK |  -  |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
-
 
 ## guestlistApiUpdateGuestGroup
 
@@ -1256,11 +1214,10 @@ example().catch(console.error);
 
 ### Parameters
 
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **groupId** | `string` |  | [Defaults to `undefined`] |
-| **guestGroupUpdateSchema** | [GuestGroupUpdateSchema](GuestGroupUpdateSchema.md) |  | |
+| Name                       | Type                                                | Description | Notes                     |
+| -------------------------- | --------------------------------------------------- | ----------- | ------------------------- |
+| **groupId**                | `string`                                            |             | [Defaults to `undefined`] |
+| **guestGroupUpdateSchema** | [GuestGroupUpdateSchema](GuestGroupUpdateSchema.md) |             |                           |
 
 ### Return type
 
@@ -1275,14 +1232,13 @@ No authorization required
 - **Content-Type**: `application/json`
 - **Accept**: `application/json`
 
-
 ### HTTP response details
+
 | Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | OK |  -  |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
-
 
 ## guestlistApiUpdateRsvpResponse
 
@@ -1326,11 +1282,10 @@ example().catch(console.error);
 
 ### Parameters
 
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **responseId** | `string` |  | [Defaults to `undefined`] |
-| **rsvpQuestionResponseUpdateSchema** | [RsvpQuestionResponseUpdateSchema](RsvpQuestionResponseUpdateSchema.md) |  | |
+| Name                                 | Type                                                                    | Description | Notes                     |
+| ------------------------------------ | ----------------------------------------------------------------------- | ----------- | ------------------------- |
+| **responseId**                       | `string`                                                                |             | [Defaults to `undefined`] |
+| **rsvpQuestionResponseUpdateSchema** | [RsvpQuestionResponseUpdateSchema](RsvpQuestionResponseUpdateSchema.md) |             |                           |
 
 ### Return type
 
@@ -1345,14 +1300,13 @@ No authorization required
 - **Content-Type**: `application/json`
 - **Accept**: `application/json`
 
-
 ### HTTP response details
+
 | Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | OK |  -  |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
-
 
 ## guestlistApiUpdateRsvpSubmission
 
@@ -1396,11 +1350,10 @@ example().catch(console.error);
 
 ### Parameters
 
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **submissionId** | `string` |  | [Defaults to `undefined`] |
-| **rsvpSubmissionUpdateSchema** | [RsvpSubmissionUpdateSchema](RsvpSubmissionUpdateSchema.md) |  | |
+| Name                           | Type                                                        | Description | Notes                     |
+| ------------------------------ | ----------------------------------------------------------- | ----------- | ------------------------- |
+| **submissionId**               | `string`                                                    |             | [Defaults to `undefined`] |
+| **rsvpSubmissionUpdateSchema** | [RsvpSubmissionUpdateSchema](RsvpSubmissionUpdateSchema.md) |             |                           |
 
 ### Return type
 
@@ -1415,11 +1368,10 @@ No authorization required
 - **Content-Type**: `application/json`
 - **Accept**: `application/json`
 
-
 ### HTTP response details
+
 | Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | OK |  -  |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
-
