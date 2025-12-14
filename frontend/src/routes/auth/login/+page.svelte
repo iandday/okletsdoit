@@ -118,7 +118,7 @@
                             <!-- <div class="divider">OR</div> -->
 
                             <div class="space-y-2">
-                                {#each providers as provider}
+                                {#each providers as provider (provider.id)}
                                     <button
                                         onclick={() => handleSocialLogin(provider.id)}
                                         class="btn btn-primary text-secondary-content w-full gap-2"

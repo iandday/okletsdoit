@@ -2,9 +2,8 @@
  * Type-safe API client for server-side requests
  * Generated from OpenAPI spec using openapi-typescript
  */
-
-import createClient from "openapi-fetch";
 import type { paths } from "$lib/api/schema";
+import createClient from "openapi-fetch";
 
 const API_URL = process.env.PUBLIC_API_URL;
 const SERVICE_TOKEN = process.env.SERVICE_TOKEN;
@@ -12,7 +11,7 @@ const SERVICE_TOKEN = process.env.SERVICE_TOKEN;
 /**
  * Server-side API client with service token authentication
  * Automatically includes X-Service-Token header for backend-to-backend auth
- * 
+ *
  * Note: Paths include /api/ prefix as defined in OpenAPI spec
  */
 export const apiClient = createClient<paths>({
@@ -30,11 +29,11 @@ export const apiClient = createClient<paths>({
  * export const load = async () => {
  *     // Note: paths include /api/ prefix
  *     const { data, error } = await apiClient.GET("/api/guestlist/guest-groups");
- *     
+ *
  *     if (error) {
  *         throw error(500, "Failed to load data");
  *     }
- *     
+ *
  *     return { guestGroups: data };
  * };
  */

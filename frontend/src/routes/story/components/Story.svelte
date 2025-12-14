@@ -50,7 +50,7 @@
             </div>
 
             <!-- Story Parts -->
-            {#each storyParts as part, index}
+            {#each storyParts as part, index (index)}
                 <div class="relative mb-16 md:mb-24 last:mb-0">
                     <!-- Mobile/Tablet Layout -->
                     <div class="md:hidden">
@@ -64,7 +64,7 @@
                                     </div>
                                     <div class="flex-1">
                                         <h2 class="card-title text-2xl badge badge-{part.color} mb-3">{part.title}</h2>
-                                        {#each part.content as p}
+                                        {#each part.content as p, index (index)}
                                             <p class="text-base-content/80 leading-relaxed pb-2">{p}</p>
                                         {/each}
                                     </div>
@@ -85,7 +85,7 @@
                                             <h2 class="card-title text-2xl badge badge-{part.color} mb-3">
                                                 {part.title}
                                             </h2>
-                                            {#each part.content as p}
+                                            {#each part.content as p, index (index)}
                                                 <p class="text-base-content/80 leading-relaxed pb-2">{p}</p>
                                             {/each}
                                         </div>
@@ -114,7 +114,7 @@
                                             <h2 class="card-title text-2xl badge badge-{part.color} mb-3">
                                                 {part.title}
                                             </h2>
-                                            {#each part.content as p}
+                                            {#each part.content as p, index (index)}
                                                 <p class="text-base-content/80 leading-relaxed pb-2">{p}</p>
                                             {/each}
                                         </div>

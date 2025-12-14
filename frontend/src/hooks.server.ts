@@ -11,7 +11,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 
     // Get session cookie for potential API calls
     const sessionCookie = cookies.get("sessionid");
-    
+
     // Store session info in locals for use in load functions
     if (sessionCookie) {
         event.locals.sessionCookie = sessionCookie;

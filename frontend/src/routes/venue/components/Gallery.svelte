@@ -62,7 +62,7 @@
     <div class="relative">
         <div class="gallery-swiper overflow-hidden rounded-2xl">
             <div class="swiper-wrapper">
-                {#each photos as photo}
+                {#each photos as photo, index (index)}
                     <div class="swiper-slide">
                         <div
                             class="relative aspect-[4/3] overflow-hidden rounded-xl bg-base-200 shadow-lg transition-transform duration-300 hover:scale-105">

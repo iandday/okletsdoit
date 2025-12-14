@@ -74,7 +74,7 @@
 
     <!-- Accommodations Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto px-4">
-        {#each Accommodations as accommodation, index}
+        {#each Accommodations as accommodation, index (index)}
             <div
                 class="card bg-base-200 shadow-xl border border-base-300 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
                 <div class="card-body">

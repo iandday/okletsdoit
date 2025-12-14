@@ -80,7 +80,7 @@
         <div class="relative max-w-[95%] md:max-w-xl lg:max-w-3xl xl:max-w-5xl">
             <div class="attractions-swiper">
                 <div class="swiper-wrapper">
-                    {#each attractions as attraction}
+                    {#each attractions as attraction, index (index)}
                         <div class="swiper-slide">
                             <div class="group relative overflow-hidden rounded-xl p-1.5">
                                 <img

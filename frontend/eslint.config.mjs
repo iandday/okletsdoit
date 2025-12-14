@@ -26,6 +26,7 @@ export default ts.config(
             "@typescript-eslint/no-explicit-any": "off",
             "@typescript-eslint/no-unused-vars": "off",
             "svelte/no-useless-mustaches": "off",
+            "svelte/no-navigation-without-resolve": "off",
             "svelte/valid-compile": [
                 "error",
                 {
