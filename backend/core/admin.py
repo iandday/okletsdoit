@@ -3,7 +3,7 @@ from django.utils.html import format_html
 from import_export.admin import ImportExportModelAdmin
 from simple_history.admin import SimpleHistoryAdmin
 from django.db import models
-from .models import Idea, RsvpQuestion, Timeline, Inspiration, Question, RsvpQuestionChoice
+from .models import Idea, RsvpQuestion, Timeline, Inspiration, Question, RsvpQuestionChoice, WeddingSettings
 
 
 class RsvpQuestionChoiceInline(admin.TabularInline):
@@ -248,6 +248,76 @@ class RsvpQuestionChoiceAdmin(admin.ModelAdmin):
     list_display = ("choice_text", "question")
     search_fields = ("choice_text", "question__text")
     ordering = ("question__text", "choice_text")
+
+
+@admin.register(WeddingSettings)
+class WeddingSettingsAdmin(SimpleHistoryAdmin):
+    """
+    Admin for WeddingSettings singleton model.
+    Only one instance can exist, so we disable add/delete actions.
+    """
+
+    list_display = ("__str__", "wedding_date", "allow_rsvp")
+    readonly_fields = ("id",)
+
+    fieldsets = (
+        ("General Settings", {"fields": ("wedding_date", "allow_rsvp", "default_data_loaded")}),
+        (
+            "RSVP Button Text",
+            {
+                "fields": ("rsvp_accept_button", "rsvp_decline_button"),
+                "classes": ("collapse",),
+            },
+        ),
+        (
+            "RSVP Labels",
+            {
+                "fields": (
+                    "rsvp_attending_label",
+                    "rsvp_accommodation_label",
+                    "rsvp_vip_label",
+                    "standard_group_label",
+                    "vip_group_label",
+                ),
+                "classes": ("collapse",),
+            },
+        ),
+        (
+            "RSVP Messages",
+            {
+                "fields": (
+                    "rsvp_accept_intro",
+                    "rsvp_accept_success_message",
+                    "rsvp_decline_success_message",
+                    "rsvp_accommodation_intro",
+                    "rsvp_vip_intro",
+                    "rsvp_success_headline",
+                ),
+                "classes": ("collapse",),
+            },
+        ),
+        (
+            "RSVP Display Options",
+            {
+                "fields": (
+                    "rsvp_show_accommodation_intro",
+                    "rsvp_show_vip_intro",
+                    "rsvp_enable_email_updates",
+                    "rsvp_email_update_label",
+                ),
+                "classes": ("collapse",),
+            },
+        ),
+        ("System", {"fields": ("id",), "classes": ("collapse",)}),
+    )
+
+    def has_add_permission(self, request):
+        """Prevent adding new instances - singleton pattern"""
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        """Prevent deletion of the singleton instance"""
+        return False
 
 
 admin.site.site_header = "Wedding Planning Manager"

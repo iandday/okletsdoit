@@ -1,5 +1,7 @@
+apis/CoreApi.ts
 apis/GuestlistApi.ts
 apis/index.ts
+docs/CoreApi.md
 docs/GuestCreateSchema.md
 docs/GuestGroupCreateSchema.md
 docs/GuestGroupFilterSchema.md
@@ -19,6 +21,8 @@ docs/RsvpQuestionResponseUpdateSchema.md
 docs/RsvpSubmissionCreateSchema.md
 docs/RsvpSubmissionSchema.md
 docs/RsvpSubmissionUpdateSchema.md
+docs/WeddingSettingsSchema.md
+docs/WeddingSettingsUpdateSchema.md
 index.ts
 models/GuestCreateSchema.ts
 models/GuestGroupCreateSchema.ts
@@ -38,5 +42,7 @@ models/RsvpQuestionResponseUpdateSchema.ts
 models/RsvpSubmissionCreateSchema.ts
 models/RsvpSubmissionSchema.ts
 models/RsvpSubmissionUpdateSchema.ts
+models/WeddingSettingsSchema.ts
+models/WeddingSettingsUpdateSchema.ts
 models/index.ts
 runtime.ts

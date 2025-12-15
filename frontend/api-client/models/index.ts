@@ -18,3 +18,5 @@ export * from "./RsvpQuestionResponseUpdateSchema";
 export * from "./RsvpSubmissionCreateSchema";
 export * from "./RsvpSubmissionSchema";
 export * from "./RsvpSubmissionUpdateSchema";
+export * from "./WeddingSettingsSchema";
+export * from "./WeddingSettingsUpdateSchema";

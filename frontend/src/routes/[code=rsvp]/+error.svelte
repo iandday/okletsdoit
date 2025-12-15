@@ -9,7 +9,7 @@
             <p class="py-6 text-xl">{$page.error?.message || "An error occurred"}</p>
 
             <div class="space-y-4">
-                {#if $page.status === 404}
+                {#if $page.status === 404 && $page.error?.message?.includes("RSVP code")}
                     <div class="alert alert-warning">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"

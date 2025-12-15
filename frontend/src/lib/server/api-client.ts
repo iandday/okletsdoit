@@ -2,7 +2,7 @@
  * Server-side API client using the OpenAPI generated client
  * Configured with service token authentication for backend-to-backend communication
  */
-import { Configuration, GuestlistApi } from "../../../api-client";
+import { Configuration, GuestlistApi, CoreApi } from "../../../api-client";
 import type { Middleware } from "../../../api-client/runtime";
 
 const API_BASE_PATH = process.env.PUBLIC_API_URL;
@@ -54,9 +54,9 @@ const debugMiddleware: Middleware = {
             error: context.error,
             response: context.response
                 ? {
-                      status: context.response.status,
-                      statusText: context.response.statusText,
-                  }
+                    status: context.response.status,
+                    statusText: context.response.statusText,
+                }
                 : undefined,
         });
         return context.response;
@@ -78,10 +78,7 @@ export function createApiClient() {
 
     return {
         guestlist: new GuestlistApi(config),
-        // Add more API clients here as needed:
-        // users: new UsersApi(config),
-        // expenses: new ExpensesApi(config),
-        // etc.
+        core: new CoreApi(config),
     };
 }
 
