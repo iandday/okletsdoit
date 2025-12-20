@@ -54,9 +54,9 @@ const debugMiddleware: Middleware = {
             error: context.error,
             response: context.response
                 ? {
-                    status: context.response.status,
-                    statusText: context.response.statusText,
-                }
+                      status: context.response.status,
+                      statusText: context.response.statusText,
+                  }
                 : undefined,
         });
         return context.response;

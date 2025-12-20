@@ -22,6 +22,7 @@ import type {
     PagedGuestSchema,
     PagedRsvpQuestionResponseSchema,
     PagedRsvpSubmissionSchema,
+    RsvpDeclineResponseSchema,
     RsvpQuestionResponseCreateSchema,
     RsvpQuestionResponseSchema,
     RsvpQuestionResponseUpdateSchema,
@@ -50,6 +51,8 @@ import {
     PagedRsvpQuestionResponseSchemaToJSON,
     PagedRsvpSubmissionSchemaFromJSON,
     PagedRsvpSubmissionSchemaToJSON,
+    RsvpDeclineResponseSchemaFromJSON,
+    RsvpDeclineResponseSchemaToJSON,
     RsvpQuestionResponseCreateSchemaFromJSON,
     RsvpQuestionResponseCreateSchemaToJSON,
     RsvpQuestionResponseSchemaFromJSON,
@@ -79,6 +82,10 @@ export interface GuestlistApiCreateRsvpResponseRequest {
 
 export interface GuestlistApiCreateRsvpSubmissionRequest {
     rsvpSubmissionCreateSchema: RsvpSubmissionCreateSchema;
+}
+
+export interface GuestlistApiDeclineRsvpRequest {
+    rsvpCode: string;
 }
 
 export interface GuestlistApiDeleteGuestRequest {
@@ -140,6 +147,7 @@ export interface GuestlistApiListRsvpResponsesRequest {
 }
 
 export interface GuestlistApiListRsvpSubmissionsRequest {
+    rsvpCode?: string | null;
     page?: number;
     pageSize?: number | null;
 }
@@ -361,6 +369,53 @@ export class GuestlistApi extends runtime.BaseAPI {
         initOverrides?: RequestInit | runtime.InitOverrideFunction,
     ): Promise<RsvpSubmissionSchema> {
         const response = await this.guestlistApiCreateRsvpSubmissionRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Decline an RSVP using the rsvp code
+     * Decline Rsvp
+     */
+    async guestlistApiDeclineRsvpRaw(
+        requestParameters: GuestlistApiDeclineRsvpRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<RsvpDeclineResponseSchema>> {
+        if (requestParameters["rsvpCode"] == null) {
+            throw new runtime.RequiredError(
+                "rsvpCode",
+                'Required parameter "rsvpCode" was null or undefined when calling guestlistApiDeclineRsvp().',
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        let urlPath = `/api/guestlist/rsvp-decline/{rsvp_code}`;
+        urlPath = urlPath.replace(`{${"rsvp_code"}}`, encodeURIComponent(String(requestParameters["rsvpCode"])));
+
+        const response = await this.request(
+            {
+                path: urlPath,
+                method: "POST",
+                headers: headerParameters,
+                query: queryParameters,
+            },
+            initOverrides,
+        );
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => RsvpDeclineResponseSchemaFromJSON(jsonValue));
+    }
+
+    /**
+     * Decline an RSVP using the rsvp code
+     * Decline Rsvp
+     */
+    async guestlistApiDeclineRsvp(
+        requestParameters: GuestlistApiDeclineRsvpRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<RsvpDeclineResponseSchema> {
+        const response = await this.guestlistApiDeclineRsvpRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -936,6 +991,10 @@ export class GuestlistApi extends runtime.BaseAPI {
         initOverrides?: RequestInit | runtime.InitOverrideFunction,
     ): Promise<runtime.ApiResponse<PagedRsvpSubmissionSchema>> {
         const queryParameters: any = {};
+
+        if (requestParameters["rsvpCode"] != null) {
+            queryParameters["rsvp_code"] = requestParameters["rsvpCode"];
+        }
 
         if (requestParameters["page"] != null) {
             queryParameters["page"] = requestParameters["page"];

@@ -15,10 +15,12 @@ docs/PagedGuestGroupSchema.md
 docs/PagedGuestSchema.md
 docs/PagedRsvpQuestionResponseSchema.md
 docs/PagedRsvpSubmissionSchema.md
+docs/RsvpDeclineResponseSchema.md
 docs/RsvpQuestionResponseCreateSchema.md
 docs/RsvpQuestionResponseSchema.md
 docs/RsvpQuestionResponseUpdateSchema.md
 docs/RsvpSubmissionCreateSchema.md
+docs/RsvpSubmissionFilterSchema.md
 docs/RsvpSubmissionSchema.md
 docs/RsvpSubmissionUpdateSchema.md
 docs/WeddingSettingsSchema.md
@@ -36,10 +38,12 @@ models/PagedGuestGroupSchema.ts
 models/PagedGuestSchema.ts
 models/PagedRsvpQuestionResponseSchema.ts
 models/PagedRsvpSubmissionSchema.ts
+models/RsvpDeclineResponseSchema.ts
 models/RsvpQuestionResponseCreateSchema.ts
 models/RsvpQuestionResponseSchema.ts
 models/RsvpQuestionResponseUpdateSchema.ts
 models/RsvpSubmissionCreateSchema.ts
+models/RsvpSubmissionFilterSchema.ts
 models/RsvpSubmissionSchema.ts
 models/RsvpSubmissionUpdateSchema.ts
 models/WeddingSettingsSchema.ts

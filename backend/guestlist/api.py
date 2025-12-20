@@ -144,6 +144,10 @@ class RsvpSubmissionSchema(Schema):
     updated_at: datetime
 
 
+class RsvpSubmissionFilterSchema(FilterSchema):
+    rsvp_code: Optional[str] = None
+
+
 class RsvpSubmissionCreateSchema(Schema):
     guest_group_id: UUID
     email_updates: Optional[bool] = False
@@ -177,6 +181,11 @@ class RsvpQuestionResponseCreateSchema(Schema):
 class RsvpQuestionResponseUpdateSchema(Schema):
     response_text: Optional[str] = None
     response_choice_ids: Optional[List[UUID]] = None
+
+
+class RsvpDeclineResponseSchema(Schema):
+    success: bool
+    message: str
 
 
 # GuestGroup CRUD Endpoints
@@ -285,9 +294,11 @@ def delete_guest(request, guest_id: UUID):
 # RsvpSubmission CRUD Endpoints
 @router.get("/rsvp-submissions", response=List[RsvpSubmissionSchema])
 @paginate(PageNumberPagination, page_size=50)
-def list_rsvp_submissions(request):
+def list_rsvp_submissions(request, filters: RsvpSubmissionFilterSchema = Query(...)):  # pyright: ignore[reportCallIssue]
     """List all RSVP submissions"""
-    return RsvpSubmission.objects.all().order_by("-created_at")
+    q = Q(is_deleted=False)
+    q &= filters.get_filter_expression()
+    return RsvpSubmission.objects.filter(q).order_by("-created_at")
 
 
 @router.get("/rsvp-submissions/{submission_id}", response=RsvpSubmissionSchema)
@@ -325,6 +336,25 @@ def delete_rsvp_submission(request, submission_id: UUID):
     submission = get_object_or_404(RsvpSubmission, id=submission_id)
     submission.delete()
     return {"success": True, "message": "RSVP submission deleted successfully"}
+
+
+@router.post("/rsvp-decline/{rsvp_code}", response=RsvpDeclineResponseSchema)
+def decline_rsvp(request, rsvp_code: str):
+    """Decline an RSVP using the rsvp code"""
+    try:
+        guest_group = GuestGroup.objects.get(rsvp_code=rsvp_code, is_deleted=False)
+    except GuestGroup.DoesNotExist:
+        return {"success": False, "message": "Invalid RSVP code"}
+
+    RsvpSubmission.objects.get_or_create(guest_group=guest_group)
+
+    guests = Guest.objects.filter(group=guest_group, is_deleted=False)
+    for guest in guests:
+        guest.is_attending = False
+        guest.responded = True
+        guest.save()
+
+    return {"success": True, "message": "RSVP declined successfully"}
 
 
 # RsvpQuestionResponse CRUD Endpoints

@@ -8,6 +8,7 @@ All URIs are relative to _http://localhost_
 | [**guestlistApiCreateGuestGroup**](GuestlistApi.md#guestlistapicreateguestgroup)         | **POST** /api/guestlist/guest-groups                       | Create Guest Group     |
 | [**guestlistApiCreateRsvpResponse**](GuestlistApi.md#guestlistapicreatersvpresponse)     | **POST** /api/guestlist/rsvp-responses                     | Create Rsvp Response   |
 | [**guestlistApiCreateRsvpSubmission**](GuestlistApi.md#guestlistapicreatersvpsubmission) | **POST** /api/guestlist/rsvp-submissions                   | Create Rsvp Submission |
+| [**guestlistApiDeclineRsvp**](GuestlistApi.md#guestlistapideclinersvp)                   | **POST** /api/guestlist/rsvp-decline/{rsvp_code}           | Decline Rsvp           |
 | [**guestlistApiDeleteGuest**](GuestlistApi.md#guestlistapideleteguest)                   | **DELETE** /api/guestlist/guests/{guest_id}                | Delete Guest           |
 | [**guestlistApiDeleteGuestGroup**](GuestlistApi.md#guestlistapideleteguestgroup)         | **DELETE** /api/guestlist/guest-groups/{group_id}          | Delete Guest Group     |
 | [**guestlistApiDeleteRsvpResponse**](GuestlistApi.md#guestlistapideletersvpresponse)     | **DELETE** /api/guestlist/rsvp-responses/{response_id}     | Delete Rsvp Response   |
@@ -275,6 +276,68 @@ No authorization required
 ### HTTP request headers
 
 - **Content-Type**: `application/json`
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## guestlistApiDeclineRsvp
+
+> RsvpDeclineResponseSchema guestlistApiDeclineRsvp(rsvpCode)
+
+Decline Rsvp
+
+Decline an RSVP using the rsvp code
+
+### Example
+
+```ts
+import { Configuration, GuestlistApi } from "";
+import type { GuestlistApiDeclineRsvpRequest } from "";
+
+async function example() {
+    console.log("🚀 Testing  SDK...");
+    const api = new GuestlistApi();
+
+    const body = {
+        // string
+        rsvpCode: rsvpCode_example,
+    } satisfies GuestlistApiDeclineRsvpRequest;
+
+    try {
+        const data = await api.guestlistApiDeclineRsvp(body);
+        console.log(data);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name         | Type     | Description | Notes                     |
+| ------------ | -------- | ----------- | ------------------------- |
+| **rsvpCode** | `string` |             | [Defaults to `undefined`] |
+
+### Return type
+
+[**RsvpDeclineResponseSchema**](RsvpDeclineResponseSchema.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
 - **Accept**: `application/json`
 
 ### HTTP response details
@@ -1041,7 +1104,7 @@ No authorization required
 
 ## guestlistApiListRsvpSubmissions
 
-> PagedRsvpSubmissionSchema guestlistApiListRsvpSubmissions(page, pageSize)
+> PagedRsvpSubmissionSchema guestlistApiListRsvpSubmissions(rsvpCode, page, pageSize)
 
 List Rsvp Submissions
 
@@ -1058,6 +1121,8 @@ async function example() {
     const api = new GuestlistApi();
 
     const body = {
+        // string (optional)
+        rsvpCode: rsvpCode_example,
         // number (optional)
         page: 56,
         // number (optional)
@@ -1080,6 +1145,7 @@ example().catch(console.error);
 
 | Name         | Type     | Description | Notes                                |
 | ------------ | -------- | ----------- | ------------------------------------ |
+| **rsvpCode** | `string` |             | [Optional] [Defaults to `undefined`] |
 | **page**     | `number` |             | [Optional] [Defaults to `1`]         |
 | **pageSize** | `number` |             | [Optional] [Defaults to `undefined`] |
 

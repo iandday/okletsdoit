@@ -1,70 +1,53 @@
 <script lang="ts">
-    import type { PageData } from "./$types";
+    import { page } from "$app/state";
+    import PageShell from "$lib/components/layouts/PageShell.svelte";
 
-    let { data }: { data: PageData } = $props();
+    const { data } = $props();
+    const code = page.params.code;
 </script>
 
-<div class="container mx-auto max-w-4xl p-6">
-    <div class="card bg-base-100 card-border">
-        <div class="card-body">
-            <h1 class="card-title text-3xl">Welcome, {data.guestGroup.name}!</h1>
+<div>
+    <PageShell title="RSVP">
+        <div class="container mx-auto px-4 md:px-6 lg:px-8 max-w-4xl">
+            <div class="flex justify-center items-center min-h-[400px]">
+                <div class="card bg-base-200 shadow-2xl border border-primary/20 w-full max-w-2xl pb-2">
+                    <div class="card-body items-center text-center text-primary-content">
+                        <div class="mb-6">
+                            <span class="iconify lucide--megaphone size-16 text-accent"></span>
+                        </div>
 
-            <div class="divider"></div>
-
-            <div class="space-y-4">
-                <div>
-                    <p class="text-sm opacity-70">RSVP Code</p>
-                    <p class="text-xl font-mono">{data.rsvpCode}</p>
-                </div>
-
-                <div class="stats stats-vertical lg:stats-horizontal shadow">
-                    <div class="stat">
-                        <div class="stat-title">Group Size</div>
-                        <div class="stat-value text-primary">{data.guestGroup.group_count}</div>
-                        <div class="stat-desc">Total guests in your party</div>
-                    </div>
-
-                    <div class="stat">
-                        <div class="stat-title">Invited</div>
-                        <div class="stat-value text-secondary">{data.guestGroup.group_invited_count}</div>
-                        <div class="stat-desc">Guests invited</div>
-                    </div>
-
-                    <div class="stat">
-                        <div class="stat-title">Status</div>
-                        <div class="stat-value text-accent">
-                            {#if data.guestGroup.group_attending_count > 0}
-                                Attending
-                            {:else if data.guestGroup.group_declined_count > 0}
-                                Declined
-                            {:else}
-                                Pending
-                            {/if}
+                        <p>
+                            {data.guestData.addressName}, we'd love to hear from you. Please let us know whether you
+                            will be joining us on the wedding day.
+                        </p>
+                        <div class="flex flex-row gap-4 mt-6">
+                            <a
+                                class="btn btn-success btn-lg gap-2 w-full sm:w-48"
+                                href={`/${code}/accept`}
+                                aria-label="Accept RSVP">
+                                <span class="iconify lucide--heart size-5"></span>
+                                {#if data.configData}
+                                    {data.configData.rsvpAcceptButton}
+                                {:else}
+                                    "Accept Invitation"
+                                {/if}
+                            </a>
+                            <a
+                                class="btn btn-error text-primary-content btn-lg gap-2 w-full sm:w-48 border border-neutral/30"
+                                href={`/${code}/complete?accepted=false`}
+                                aria-label="Decline RSVP">
+                                <!-- Cross icon -->
+                                <span class="iconify lucide--x size-5"></span>
+                                {#if data.configData}
+                                    {data.configData.rsvpDeclineButton}
+                                {:else}
+                                    "Decline Invitation"
+                                {/if}
+                            </a>
                         </div>
                     </div>
                 </div>
-
-                {#if data.guestGroup.notes}
-                    <div class="alert alert-info">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            class="h-6 w-6 shrink-0 stroke-current">
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        <span>{data.guestGroup.notes}</span>
-                    </div>
-                {/if}
-
-                <div class="card-actions justify-end">
-                    <a href="/rsvp" class="btn btn-primary"> Continue to RSVP </a>
-                </div>
             </div>
         </div>
-    </div>
+    </PageShell>
 </div>
