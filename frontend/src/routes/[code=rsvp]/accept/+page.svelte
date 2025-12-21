@@ -31,14 +31,17 @@
 <div>
     <PageShell title="RSVP">
         <div class="container mx-auto px-4 md:px-6 lg:px-8 max-w-4xl">
+            <!-- eslint-disable-next-line svelte/no-at-html-tags set by site admin-->
             <div class="text-lg mb-6">{@html data.configData.rsvpAcceptIntro || "We're excited you can make it!"}</div>
             {#if data.showAccommodation}
                 <div role="alert" class="alert alert-primary text-primary-content py-6 px-6 mb-6">
+                    <!-- eslint-disable-next-line svelte/no-at-html-tags set by site admin -->
                     <div class="prose">{@html data.configData.rsvpAccommodationIntro || ""}</div>
                 </div>
             {/if}
             {#if data.showVip}
                 <div role="alert" class="alert alert-primary text-primary-content py-6 px-6 mb-6">
+                    <!-- eslint-disable-next-line svelte/no-at-html-tags set by site admin-->
                     <div class="prose">{@html data.configData.rsvpVipIntro || ""}</div>
                 </div>
             {/if}
@@ -172,7 +175,7 @@
                                     {/if}
                                 {/if}
                                 {#if data.rsvpQuestions.length > 0}
-                                    {#each data.rsvpQuestions as question}
+                                    {#each data.rsvpQuestions as question, qIndex (question.id)}
                                         {#if question.questionType === "text"}
                                             <label class="form-control py-4">
                                                 <input type="hidden" name="question_response_id" value={question.id} />

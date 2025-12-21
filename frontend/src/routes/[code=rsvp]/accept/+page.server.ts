@@ -108,7 +108,7 @@ export const actions: Actions = {
             throw redirect(303, `/${code}/complete?accepted=true`);
         } catch (err) {
             // Re-throw redirects and other Response objects immediately
-            if (err instanceof Response || (err && typeof err === 'object' && 'status' in err && 'location' in err)) {
+            if (err instanceof Response || (err && typeof err === "object" && "status" in err && "location" in err)) {
                 throw err;
             }
             console.error("Error submitting RSVP:", err);
