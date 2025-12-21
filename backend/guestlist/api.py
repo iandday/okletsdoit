@@ -1,5 +1,5 @@
-from datetime import datetime
 import logging
+from datetime import datetime
 from typing import List
 from typing import Optional
 from uuid import UUID
@@ -9,8 +9,6 @@ from django.contrib.auth import get_user_model
 from django.db import transaction
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
-
-User = get_user_model()
 from ninja import FilterSchema
 from ninja import Query
 from ninja import Router
@@ -24,11 +22,12 @@ from .models import GuestGroup
 from .models import RsvpQuestion
 from .models import RsvpQuestionResponse
 from .models import RsvpSubmission
-from core.models import RsvpQuestionChoice
 
 router = Router(tags=["Guestlist"], auth=multi_auth)
 
 logger = logging.getLogger(__name__)
+
+User = get_user_model()
 
 
 # Schemas
