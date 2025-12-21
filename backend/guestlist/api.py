@@ -1,16 +1,34 @@
-from ninja import FilterSchema, Query, Router, Schema
-from ninja.pagination import paginate, PageNumberPagination
-from typing import List, Optional
-from uuid import UUID
 from datetime import datetime
-from django.shortcuts import get_object_or_404
-from django.db import transaction
-from django.db.models import Q
+import logging
+from typing import List
+from typing import Optional
+from uuid import UUID
 
 from core.auth import multi_auth
-from .models import GuestGroup, Guest, RsvpSubmission, RsvpQuestionResponse
+from django.contrib.auth import get_user_model
+from django.db import transaction
+from django.db.models import Q
+from django.shortcuts import get_object_or_404
+
+User = get_user_model()
+from ninja import FilterSchema
+from ninja import Query
+from ninja import Router
+from ninja import Schema
+from ninja.errors import HttpError
+from ninja.pagination import PageNumberPagination
+from ninja.pagination import paginate
+
+from .models import Guest
+from .models import GuestGroup
+from .models import RsvpQuestion
+from .models import RsvpQuestionResponse
+from .models import RsvpSubmission
+from core.models import RsvpQuestionChoice
 
 router = Router(tags=["Guestlist"], auth=multi_auth)
+
+logger = logging.getLogger(__name__)
 
 
 # Schemas
@@ -161,12 +179,20 @@ class RsvpSubmissionUpdateSchema(Schema):
     notes: Optional[str] = None
 
 
+class ResponseChoiceSchema(Schema):
+    id: UUID
+    text: str
+
+
 class RsvpQuestionResponseSchema(Schema):
     id: UUID
     submission_id: UUID
     question_id: UUID
+    question_text: str
+    question_type: str
+    question_order: int
     response_text: Optional[str] = None
-    response_choice_ids: List[UUID]
+    response_choices: Optional[List[ResponseChoiceSchema]] = None
     created_at: datetime
     updated_at: datetime
 
@@ -207,10 +233,15 @@ def get_guest_group(request, group_id: UUID):
 @router.post("/guest-groups", response=GuestGroupSchema)
 def create_guest_group(request, payload: GuestGroupCreateSchema):
     """Create a new guest group"""
-    guest_group = GuestGroup.objects.create(
-        **payload.dict(),
-        created_by=request.user,
-    )
+    data = payload.dict()
+    if request.user.is_authenticated:
+        data["created_by"] = request.user
+    else:
+        # Use first admin user for service token requests
+        admin_user = User.objects.filter(is_staff=True, is_active=True).first()
+        if admin_user:
+            data["created_by"] = admin_user
+    guest_group = GuestGroup.objects.create(**data)
     return guest_group
 
 
@@ -222,7 +253,13 @@ def update_guest_group(request, group_id: UUID, payload: GuestGroupUpdateSchema)
     for attr, value in payload.dict(exclude_unset=True).items():
         setattr(guest_group, attr, value)
 
-    guest_group.updated_by = request.user
+    if request.user.is_authenticated:
+        guest_group.updated_by = request.user
+    else:
+        # Use first admin user for service token requests
+        admin_user = User.objects.filter(is_staff=True, is_active=True).first()
+        if admin_user:
+            guest_group.updated_by = admin_user
     guest_group.save()
     return guest_group
 
@@ -232,7 +269,13 @@ def delete_guest_group(request, group_id: UUID):
     """Soft delete a guest group"""
     guest_group = get_object_or_404(GuestGroup, id=group_id, is_deleted=False)
     guest_group.is_deleted = True
-    guest_group.updated_by = request.user
+    if request.user.is_authenticated:
+        guest_group.updated_by = request.user
+    else:
+        # Use first admin user for service token requests
+        admin_user = User.objects.filter(is_staff=True, is_active=True).first()
+        if admin_user:
+            guest_group.updated_by = admin_user
     guest_group.save()
     return {"success": True, "message": "Guest group deleted successfully"}
 
@@ -260,10 +303,16 @@ def create_guest(request, payload: GuestCreateSchema):
     data = payload.dict()
     group_id = data.pop("group_id", None)
 
+    if request.user.is_authenticated:
+        data["created_by"] = request.user
+    else:
+        # Use first admin user for service token requests
+        admin_user = User.objects.filter(is_staff=True, is_active=True).first()
+        if admin_user:
+            data["created_by"] = admin_user
     guest = Guest.objects.create(
         **data,
         group_id=group_id,
-        created_by=request.user,
     )
     return guest
 
@@ -276,7 +325,13 @@ def update_guest(request, guest_id: UUID, payload: GuestUpdateSchema):
     for attr, value in payload.dict(exclude_unset=True).items():
         setattr(guest, attr, value)
 
-    guest.updated_by = request.user
+    if request.user.is_authenticated:
+        guest.updated_by = request.user
+    else:
+        # Use first admin user for service token requests
+        admin_user = User.objects.filter(is_staff=True, is_active=True).first()
+        if admin_user:
+            guest.updated_by = admin_user
     guest.save()
     return guest
 
@@ -286,7 +341,13 @@ def delete_guest(request, guest_id: UUID):
     """Soft delete a guest"""
     guest = get_object_or_404(Guest, id=guest_id, is_deleted=False)
     guest.is_deleted = True
-    guest.updated_by = request.user
+    if request.user.is_authenticated:
+        guest.updated_by = request.user
+    else:
+        # Use first admin user for service token requests
+        admin_user = User.objects.filter(is_staff=True, is_active=True).first()
+        if admin_user:
+            guest.updated_by = admin_user
     guest.save()
     return {"success": True, "message": "Guest deleted successfully"}
 
@@ -357,6 +418,50 @@ def decline_rsvp(request, rsvp_code: str):
     return {"success": True, "message": "RSVP declined successfully"}
 
 
+@router.get("/rsvp-acceptance-questions/{rsvp_code}", response=List[RsvpQuestionResponseSchema])
+def get_rsvp_acceptance_questions(request, rsvp_code: str):
+    """Get or create RSVP acceptance questions for a guest group"""
+    try:
+        guest_group = GuestGroup.objects.get(rsvp_code=rsvp_code, is_deleted=False)
+    except GuestGroup.DoesNotExist:
+        raise HttpError(404, "Invalid RSVP code")
+
+    rsvp_submission, created = RsvpSubmission.objects.get_or_create(guest_group=guest_group)
+    for question in RsvpQuestion.objects.filter(is_deleted=False, published=True).order_by("order"):
+        RsvpQuestionResponse.objects.update_or_create(
+            submission=rsvp_submission,
+            question=question,
+        )
+    question_queryset = (
+        RsvpQuestionResponse.objects.filter(submission=rsvp_submission, question__published=True)
+        .select_related("question")
+        .prefetch_related("response_choices")
+        .order_by("question__order")
+    )
+
+    # Build response with question details
+    result = []
+    for response in question_queryset:
+        # Get response choices with id and text
+        response_choices = [{"id": choice.id, "text": choice.choice_text} for choice in response.response_choices.all()]
+
+        result.append(
+            {
+                "id": response.id,
+                "submission_id": response.submission.id,
+                "question_id": response.question.id,
+                "question_text": response.question.text,
+                "question_type": response.question.question_type,
+                "question_order": response.question.order,
+                "response_text": response.response_text,
+                "response_choices": response_choices,
+                "created_at": response.created_at,
+                "updated_at": response.updated_at,
+            }
+        )
+    return result
+
+
 # RsvpQuestionResponse CRUD Endpoints
 @router.get("/rsvp-responses", response=List[RsvpQuestionResponseSchema])
 @paginate(PageNumberPagination, page_size=50)
@@ -371,15 +476,21 @@ def list_rsvp_responses(request, submission_id: Optional[UUID] = None):
 @router.get("/rsvp-responses/{response_id}", response=RsvpQuestionResponseSchema)
 def get_rsvp_response(request, response_id: UUID):
     """Get a specific RSVP question response by ID"""
-    response = get_object_or_404(RsvpQuestionResponse, id=response_id, is_deleted=False)
+    rsvp_response = get_object_or_404(RsvpQuestionResponse, id=response_id, is_deleted=False)
+    response_choices = [
+        {"id": choice.id, "text": choice.choice_text} for choice in rsvp_response.response_choices.all()
+    ]
     return {
-        "id": response.id,
-        "submission_id": response.submission.id,
-        "question_id": response.question.id,
-        "response_text": response.response_text,
-        "response_choice_ids": list(response.response_choices.values_list("id", flat=True)),
-        "created_at": response.created_at,
-        "updated_at": response.updated_at,
+        "id": rsvp_response.id,
+        "submission_id": rsvp_response.submission.id,
+        "question_id": rsvp_response.question.id,
+        "question_text": rsvp_response.question.text,
+        "question_type": rsvp_response.question.question_type,
+        "question_order": rsvp_response.question.order,
+        "response_text": rsvp_response.response_text,
+        "response_choices": response_choices,
+        "created_at": rsvp_response.created_at,
+        "updated_at": rsvp_response.updated_at,
     }
 
 
@@ -390,23 +501,29 @@ def create_rsvp_response(request, payload: RsvpQuestionResponseCreateSchema):
     data = payload.dict()
     choice_ids = data.pop("response_choice_ids", [])
 
-    response = RsvpQuestionResponse.objects.create(
+    rsvp_response = RsvpQuestionResponse.objects.create(
         submission_id=data["submission_id"],
         question_id=data["question_id"],
         response_text=data.get("response_text"),
     )
 
     if choice_ids:
-        response.response_choices.set(choice_ids)
+        rsvp_response.response_choices.set(choice_ids)
 
+    response_choices = [
+        {"id": choice.id, "text": choice.choice_text} for choice in rsvp_response.response_choices.all()
+    ]
     return {
-        "id": response.id,
-        "submission_id": response.submission.id,
-        "question_id": response.question.id,
-        "response_text": response.response_text,
-        "response_choice_ids": list(response.response_choices.values_list("id", flat=True)),
-        "created_at": response.created_at,
-        "updated_at": response.updated_at,
+        "id": rsvp_response.id,
+        "submission_id": rsvp_response.submission.id,
+        "question_id": rsvp_response.question.id,
+        "question_text": rsvp_response.question.text,
+        "question_type": rsvp_response.question.question_type,
+        "question_order": rsvp_response.question.order,
+        "response_text": rsvp_response.response_text,
+        "response_choices": response_choices,
+        "created_at": rsvp_response.created_at,
+        "updated_at": rsvp_response.updated_at,
     }
 
 
@@ -414,27 +531,34 @@ def create_rsvp_response(request, payload: RsvpQuestionResponseCreateSchema):
 @transaction.atomic
 def update_rsvp_response(request, response_id: UUID, payload: RsvpQuestionResponseUpdateSchema):
     """Update an RSVP question response"""
-    response = get_object_or_404(RsvpQuestionResponse, id=response_id, is_deleted=False)
+    rsvp_response = get_object_or_404(RsvpQuestionResponse, id=response_id, is_deleted=False)
 
     data = payload.dict(exclude_unset=True)
+    logger.info(f"Updating response {response_id} with data: {data}")
     choice_ids = data.pop("response_choice_ids", None)
 
     for attr, value in data.items():
-        setattr(response, attr, value)
+        setattr(rsvp_response, attr, value)
 
     if choice_ids is not None:
-        response.response_choices.set(choice_ids)
+        rsvp_response.response_choices.set(choice_ids)
 
-    response.save()
+    rsvp_response.save()
 
+    response_choices = [
+        {"id": choice.id, "text": choice.choice_text} for choice in rsvp_response.response_choices.all()
+    ]
     return {
-        "id": response.id,
-        "submission_id": response.submission.id,
-        "question_id": response.question.id,
-        "response_text": response.response_text,
-        "response_choice_ids": list(response.response_choices.values_list("id", flat=True)),
-        "created_at": response.created_at,
-        "updated_at": response.updated_at,
+        "id": rsvp_response.id,
+        "submission_id": rsvp_response.submission.id,
+        "question_id": rsvp_response.question.id,
+        "question_text": rsvp_response.question.text,
+        "question_type": rsvp_response.question.question_type,
+        "question_order": rsvp_response.question.order,
+        "response_text": rsvp_response.response_text,
+        "response_choices": response_choices,
+        "created_at": rsvp_response.created_at,
+        "updated_at": rsvp_response.updated_at,
     }
 
 

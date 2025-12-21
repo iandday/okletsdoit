@@ -12,6 +12,7 @@ export * from "./PagedGuestGroupSchema";
 export * from "./PagedGuestSchema";
 export * from "./PagedRsvpQuestionResponseSchema";
 export * from "./PagedRsvpSubmissionSchema";
+export * from "./ResponseChoiceSchema";
 export * from "./RsvpDeclineResponseSchema";
 export * from "./RsvpQuestionResponseCreateSchema";
 export * from "./RsvpQuestionResponseSchema";

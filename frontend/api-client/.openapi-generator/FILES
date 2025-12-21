@@ -15,6 +15,7 @@ docs/PagedGuestGroupSchema.md
 docs/PagedGuestSchema.md
 docs/PagedRsvpQuestionResponseSchema.md
 docs/PagedRsvpSubmissionSchema.md
+docs/ResponseChoiceSchema.md
 docs/RsvpDeclineResponseSchema.md
 docs/RsvpQuestionResponseCreateSchema.md
 docs/RsvpQuestionResponseSchema.md
@@ -38,6 +39,7 @@ models/PagedGuestGroupSchema.ts
 models/PagedGuestSchema.ts
 models/PagedRsvpQuestionResponseSchema.ts
 models/PagedRsvpSubmissionSchema.ts
+models/ResponseChoiceSchema.ts
 models/RsvpDeclineResponseSchema.ts
 models/RsvpQuestionResponseCreateSchema.ts
 models/RsvpQuestionResponseSchema.ts

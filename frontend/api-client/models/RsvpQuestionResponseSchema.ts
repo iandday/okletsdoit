@@ -12,6 +12,13 @@
  * Do not edit the class manually.
  */
 import { mapValues } from "../runtime";
+import type { ResponseChoiceSchema } from "./ResponseChoiceSchema";
+import {
+    ResponseChoiceSchemaFromJSON,
+    ResponseChoiceSchemaFromJSONTyped,
+    ResponseChoiceSchemaToJSON,
+    ResponseChoiceSchemaToJSONTyped,
+} from "./ResponseChoiceSchema";
 
 /**
  *
@@ -42,13 +49,31 @@ export interface RsvpQuestionResponseSchema {
      * @type {string}
      * @memberof RsvpQuestionResponseSchema
      */
+    questionText: string;
+    /**
+     *
+     * @type {string}
+     * @memberof RsvpQuestionResponseSchema
+     */
+    questionType: string;
+    /**
+     *
+     * @type {number}
+     * @memberof RsvpQuestionResponseSchema
+     */
+    questionOrder: number;
+    /**
+     *
+     * @type {string}
+     * @memberof RsvpQuestionResponseSchema
+     */
     responseText?: string | null;
     /**
      *
-     * @type {Array<string>}
+     * @type {Array<ResponseChoiceSchema>}
      * @memberof RsvpQuestionResponseSchema
      */
-    responseChoiceIds: Array<string>;
+    responseChoices?: Array<ResponseChoiceSchema> | null;
     /**
      *
      * @type {Date}
@@ -70,7 +95,9 @@ export function instanceOfRsvpQuestionResponseSchema(value: object): value is Rs
     if (!("id" in value) || value["id"] === undefined) return false;
     if (!("submissionId" in value) || value["submissionId"] === undefined) return false;
     if (!("questionId" in value) || value["questionId"] === undefined) return false;
-    if (!("responseChoiceIds" in value) || value["responseChoiceIds"] === undefined) return false;
+    if (!("questionText" in value) || value["questionText"] === undefined) return false;
+    if (!("questionType" in value) || value["questionType"] === undefined) return false;
+    if (!("questionOrder" in value) || value["questionOrder"] === undefined) return false;
     if (!("createdAt" in value) || value["createdAt"] === undefined) return false;
     if (!("updatedAt" in value) || value["updatedAt"] === undefined) return false;
     return true;
@@ -91,8 +118,14 @@ export function RsvpQuestionResponseSchemaFromJSONTyped(
         id: json["id"],
         submissionId: json["submission_id"],
         questionId: json["question_id"],
+        questionText: json["question_text"],
+        questionType: json["question_type"],
+        questionOrder: json["question_order"],
         responseText: json["response_text"] == null ? undefined : json["response_text"],
-        responseChoiceIds: json["response_choice_ids"],
+        responseChoices:
+            json["response_choices"] == null
+                ? undefined
+                : (json["response_choices"] as Array<any>).map(ResponseChoiceSchemaFromJSON),
         createdAt: new Date(json["created_at"]),
         updatedAt: new Date(json["updated_at"]),
     };
@@ -114,8 +147,14 @@ export function RsvpQuestionResponseSchemaToJSONTyped(
         id: value["id"],
         submission_id: value["submissionId"],
         question_id: value["questionId"],
+        question_text: value["questionText"],
+        question_type: value["questionType"],
+        question_order: value["questionOrder"],
         response_text: value["responseText"],
-        response_choice_ids: value["responseChoiceIds"],
+        response_choices:
+            value["responseChoices"] == null
+                ? undefined
+                : (value["responseChoices"] as Array<any>).map(ResponseChoiceSchemaToJSON),
         created_at: value["createdAt"].toISOString(),
         updated_at: value["updatedAt"].toISOString(),
     };

@@ -112,6 +112,10 @@ export interface GuestlistApiGetGuestGroupRequest {
     groupId: string;
 }
 
+export interface GuestlistApiGetRsvpAcceptanceQuestionsRequest {
+    rsvpCode: string;
+}
+
 export interface GuestlistApiGetRsvpResponseRequest {
     responseId: string;
 }
@@ -697,6 +701,53 @@ export class GuestlistApi extends runtime.BaseAPI {
         initOverrides?: RequestInit | runtime.InitOverrideFunction,
     ): Promise<GuestGroupSchema> {
         const response = await this.guestlistApiGetGuestGroupRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get or create RSVP acceptance questions for a guest group
+     * Get Rsvp Acceptance Questions
+     */
+    async guestlistApiGetRsvpAcceptanceQuestionsRaw(
+        requestParameters: GuestlistApiGetRsvpAcceptanceQuestionsRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<Array<RsvpQuestionResponseSchema>>> {
+        if (requestParameters["rsvpCode"] == null) {
+            throw new runtime.RequiredError(
+                "rsvpCode",
+                'Required parameter "rsvpCode" was null or undefined when calling guestlistApiGetRsvpAcceptanceQuestions().',
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        let urlPath = `/api/guestlist/rsvp-acceptance-questions/{rsvp_code}`;
+        urlPath = urlPath.replace(`{${"rsvp_code"}}`, encodeURIComponent(String(requestParameters["rsvpCode"])));
+
+        const response = await this.request(
+            {
+                path: urlPath,
+                method: "GET",
+                headers: headerParameters,
+                query: queryParameters,
+            },
+            initOverrides,
+        );
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(RsvpQuestionResponseSchemaFromJSON));
+    }
+
+    /**
+     * Get or create RSVP acceptance questions for a guest group
+     * Get Rsvp Acceptance Questions
+     */
+    async guestlistApiGetRsvpAcceptanceQuestions(
+        requestParameters: GuestlistApiGetRsvpAcceptanceQuestionsRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<Array<RsvpQuestionResponseSchema>> {
+        const response = await this.guestlistApiGetRsvpAcceptanceQuestionsRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

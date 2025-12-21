@@ -2,15 +2,18 @@
 
 ## Properties
 
-| Name                | Type                |
-| ------------------- | ------------------- |
-| `id`                | string              |
-| `submissionId`      | string              |
-| `questionId`        | string              |
-| `responseText`      | string              |
-| `responseChoiceIds` | Array&lt;string&gt; |
-| `createdAt`         | Date                |
-| `updatedAt`         | Date                |
+| Name              | Type                                                         |
+| ----------------- | ------------------------------------------------------------ |
+| `id`              | string                                                       |
+| `submissionId`    | string                                                       |
+| `questionId`      | string                                                       |
+| `questionText`    | string                                                       |
+| `questionType`    | string                                                       |
+| `questionOrder`   | number                                                       |
+| `responseText`    | string                                                       |
+| `responseChoices` | [Array&lt;ResponseChoiceSchema&gt;](ResponseChoiceSchema.md) |
+| `createdAt`       | Date                                                         |
+| `updatedAt`       | Date                                                         |
 
 ## Example
 
@@ -22,8 +25,11 @@ const example = {
     id: null,
     submissionId: null,
     questionId: null,
+    questionText: null,
+    questionType: null,
+    questionOrder: null,
     responseText: null,
-    responseChoiceIds: null,
+    responseChoices: null,
     createdAt: null,
     updatedAt: null,
 } satisfies RsvpQuestionResponseSchema;

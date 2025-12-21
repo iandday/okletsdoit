@@ -1,7 +1,7 @@
 // frontend/src/routes/[code=rsvp]/complete/+page.server.ts
 import { api } from "$lib/server/api-client";
 import { error } from "@sveltejs/kit";
-import type { PageServerLoad } from "./$types";
+import type { PageServerLoad } from "../$types";
 
 export const load: PageServerLoad = async ({ params, url }) => {
     const { code } = params;
@@ -13,13 +13,11 @@ export const load: PageServerLoad = async ({ params, url }) => {
     });
 
     if (data.items && data.items.length == 1) {
-
         if (accepted === "true") {
             return {
                 accepted: true,
             };
         } else if (accepted === "false") {
-
             const rsvpDecline = await api.guestlist.guestlistApiDeclineRsvp({
                 rsvpCode: code,
             });
@@ -33,6 +31,6 @@ export const load: PageServerLoad = async ({ params, url }) => {
         } else {
             throw error(404, "RSVP code not found");
         }
-    };
+    }
     throw error(404, "RSVP code not found");
-}
+};

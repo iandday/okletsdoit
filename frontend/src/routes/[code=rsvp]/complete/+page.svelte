@@ -1,3 +1,4 @@
+<!-- frontend/src/routes/[code=rsvp]/complete/+page.svelte -->
 <script lang="ts">
     import { page } from "$app/state";
     import PageShell from "$lib/components/layouts/PageShell.svelte";
@@ -17,8 +18,8 @@
                     <div class="card-body items-center text-center">
                         <div class="mb-6">
                             {#if accepted}
-                                <h1 class="text-3xl font-bold">{configData.rsvpSuccessHeadline}</h1>
-                                <p class="py-6">
+                                <h1 class="text-3xl text-accent font-bold">{configData.rsvpSuccessHeadline}</h1>
+                                <p class="py-6 text-primary-content">
                                     In the mean time you can learn more about the venue or find the answer to common
                                     questions about our big day
                                 </p>
@@ -35,5 +36,6 @@
                     </div>
                 </div>
             </div>
-        </div></PageShell>
+        </div>
+    </PageShell>
 </div>
