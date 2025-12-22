@@ -129,12 +129,53 @@ class Inspiration(models.Model):
         super().save(*args, **kwargs)
 
 
+class QuestionCategory(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    slug = models.SlugField(max_length=250, null=True, blank=True, unique=True)
+    name = models.CharField(max_length=100, unique=True)
+    order = models.PositiveIntegerField(default=0)
+    published = models.BooleanField(default=False, help_text="Indicates if the category is viewable")
+    created_by = models.ForeignKey(User, related_name="created_by_question_category", on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_by = models.ForeignKey(
+        User, related_name="updated_by_question_category", on_delete=models.CASCADE, null=True, blank=True
+    )
+    updated_at = models.DateTimeField(auto_now=True)
+    is_deleted = models.BooleanField(default=False)
+    history = HistoricalRecords()
+
+    class Meta:
+        ordering = ["order"]
+        verbose_name_plural = "FAQ Categories"
+        constraints = [models.UniqueConstraint(fields=["name"], name="unique_question_category")]
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base_slug = slugify(self.name[:50])
+            slug = base_slug
+            counter = 1
+
+            while QuestionCategory.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+
+            self.slug = slug
+
+        super().save(*args, **kwargs)
+
+
 class Question(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    category = models.ForeignKey(QuestionCategory, on_delete=models.CASCADE, related_name="questions_category")
     question = models.TextField(max_length=500)
     slug = models.SlugField(max_length=250, null=True, blank=True, unique=True)
     answer = models.TextField(blank=True, null=True)
     order = models.PositiveIntegerField(default=0)
+    icon = models.CharField(max_length=100, default="question-circle")
+    urls = models.ManyToManyField("core.QuestionURL", blank=True, related_name="question_urls")
     published = models.BooleanField(default=False, help_text="Indicates if the question is viewable")
     created_by = models.ForeignKey(User, related_name="created_by_question", on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -150,7 +191,7 @@ class Question(models.Model):
 
     class Meta:
         ordering = ["question"]
-        verbose_name_plural = "Questions"
+        verbose_name_plural = "FAQ Questions"
         constraints = [models.UniqueConstraint(fields=["question"], name="unique_question")]
 
     def save(self, *args, **kwargs):
@@ -160,6 +201,81 @@ class Question(models.Model):
             counter = 1
 
             while Question.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+
+            self.slug = slug
+
+        super().save(*args, **kwargs)
+
+
+class QuestionURL(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name="questions")
+    slug = models.SlugField(max_length=250, null=True, blank=True, unique=True)
+    url = models.URLField(max_length=500)
+    text = models.CharField(max_length=250, blank=True, null=True)
+    created_by = models.ForeignKey(User, related_name="created_by_question_url", on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_by = models.ForeignKey(
+        User, related_name="updated_by_question_url", on_delete=models.CASCADE, null=True, blank=True
+    )
+    updated_at = models.DateTimeField(auto_now=True)
+    is_deleted = models.BooleanField(default=False)
+    history = HistoricalRecords()
+
+    class Meta:
+        ordering = ["url"]
+        verbose_name_plural = "FAQ Question URLs"
+        constraints = [models.UniqueConstraint(fields=["url"], name="unique_question_url")]
+
+    def __str__(self):
+        return self.url
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base_slug = slugify(self.url[:50])
+            slug = base_slug
+            counter = 1
+
+            while QuestionURL.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+
+            self.slug = slug
+
+        super().save(*args, **kwargs)
+
+
+class Tips(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    category = models.ForeignKey(QuestionCategory, on_delete=models.CASCADE, related_name="tips_category")
+    slug = models.SlugField(max_length=250, null=True, blank=True, unique=True)
+    content = models.TextField()
+    order = models.PositiveIntegerField(default=0)
+    published = models.BooleanField(default=False, help_text="Indicates if the tip is viewable")
+    created_by = models.ForeignKey(User, related_name="created_by_tip", on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_by = models.ForeignKey(User, related_name="updated_by_tip", on_delete=models.CASCADE, null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    is_deleted = models.BooleanField(default=False)
+    history = HistoricalRecords()
+
+    def __str__(self):
+        return self.content
+
+    class Meta:
+        ordering = ["order"]
+        verbose_name_plural = "FAQ Tips"
+        constraints = [models.UniqueConstraint(fields=["content", "category"], name="unique_tip")]
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base_slug = slugify(self.content[:50])
+            slug = base_slug
+            counter = 1
+
+            while Tips.objects.filter(slug=slug).exclude(pk=self.pk).exists():
                 slug = f"{base_slug}-{counter}"
                 counter += 1
 
