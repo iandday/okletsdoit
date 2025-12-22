@@ -4,6 +4,8 @@
 - [ ] Customized Settings
     * [ ] Timezone
     * [x] Allow RSVP
+    * [x] Show FAQ
+    * [ ] Automatically allow RSVP
 - [ ] Guestlist
     * [ ] RSVP Form Configuration (Private)
     * [ ] RSVP Form (Public)

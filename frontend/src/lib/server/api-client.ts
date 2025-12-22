@@ -5,7 +5,7 @@
 import { Configuration, GuestlistApi, CoreApi } from "../../../api-client";
 import type { Middleware } from "../../../api-client/runtime";
 
-const API_BASE_PATH = process.env.PUBLIC_API_URL;
+const API_BASE_PATH = process.env.BACKEND_API_URL;
 const SERVICE_TOKEN = process.env.SERVICE_TOKEN || "";
 const DEBUG = process.env.NODE_ENV === "development";
 

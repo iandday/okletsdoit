@@ -6,7 +6,10 @@
 | ---------------------------- | ------- |
 | `defaultDataLoaded`          | boolean |
 | `allowRsvp`                  | boolean |
+| `showFaq`                    | boolean |
 | `weddingDate`                | Date    |
+| `rsvpStartDate`              | Date    |
+| `rsvpEndDate`                | Date    |
 | `rsvpAcceptButton`           | string  |
 | `rsvpDeclineButton`          | string  |
 | `rsvpAttendingLabel`         | string  |
@@ -34,7 +37,10 @@ import type { WeddingSettingsSchema } from "";
 const example = {
     defaultDataLoaded: null,
     allowRsvp: null,
+    showFaq: null,
     weddingDate: null,
+    rsvpStartDate: null,
+    rsvpEndDate: null,
     rsvpAcceptButton: null,
     rsvpDeclineButton: null,
     rsvpAttendingLabel: null,

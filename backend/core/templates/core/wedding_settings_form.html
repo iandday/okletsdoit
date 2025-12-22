@@ -61,6 +61,11 @@
                                 {{ settings_form.allow_rsvp }}
                                 {% if settings_form.allow_rsvp.errors %}<div class="text-error">{{ settings_form.allow_rsvp.errors }}</div>{% endif %}
                             </div>
+                            <div class="form-control">
+                                {{ settings_form.show_faq.label_tag }}
+                                {{ settings_form.show_faq }}
+                                {% if settings_form.show_faq.errors %}<div class="text-error">{{ settings_form.show_faq.errors }}</div>{% endif %}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -68,6 +73,20 @@
                     <div class="edit-card-body">
                         <h2 class="edit-card-title">RSVP Settings</h2>
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div class="form-control">
+                                {{ settings_form.rsvp_start_date.label_tag }}
+                                {{ settings_form.rsvp_start_date }}
+                                {% if settings_form.rsvp_start_date.errors %}
+                                    <div class="text-error">{{ settings_form.rsvp_start_date.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="form-control">
+                                {{ settings_form.rsvp_end_date.label_tag }}
+                                {{ settings_form.rsvp_end_date }}
+                                {% if settings_form.rsvp_end_date.errors %}
+                                    <div class="text-error">{{ settings_form.rsvp_end_date.errors }}</div>
+                                {% endif %}
+                            </div>
                             <div class="form-control">
                                 {{ settings_form.rsvp_accept_button.label_tag }}
                                 {{ settings_form.rsvp_accept_button }}

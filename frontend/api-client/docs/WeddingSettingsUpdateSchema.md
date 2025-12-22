@@ -7,6 +7,9 @@
 | `defaultDataLoaded`          | boolean |
 | `allowRsvp`                  | boolean |
 | `weddingDate`                | Date    |
+| `showFaq`                    | boolean |
+| `rsvpStartDate`              | Date    |
+| `rsvpEndDate`                | Date    |
 | `rsvpAcceptButton`           | string  |
 | `rsvpDeclineButton`          | string  |
 | `rsvpAttendingLabel`         | string  |
@@ -35,6 +38,9 @@ const example = {
     defaultDataLoaded: null,
     allowRsvp: null,
     weddingDate: null,
+    showFaq: null,
+    rsvpStartDate: null,
+    rsvpEndDate: null,
     rsvpAcceptButton: null,
     rsvpDeclineButton: null,
     rsvpAttendingLabel: null,

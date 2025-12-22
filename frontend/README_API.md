@@ -23,7 +23,7 @@ This project uses `openapi-typescript` and `openapi-fetch` for type-safe API com
 3. **Configure environment variables:**
     ```bash
     # .env (already configured)
-    PUBLIC_API_URL=http://localhost:8000
+    BACKEND_API_URL=http://localhost:8000
     SERVICE_TOKEN=your-secure-service-token-here
     ```
 

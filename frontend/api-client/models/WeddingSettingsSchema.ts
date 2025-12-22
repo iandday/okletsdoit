@@ -33,10 +33,28 @@ export interface WeddingSettingsSchema {
     allowRsvp: boolean;
     /**
      *
+     * @type {boolean}
+     * @memberof WeddingSettingsSchema
+     */
+    showFaq: boolean;
+    /**
+     *
      * @type {Date}
      * @memberof WeddingSettingsSchema
      */
     weddingDate?: Date | null;
+    /**
+     *
+     * @type {Date}
+     * @memberof WeddingSettingsSchema
+     */
+    rsvpStartDate?: Date | null;
+    /**
+     *
+     * @type {Date}
+     * @memberof WeddingSettingsSchema
+     */
+    rsvpEndDate?: Date | null;
     /**
      *
      * @type {string}
@@ -147,6 +165,7 @@ export interface WeddingSettingsSchema {
 export function instanceOfWeddingSettingsSchema(value: object): value is WeddingSettingsSchema {
     if (!("defaultDataLoaded" in value) || value["defaultDataLoaded"] === undefined) return false;
     if (!("allowRsvp" in value) || value["allowRsvp"] === undefined) return false;
+    if (!("showFaq" in value) || value["showFaq"] === undefined) return false;
     if (!("rsvpAcceptButton" in value) || value["rsvpAcceptButton"] === undefined) return false;
     if (!("rsvpDeclineButton" in value) || value["rsvpDeclineButton"] === undefined) return false;
     if (!("rsvpAttendingLabel" in value) || value["rsvpAttendingLabel"] === undefined) return false;
@@ -178,7 +197,10 @@ export function WeddingSettingsSchemaFromJSONTyped(json: any, ignoreDiscriminato
     return {
         defaultDataLoaded: json["default_data_loaded"],
         allowRsvp: json["allow_rsvp"],
+        showFaq: json["show_faq"],
         weddingDate: json["wedding_date"] == null ? undefined : new Date(json["wedding_date"]),
+        rsvpStartDate: json["rsvp_start_date"] == null ? undefined : new Date(json["rsvp_start_date"]),
+        rsvpEndDate: json["rsvp_end_date"] == null ? undefined : new Date(json["rsvp_end_date"]),
         rsvpAcceptButton: json["rsvp_accept_button"],
         rsvpDeclineButton: json["rsvp_decline_button"],
         rsvpAttendingLabel: json["rsvp_attending_label"],
@@ -214,8 +236,15 @@ export function WeddingSettingsSchemaToJSONTyped(
     return {
         default_data_loaded: value["defaultDataLoaded"],
         allow_rsvp: value["allowRsvp"],
+        show_faq: value["showFaq"],
         wedding_date:
             value["weddingDate"] == null ? value["weddingDate"] : value["weddingDate"].toISOString().substring(0, 10),
+        rsvp_start_date:
+            value["rsvpStartDate"] == null
+                ? value["rsvpStartDate"]
+                : value["rsvpStartDate"].toISOString().substring(0, 10),
+        rsvp_end_date:
+            value["rsvpEndDate"] == null ? value["rsvpEndDate"] : value["rsvpEndDate"].toISOString().substring(0, 10),
         rsvp_accept_button: value["rsvpAcceptButton"],
         rsvp_decline_button: value["rsvpDeclineButton"],
         rsvp_attending_label: value["rsvpAttendingLabel"],

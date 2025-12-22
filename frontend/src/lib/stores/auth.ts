@@ -2,7 +2,7 @@ import { browser } from "$app/environment";
 import { env } from "$env/dynamic/public";
 import { writable } from "svelte/store";
 
-const API_URL = env.PUBLIC_API_URL || "http://localhost:8000";
+const API_URL = env.PUBLIC_CLIENT_API_URL;
 
 // Use browser client for web applications (uses cookies and CSRF)
 const CLIENT = "browser";

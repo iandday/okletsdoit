@@ -39,6 +39,24 @@ export interface WeddingSettingsUpdateSchema {
     weddingDate?: Date | null;
     /**
      *
+     * @type {boolean}
+     * @memberof WeddingSettingsUpdateSchema
+     */
+    showFaq?: boolean | null;
+    /**
+     *
+     * @type {Date}
+     * @memberof WeddingSettingsUpdateSchema
+     */
+    rsvpStartDate?: Date | null;
+    /**
+     *
+     * @type {Date}
+     * @memberof WeddingSettingsUpdateSchema
+     */
+    rsvpEndDate?: Date | null;
+    /**
+     *
      * @type {string}
      * @memberof WeddingSettingsUpdateSchema
      */
@@ -163,6 +181,9 @@ export function WeddingSettingsUpdateSchemaFromJSONTyped(
         defaultDataLoaded: json["default_data_loaded"] == null ? undefined : json["default_data_loaded"],
         allowRsvp: json["allow_rsvp"] == null ? undefined : json["allow_rsvp"],
         weddingDate: json["wedding_date"] == null ? undefined : new Date(json["wedding_date"]),
+        showFaq: json["show_faq"] == null ? undefined : json["show_faq"],
+        rsvpStartDate: json["rsvp_start_date"] == null ? undefined : new Date(json["rsvp_start_date"]),
+        rsvpEndDate: json["rsvp_end_date"] == null ? undefined : new Date(json["rsvp_end_date"]),
         rsvpAcceptButton: json["rsvp_accept_button"] == null ? undefined : json["rsvp_accept_button"],
         rsvpDeclineButton: json["rsvp_decline_button"] == null ? undefined : json["rsvp_decline_button"],
         rsvpAttendingLabel: json["rsvp_attending_label"] == null ? undefined : json["rsvp_attending_label"],
@@ -204,6 +225,13 @@ export function WeddingSettingsUpdateSchemaToJSONTyped(
         allow_rsvp: value["allowRsvp"],
         wedding_date:
             value["weddingDate"] == null ? value["weddingDate"] : value["weddingDate"].toISOString().substring(0, 10),
+        show_faq: value["showFaq"],
+        rsvp_start_date:
+            value["rsvpStartDate"] == null
+                ? value["rsvpStartDate"]
+                : value["rsvpStartDate"].toISOString().substring(0, 10),
+        rsvp_end_date:
+            value["rsvpEndDate"] == null ? value["rsvpEndDate"] : value["rsvpEndDate"].toISOString().substring(0, 10),
         rsvp_accept_button: value["rsvpAcceptButton"],
         rsvp_decline_button: value["rsvpDeclineButton"],
         rsvp_attending_label: value["rsvpAttendingLabel"],

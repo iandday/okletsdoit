@@ -129,7 +129,8 @@ services:
       dockerfile: ./docker/Dockerfile-Frontend
       target: development
     environment:
-      - PUBLIC_API_URL=http://django-server:8000
+      - BACKEND_API_URL=http://django-server:8000
+      - PUBLIC_CLIENT_API_URL=https://dev.internal
       - SERVICE_TOKEN=your-secure-random-token-here
       - CHOKIDAR_USEPOLLING=true
       - VITE_ALLOWED_HOSTS=dev.internal

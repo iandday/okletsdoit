@@ -1,5 +1,9 @@
+<!-- frontend/src/routes/faq/+page.svelte -->
 <script lang="ts">
+    import ComingSoon from "$lib/components/ComingSoon.svelte";
     import PageShell from "$lib/components/layouts/PageShell.svelte";
+    import type { IComingSoon } from "../../types";
+    import type { PageData } from "./$types";
 
     type iURL = {
         url: string;
@@ -181,69 +185,26 @@
         },
     ];
 
-    const showFaqs = false;
+    const comingSoon: IComingSoon = {
+        icon: "help-circle",
+        alert: "Coming Soon",
+        intro: "We're preparing a comprehensive FAQ section to answer all your questions about our special day! Check back soon for helpful information.",
+        expectations: [
+            { text: "Event date and time details", icon: "calendar" },
+            { text: "Venue location and directions", icon: "map-pin" },
+            { text: "Dress code and attire guidance", icon: "shirt" },
+            { text: "Food, drinks, and dietary options", icon: "utensils" },
+        ],
+    };
+
+    const { data } = $props();
 </script>
 
 <div>
     <PageShell title="Frequently Asked Questions">
-        {#if !showFaqs}
-            <div class="pb-8 lg:pb-12 xl:pb-16">
-                <div class="container mx-auto px-4 md:px-6 lg:px-8 max-w-4xl">
-                    <!-- Coming Soon Announcement -->
-                    <div class="flex justify-center items-center min-h-[400px]">
-                        <div class="card bg-base-200 shadow-2xl border border-primary/20 w-full max-w-2xl pb-2">
-                            <div class="card-body items-center text-center">
-                                <div class="mb-6">
-                                    <span class="iconify lucide--help-circle size-20 text-accent animate-pulse"></span>
-                                </div>
-                                <div class="badge badge-primary badge-lg mb-4 gap-2 px-4 py-3">
-                                    <span class="iconify lucide--clock size-4"></span>
-                                    Coming Soon
-                                </div>
-
-                                <p class="text-primary-content text-lg leading-relaxed mb-6 max-w-lg">
-                                    We're preparing a comprehensive FAQ section to answer all your questions about our
-                                    special day! Check back soon for helpful information.
-                                </p>
-
-                                <div class="text-left w-full max-w-md">
-                                    <h3 class="font-bold text-primary-content text-lg mb-3 flex items-center gap-2">
-                                        <span class="iconify lucide--sparkles size-5 text-primary-content"></span>
-                                        What to Expect:
-                                    </h3>
-                                    <ul class="space-y-3">
-                                        <li class="flex items-start gap-3">
-                                            <span
-                                                class="iconify lucide--calendar size-5 text-accent mt-0.5 flex-shrink-0"
-                                            ></span>
-                                            <span class="text-primary-content">Event date and time details</span>
-                                        </li>
-                                        <li class="flex items-start gap-3">
-                                            <span
-                                                class="iconify lucide--map-pin size-5 text-accent mt-0.5 flex-shrink-0"
-                                            ></span>
-                                            <span class="text-primary-content">Venue location and directions</span>
-                                        </li>
-                                        <li class="flex items-start gap-3">
-                                            <span class="iconify lucide--shirt size-5 text-accent mt-0.5 flex-shrink-0"
-                                            ></span>
-                                            <span class="text-primary-content">Dress code and attire guidance</span>
-                                        </li>
-                                        <li class="flex items-start gap-3">
-                                            <span
-                                                class="iconify lucide--utensils size-5 text-accent mt-0.5 flex-shrink-0"
-                                            ></span>
-                                            <span class="text-primary-content">Food, drinks, and dietary options</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        {/if}
-        {#if showFaqs}
+        {#if !data?.configData?.showFaq}
+            <ComingSoon {...comingSoon} />
+        {:else}
             <div class="pb-8 lg:pb-12 xl:pb-16">
                 <div class="container mx-auto px-4 md:px-6 lg:px-8 max-w-5xl">
                     <!-- Header -->

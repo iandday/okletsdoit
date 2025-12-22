@@ -248,6 +248,9 @@ class WeddingSettingsForm(ModelForm):
             "rsvp_show_vip_intro",
             "rsvp_enable_email_updates",
             "rsvp_email_update_label",
+            "show_faq",
+            "rsvp_start_date",
+            "rsvp_end_date",
         ]
         labels = {
             "wedding_date": "Wedding Date",
@@ -269,6 +272,9 @@ class WeddingSettingsForm(ModelForm):
             "rsvp_show_vip_intro": "Show VIP Intro on RSVP Form",
             "rsvp_enable_email_updates": "Enable Email Updates Option in RSVP",
             "rsvp_email_update_label": "Email Updates Opt-in Label",
+            "show_faq": "Show FAQ Section on Site",
+            "rsvp_start_date": "RSVP Start Date",
+            "rsvp_end_date": "RSVP End Date",
         }
         widgets = {
             "allow_rsvp": forms.CheckboxInput(attrs={"class": "checkbox checkbox-primary edit-card-field-toggle"}),
@@ -378,6 +384,17 @@ class WeddingSettingsForm(ModelForm):
                     "class": "input input-bordered edit-card-field-value",
                     "placeholder": "Enter Email Updates Opt-in Label",
                 }
+            ),
+            "show_faq": forms.CheckboxInput(
+                attrs={
+                    "class": "checkbox checkbox-primary edit-card-field-toggle",
+                }
+            ),
+            "rsvp_start_date": forms.DateInput(
+                attrs={"class": "input input-bordered edit-card-field-value", "type": "date"}
+            ),
+            "rsvp_end_date": forms.DateInput(
+                attrs={"class": "input input-bordered edit-card-field-value", "type": "date"}
             ),
         }
 
