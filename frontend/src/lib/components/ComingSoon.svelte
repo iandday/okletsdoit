@@ -28,7 +28,7 @@
                             What to Expect:
                         </h3>
                         <ul class="space-y-3">
-                            {#each expectations as { text, icon }}
+                            {#each expectations as { text, icon }, index (index)}
                                 <li class="flex items-start gap-3">
                                     <span class="iconify lucide--{icon} size-5 text-accent mt-0.5 flex-shrink-0"></span>
                                     <span class="text-primary-content">{text}</span>
