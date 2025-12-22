@@ -66,6 +66,11 @@
                                 {{ settings_form.show_faq }}
                                 {% if settings_form.show_faq.errors %}<div class="text-error">{{ settings_form.show_faq.errors }}</div>{% endif %}
                             </div>
+                            <div class="form-control">
+                                {{ settings_form.allow_photos.label_tag }}
+                                {{ settings_form.allow_photos }}
+                                {% if settings_form.allow_photos.errors %}<div class="text-error">{{ settings_form.allow_photos.errors }}</div>{% endif %}
+                            </div>
                         </div>
                     </div>
                 </div>

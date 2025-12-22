@@ -6,6 +6,7 @@
 | ---------------------------- | ------- |
 | `defaultDataLoaded`          | boolean |
 | `allowRsvp`                  | boolean |
+| `allowPhotos`                | boolean |
 | `weddingDate`                | Date    |
 | `showFaq`                    | boolean |
 | `rsvpStartDate`              | Date    |
@@ -37,6 +38,7 @@ import type { WeddingSettingsUpdateSchema } from "";
 const example = {
     defaultDataLoaded: null,
     allowRsvp: null,
+    allowPhotos: null,
     weddingDate: null,
     showFaq: null,
     rsvpStartDate: null,

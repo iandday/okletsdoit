@@ -12,6 +12,7 @@ router = Router(tags=["Core"], auth=multi_auth)
 class WeddingSettingsSchema(Schema):
     default_data_loaded: bool
     allow_rsvp: bool
+    allow_photos: bool
     show_faq: bool
     wedding_date: Optional[date] = None
     rsvp_start_date: Optional[date] = None
@@ -38,6 +39,7 @@ class WeddingSettingsSchema(Schema):
 class WeddingSettingsUpdateSchema(Schema):
     default_data_loaded: Optional[bool] = None
     allow_rsvp: Optional[bool] = None
+    allow_photos: Optional[bool] = None
     wedding_date: Optional[date] = None
     show_faq: Optional[bool] = None
     rsvp_start_date: Optional[date] = None

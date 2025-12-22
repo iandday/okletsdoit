@@ -33,6 +33,12 @@ export interface WeddingSettingsUpdateSchema {
     allowRsvp?: boolean | null;
     /**
      *
+     * @type {boolean}
+     * @memberof WeddingSettingsUpdateSchema
+     */
+    allowPhotos?: boolean | null;
+    /**
+     *
      * @type {Date}
      * @memberof WeddingSettingsUpdateSchema
      */
@@ -180,6 +186,7 @@ export function WeddingSettingsUpdateSchemaFromJSONTyped(
     return {
         defaultDataLoaded: json["default_data_loaded"] == null ? undefined : json["default_data_loaded"],
         allowRsvp: json["allow_rsvp"] == null ? undefined : json["allow_rsvp"],
+        allowPhotos: json["allow_photos"] == null ? undefined : json["allow_photos"],
         weddingDate: json["wedding_date"] == null ? undefined : new Date(json["wedding_date"]),
         showFaq: json["show_faq"] == null ? undefined : json["show_faq"],
         rsvpStartDate: json["rsvp_start_date"] == null ? undefined : new Date(json["rsvp_start_date"]),
@@ -223,6 +230,7 @@ export function WeddingSettingsUpdateSchemaToJSONTyped(
     return {
         default_data_loaded: value["defaultDataLoaded"],
         allow_rsvp: value["allowRsvp"],
+        allow_photos: value["allowPhotos"],
         wedding_date:
             value["weddingDate"] == null ? value["weddingDate"] : value["weddingDate"].toISOString().substring(0, 10),
         show_faq: value["showFaq"],

@@ -174,6 +174,7 @@ class WeddingSettings(models.Model):
     show_faq = models.BooleanField(default=False, help_text="Enable or disable FAQ section on the site")
     wedding_date = models.DateField(null=True, blank=True)
     allow_rsvp = models.BooleanField(default=False, help_text="Enable or disable RSVP functionality")
+    allow_photos = models.BooleanField(default=False, help_text="Enable or disable Photo Sharing functionality")
     rsvp_accept_button = models.TextField(default="Lets' Do This", null=True)
     rsvp_decline_button = models.TextField(default="No Thanks", null=True)
     rsvp_attending_label = models.CharField(max_length=100, default="I'll be there!")

@@ -57,7 +57,6 @@
 
         months_value = totalMonths;
         days_value = days;
-        console.log("Months:", months_value, "Days:", days_value);
     });
 </script>
 

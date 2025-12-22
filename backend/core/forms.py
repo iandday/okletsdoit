@@ -231,6 +231,7 @@ class WeddingSettingsForm(ModelForm):
         fields = [
             "wedding_date",
             "allow_rsvp",
+            "allow_photos",
             "rsvp_accept_button",
             "rsvp_decline_button",
             "rsvp_attending_label",
@@ -255,6 +256,7 @@ class WeddingSettingsForm(ModelForm):
         labels = {
             "wedding_date": "Wedding Date",
             "allow_rsvp": "Allow RSVP",
+            "allow_photos": "Allow Photo Sharing",
             "rsvp_accept_button": "RSVP Accept Button Text",
             "rsvp_decline_button": "RSVP Decline Button Text",
             "rsvp_attending_label": "RSVP Attending Checkbox Label",
@@ -278,6 +280,7 @@ class WeddingSettingsForm(ModelForm):
         }
         widgets = {
             "allow_rsvp": forms.CheckboxInput(attrs={"class": "checkbox checkbox-primary edit-card-field-toggle"}),
+            "allow_photos": forms.CheckboxInput(attrs={"class": "checkbox checkbox-primary edit-card-field-toggle"}),
             "wedding_date": forms.DateInput(
                 attrs={"class": "input input-bordered edit-card-field-value", "type": "date"}
             ),

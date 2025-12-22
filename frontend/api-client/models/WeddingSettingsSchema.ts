@@ -36,6 +36,12 @@ export interface WeddingSettingsSchema {
      * @type {boolean}
      * @memberof WeddingSettingsSchema
      */
+    allowPhotos: boolean;
+    /**
+     *
+     * @type {boolean}
+     * @memberof WeddingSettingsSchema
+     */
     showFaq: boolean;
     /**
      *
@@ -165,6 +171,7 @@ export interface WeddingSettingsSchema {
 export function instanceOfWeddingSettingsSchema(value: object): value is WeddingSettingsSchema {
     if (!("defaultDataLoaded" in value) || value["defaultDataLoaded"] === undefined) return false;
     if (!("allowRsvp" in value) || value["allowRsvp"] === undefined) return false;
+    if (!("allowPhotos" in value) || value["allowPhotos"] === undefined) return false;
     if (!("showFaq" in value) || value["showFaq"] === undefined) return false;
     if (!("rsvpAcceptButton" in value) || value["rsvpAcceptButton"] === undefined) return false;
     if (!("rsvpDeclineButton" in value) || value["rsvpDeclineButton"] === undefined) return false;
@@ -197,6 +204,7 @@ export function WeddingSettingsSchemaFromJSONTyped(json: any, ignoreDiscriminato
     return {
         defaultDataLoaded: json["default_data_loaded"],
         allowRsvp: json["allow_rsvp"],
+        allowPhotos: json["allow_photos"],
         showFaq: json["show_faq"],
         weddingDate: json["wedding_date"] == null ? undefined : new Date(json["wedding_date"]),
         rsvpStartDate: json["rsvp_start_date"] == null ? undefined : new Date(json["rsvp_start_date"]),
@@ -236,6 +244,7 @@ export function WeddingSettingsSchemaToJSONTyped(
     return {
         default_data_loaded: value["defaultDataLoaded"],
         allow_rsvp: value["allowRsvp"],
+        allow_photos: value["allowPhotos"],
         show_faq: value["showFaq"],
         wedding_date:
             value["weddingDate"] == null ? value["weddingDate"] : value["weddingDate"].toISOString().substring(0, 10),
