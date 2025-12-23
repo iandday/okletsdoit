@@ -2,28 +2,7 @@
 <script lang="ts">
     import ComingSoon from "$lib/components/ComingSoon.svelte";
     import PageShell from "$lib/components/layouts/PageShell.svelte";
-    import type { QuestionSchema, RsvpQuestionSchema, TipsSchema } from "../../../api-client";
     import type { IComingSoon } from "../../types";
-    import type { PageData } from "./$types";
-
-    // type iURL = {
-    //     url: string;
-    //     url_text: string;
-    // };
-    // type iFAQ = {
-    //     question: string;
-    //     answer: string;
-    //     icon: string;
-    //     urls?: iURL[];
-    //     id: string;
-    // };
-
-    // type iFaqTips = {
-    //     category: string;
-    //     faqs: iFAQ[];
-    //     tips: string[];
-    //     id: string;
-    // };
 
     // const faqs: iFaqTips[] = [
     //     {
@@ -239,7 +218,7 @@
                                         <div class="collapse-title text-lg font-medium flex items-center gap-3">
                                             <div class="bg-primary/10 rounded-full p-2 flex-shrink-0">
                                                 <span
-                                                    class="iconify {question.icon} size-7 font-strong text-primary-content"
+                                                    class="iconify lucide--{question.icon} size-7 font-strong text-primary-content"
                                                 ></span>
                                             </div>
                                             <span>{question.question}</span>

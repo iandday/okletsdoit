@@ -137,6 +137,14 @@
                                     </a>
                                 </li>
                             {/each}
+                            <div class="border-t border-base-200 my-2"></div>
+                            <li>
+                                <a class="text-primary-content flex items-center gap-2 px-3 py-1.5" href="/config">
+                                    <span class="iconify lucide--user size-4" />
+                                    <span>Config</span>
+                                </a>
+                            </li>
+                            <div class="border-t border-base-200 my-2"></div>
                             <li>
                                 <a
                                     class="text-primary-content flex items-center gap-2 px-3 py-1.5"
