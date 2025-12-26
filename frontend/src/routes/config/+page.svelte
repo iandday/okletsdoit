@@ -10,7 +10,7 @@
             .trim();
     };
 
-    const formatValue = (value: any): string => {
+    const formatValue = (value: null | boolean | Date | string | number | undefined): string => {
         if (value === null || value === undefined) {
             return "Not set";
         }
@@ -76,28 +76,20 @@
                 <div class="grid gap-4">
                     {#each Object.entries(sections) as [key, section]}
                         <div class="config-card">
-                            <div class="card-body">
-                                <h2 class="card-title text-xl mb-4">{section.title}</h2>
-                                <div class="list">
+                            <div class="config-card-body">
+                                <h2 class="config-card-title text-xl mb-4">{section.title}</h2>
+                                <div class="grid grid-cols-2 gap-4 mt-4">
                                     {#each section.fields as field}
-                                        {@const value = data.configData[field]}
-                                        <div class="list-row">
-                                            <span class="font-semibold text-base-content/70">{formatLabel(field)}</span>
-                                            <span class="text-base-content">
-                                                {#if typeof value === "boolean"}
-                                                    <span class="badge {value ? 'badge-success' : 'badge-ghost'}">
-                                                        {formatValue(value)}
-                                                    </span>
-                                                {:else if value === null || value === undefined}
-                                                    <span class="badge badge-ghost">{formatValue(value)}</span>
-                                                {:else if field.includes("Date")}
-                                                    <span class="badge badge-neutral">{formatValue(value)}</span>
-                                                {:else if field.includes("Message") || field.includes("Intro") || field.includes("Headline")}
+                                        {@const value = data.configData[field as keyof typeof data.configData]}
+                                        <div class="flex flex-col">
+                                            <div class="config-card-field-name">{formatLabel(field)}</div>
+                                            <div class="config-card-field-value">
+                                                {#if field.includes("Message") || field.includes("Intro") || field.includes("Headline")}
                                                     <div class="text-sm max-w-prose">{formatValue(value)}</div>
                                                 {:else}
                                                     {formatValue(value)}
                                                 {/if}
-                                            </span>
+                                            </div>
                                         </div>
                                     {/each}
                                 </div>
