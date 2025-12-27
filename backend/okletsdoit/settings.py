@@ -290,7 +290,10 @@ SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 # Disable SSL redirect for service token requests (internal container communication)
 # The ServiceTokenSecurityMiddleware will mark internal requests
 SECURE_SSL_REDIRECT = True
-SECURE_REDIRECT_EXEMPT = [r"^api/"]  # Exempt API endpoints from SSL redirect
+SECURE_REDIRECT_EXEMPT = [
+    r"^api/",  # Exempt API endpoints from SSL redirect
+    r"^_allauth/",  # Exempt allauth endpoints for internal container auth checks
+]
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
