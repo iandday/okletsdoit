@@ -38,6 +38,10 @@ env = environ.Env(
     ALLOWED_CIDR_NETS=(list, []),
     NGINX_SERVER_NAME=(str, "dev.internal"),
     DJANGO_CORS_ALLOWED_ORIGINS=(list, ["http://localhost:5173", "http://localhost:4173", "dev.internal"]),
+    EMAIL_BACKEND=(str, "django.core.mail.backends.smtp.EmailBackend"),
+    EMAIL_HOST=(str, "smtp.gmail.com"),
+    EMAIL_USE_TLS=(bool, True),
+    EMAIL_PORT=(int, 587),
 )
 env.read_env(BASE_DIR / ".env", overwrite=True)
 
@@ -435,3 +439,13 @@ CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 CELERY_WORKER_SEND_TASK_EVENTS = True
 CELERY_TASK_SEND_SENT_EVENT = True
 CELERY_WORKER_HIJACK_ROOT_LOGGER = False
+
+# email
+EMAIL_BACKEND = env("EMAIL_BACKEND")
+EMAIL_HOST = env("EMAIL_HOST")
+EMAIL_USE_TLS = env("EMAIL_USE_TLS")
+EMAIL_PORT = env("EMAIL_PORT")
+EMAIL_HOST_USER = env("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
+DEFAULT_FROM_EMAIL = env("EMAIL_HOST_USER")  # Use the same email as the host user
+EMAIL_URL_BASE = env("EMAIL_URL_BASE")

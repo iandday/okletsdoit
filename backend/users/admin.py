@@ -9,13 +9,13 @@ from .models import User
 
 @admin.register(User)
 class UserAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
-    list_display = ["email", "first_name", "last_name", "is_active", "is_admin"]
+    list_display = ["email", "first_name", "last_name", "is_active", "is_admin", "email_notifications"]
     search_fields = ["email, first_name", "last_name"]
-    list_filter = ["is_active", "is_admin"]
+    list_filter = ["is_active", "is_admin", "email_notifications"]
     ordering = ["email"]
     list_per_page = 20
     fieldsets = (
-        (None, {"fields": ("email", "password")}),
+        (None, {"fields": ("email", "password", "email_notifications")}),
         ("Personal info", {"fields": ("first_name", "last_name", "photo")}),
         ("Permissions", {"fields": ("is_active", "is_admin", "is_staff")}),
     )

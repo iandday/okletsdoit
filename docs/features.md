@@ -39,3 +39,9 @@
     * FAQ Summary
     * FAQ Detail
   * Settings
+  * Update Emails
+    * Deadline summary
+    * Overdue deadlines
+    * Upcoming deadlines
+    * Budget summary
+    * Guest list summary

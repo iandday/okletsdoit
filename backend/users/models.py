@@ -53,6 +53,7 @@ class User(AbstractBaseUser):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     photo = models.ImageField(upload_to="users/", default="images/users/default.avif")
+    email_notifications = models.BooleanField(default=False)
 
     objects = MyCustomUserManager()
     USERNAME_FIELD = "email"
