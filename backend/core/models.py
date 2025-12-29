@@ -146,6 +146,7 @@ class QuestionCategory(models.Model):
 
     class Meta:
         ordering = ["order"]
+        verbose_name = "FAQ Category"
         verbose_name_plural = "FAQ Categories"
         constraints = [models.UniqueConstraint(fields=["name"], name="unique_question_category")]
 

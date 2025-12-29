@@ -11,6 +11,7 @@
     * [ ] RSVP Form (Public)
     * [ ] RSVP Preview
 - [ ] Settings Page
+  - [ ] Cleanup import function
 - [ ] Photo Upload
     * [ ] Upload form (Public)
     * [ ] Gallery (Public)

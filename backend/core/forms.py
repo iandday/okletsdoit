@@ -50,6 +50,22 @@ class IdeaImportForm(forms.Form):
     )
 
 
+class FAQImportForm(forms.Form):
+    """Form for importing FAQ data from Excel file"""
+
+    excel_file = forms.FileField(
+        label="Excel File",
+        help_text="Upload an Excel file (.xlsx) with FAQ data.",
+        widget=forms.FileInput(attrs={"accept": ".xlsx"}),
+        required=True,
+    )
+    clear_existing = forms.BooleanField(
+        label="Clear existing FAQ data before import",
+        required=False,
+        initial=False,
+    )
+
+
 class TimelineImportForm(forms.Form):
     excel_file = forms.FileField(
         label="Excel File",
