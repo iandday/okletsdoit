@@ -1,35 +1,23 @@
-<SYSTEM>
-You are an AI programming assistant that is specialized in applying code changes to an existing document.
-Follow Microsoft content policies.
-Avoid content that violates copyrights.
-If you are asked to generate content that is harmful, hateful, racist, sexist, lewd, violent, or completely irrelevant to software engineering, only respond with "Sorry, I can't assist with that."
-Keep your answers short and impersonal.
-For the response, always follow these instructions:
-1. Analyse the code block and the existing document to decide if the code block should replace existing code or should be inserted.
-2. If necessary, break up the code block in multiple parts and insert each part at the appropriate location.
-3. Preserve whitespace and newlines right after the parts of the file that you modify.
-4. The final result must be syntactically valid, properly formatted, and correctly indented. It should not contain any ...existing code... comments.
-5. Only provide suggested changes related to my request, do not suggest unrelated changes.
-6. Finally, provide the fully rewritten file. You must output the complete file.
-</SYSTEM>
+---
+applyTo: "frontend/**/*"
+---
 
-This project utilizes django 5.2 or higher, daisyUI5 and enforces CSP via the django-csp package.  
-* Use {% load static %} for static files, not hardcoded paths
-* Use {% url 'view_name' %} for internal links, not hardcoded URLs
-* Always include {% csrf_token %} in forms
-* Use Django's built-in template filters when available
-* All JavaScript must use nonce="{{request.csp_nonce}}"
-* Use addEventListener() instead of onclick attributes
-* Event handlers must be in separate script blocks, not inline
-* Use Django ModelForms when possible
-* Include proper error handling in templates
-* Use Django's form widgets with daisyUI classes
-* Extend base templates using {% extends "path/to/base.html" %}
-* Use {% include %} for reusable components
-* Keep template logic minimal, use view context instead
-* All template block tags must have the block name in the endblock tag
-* The project utilizes the UV package manager, all commands are run with uv instead of python
+"This is a SvelteKit project using TypeScript. All components use .svelte files and the file-system router for navigation".
+"We use the @sveltejs/adapter-static for deployment to GitHub Pages".
+"Prioritize the new Svelte 5 runes syntax for state management and effects". 
 
+
+When connected to the svelte-llm MCP server, you have access to comprehensive Svelte 5 and SvelteKit documentation. Here's how to use the available tools effectively:
+
+## Available MCP Tools:
+
+### 1. list_sections
+Use this FIRST to discover all available documentation sections. Returns a structured list with titles and paths.
+When asked about Svelte or SvelteKit topics, ALWAYS use this tool at the start of the chat to find relevant sections.
+
+### 2. get_documentation
+Retrieves full documentation content for specific sections. Accepts single or multiple sections.
+After calling the list_sections tool, you MUST analyze the returned documentation sections and then use the get_documentation tool to fetch ALL documentation sections that are relevant for the users task.
 
 # daisyUI 5
 daisyUI 5 is a CSS library for Tailwind CSS 4
@@ -188,21 +176,23 @@ A CSS file with Tailwind CSS, daisyUI and a custom daisyUI theme looks like this
   --radius-selector: 1rem; /* border radius of selectors (checkbox, toggle, badge) */
   --radius-field: 0.25rem; /* border radius of fields (button, input, select, tab) */
   --radius-box: 0.5rem; /* border radius of boxes (card, modal, alert) */
+  /* preferred values for --radius-* : 0rem, 0.25rem, 0.5rem, 1rem, 2rem */
 
-  --size-selector: 0.25rem; /* base size of selectors (checkbox, toggle, badge) */
-  --size-field: 0.25rem; /* base size of fields (button, input, select, tab) */
+  --size-selector: 0.25rem; /* base size of selectors (checkbox, toggle, badge). Value must be 0.25rem unless we intentionally want bigger selectors. In so it can be 0.28125 or 0.3125. If we intentionally want smaller selectors, it can be 0.21875 or 0.1875 */
+  --size-field: 0.25rem; /* base size of fields (button, input, select, tab). Value must be 0.25rem unless we intentionally want bigger fields. In so it can be 0.28125 or 0.3125. If we intentionally want smaller fields, it can be 0.21875 or 0.1875 */
 
-  --border: 1px; /* border size */
+  --border: 1px; /* border size. Value must be 1px unless we intentionally want thicker borders. In so it can be 1.5px or 2px. If we intentionally want thinner borders, it can be 0.5px */
 
-  --depth: 1; /* only 0 or 1 – Adds a shadow and subtle 3D effect to components */
-  --noise: 0; /* only 0 or 1 - Adds a subtle noise effect to components */
+  --depth: 1; /* only 0 or 1 – Adds a shadow and subtle 3D depth effect to components */
+  --noise: 0; /* only 0 or 1 - Adds a subtle noise (grain) effect to components */
 }
 ```
 #### Rules
 - All CSS variables above are required
 - Colors can be OKLCH or hex or other formats
+- If you're generating a custom theme, do not include the comments from the example above. Just provide the code.
 
-You can use https://daisyui.com/theme-generator/ to create your own theme
+People can use https://daisyui.com/theme-generator/ visual tool to create their own theme.
 
 ## daisyUI 5 components
 
@@ -1576,9 +1566,3 @@ Validator class changes the color of form elements to error or success based on 
 <p class="validator-hint">Error message</p>
 ```
 
-#### Rules
-- Use with `input`, `select`, `textarea`
-* Use {% load static %} for static files, not hardcoded paths
-* Use {% url 'view_name' %} for internal links, not hardcoded URLs
-* Always include {% csrf_token %} in forms
-* Use Django's built-in template filters when available

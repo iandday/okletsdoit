@@ -7,6 +7,13 @@
                 "-y",
                 "@upstash/context7-mcp@latest"
             ]
+        },
+        "svelte-llm": {
+            "command": "npx",
+            "args": [
+                "mcp-remote",
+                "https://svelte-llm.stanislav.garden/mcp/mcp"
+            ]
         }
     }
 }
