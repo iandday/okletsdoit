@@ -5,7 +5,7 @@ import { env } from "$env/dynamic/private";
 const API_URL = env.BACKEND_API_URL;
 
 // Routes that require authentication
-const protectedRoutes: string[] = ["/config"];
+const protectedRoutes: string[] = ["/config", "/config/edit"];
 
 export const handle: Handle = async ({ event, resolve }) => {
     const { url, cookies } = event;

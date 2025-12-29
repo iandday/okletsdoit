@@ -74,10 +74,10 @@
             title: "FAQ",
             href: "/question/",
         },
-        {
-            title: "Settings",
-            href: "/settings/",
-        },
+        // {
+        //     title: "Settings",
+        //     href: "/settings/",
+        // },
     ];
     let scrollPosition = $state(0);
     let scrollRef: HTMLDivElement;

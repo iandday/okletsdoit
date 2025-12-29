@@ -65,11 +65,13 @@
     };
 </script>
 
+``
 <div>
     <ProtectedPageShell
         ><div class="container mx-auto p-4 max-w-6xl">
             <div class="flex justify-between items-center mb-6">
                 <h1 class="text-3xl font-bold">Wedding Configuration</h1>
+                <a href="/config/edit" class="btn btn-primary">Edit Settings</a>
             </div>
 
             {#if data.configData}
