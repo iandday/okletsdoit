@@ -31,11 +31,11 @@
     }
 }
 
-.timeline:not(.timeline-vertical) > li > hr {
+.timeline:not(.timeline-vertical)>li>hr {
     height: 2px;
 }
 
-.timeline.timeline-vertical > li > hr {
+.timeline.timeline-vertical>li>hr {
     width: 2px;
 }
 
@@ -103,4 +103,58 @@ input:-webkit-autofill:active {
 
 .config-card-field-value {
     @apply text-primary-content;
+}
+
+.edit-card {
+    @apply card bg-base-200 text-primary-content shadow-md transition-shadow duration-300 hover:shadow-lg;
+}
+
+.edit-card-title {
+    @apply card-title text-lg lg:text-xl;
+}
+
+.edit-card-body {
+    @apply card-body text-primary-content px-6 py-4;
+}
+
+.edit-card-field-name {
+    @apply text-primary-content/70 font-medium;
+}
+
+.edit-card-field-value {
+    @apply text-primary-content;
+}
+
+.edit-card-field-toggle {
+    @apply toggle toggle-primary;
+}
+
+.edit-card-field-textarea {
+    @apply textarea w-full bg-base-100 text-primary-content;
+}
+
+.edit-card-field-input {
+    @apply input w-full bg-base-100 text-primary-content;
+}
+
+.edit-card-field-date {
+    @apply input w-full bg-base-100 text-primary-content;
+}
+
+
+
+
+
+
+
+.edit-card-field-select {
+    @apply select w-full bg-base-100 text-primary-content;
+}
+
+.edit-card-field-checkbox {
+    @apply checkbox checkbox-primary;
+}
+
+.edit-card-field-radio {
+    @apply radio radio-primary;
 }

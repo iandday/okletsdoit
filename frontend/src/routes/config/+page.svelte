@@ -18,7 +18,11 @@
             return value ? "Yes" : "No";
         }
         if (value instanceof Date) {
-            return value.toLocaleDateString();
+            // Format date without timezone conversion to avoid off-by-one day issues
+            const year = value.getUTCFullYear();
+            const month = String(value.getUTCMonth() + 1).padStart(2, "0");
+            const day = String(value.getUTCDate()).padStart(2, "0");
+            return `${month}/${day}/${year}`;
         }
         return String(value);
     };
@@ -65,7 +69,6 @@
     };
 </script>
 
-``
 <div>
     <ProtectedPageShell
         ><div class="container mx-auto p-4 max-w-6xl">

@@ -101,7 +101,7 @@
     <div class="container mx-auto p-4 max-w-6xl">
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-3xl font-bold">Edit Wedding Configuration</h1>
-            <a href="/config" class="btn btn-ghost">Cancel</a>
+            <a href="/config" class="btn btn-error">Cancel</a>
         </div>
 
         {#if form?.error}
@@ -132,14 +132,14 @@
             }}>
             <div class="grid gap-6">
                 {#each Object.entries(sections) as [key, section], index (key)}
-                    <div class="card bg-base-100 shadow-xl">
-                        <div class="card-body">
-                            <h2 class="card-title text-xl mb-4">{section.title}</h2>
+                    <div class="edit-card">
+                        <div class="edit-card-body">
+                            <h2 class="edit-card-title">{section.title}</h2>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 {#each section.fields as field, index (index)}
                                     <div class="form-control w-full">
-                                        <label class="label" for={field.name}>
-                                            <span class="label-text font-semibold">{formatLabel(field.name)}</span>
+                                        <label class="edit-card-field-name" for={field.name}>
+                                            <span>{formatLabel(field.name)}</span>
                                         </label>
 
                                         {#if field.type === "checkbox"}
@@ -147,21 +147,21 @@
                                                 type="checkbox"
                                                 name={field.name}
                                                 id={field.name}
-                                                class="toggle toggle-primary"
+                                                class="edit-card-field-toggle"
                                                 checked={formData[field.name as keyof WeddingSettingsUpdateSchema]} />
                                         {:else if field.type === "date"}
                                             <input
                                                 type="date"
                                                 name={field.name}
                                                 id={field.name}
-                                                class="input input-bordered w-full"
+                                                class="edit-card-field-date"
                                                 value={formData[field.name as keyof WeddingSettingsUpdateSchema] ||
                                                     ""} />
                                         {:else if field.type === "textarea"}
                                             <textarea
                                                 name={field.name}
                                                 id={field.name}
-                                                class="textarea textarea-bordered w-full h-24"
+                                                class="edit-card-field-textarea"
                                                 value={formData[field.name as keyof WeddingSettingsUpdateSchema] || ""}
                                             ></textarea>
                                         {:else}
@@ -169,7 +169,7 @@
                                                 type="text"
                                                 name={field.name}
                                                 id={field.name}
-                                                class="input input-bordered w-full"
+                                                class="edit-card-field-input"
                                                 value={formData[field.name as keyof WeddingSettingsUpdateSchema] ||
                                                     ""} />
                                         {/if}
@@ -182,7 +182,7 @@
             </div>
 
             <div class="flex gap-4 mt-6 justify-end">
-                <a href="/config" class="btn btn-ghost">Cancel</a>
+                <a href="/config" class="btn btn-error">Cancel</a>
                 <button type="submit" class="btn btn-primary" disabled={submitting}>
                     {#if submitting}
                         <span class="loading loading-spinner"></span>
