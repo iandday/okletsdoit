@@ -111,7 +111,7 @@ class Command(BaseCommand):
                     self.stdout.write(self.style.SUCCESS("\n✓ Import completed successfully"))
 
                 # Summary
-                self.stdout.write(f"\nSummary:")
+                self.stdout.write("\nSummary:")
                 if categories_created > 0:
                     self.stdout.write(f"  Categories: {categories_created}")
                 if questions_created > 0:

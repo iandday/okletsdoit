@@ -5,7 +5,6 @@ from uuid import UUID
 
 from core.auth import multi_auth
 from django.contrib.auth import get_user_model
-from django.db import transaction
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from ninja.pagination import PageNumberPagination, paginate
@@ -13,7 +12,6 @@ from ninja.pagination import PageNumberPagination, paginate
 from .models import WeddingSettings
 from .models import Question
 from .models import QuestionCategory
-from .models import QuestionURL
 from .models import Tips
 from .models import RsvpQuestion
 from .models import RsvpQuestionChoice

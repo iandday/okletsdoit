@@ -31,11 +31,11 @@
     }
 }
 
-.timeline:not(.timeline-vertical)>li>hr {
+.timeline:not(.timeline-vertical) > li > hr {
     height: 2px;
 }
 
-.timeline.timeline-vertical>li>hr {
+.timeline.timeline-vertical > li > hr {
     width: 2px;
 }
 
@@ -86,11 +86,11 @@ input:-webkit-autofill:active {
 }
 
 .config-card {
-    @apply card bg-base-300 shadow-xl hover:shadow-2xl transition-shadow duration-300 text-primary-content;
+    @apply card bg-base-300 text-primary-content shadow-xl transition-shadow duration-300 hover:shadow-2xl;
 }
 
 .config-card-title {
-    @apply card-title text-accent lg:text-xl text-lg;
+    @apply card-title text-accent text-lg lg:text-xl;
 }
 
 .config-card-body {
@@ -98,7 +98,7 @@ input:-webkit-autofill:active {
 }
 
 .config-card-field-name {
-    @apply font-semibold text-primary-content/60;
+    @apply text-primary-content/60 font-semibold;
 }
 
 .config-card-field-value {

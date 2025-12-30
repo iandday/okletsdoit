@@ -6,7 +6,7 @@ from django.core.management.base import BaseCommand
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.db.models import Q, Sum, F, DecimalField
+from django.db.models import Sum, DecimalField
 from django.utils import timezone
 from django.urls import reverse
 from django.template.loader import render_to_string

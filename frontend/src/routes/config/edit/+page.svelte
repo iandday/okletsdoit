@@ -131,12 +131,12 @@
                 };
             }}>
             <div class="grid gap-6">
-                {#each Object.entries(sections) as [key, section]}
+                {#each Object.entries(sections) as [key, section], index (key)}
                     <div class="card bg-base-100 shadow-xl">
                         <div class="card-body">
                             <h2 class="card-title text-xl mb-4">{section.title}</h2>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                {#each section.fields as field}
+                                {#each section.fields as field, index (index)}
                                     <div class="form-control w-full">
                                         <label class="label" for={field.name}>
                                             <span class="label-text font-semibold">{formatLabel(field.name)}</span>

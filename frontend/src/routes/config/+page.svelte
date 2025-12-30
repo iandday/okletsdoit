@@ -76,12 +76,12 @@
 
             {#if data.configData}
                 <div class="grid gap-4">
-                    {#each Object.entries(sections) as [key, section]}
+                    {#each Object.entries(sections) as [key, section], index (key)}
                         <div class="config-card">
                             <div class="config-card-body">
                                 <h2 class="config-card-title text-xl mb-4">{section.title}</h2>
                                 <div class="grid grid-cols-2 gap-4 mt-4">
-                                    {#each section.fields as field}
+                                    {#each section.fields as field, index (index)}
                                         {@const value = data.configData[field as keyof typeof data.configData]}
                                         <div class="flex flex-col">
                                             <div class="config-card-field-name">{formatLabel(field)}</div>

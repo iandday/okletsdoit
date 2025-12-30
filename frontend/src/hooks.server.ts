@@ -1,6 +1,6 @@
+import { env } from "$env/dynamic/private";
 import { redirect } from "@sveltejs/kit";
 import type { Handle } from "@sveltejs/kit";
-import { env } from "$env/dynamic/private";
 
 const API_URL = env.BACKEND_API_URL;
 
@@ -22,7 +22,6 @@ export const handle: Handle = async ({ event, resolve }) => {
     const requiresAuth = protectedRoutes.some((route) => url.pathname.startsWith(route));
 
     if (requiresAuth) {
-
         if (!sessionCookie) {
             throw redirect(303, `/auth/login?redirect=${encodeURIComponent(url.pathname)}`);
         }
@@ -35,7 +34,6 @@ export const handle: Handle = async ({ event, resolve }) => {
                     Cookie: `sessionid=${sessionCookie}`,
                 },
             });
-
 
             if (!response.ok) {
                 throw redirect(303, `/auth/login?redirect=${encodeURIComponent(url.pathname)}`);
@@ -57,5 +55,6 @@ export const handle: Handle = async ({ event, resolve }) => {
             // Network/other errors - redirect to login
             throw redirect(303, `/auth/login?redirect=${encodeURIComponent(url.pathname)}`);
         }
-    } return resolve(event);
+    }
+    return resolve(event);
 };
