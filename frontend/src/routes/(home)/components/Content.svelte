@@ -91,7 +91,7 @@
                     class="card bg-gradient-to-br from-primary/10 via-secondary/10 to-accent/10 shadow-2xl border border-primary/20">
                     <div class="card-body items-center" id="countdown-timer">
                         <div class="badge badge-secondary badge-lg mb-4 gap-2 px-4 py-3">
-                            <span class="iconify lucide--sparkles size-4"></span>
+                            <span class="icon-[lucide--sparkles] size-4"></span>
                             Save the Date
                         </div>
                         <h2
@@ -118,7 +118,7 @@
                         <!-- RSVP Coming Soon Announcement -->
                         <div class="mt-8 w-full flex justify-center">
                             <div class="alert bg-primary border-accent/30 shadow-md w-fit">
-                                <span class="iconify lucide--calendar-check size-6 text-accent"></span>
+                                <span class="icon-[lucide--calendar-check] size-6 text-accent"></span>
                                 <h3 class="font-bold text-primary-content">RSVP Coming Soon!</h3>
                             </div>
                         </div>

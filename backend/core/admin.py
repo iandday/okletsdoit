@@ -14,6 +14,10 @@ from .models import (
     Inspiration,
     RsvpQuestionChoice,
     WeddingSettings,
+    Question,
+    QuestionCategory,
+    QuestionURL,
+    Tips,
 )
 from .forms import FAQImportForm
 from contacts.admin import ContactAdmin
@@ -242,6 +246,261 @@ class InspirationAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
         super().save_model(request, obj, form, change)
 
 
+class QuestionURLInline(admin.TabularInline):
+    """Inline admin for QuestionURL to manage URLs within a Question"""
+
+    model = QuestionURL
+    fk_name = "question"
+    extra = 1
+    min_num = 0
+    verbose_name = "Related URL"
+    verbose_name_plural = "Related URLs"
+    fields = ("url", "text")
+    show_change_link = False
+
+
+class QuestionAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
+    """Admin for FAQ Questions"""
+
+    list_display = ("question_preview", "category", "icon", "order", "published", "created_at")
+    list_filter = ("category", "published", "created_at", "is_deleted")
+    search_fields = ("question", "answer", "slug")
+    prepopulated_fields = {"slug": ("question",)}
+    readonly_fields = ("id", "created_at", "updated_at")
+    inlines = (QuestionURLInline,)
+
+    fieldsets = (
+        ("Question Details", {"fields": ("category", "question", "slug", "answer", "icon")}),
+        ("Display", {"fields": ("order", "published")}),
+        ("Tracking", {"fields": ("created_by", "updated_by", "is_deleted"), "classes": ("collapse",)}),
+        ("Timestamps", {"fields": ("id", "created_at", "updated_at"), "classes": ("collapse",)}),
+    )
+
+    def question_preview(self, obj):
+        """Display a preview of the question"""
+        if len(obj.question) > 80:
+            preview = obj.question[:80] + "..."
+        else:
+            preview = obj.question
+        return format_html('<span class="text-sm">{}</span>', preview)
+
+    question_preview.short_description = "Question"
+
+    def get_queryset(self, request):
+        """Optimize queryset and exclude deleted questions by default"""
+        queryset = super().get_queryset(request)
+        return queryset.select_related("category", "created_by", "updated_by").filter(is_deleted=False)
+
+    def save_model(self, request, obj, form, change):
+        """Auto-set created_by and updated_by fields"""
+        if not change:
+            obj.created_by = request.user
+        obj.updated_by = request.user
+        super().save_model(request, obj, form, change)
+
+    actions = ["mark_as_deleted", "restore_from_deleted", "toggle_published"]
+
+    def mark_as_deleted(self, request, queryset):
+        """Mark selected questions as deleted"""
+        updated = queryset.update(is_deleted=True)
+        self.message_user(request, f"{updated} questions marked as deleted.")
+
+    mark_as_deleted.short_description = "Mark selected questions as deleted"
+
+    def restore_from_deleted(self, request, queryset):
+        """Restore selected questions from deleted"""
+        updated = queryset.update(is_deleted=False)
+        self.message_user(request, f"{updated} questions restored from deleted.")
+
+    restore_from_deleted.short_description = "Restore selected questions from deleted"
+
+    def toggle_published(self, request, queryset):
+        """Toggle published status for selected questions"""
+        for obj in queryset:
+            obj.published = not obj.published
+            obj.save()
+        self.message_user(request, f"Toggled published status for {queryset.count()} questions.")
+
+    toggle_published.short_description = "Toggle published status"
+
+
+class QuestionCategoryAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
+    """Admin for FAQ Categories"""
+
+    list_display = ("name", "order", "published", "question_count", "created_at")
+    list_filter = ("published", "created_at", "is_deleted")
+    search_fields = ("name", "slug")
+    prepopulated_fields = {"slug": ("name",)}
+    readonly_fields = ("id", "created_at", "updated_at")
+
+    fieldsets = (
+        ("Category Details", {"fields": ("name", "slug", "order", "published")}),
+        ("Tracking", {"fields": ("created_by", "updated_by", "is_deleted"), "classes": ("collapse",)}),
+        ("Timestamps", {"fields": ("id", "created_at", "updated_at"), "classes": ("collapse",)}),
+    )
+
+    def question_count(self, obj):
+        """Display count of questions in this category"""
+        count = obj.questions_category.filter(is_deleted=False).count()
+        return format_html('<span class="badge badge-primary">{}</span>', count)
+
+    question_count.short_description = "Questions"
+
+    def get_queryset(self, request):
+        """Optimize queryset and exclude deleted categories by default"""
+        queryset = super().get_queryset(request)
+        return queryset.select_related("created_by", "updated_by").filter(is_deleted=False)
+
+    def save_model(self, request, obj, form, change):
+        """Auto-set created_by and updated_by fields"""
+        if not change:
+            obj.created_by = request.user
+        obj.updated_by = request.user
+        super().save_model(request, obj, form, change)
+
+    actions = ["mark_as_deleted", "restore_from_deleted", "toggle_published"]
+
+    def mark_as_deleted(self, request, queryset):
+        """Mark selected categories as deleted"""
+        updated = queryset.update(is_deleted=True)
+        self.message_user(request, f"{updated} categories marked as deleted.")
+
+    mark_as_deleted.short_description = "Mark selected categories as deleted"
+
+    def restore_from_deleted(self, request, queryset):
+        """Restore selected categories from deleted"""
+        updated = queryset.update(is_deleted=False)
+        self.message_user(request, f"{updated} categories restored from deleted.")
+
+    restore_from_deleted.short_description = "Restore selected categories from deleted"
+
+    def toggle_published(self, request, queryset):
+        """Toggle published status for selected categories"""
+        for obj in queryset:
+            obj.published = not obj.published
+            obj.save()
+        self.message_user(request, f"Toggled published status for {queryset.count()} categories.")
+
+    toggle_published.short_description = "Toggle published status"
+
+
+class QuestionURLAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
+    """Admin for Question URLs"""
+
+    list_display = ("text", "url_preview", "question", "created_at")
+    list_filter = ("created_at", "is_deleted")
+    search_fields = ("url", "text", "slug")
+    prepopulated_fields = {"slug": ("url",)}
+    readonly_fields = ("id", "created_at", "updated_at")
+
+    fieldsets = (
+        ("URL Details", {"fields": ("question", "url", "text", "slug")}),
+        ("Tracking", {"fields": ("created_by", "updated_by", "is_deleted"), "classes": ("collapse",)}),
+        ("Timestamps", {"fields": ("id", "created_at", "updated_at"), "classes": ("collapse",)}),
+    )
+
+    def url_preview(self, obj):
+        """Display a clickable preview of the URL"""
+        if len(obj.url) > 60:
+            preview = obj.url[:60] + "..."
+        else:
+            preview = obj.url
+        return format_html('<a href="{}" target="_blank" class="link link-primary">{}</a>', obj.url, preview)
+
+    url_preview.short_description = "URL"
+
+    def get_queryset(self, request):
+        """Optimize queryset and exclude deleted URLs by default"""
+        queryset = super().get_queryset(request)
+        return queryset.select_related("question", "created_by", "updated_by").filter(is_deleted=False)
+
+    def save_model(self, request, obj, form, change):
+        """Auto-set created_by and updated_by fields"""
+        if not change:
+            obj.created_by = request.user
+        obj.updated_by = request.user
+        super().save_model(request, obj, form, change)
+
+    actions = ["mark_as_deleted", "restore_from_deleted"]
+
+    def mark_as_deleted(self, request, queryset):
+        """Mark selected URLs as deleted"""
+        updated = queryset.update(is_deleted=True)
+        self.message_user(request, f"{updated} URLs marked as deleted.")
+
+    mark_as_deleted.short_description = "Mark selected URLs as deleted"
+
+    def restore_from_deleted(self, request, queryset):
+        """Restore selected URLs from deleted"""
+        updated = queryset.update(is_deleted=False)
+        self.message_user(request, f"{updated} URLs restored from deleted.")
+
+    restore_from_deleted.short_description = "Restore selected URLs from deleted"
+
+
+class TipsAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
+    """Admin for FAQ Tips"""
+
+    list_display = ("content_preview", "category", "order", "published", "created_at")
+    list_filter = ("category", "published", "created_at", "is_deleted")
+    search_fields = ("content", "slug")
+    prepopulated_fields = {"slug": ("content",)}
+    readonly_fields = ("id", "created_at", "updated_at")
+
+    fieldsets = (
+        ("Tip Details", {"fields": ("category", "content", "slug", "order", "published")}),
+        ("Tracking", {"fields": ("created_by", "updated_by", "is_deleted"), "classes": ("collapse",)}),
+        ("Timestamps", {"fields": ("id", "created_at", "updated_at"), "classes": ("collapse",)}),
+    )
+
+    def content_preview(self, obj):
+        """Display a preview of the tip content"""
+        if len(obj.content) > 80:
+            preview = obj.content[:80] + "..."
+        else:
+            preview = obj.content
+        return format_html('<span class="text-sm">{}</span>', preview)
+
+    content_preview.short_description = "Content"
+
+    def get_queryset(self, request):
+        """Optimize queryset and exclude deleted tips by default"""
+        queryset = super().get_queryset(request)
+        return queryset.select_related("category", "created_by", "updated_by").filter(is_deleted=False)
+
+    def save_model(self, request, obj, form, change):
+        """Auto-set created_by and updated_by fields"""
+        if not change:
+            obj.created_by = request.user
+        obj.updated_by = request.user
+        super().save_model(request, obj, form, change)
+
+    actions = ["mark_as_deleted", "restore_from_deleted", "toggle_published"]
+
+    def mark_as_deleted(self, request, queryset):
+        """Mark selected tips as deleted"""
+        updated = queryset.update(is_deleted=True)
+        self.message_user(request, f"{updated} tips marked as deleted.")
+
+    mark_as_deleted.short_description = "Mark selected tips as deleted"
+
+    def restore_from_deleted(self, request, queryset):
+        """Restore selected tips from deleted"""
+        updated = queryset.update(is_deleted=False)
+        self.message_user(request, f"{updated} tips restored from deleted.")
+
+    restore_from_deleted.short_description = "Restore selected tips from deleted"
+
+    def toggle_published(self, request, queryset):
+        """Toggle published status for selected tips"""
+        for obj in queryset:
+            obj.published = not obj.published
+            obj.save()
+        self.message_user(request, f"Toggled published status for {queryset.count()} tips.")
+
+    toggle_published.short_description = "Toggle published status"
+
+
 class RsvpQuestionAdmin(admin.ModelAdmin):
     """
     Admin for RsvpQuestion. If editing an existing question of type MULTIPLE_CHOICE,
@@ -467,6 +726,10 @@ custom_admin_site.register(Inspiration, InspirationAdmin)
 custom_admin_site.register(RsvpQuestion, RsvpQuestionAdmin)
 custom_admin_site.register(RsvpQuestionChoice, RsvpQuestionChoiceAdmin)
 custom_admin_site.register(WeddingSettings, WeddingSettingsAdmin)
+custom_admin_site.register(Question, QuestionAdmin)
+custom_admin_site.register(QuestionCategory, QuestionCategoryAdmin)
+custom_admin_site.register(QuestionURL, QuestionURLAdmin)
+custom_admin_site.register(Tips, TipsAdmin)
 
 custom_admin_site.register(Contact, ContactAdmin)
 custom_admin_site.register(DeadlineList, DeadlineListAdmin)

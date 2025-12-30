@@ -48,7 +48,7 @@
 
             {#if form?.error}
                 <div class="alert alert-error mb-4">
-                    <span class="iconify lucide--alert-circle size-5"></span>
+                    <span class="icon-[lucide--alert-circle] size-5"></span>
                     <span>{form.error}</span>
                 </div>
             {/if}
@@ -65,7 +65,7 @@
                 <!-- Guest Formset -->
                 <div class="space-y-4 mb-6">
                     <h2 class="text-2xl font-semibold flex items-center gap-2">
-                        <span class="iconify lucide--users size-6"></span>
+                        <span class="icon-[lucide--users] size-6"></span>
                         Your Party
                     </h2>
                     <div id="guest-forms" class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -138,7 +138,7 @@
                     <div class="divider"></div>
                     <div class="space-y-4">
                         <h2 class="text-2xl font-semibold flex items-center gap-2">
-                            <span class="iconify lucide--help-circle size-6"></span>
+                            <span class="icon-[lucide--help-circle] size-6"></span>
                             A Few Questions
                         </h2>
                         <div class="card bg-base-100 text-primary-content border border-base-300">
@@ -210,7 +210,7 @@
                             <span class="loading loading-spinner loading-sm"></span>
                             Submitting...
                         {:else}
-                            <span class="iconify lucide--check size-5"></span>
+                            <span class="icon-[lucide--check] size-5"></span>
                             Submit RSVP
                         {/if}
                     </button>

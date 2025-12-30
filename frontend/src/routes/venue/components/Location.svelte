@@ -31,7 +31,7 @@
     <div class="card-body p-0 text-secondary-content">
         <h2
             class="card-body-title text-accent text-2xl mb-2 font-bold text-center gap-4 flex items-center justify-center">
-            <span class="iconify lucide--map-pin size-6"></span>Location & Directions
+            <span class="icon-[lucide--map-pin] size-6"></span>Location & Directions
         </h2>
         {#each Addresses as address, index (index)}
             {#if Addresses.length > 1}

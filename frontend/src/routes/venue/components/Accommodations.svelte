@@ -82,15 +82,15 @@
                     <div class="flex items-start justify-between mb-2">
                         {#if accommodation.type === "hotel"}
                             <div class="badge badge-accent badge-sm rounded-full p-4 m-3">
-                                <span class="iconify lucide--hotel size-6 text-accent-content"></span>Hotel
+                                <span class="icon-[lucide--hotel] size-6 text-accent-content"></span>Hotel
                             </div>
                         {:else if accommodation.type === "home"}
                             <div class="badge badge-accent badge-sm rounded-full p-4 m-3">
-                                <span class="iconify lucide--home size-6 text-accent-content"></span>Rental
+                                <span class="icon-[lucide--home] size-6 text-accent-content"></span>Rental
                             </div>
                         {:else}
                             <div class="badge badge-accent badge-sm rounded-full p-4 m-3">
-                                <span class="iconify lucide--tent size-6 text-accent-content"></span>Camping
+                                <span class="icon-[lucide--tent] size-6 text-accent-content"></span>Camping
                             </div>
                         {/if}
                     </div>
@@ -102,7 +102,7 @@
                     <div class="space-y-2 mb-4">
                         {#if accommodation.phone}
                             <div class="flex items-center gap-2 text-sm text-primary-content">
-                                <span class="iconify lucide--phone size-4"></span>
+                                <span class="icon-[lucide--phone] size-4"></span>
                                 <a href="tel:{accommodation.phone}" class="hover:text-primary transition-colors">
                                     {accommodation.phone}
                                 </a>
@@ -110,7 +110,7 @@
                         {/if}
                         {#if accommodation.address}
                             <div class="flex items-start gap-2 text-sm text-primary-content">
-                                <span class="iconify lucide--map-pin size-4 mt-0.5 flex-shrink-0"></span>
+                                <span class="icon-[lucide--map-pin] size-4 mt-0.5 flex-shrink-0"></span>
                                 <span class="line-clamp-2">{accommodation.address}</span>
                             </div>
                         {/if}
@@ -124,7 +124,7 @@
                             rel="noopener noreferrer"
                             class="btn btn-primary btn-sm gap-2">
                             <span>View Details</span>
-                            <span class="iconify lucide--external-link size-4"></span>
+                            <span class="icon-[lucide--external-link] size-4"></span>
                         </a>
                     </div>
                 </div>

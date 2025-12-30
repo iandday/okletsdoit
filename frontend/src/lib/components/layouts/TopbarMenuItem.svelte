@@ -44,7 +44,7 @@
             {/if}
             <span class="grow">{title}</span>
             <MenuItemBadges {badges} />
-            <span class="iconify lucide--chevron-right"></span>
+            <span class="icon-[lucide--chevron-right]"></span>
         </div>
         <div tabindex="0" class="dropdown-content bg-base-300 rounded-box !start-2/5 z-1 w-48 p-2 text-sm shadow-sm">
             {#each items as item, index (index)}
@@ -60,7 +60,7 @@
             class="rounded-box flex cursor-pointer items-center gap-1.5 px-3 py-1.5 text-sm transition-colors duration-300 group-hover:text-primary-content hover:bg-base-200"
             class:bg-accent={isActive}>
             {title}
-            <span class="iconify lucide--chevron-down transition-all duration-300 group-hover:rotate-180"></span>
+            <span class="icon-[lucide--chevron-down] transition-all duration-300 group-hover:rotate-180"></span>
         </button>
         <div tabindex="0" class="dropdown-content bg-base-300 rounded-box z-1 w-52 space-y-0.5 p-2 text-sm shadow-sm">
             {#each items as item, index (index)}

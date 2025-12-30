@@ -13,7 +13,7 @@
                 <div class="card bg-base-200 shadow-2xl border border-primary/20 w-full max-w-2xl pb-2">
                     <div class="card-body items-center text-center text-primary-content">
                         <div class="mb-6">
-                            <span class="iconify lucide--megaphone size-16 text-accent"></span>
+                            <span class="icon-[lucide--megaphone] size-16 text-accent"></span>
                         </div>
 
                         <p>
@@ -25,7 +25,7 @@
                                 class="btn btn-success btn-lg gap-2 w-full sm:w-48"
                                 href={`/${code}/accept`}
                                 aria-label="Accept RSVP">
-                                <span class="iconify lucide--heart size-5"></span>
+                                <span class="icon-[lucide--heart] size-5"></span>
                                 {#if data.configData}
                                     {data.configData.rsvpAcceptButton}
                                 {:else}
@@ -37,7 +37,7 @@
                                 href={`/${code}/complete?accepted=false`}
                                 aria-label="Decline RSVP">
                                 <!-- Cross icon -->
-                                <span class="iconify lucide--x size-5"></span>
+                                <span class="icon-[lucide--x] size-5"></span>
                                 {#if data.configData}
                                     {data.configData.rsvpDeclineButton}
                                 {:else}
