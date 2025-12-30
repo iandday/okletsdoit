@@ -6,7 +6,7 @@
     import type { IComingSoon } from "../../types";
 
     const comingSoon: IComingSoon = {
-        icon: "help-circle",
+        icon: "circle-question-mark",
         alert: "Coming Soon",
         intro: "We're preparing a comprehensive FAQ section to answer all your questions about our special day! Check back soon for helpful information.",
         expectations: [
