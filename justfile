@@ -34,9 +34,8 @@ docs:
 
 #----Pre-commit commands----#
 lint:
-    uv run --group dev ruff check .
-    cd app && uv run --group dev mypy .
-
+    uv run --group dev ruff check backend
+    cd backend && uv run --group dev mypy .
 test:
     uv run --group dev pytest
 

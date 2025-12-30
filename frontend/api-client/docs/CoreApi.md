@@ -1,0 +1,1475 @@
+# CoreApi
+
+All URIs are relative to _http://localhost_
+
+| Method                                                                            | HTTP request                                           | Description                 |
+| --------------------------------------------------------------------------------- | ------------------------------------------------------ | --------------------------- |
+| [**coreApiCreateQuestion**](CoreApi.md#coreapicreatequestion)                     | **POST** /api/core/questions                           | Create Question             |
+| [**coreApiCreateRsvpQuestion**](CoreApi.md#coreapicreatersvpquestion)             | **POST** /api/core/rsvp-questions                      | Create Rsvp Question        |
+| [**coreApiCreateRsvpQuestionChoice**](CoreApi.md#coreapicreatersvpquestionchoice) | **POST** /api/core/rsvp-question-choices               | Create Rsvp Question Choice |
+| [**coreApiCreateTip**](CoreApi.md#coreapicreatetip)                               | **POST** /api/core/tips                                | Create Tip                  |
+| [**coreApiDeleteQuestion**](CoreApi.md#coreapideletequestion)                     | **DELETE** /api/core/questions/{question_id}           | Delete Question             |
+| [**coreApiDeleteRsvpQuestion**](CoreApi.md#coreapideletersvpquestion)             | **DELETE** /api/core/rsvp-questions/{question_id}      | Delete Rsvp Question        |
+| [**coreApiDeleteRsvpQuestionChoice**](CoreApi.md#coreapideletersvpquestionchoice) | **DELETE** /api/core/rsvp-question-choices/{choice_id} | Delete Rsvp Question Choice |
+| [**coreApiDeleteTip**](CoreApi.md#coreapideletetip)                               | **DELETE** /api/core/tips/{tip_id}                     | Delete Tip                  |
+| [**coreApiGetCategoriesContent**](CoreApi.md#coreapigetcategoriescontent)         | **GET** /api/core/rsvp-categories-content              | Get Categories Content      |
+| [**coreApiGetQuestion**](CoreApi.md#coreapigetquestion)                           | **GET** /api/core/questions/{question_id}              | Get Question                |
+| [**coreApiGetRsvpQuestion**](CoreApi.md#coreapigetrsvpquestion)                   | **GET** /api/core/rsvp-questions/{question_id}         | Get Rsvp Question           |
+| [**coreApiGetRsvpQuestionChoice**](CoreApi.md#coreapigetrsvpquestionchoice)       | **GET** /api/core/rsvp-question-choices/{choice_id}    | Get Rsvp Question Choice    |
+| [**coreApiGetTip**](CoreApi.md#coreapigettip)                                     | **GET** /api/core/tips/{tip_id}                        | Get Tip                     |
+| [**coreApiGetWeddingSettings**](CoreApi.md#coreapigetweddingsettings)             | **GET** /api/core/wedding-settings                     | Get Wedding Settings        |
+| [**coreApiListQuestions**](CoreApi.md#coreapilistquestions)                       | **GET** /api/core/questions                            | List Questions              |
+| [**coreApiListRsvpQuestions**](CoreApi.md#coreapilistrsvpquestions)               | **GET** /api/core/rsvp-questions                       | List Rsvp Questions         |
+| [**coreApiListTips**](CoreApi.md#coreapilisttips)                                 | **GET** /api/core/tips                                 | List Tips                   |
+| [**coreApiUpdateQuestion**](CoreApi.md#coreapiupdatequestion)                     | **PUT** /api/core/questions/{question_id}              | Update Question             |
+| [**coreApiUpdateRsvpQuestion**](CoreApi.md#coreapiupdatersvpquestion)             | **PUT** /api/core/rsvp-questions/{question_id}         | Update Rsvp Question        |
+| [**coreApiUpdateRsvpQuestionChoice**](CoreApi.md#coreapiupdatersvpquestionchoice) | **PUT** /api/core/rsvp-question-choices/{choice_id}    | Update Rsvp Question Choice |
+| [**coreApiUpdateTip**](CoreApi.md#coreapiupdatetip)                               | **PUT** /api/core/tips/{tip_id}                        | Update Tip                  |
+| [**coreApiUpdateWeddingSettings**](CoreApi.md#coreapiupdateweddingsettings)       | **PUT** /api/core/wedding-settings                     | Update Wedding Settings     |
+
+## coreApiCreateQuestion
+
+> QuestionSchema coreApiCreateQuestion(questionCreateSchema)
+
+Create Question
+
+Create a new question
+
+### Example
+
+```ts
+import {
+  Configuration,
+  CoreApi,
+} from '';
+import type { CoreApiCreateQuestionRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const api = new CoreApi();
+
+  const body = {
+    // QuestionCreateSchema
+    questionCreateSchema: ...,
+  } satisfies CoreApiCreateQuestionRequest;
+
+  try {
+    const data = await api.coreApiCreateQuestion(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name                     | Type                                            | Description | Notes |
+| ------------------------ | ----------------------------------------------- | ----------- | ----- |
+| **questionCreateSchema** | [QuestionCreateSchema](QuestionCreateSchema.md) |             |       |
+
+### Return type
+
+[**QuestionSchema**](QuestionSchema.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: `application/json`
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## coreApiCreateRsvpQuestion
+
+> RsvpQuestionSchema coreApiCreateRsvpQuestion(rsvpQuestionCreateSchema)
+
+Create Rsvp Question
+
+Create a new RSVP question
+
+### Example
+
+```ts
+import {
+  Configuration,
+  CoreApi,
+} from '';
+import type { CoreApiCreateRsvpQuestionRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const api = new CoreApi();
+
+  const body = {
+    // RsvpQuestionCreateSchema
+    rsvpQuestionCreateSchema: ...,
+  } satisfies CoreApiCreateRsvpQuestionRequest;
+
+  try {
+    const data = await api.coreApiCreateRsvpQuestion(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name                         | Type                                                    | Description | Notes |
+| ---------------------------- | ------------------------------------------------------- | ----------- | ----- |
+| **rsvpQuestionCreateSchema** | [RsvpQuestionCreateSchema](RsvpQuestionCreateSchema.md) |             |       |
+
+### Return type
+
+[**RsvpQuestionSchema**](RsvpQuestionSchema.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: `application/json`
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## coreApiCreateRsvpQuestionChoice
+
+> RsvpQuestionChoiceSchema coreApiCreateRsvpQuestionChoice(rsvpQuestionChoiceCreateSchema)
+
+Create Rsvp Question Choice
+
+Create a new RSVP question choice
+
+### Example
+
+```ts
+import {
+  Configuration,
+  CoreApi,
+} from '';
+import type { CoreApiCreateRsvpQuestionChoiceRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const api = new CoreApi();
+
+  const body = {
+    // RsvpQuestionChoiceCreateSchema
+    rsvpQuestionChoiceCreateSchema: ...,
+  } satisfies CoreApiCreateRsvpQuestionChoiceRequest;
+
+  try {
+    const data = await api.coreApiCreateRsvpQuestionChoice(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name                               | Type                                                                | Description | Notes |
+| ---------------------------------- | ------------------------------------------------------------------- | ----------- | ----- |
+| **rsvpQuestionChoiceCreateSchema** | [RsvpQuestionChoiceCreateSchema](RsvpQuestionChoiceCreateSchema.md) |             |       |
+
+### Return type
+
+[**RsvpQuestionChoiceSchema**](RsvpQuestionChoiceSchema.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: `application/json`
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## coreApiCreateTip
+
+> TipsSchema coreApiCreateTip(tipsCreateSchema)
+
+Create Tip
+
+Create a new tip
+
+### Example
+
+```ts
+import {
+  Configuration,
+  CoreApi,
+} from '';
+import type { CoreApiCreateTipRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const api = new CoreApi();
+
+  const body = {
+    // TipsCreateSchema
+    tipsCreateSchema: ...,
+  } satisfies CoreApiCreateTipRequest;
+
+  try {
+    const data = await api.coreApiCreateTip(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name                 | Type                                    | Description | Notes |
+| -------------------- | --------------------------------------- | ----------- | ----- |
+| **tipsCreateSchema** | [TipsCreateSchema](TipsCreateSchema.md) |             |       |
+
+### Return type
+
+[**TipsSchema**](TipsSchema.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: `application/json`
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## coreApiDeleteQuestion
+
+> coreApiDeleteQuestion(questionId)
+
+Delete Question
+
+Soft delete a question
+
+### Example
+
+```ts
+import {
+  Configuration,
+  CoreApi,
+} from '';
+import type { CoreApiDeleteQuestionRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const api = new CoreApi();
+
+  const body = {
+    // string
+    questionId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+  } satisfies CoreApiDeleteQuestionRequest;
+
+  try {
+    const data = await api.coreApiDeleteQuestion(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name           | Type     | Description | Notes                     |
+| -------------- | -------- | ----------- | ------------------------- |
+| **questionId** | `string` |             | [Defaults to `undefined`] |
+
+### Return type
+
+`void` (Empty response body)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: Not defined
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## coreApiDeleteRsvpQuestion
+
+> coreApiDeleteRsvpQuestion(questionId)
+
+Delete Rsvp Question
+
+Soft delete an RSVP question
+
+### Example
+
+```ts
+import {
+  Configuration,
+  CoreApi,
+} from '';
+import type { CoreApiDeleteRsvpQuestionRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const api = new CoreApi();
+
+  const body = {
+    // string
+    questionId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+  } satisfies CoreApiDeleteRsvpQuestionRequest;
+
+  try {
+    const data = await api.coreApiDeleteRsvpQuestion(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name           | Type     | Description | Notes                     |
+| -------------- | -------- | ----------- | ------------------------- |
+| **questionId** | `string` |             | [Defaults to `undefined`] |
+
+### Return type
+
+`void` (Empty response body)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: Not defined
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## coreApiDeleteRsvpQuestionChoice
+
+> coreApiDeleteRsvpQuestionChoice(choiceId)
+
+Delete Rsvp Question Choice
+
+Soft delete an RSVP question choice
+
+### Example
+
+```ts
+import {
+  Configuration,
+  CoreApi,
+} from '';
+import type { CoreApiDeleteRsvpQuestionChoiceRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const api = new CoreApi();
+
+  const body = {
+    // string
+    choiceId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+  } satisfies CoreApiDeleteRsvpQuestionChoiceRequest;
+
+  try {
+    const data = await api.coreApiDeleteRsvpQuestionChoice(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name         | Type     | Description | Notes                     |
+| ------------ | -------- | ----------- | ------------------------- |
+| **choiceId** | `string` |             | [Defaults to `undefined`] |
+
+### Return type
+
+`void` (Empty response body)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: Not defined
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## coreApiDeleteTip
+
+> coreApiDeleteTip(tipId)
+
+Delete Tip
+
+Soft delete a tip
+
+### Example
+
+```ts
+import {
+  Configuration,
+  CoreApi,
+} from '';
+import type { CoreApiDeleteTipRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const api = new CoreApi();
+
+  const body = {
+    // string
+    tipId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+  } satisfies CoreApiDeleteTipRequest;
+
+  try {
+    const data = await api.coreApiDeleteTip(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name      | Type     | Description | Notes                     |
+| --------- | -------- | ----------- | ------------------------- |
+| **tipId** | `string` |             | [Defaults to `undefined`] |
+
+### Return type
+
+`void` (Empty response body)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: Not defined
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## coreApiGetCategoriesContent
+
+> Array&lt;CategoryContentSchema&gt; coreApiGetCategoriesContent(publishedOnly)
+
+Get Categories Content
+
+Get all categories with their associated questions and tips
+
+### Example
+
+```ts
+import { Configuration, CoreApi } from "";
+import type { CoreApiGetCategoriesContentRequest } from "";
+
+async function example() {
+    console.log("🚀 Testing  SDK...");
+    const api = new CoreApi();
+
+    const body = {
+        // boolean (optional)
+        publishedOnly: true,
+    } satisfies CoreApiGetCategoriesContentRequest;
+
+    try {
+        const data = await api.coreApiGetCategoriesContent(body);
+        console.log(data);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name              | Type      | Description | Notes                           |
+| ----------------- | --------- | ----------- | ------------------------------- |
+| **publishedOnly** | `boolean` |             | [Optional] [Defaults to `true`] |
+
+### Return type
+
+[**Array&lt;CategoryContentSchema&gt;**](CategoryContentSchema.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## coreApiGetQuestion
+
+> QuestionSchema coreApiGetQuestion(questionId)
+
+Get Question
+
+Get a specific question by ID
+
+### Example
+
+```ts
+import {
+  Configuration,
+  CoreApi,
+} from '';
+import type { CoreApiGetQuestionRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const api = new CoreApi();
+
+  const body = {
+    // string
+    questionId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+  } satisfies CoreApiGetQuestionRequest;
+
+  try {
+    const data = await api.coreApiGetQuestion(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name           | Type     | Description | Notes                     |
+| -------------- | -------- | ----------- | ------------------------- |
+| **questionId** | `string` |             | [Defaults to `undefined`] |
+
+### Return type
+
+[**QuestionSchema**](QuestionSchema.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## coreApiGetRsvpQuestion
+
+> RsvpQuestionSchema coreApiGetRsvpQuestion(questionId)
+
+Get Rsvp Question
+
+Get a specific RSVP question by ID
+
+### Example
+
+```ts
+import {
+  Configuration,
+  CoreApi,
+} from '';
+import type { CoreApiGetRsvpQuestionRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const api = new CoreApi();
+
+  const body = {
+    // string
+    questionId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+  } satisfies CoreApiGetRsvpQuestionRequest;
+
+  try {
+    const data = await api.coreApiGetRsvpQuestion(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name           | Type     | Description | Notes                     |
+| -------------- | -------- | ----------- | ------------------------- |
+| **questionId** | `string` |             | [Defaults to `undefined`] |
+
+### Return type
+
+[**RsvpQuestionSchema**](RsvpQuestionSchema.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## coreApiGetRsvpQuestionChoice
+
+> RsvpQuestionChoiceSchema coreApiGetRsvpQuestionChoice(choiceId)
+
+Get Rsvp Question Choice
+
+Get a specific RSVP question choice by ID
+
+### Example
+
+```ts
+import {
+  Configuration,
+  CoreApi,
+} from '';
+import type { CoreApiGetRsvpQuestionChoiceRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const api = new CoreApi();
+
+  const body = {
+    // string
+    choiceId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+  } satisfies CoreApiGetRsvpQuestionChoiceRequest;
+
+  try {
+    const data = await api.coreApiGetRsvpQuestionChoice(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name         | Type     | Description | Notes                     |
+| ------------ | -------- | ----------- | ------------------------- |
+| **choiceId** | `string` |             | [Defaults to `undefined`] |
+
+### Return type
+
+[**RsvpQuestionChoiceSchema**](RsvpQuestionChoiceSchema.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## coreApiGetTip
+
+> TipsSchema coreApiGetTip(tipId)
+
+Get Tip
+
+Get a specific tip by ID
+
+### Example
+
+```ts
+import {
+  Configuration,
+  CoreApi,
+} from '';
+import type { CoreApiGetTipRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const api = new CoreApi();
+
+  const body = {
+    // string
+    tipId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+  } satisfies CoreApiGetTipRequest;
+
+  try {
+    const data = await api.coreApiGetTip(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name      | Type     | Description | Notes                     |
+| --------- | -------- | ----------- | ------------------------- |
+| **tipId** | `string` |             | [Defaults to `undefined`] |
+
+### Return type
+
+[**TipsSchema**](TipsSchema.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## coreApiGetWeddingSettings
+
+> WeddingSettingsSchema coreApiGetWeddingSettings()
+
+Get Wedding Settings
+
+Get wedding settings (singleton)
+
+### Example
+
+```ts
+import { Configuration, CoreApi } from "";
+import type { CoreApiGetWeddingSettingsRequest } from "";
+
+async function example() {
+    console.log("🚀 Testing  SDK...");
+    const api = new CoreApi();
+
+    try {
+        const data = await api.coreApiGetWeddingSettings();
+        console.log(data);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+This endpoint does not need any parameter.
+
+### Return type
+
+[**WeddingSettingsSchema**](WeddingSettingsSchema.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## coreApiListQuestions
+
+> PagedQuestionSchema coreApiListQuestions(category, published, page, pageSize)
+
+List Questions
+
+List all questions (non-deleted)
+
+### Example
+
+```ts
+import { Configuration, CoreApi } from "";
+import type { CoreApiListQuestionsRequest } from "";
+
+async function example() {
+    console.log("🚀 Testing  SDK...");
+    const api = new CoreApi();
+
+    const body = {
+        // string (optional)
+        category: category_example,
+        // boolean (optional)
+        published: true,
+        // number (optional)
+        page: 56,
+        // number (optional)
+        pageSize: 56,
+    } satisfies CoreApiListQuestionsRequest;
+
+    try {
+        const data = await api.coreApiListQuestions(body);
+        console.log(data);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name          | Type      | Description | Notes                                |
+| ------------- | --------- | ----------- | ------------------------------------ |
+| **category**  | `string`  |             | [Optional] [Defaults to `undefined`] |
+| **published** | `boolean` |             | [Optional] [Defaults to `undefined`] |
+| **page**      | `number`  |             | [Optional] [Defaults to `1`]         |
+| **pageSize**  | `number`  |             | [Optional] [Defaults to `undefined`] |
+
+### Return type
+
+[**PagedQuestionSchema**](PagedQuestionSchema.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## coreApiListRsvpQuestions
+
+> PagedRsvpQuestionSchema coreApiListRsvpQuestions(published, questionType, page, pageSize)
+
+List Rsvp Questions
+
+List all RSVP questions (non-deleted)
+
+### Example
+
+```ts
+import { Configuration, CoreApi } from "";
+import type { CoreApiListRsvpQuestionsRequest } from "";
+
+async function example() {
+    console.log("🚀 Testing  SDK...");
+    const api = new CoreApi();
+
+    const body = {
+        // boolean (optional)
+        published: true,
+        // string (optional)
+        questionType: questionType_example,
+        // number (optional)
+        page: 56,
+        // number (optional)
+        pageSize: 56,
+    } satisfies CoreApiListRsvpQuestionsRequest;
+
+    try {
+        const data = await api.coreApiListRsvpQuestions(body);
+        console.log(data);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name             | Type      | Description | Notes                                |
+| ---------------- | --------- | ----------- | ------------------------------------ |
+| **published**    | `boolean` |             | [Optional] [Defaults to `undefined`] |
+| **questionType** | `string`  |             | [Optional] [Defaults to `undefined`] |
+| **page**         | `number`  |             | [Optional] [Defaults to `1`]         |
+| **pageSize**     | `number`  |             | [Optional] [Defaults to `undefined`] |
+
+### Return type
+
+[**PagedRsvpQuestionSchema**](PagedRsvpQuestionSchema.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## coreApiListTips
+
+> PagedTipsSchema coreApiListTips(category, published, page, pageSize)
+
+List Tips
+
+List all tips (non-deleted)
+
+### Example
+
+```ts
+import { Configuration, CoreApi } from "";
+import type { CoreApiListTipsRequest } from "";
+
+async function example() {
+    console.log("🚀 Testing  SDK...");
+    const api = new CoreApi();
+
+    const body = {
+        // string (optional)
+        category: category_example,
+        // boolean (optional)
+        published: true,
+        // number (optional)
+        page: 56,
+        // number (optional)
+        pageSize: 56,
+    } satisfies CoreApiListTipsRequest;
+
+    try {
+        const data = await api.coreApiListTips(body);
+        console.log(data);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name          | Type      | Description | Notes                                |
+| ------------- | --------- | ----------- | ------------------------------------ |
+| **category**  | `string`  |             | [Optional] [Defaults to `undefined`] |
+| **published** | `boolean` |             | [Optional] [Defaults to `undefined`] |
+| **page**      | `number`  |             | [Optional] [Defaults to `1`]         |
+| **pageSize**  | `number`  |             | [Optional] [Defaults to `undefined`] |
+
+### Return type
+
+[**PagedTipsSchema**](PagedTipsSchema.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## coreApiUpdateQuestion
+
+> QuestionSchema coreApiUpdateQuestion(questionId, questionUpdateSchema)
+
+Update Question
+
+Update a question
+
+### Example
+
+```ts
+import {
+  Configuration,
+  CoreApi,
+} from '';
+import type { CoreApiUpdateQuestionRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const api = new CoreApi();
+
+  const body = {
+    // string
+    questionId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+    // QuestionUpdateSchema
+    questionUpdateSchema: ...,
+  } satisfies CoreApiUpdateQuestionRequest;
+
+  try {
+    const data = await api.coreApiUpdateQuestion(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name                     | Type                                            | Description | Notes                     |
+| ------------------------ | ----------------------------------------------- | ----------- | ------------------------- |
+| **questionId**           | `string`                                        |             | [Defaults to `undefined`] |
+| **questionUpdateSchema** | [QuestionUpdateSchema](QuestionUpdateSchema.md) |             |                           |
+
+### Return type
+
+[**QuestionSchema**](QuestionSchema.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: `application/json`
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## coreApiUpdateRsvpQuestion
+
+> RsvpQuestionSchema coreApiUpdateRsvpQuestion(questionId, rsvpQuestionUpdateSchema)
+
+Update Rsvp Question
+
+Update an RSVP question
+
+### Example
+
+```ts
+import {
+  Configuration,
+  CoreApi,
+} from '';
+import type { CoreApiUpdateRsvpQuestionRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const api = new CoreApi();
+
+  const body = {
+    // string
+    questionId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+    // RsvpQuestionUpdateSchema
+    rsvpQuestionUpdateSchema: ...,
+  } satisfies CoreApiUpdateRsvpQuestionRequest;
+
+  try {
+    const data = await api.coreApiUpdateRsvpQuestion(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name                         | Type                                                    | Description | Notes                     |
+| ---------------------------- | ------------------------------------------------------- | ----------- | ------------------------- |
+| **questionId**               | `string`                                                |             | [Defaults to `undefined`] |
+| **rsvpQuestionUpdateSchema** | [RsvpQuestionUpdateSchema](RsvpQuestionUpdateSchema.md) |             |                           |
+
+### Return type
+
+[**RsvpQuestionSchema**](RsvpQuestionSchema.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: `application/json`
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## coreApiUpdateRsvpQuestionChoice
+
+> RsvpQuestionChoiceSchema coreApiUpdateRsvpQuestionChoice(choiceId, rsvpQuestionChoiceUpdateSchema)
+
+Update Rsvp Question Choice
+
+Update an RSVP question choice
+
+### Example
+
+```ts
+import {
+  Configuration,
+  CoreApi,
+} from '';
+import type { CoreApiUpdateRsvpQuestionChoiceRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const api = new CoreApi();
+
+  const body = {
+    // string
+    choiceId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+    // RsvpQuestionChoiceUpdateSchema
+    rsvpQuestionChoiceUpdateSchema: ...,
+  } satisfies CoreApiUpdateRsvpQuestionChoiceRequest;
+
+  try {
+    const data = await api.coreApiUpdateRsvpQuestionChoice(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name                               | Type                                                                | Description | Notes                     |
+| ---------------------------------- | ------------------------------------------------------------------- | ----------- | ------------------------- |
+| **choiceId**                       | `string`                                                            |             | [Defaults to `undefined`] |
+| **rsvpQuestionChoiceUpdateSchema** | [RsvpQuestionChoiceUpdateSchema](RsvpQuestionChoiceUpdateSchema.md) |             |                           |
+
+### Return type
+
+[**RsvpQuestionChoiceSchema**](RsvpQuestionChoiceSchema.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: `application/json`
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## coreApiUpdateTip
+
+> TipsSchema coreApiUpdateTip(tipId, tipsUpdateSchema)
+
+Update Tip
+
+Update a tip
+
+### Example
+
+```ts
+import {
+  Configuration,
+  CoreApi,
+} from '';
+import type { CoreApiUpdateTipRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const api = new CoreApi();
+
+  const body = {
+    // string
+    tipId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+    // TipsUpdateSchema
+    tipsUpdateSchema: ...,
+  } satisfies CoreApiUpdateTipRequest;
+
+  try {
+    const data = await api.coreApiUpdateTip(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name                 | Type                                    | Description | Notes                     |
+| -------------------- | --------------------------------------- | ----------- | ------------------------- |
+| **tipId**            | `string`                                |             | [Defaults to `undefined`] |
+| **tipsUpdateSchema** | [TipsUpdateSchema](TipsUpdateSchema.md) |             |                           |
+
+### Return type
+
+[**TipsSchema**](TipsSchema.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: `application/json`
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## coreApiUpdateWeddingSettings
+
+> WeddingSettingsSchema coreApiUpdateWeddingSettings(weddingSettingsUpdateSchema)
+
+Update Wedding Settings
+
+Update wedding settings
+
+### Example
+
+```ts
+import {
+  Configuration,
+  CoreApi,
+} from '';
+import type { CoreApiUpdateWeddingSettingsRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const api = new CoreApi();
+
+  const body = {
+    // WeddingSettingsUpdateSchema
+    weddingSettingsUpdateSchema: ...,
+  } satisfies CoreApiUpdateWeddingSettingsRequest;
+
+  try {
+    const data = await api.coreApiUpdateWeddingSettings(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name                            | Type                                                          | Description | Notes |
+| ------------------------------- | ------------------------------------------------------------- | ----------- | ----- |
+| **weddingSettingsUpdateSchema** | [WeddingSettingsUpdateSchema](WeddingSettingsUpdateSchema.md) |             |       |
+
+### Return type
+
+[**WeddingSettingsSchema**](WeddingSettingsSchema.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: `application/json`
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)

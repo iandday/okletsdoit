@@ -1,0 +1,106 @@
+/* @config "../../../../tailwind.config.js" */
+@import "tailwindcss";
+
+/*--  Overrides  --*/
+
+/* == Components == */
+
+.btn {
+    @apply font-medium;
+}
+
+.card {
+    .card-title {
+        @apply text-base font-medium;
+    }
+
+    .card-body {
+        @apply gap-0;
+    }
+}
+
+.table {
+    th {
+        @apply font-medium;
+    }
+}
+
+.menu {
+    .menu-title {
+        @apply text-base-content/70 font-medium;
+    }
+}
+
+.timeline:not(.timeline-vertical) > li > hr {
+    height: 2px;
+}
+
+.timeline.timeline-vertical > li > hr {
+    width: 2px;
+}
+
+/* == Forms == */
+
+.fieldset {
+    .fieldset-legend {
+        @apply text-base-content/80 text-sm font-normal;
+    }
+
+    .fieldset-label,
+    .label {
+        @apply text-base-content/80 text-sm;
+    }
+}
+
+.checkbox,
+.radio,
+.range,
+.toggle {
+    &:disabled {
+        @apply opacity-35;
+    }
+}
+
+.label {
+    @apply text-base-content/80 cursor-pointer;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-background-clip: text;
+}
+
+/* Scrollbars */
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+    /* Hide scrollbar for Chrome, Safari */
+}
+
+.hide-scrollbar {
+    -ms-overflow-style: none;
+    /* Hide scrollbar for IE, Edge */
+    scrollbar-width: none;
+    /* Hide scrollbar for Firefox */
+}
+
+.config-card {
+    @apply card bg-base-300 text-primary-content shadow-xl transition-shadow duration-300 hover:shadow-2xl;
+}
+
+.config-card-title {
+    @apply card-title text-accent text-lg lg:text-xl;
+}
+
+.config-card-body {
+    @apply card-body text-primary-content px-6 py-4;
+}
+
+.config-card-field-name {
+    @apply text-primary-content/60 font-semibold;
+}
+
+.config-card-field-value {
+    @apply text-primary-content;
+}

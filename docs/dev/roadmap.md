@@ -4,11 +4,14 @@
 - [ ] Customized Settings
     * [ ] Timezone
     * [x] Allow RSVP
+    * [x] Show FAQ
+    * [ ] Automatically allow RSVP
 - [ ] Guestlist
     * [ ] RSVP Form Configuration (Private)
     * [ ] RSVP Form (Public)
     * [ ] RSVP Preview
 - [ ] Settings Page
+  - [ ] Cleanup import function
 - [ ] Photo Upload
     * [ ] Upload form (Public)
     * [ ] Gallery (Public)

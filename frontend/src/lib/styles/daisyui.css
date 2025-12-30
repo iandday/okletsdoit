@@ -1,0 +1,85 @@
+@plugin "daisyui" {
+    exclude: rootscrollgutter;
+}
+
+@plugin "daisyui/theme" {
+    name: "dark";
+    color-scheme: dark;
+    prefersdark: true;
+    --root-bg: #d2ae98;
+    --color-primary: #67260b;
+    --color-primary-content: #f5e6d3;
+    --color-secondary: #8c4417;
+    --color-secondary-content: #fef3e8;
+    --color-accent: #e0960b;
+    --color-accent-content: #1a0f02;
+    --color-neutral: #819d76;
+    --color-neutral-content: #1a1f17;
+    --color-info: #6b9dc9;
+    --color-info-content: #f0f5fa;
+    --color-success: #819d76;
+    --color-success-content: #1a1f17;
+    --color-warning: #e0960b;
+    --color-warning-content: #1a0f02;
+    --color-error: #a84856;
+    --color-error-content: #fef3f5;
+
+    --color-base-100: #303a2b;
+    --color-base-200: #61303e;
+    --color-base-300: #67260b;
+    --color-base-content: oklch(14% 0.005 285.823);
+    --color-base-contentlight: #fef3e8;
+    --radius-field: 0.25rem;
+    --radius-box: 0.25rem;
+    --rounded-box: 0.25rem;
+    --radius-selector: 0.25rem;
+    --size-selector: 0.25rem;
+    --size-field: 0.25rem;
+    --border: 1px;
+    --card-p: 20px;
+    --card-fs: var(--text-base);
+
+    --depth: 0;
+    --noise: 0;
+}
+
+@plugin "daisyui/theme" {
+    name: "light";
+    default: true;
+    color-scheme: light;
+    --root-bg: #d2ae98;
+    --color-primary: #67260b;
+    --color-primary-content: #f5e6d3;
+    --color-secondary: #8c4417;
+    --color-secondary-content: #fef3e8;
+    --color-accent: #e0960b;
+    --color-accent-content: #1a0f02;
+    --color-neutral: #819d76;
+    --color-neutral-content: #1a1f17;
+    --color-info: #6b9dc9;
+    --color-info-content: #f0f5fa;
+    --color-success: #819d76;
+    --color-success-content: #1a1f17;
+    --color-warning: #e0960b;
+    --color-warning-content: #1a0f02;
+    --color-error: #a84856;
+    --color-error-content: #fef3f5;
+
+    --color-base-100: #303a2b;
+    --color-base-200: #61303e;
+    --color-base-300: #67260b;
+    --color-base-content: oklch(14% 0.005 285.823);
+    --color-base-contentlight: #fef3e8;
+    --radius-field: 0.25rem;
+    --radius-box: 0.25rem;
+    --rounded-box: 0.25rem;
+    --radius-selector: 0.25rem;
+    --size-selector: 0.25rem;
+    --size-field: 0.25rem;
+    --border: 1px;
+    --card-p: 20px;
+    --card-fs: var(--text-base);
+
+    --depth: 0;
+    --noise: 0;
+}

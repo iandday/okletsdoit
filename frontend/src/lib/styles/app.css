@@ -1,0 +1,24 @@
+/* Root Styling */
+@import "./typography.css";
+@import "./tailwind.css";
+@import "./daisyui.css";
+
+/* Custom Styling */
+@import "./core/components.css";
+@import "./core/animation.css";
+
+/* Page wise */
+@import "./pages/automation.css";
+@import "./pages/developer.css";
+
+/* Plugin Overriding */
+@import "./plugins/scrollbar.css";
+
+/****  Plugins  ****/
+/* Animations */
+@plugin "tailwindcss-motion";
+
+/* Iconify (Lucide icons) */
+@plugin "@iconify/tailwind4" {
+    prefixes: lucide;
+}

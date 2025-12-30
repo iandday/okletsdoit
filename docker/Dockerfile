@@ -35,7 +35,7 @@ COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen --no-cache --group dev 
 
 RUN mkdir -p /app/app
-COPY app/ /app/app
+COPY backend/ /app/app
 
 # Set up entrypoint
 COPY --chown=django:django ./docker/docker-entrypoint.sh ./docker-entrypoint.sh
@@ -84,7 +84,7 @@ COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen --no-cache 
 
 # Copy source code
-COPY app/ .
+COPY backend/ .
 
 FROM python:3.14-slim-trixie AS production
 
