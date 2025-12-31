@@ -31,11 +31,11 @@
     }
 }
 
-.timeline:not(.timeline-vertical)>li>hr {
+.timeline:not(.timeline-vertical) > li > hr {
     height: 2px;
 }
 
-.timeline.timeline-vertical>li>hr {
+.timeline.timeline-vertical > li > hr {
     width: 2px;
 }
 
@@ -130,25 +130,19 @@ input:-webkit-autofill:active {
 }
 
 .edit-card-field-textarea {
-    @apply textarea w-full bg-base-100 text-primary-content;
+    @apply textarea bg-base-100 text-primary-content w-full;
 }
 
 .edit-card-field-input {
-    @apply input w-full bg-base-100 text-primary-content;
+    @apply input bg-base-100 text-primary-content w-full;
 }
 
 .edit-card-field-date {
-    @apply input w-full bg-base-100 text-primary-content;
+    @apply input bg-base-100 text-primary-content w-full;
 }
 
-
-
-
-
-
-
 .edit-card-field-select {
-    @apply select w-full bg-base-100 text-primary-content;
+    @apply select bg-base-100 text-primary-content w-full;
 }
 
 .edit-card-field-checkbox {

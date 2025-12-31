@@ -752,6 +752,43 @@ export class GuestlistApi extends runtime.BaseAPI {
     }
 
     /**
+     * Get RSVP acceptance questions for preview mode
+     * Get Rsvp Acceptence Questions Preview
+     */
+    async guestlistApiGetRsvpAcceptenceQuestionsPreviewRaw(
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<Array<RsvpQuestionResponseSchema>>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        let urlPath = `/api/guestlist/rsvp-acceptance-questions/preview`;
+
+        const response = await this.request(
+            {
+                path: urlPath,
+                method: "GET",
+                headers: headerParameters,
+                query: queryParameters,
+            },
+            initOverrides,
+        );
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(RsvpQuestionResponseSchemaFromJSON));
+    }
+
+    /**
+     * Get RSVP acceptance questions for preview mode
+     * Get Rsvp Acceptence Questions Preview
+     */
+    async guestlistApiGetRsvpAcceptenceQuestionsPreview(
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<Array<RsvpQuestionResponseSchema>> {
+        const response = await this.guestlistApiGetRsvpAcceptenceQuestionsPreviewRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Get a specific RSVP question response by ID
      * Get Rsvp Response
      */

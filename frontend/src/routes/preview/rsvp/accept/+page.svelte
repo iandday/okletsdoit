@@ -1,9 +1,9 @@
 <script lang="ts">
     import PageShell from "$lib/components/layouts/PageShell.svelte";
     import RsvpAccept from "$lib/components/rsvp/RsvpAccept.svelte";
-    import type { ActionData, PageData } from "./$types";
+    import type { PageData } from "./$types";
 
-    let { data, form }: { data: PageData; form: ActionData } = $props();
+    let { data }: { data: PageData } = $props();
 </script>
 
 <div>
@@ -15,6 +15,6 @@
             rsvpQuestions={data.rsvpQuestions}
             showAccommodation={data.showAccommodation}
             showVip={data.showVip}
-            {form} />
+            preview={true} />
     </PageShell>
 </div>

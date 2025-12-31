@@ -2,7 +2,7 @@ import logging
 from datetime import datetime
 from typing import List
 from typing import Optional
-from uuid import UUID
+from uuid import UUID, uuid4
 
 from core.auth import multi_auth
 from django.contrib.auth import get_user_model
@@ -184,16 +184,16 @@ class ResponseChoiceSchema(Schema):
 
 
 class RsvpQuestionResponseSchema(Schema):
-    id: UUID
-    submission_id: UUID
+    id: Optional[UUID] = None
+    submission_id: Optional[UUID] = None
     question_id: UUID
     question_text: str
     question_type: str
     question_order: int
     response_text: Optional[str] = None
     response_choices: Optional[List[ResponseChoiceSchema]] = None
-    created_at: datetime
-    updated_at: datetime
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
 
 
 class RsvpQuestionResponseCreateSchema(Schema):
@@ -415,6 +415,33 @@ def decline_rsvp(request, rsvp_code: str):
         guest.save()
 
     return {"success": True, "message": "RSVP declined successfully"}
+
+
+@router.get("/rsvp-acceptance-questions/preview", response=List[RsvpQuestionResponseSchema])
+def get_rsvp_acceptence_questions_preview(request):
+    """Get RSVP acceptance questions for preview mode"""
+    question_queryset = RsvpQuestion.objects.filter(is_deleted=False, published=True).order_by("order")
+
+    # Build response with question details
+    result = []
+    for question in question_queryset:
+        result.append(
+            {
+                "id": uuid4(),
+                "submission_id": None,
+                "question_id": question.id,
+                "question_text": question.text,
+                "question_type": question.question_type,
+                "question_order": question.order,
+                "response_text": None,
+                "response_choices": [
+                    {"id": choice.id, "text": choice.choice_text} for choice in question.choices.all()
+                ],
+                "created_at": None,
+                "updated_at": None,
+            }
+        )
+    return result
 
 
 @router.get("/rsvp-acceptance-questions/{rsvp_code}", response=List[RsvpQuestionResponseSchema])
