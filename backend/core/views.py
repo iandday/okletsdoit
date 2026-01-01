@@ -4,7 +4,6 @@ import json
 import logging
 from decimal import Decimal
 
-from django.forms import inlineformset_factory, modelformset_factory
 import polars as pl
 from attachments.forms import AttachmentUploadForm
 from attachments.models import Attachment
@@ -23,7 +22,6 @@ from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_http_methods
 from django.views.decorators.http import require_POST
 from expenses.models import Category
 from expenses.models import Expense
@@ -32,15 +30,12 @@ from guestlist.models import GuestGroup
 from list.models import List
 from list.models import ListEntry
 
-from .forms import RsvpQuestionChoiceChildFormSet, IdeaForm, RsvpQuestionChoiceForm, RsvpQuestionForm
+from .forms import IdeaForm
 from .forms import IdeaImportForm
 from .forms import InspirationForm
-from .forms import QuestionForm
 from .forms import TimelineForm
 from .forms import TimelineImportForm
-from .forms import WeddingSettingsForm
-from .models import Idea, RsvpQuestion, RsvpQuestionChoice
-from .models import Inspiration
+from .models import Idea, Inspiration
 from .models import Question
 
 from .models import Timeline
@@ -1015,175 +1010,175 @@ def inspiration_delete(request: HttpRequest, inspiration_slug: str) -> HttpRespo
         return redirect("core:inspiration_detail", inspiration_slug=inspiration.slug)
 
 
-@login_required
-def question_create(request: HttpRequest) -> HttpResponse:
-    if request.method == "POST":
-        form = QuestionForm(request.POST)
-        if form.is_valid():
-            question: Question = form.save(commit=False)
-            question.created_by = request.user
-            question.updated_by = request.user
-            question.save()
-            messages.success(request, "Question created successfully.")
-            return redirect("core:question_detail", question_slug=question.slug)
-        else:
-            for field, errors in form.errors.items():
-                for error in errors:
-                    messages.error(request, f"{field}: {error}")
-    else:
-        form = QuestionForm()
-    intro = "Create a new question for the FAQ Page"
-    breadcrumbs = [
-        {"title": "Questions", "url": reverse("core:question_summary")},
-        {"title": "New Question", "url": None},
-    ]
-    cancel_url = reverse("core:question_summary")
-    context = {
-        "block_title": "New Question",
-        "breadcrumbs": breadcrumbs,
-        "title": "Create FAQ Entry",
-        "intro": intro,
-        "form": form,
-        "submit_text": "Create",
-        "cancel_url": cancel_url,
-        "first_field": "question",
-        "hugerte_enabled": True,
-        "selector": "id_answer",
-    }
-    return render(request, "form/object.html", context)
+# @login_required
+# def question_create(request: HttpRequest) -> HttpResponse:
+#     if request.method == "POST":
+#         form = QuestionForm(request.POST)
+#         if form.is_valid():
+#             question: Question = form.save(commit=False)
+#             question.created_by = request.user
+#             question.updated_by = request.user
+#             question.save()
+#             messages.success(request, "Question created successfully.")
+#             return redirect("core:question_detail", question_slug=question.slug)
+#         else:
+#             for field, errors in form.errors.items():
+#                 for error in errors:
+#                     messages.error(request, f"{field}: {error}")
+#     else:
+#         form = QuestionForm()
+#     intro = "Create a new question for the FAQ Page"
+#     breadcrumbs = [
+#         {"title": "Questions", "url": reverse("core:question_summary")},
+#         {"title": "New Question", "url": None},
+#     ]
+#     cancel_url = reverse("core:question_summary")
+#     context = {
+#         "block_title": "New Question",
+#         "breadcrumbs": breadcrumbs,
+#         "title": "Create FAQ Entry",
+#         "intro": intro,
+#         "form": form,
+#         "submit_text": "Create",
+#         "cancel_url": cancel_url,
+#         "first_field": "question",
+#         "hugerte_enabled": True,
+#         "selector": "id_answer",
+#     }
+#     return render(request, "form/object.html", context)
 
 
-@login_required
-def question_edit(request: HttpRequest, question_slug: str) -> HttpResponse:
-    question = get_object_or_404(Question, slug=question_slug, is_deleted=False)
-    try:
-        question = Question.objects.get(slug=question_slug, is_deleted=False)
+# @login_required
+# def question_edit(request: HttpRequest, question_slug: str) -> HttpResponse:
+#     question = get_object_or_404(Question, slug=question_slug, is_deleted=False)
+#     try:
+#         question = Question.objects.get(slug=question_slug, is_deleted=False)
 
-    except Question.DoesNotExist:
-        messages.error(request, "Question not found.")
-        return redirect("core:question_summary")
+#     except Question.DoesNotExist:
+#         messages.error(request, "Question not found.")
+#         return redirect("core:question_summary")
 
-    if request.method == "POST":
-        form = QuestionForm(request.POST, instance=question)
-        if form.is_valid():
-            question = form.save(commit=False)
-            question.updated_by = request.user
-            question.save()
-            messages.success(request, "Question updated successfully.")
-            return redirect("core:question_detail", question_slug=question.slug)
-        else:
-            for field, errors in form.errors.items():
-                for error in errors:
-                    messages.error(request, f"{field}: {error}")
-    else:
-        form = QuestionForm(instance=question)
+#     if request.method == "POST":
+#         form = QuestionForm(request.POST, instance=question)
+#         if form.is_valid():
+#             question = form.save(commit=False)
+#             question.updated_by = request.user
+#             question.save()
+#             messages.success(request, "Question updated successfully.")
+#             return redirect("core:question_detail", question_slug=question.slug)
+#         else:
+#             for field, errors in form.errors.items():
+#                 for error in errors:
+#                     messages.error(request, f"{field}: {error}")
+#     else:
+#         form = QuestionForm(instance=question)
 
-    intro = "Edit an existing question"
-    breadcrumbs = [
-        {"title": "Questions", "url": reverse("core:question_summary")},
-        {"title": question, "url": reverse("core:question_detail", args=[question.slug])},
-    ]
-    cancel_url = reverse("core:question_detail", args=[question.slug])
-    context = {
-        "block_title": "Edit Question",
-        "breadcrumbs": breadcrumbs,
-        "title": "Edit Question",
-        "intro": intro,
-        "form": form,
-        "object": question,
-        "submit_text": "Update",
-        "cancel_url": cancel_url,
-        "first_field": "question",
-        "file": False,
-        "hugerte_enabled": True,
-        "selector": "id_answer",
-    }
-    return render(request, "form/object.html", context)
-
-
-@login_required
-def question_delete_modal(request: HttpRequest) -> HttpResponse | JsonResponse:
-    question_slug = request.GET.get("slug")
-    if not question_slug:
-        return JsonResponse({"error": "Question slug is required"}, status=400)
-    try:
-        question = Question.objects.get(slug=question_slug, is_deleted=False)
-    except Question.DoesNotExist:
-        return JsonResponse({"error": "Question not found"}, status=404)
-
-    context = {
-        "object": question,
-        "object_type": "Question",
-        "action_url": reverse("core:question_delete", args=[question.slug]),
-    }
-    return render(request, "components/modal/object_delete_modal_body.html", context)
+#     intro = "Edit an existing question"
+#     breadcrumbs = [
+#         {"title": "Questions", "url": reverse("core:question_summary")},
+#         {"title": question, "url": reverse("core:question_detail", args=[question.slug])},
+#     ]
+#     cancel_url = reverse("core:question_detail", args=[question.slug])
+#     context = {
+#         "block_title": "Edit Question",
+#         "breadcrumbs": breadcrumbs,
+#         "title": "Edit Question",
+#         "intro": intro,
+#         "form": form,
+#         "object": question,
+#         "submit_text": "Update",
+#         "cancel_url": cancel_url,
+#         "first_field": "question",
+#         "file": False,
+#         "hugerte_enabled": True,
+#         "selector": "id_answer",
+#     }
+#     return render(request, "form/object.html", context)
 
 
-@login_required
-def question_delete(request: HttpRequest, question_slug: str) -> HttpResponse:
-    question = get_object_or_404(Question, slug=question_slug, is_deleted=False)
-    try:
-        question = Question.objects.get(slug=question_slug, is_deleted=False)
+# @login_required
+# def question_delete_modal(request: HttpRequest) -> HttpResponse | JsonResponse:
+#     question_slug = request.GET.get("slug")
+#     if not question_slug:
+#         return JsonResponse({"error": "Question slug is required"}, status=400)
+#     try:
+#         question = Question.objects.get(slug=question_slug, is_deleted=False)
+#     except Question.DoesNotExist:
+#         return JsonResponse({"error": "Question not found"}, status=404)
 
-    except Question.DoesNotExist:
-        messages.error(request, "Question not found.")
-        return redirect("core:question_summary")
-
-    if request.method == "POST":
-        question.is_deleted = True
-        question.updated_by = request.user
-        question.save()
-        messages.success(request, f"Question '{question}' deleted successfully.")
-        return redirect("core:question_summary")
-    else:
-        messages.error(request, "Invalid request method. Please use POST to delete a question.")
-        return redirect("core:question_detail", question_slug=question.slug)
+#     context = {
+#         "object": question,
+#         "object_type": "Question",
+#         "action_url": reverse("core:question_delete", args=[question.slug]),
+#     }
+#     return render(request, "components/modal/object_delete_modal_body.html", context)
 
 
-@login_required
-def question_detail(request: HttpRequest, question_slug: str) -> HttpResponse:
-    try:
-        question = Question.objects.get(slug=question_slug, is_deleted=False)
+# @login_required
+# def question_delete(request: HttpRequest, question_slug: str) -> HttpResponse:
+#     question = get_object_or_404(Question, slug=question_slug, is_deleted=False)
+#     try:
+#         question = Question.objects.get(slug=question_slug, is_deleted=False)
 
-    except Question.DoesNotExist:
-        messages.error(request, "Question not found.")
-        return redirect("core:question_summary")
+#     except Question.DoesNotExist:
+#         messages.error(request, "Question not found.")
+#         return redirect("core:question_summary")
 
-    breadcrumbs = [
-        {"title": "FAQ", "url": reverse("core:question_summary")},
-        {"title": f"{question}", "url": None},
-    ]
-    attach_url_query = QueryDict("", mutable=True)
-    attach_url_query["next"] = request.path
-    context = {
-        "block_title": f"{question}",
-        "breadcrumbs": breadcrumbs,
-        "title": f"{question}",
-        "object": question,
-        "edit_url": reverse("core:question_edit", args=[question.slug]),
-        "status": None,
-        "status_text": None,
-        "link_url": None,
-        "image_url": None,
-        "delete_modal_url": reverse("core:question_delete_modal"),
-        "attachments": Attachment.objects.attachments_for_object(question).all(),
-        "attach_form": AttachmentUploadForm(),
-        "attach_submit_url": str(
-            reverse(
-                "attachments:add_attachment",
-                kwargs={"app_label": "core", "model_name": "Question", "pk": question.pk},
-                query=attach_url_query,
-            )
-        ),
-    }
-    return render(request, "core/question_detail.html", context)
+#     if request.method == "POST":
+#         question.is_deleted = True
+#         question.updated_by = request.user
+#         question.save()
+#         messages.success(request, f"Question '{question}' deleted successfully.")
+#         return redirect("core:question_summary")
+#     else:
+#         messages.error(request, "Invalid request method. Please use POST to delete a question.")
+#         return redirect("core:question_detail", question_slug=question.slug)
 
 
-@login_required
-def question_summary(request: HttpRequest) -> HttpResponse:
-    questions = Question.objects.filter(is_deleted=False).order_by("created_at")
-    context = {"questions": questions, "form": QuestionForm()}
-    return render(request, "core/question_summary.html", context)
+# @login_required
+# def question_detail(request: HttpRequest, question_slug: str) -> HttpResponse:
+#     try:
+#         question = Question.objects.get(slug=question_slug, is_deleted=False)
+
+#     except Question.DoesNotExist:
+#         messages.error(request, "Question not found.")
+#         return redirect("core:question_summary")
+
+#     breadcrumbs = [
+#         {"title": "FAQ", "url": reverse("core:question_summary")},
+#         {"title": f"{question}", "url": None},
+#     ]
+#     attach_url_query = QueryDict("", mutable=True)
+#     attach_url_query["next"] = request.path
+#     context = {
+#         "block_title": f"{question}",
+#         "breadcrumbs": breadcrumbs,
+#         "title": f"{question}",
+#         "object": question,
+#         "edit_url": reverse("core:question_edit", args=[question.slug]),
+#         "status": None,
+#         "status_text": None,
+#         "link_url": None,
+#         "image_url": None,
+#         "delete_modal_url": reverse("core:question_delete_modal"),
+#         "attachments": Attachment.objects.attachments_for_object(question).all(),
+#         "attach_form": AttachmentUploadForm(),
+#         "attach_submit_url": str(
+#             reverse(
+#                 "attachments:add_attachment",
+#                 kwargs={"app_label": "core", "model_name": "Question", "pk": question.pk},
+#                 query=attach_url_query,
+#             )
+#         ),
+#     }
+#     return render(request, "core/question_detail.html", context)
+
+
+# @login_required
+# def question_summary(request: HttpRequest) -> HttpResponse:
+#     questions = Question.objects.filter(is_deleted=False).order_by("created_at")
+#     context = {"questions": questions, "form": QuestionForm()}
+#     return render(request, "core/question_summary.html", context)
 
 
 @login_required
@@ -1278,208 +1273,208 @@ def planning_home(request: HttpRequest) -> HttpResponse:
     return render(request, "core/planning_home.html", context)
 
 
-@login_required
-def wedding_settings(request):
-    settings = WeddingSettings.load()
+# @login_required
+# def wedding_settings(request):
+#     settings = WeddingSettings.load()
 
-    context = {
-        "block_title": "Wedding Settings",
-        "breadcrumbs": [
-            {"title": "Planning", "url": reverse("core:planning_home")},
-            {"title": "Wedding Settings", "url": None},
-        ],
-        "title": "Wedding Settings",
-        "edit_url": reverse("core:wedding_settings_edit"),
-        "settings": settings,
-        "rsvp_questions": RsvpQuestion.objects.filter(is_deleted=False).order_by("-published", "order"),
-    }
-    return render(request, "core/wedding_settings_detail.html", context)
-
-
-@login_required
-@require_http_methods(["GET", "POST"])
-def wedding_settings_edit(request):
-    RsvpQuestionFormSet = modelformset_factory(
-        RsvpQuestion,
-        form=RsvpQuestionForm,
-        extra=0,
-        can_delete=True,
-    )
-
-    settings = WeddingSettings.load()
-    question_queryset = RsvpQuestion.objects.filter(is_deleted=False).order_by("order")
-
-    if request.method == "POST":
-        form = WeddingSettingsForm(request.POST, instance=settings)
-        rsvp_question_formset = RsvpQuestionFormSet(request.POST, queryset=question_queryset, prefix="rsvp_questions")
-        if form.is_valid() and rsvp_question_formset.is_valid():
-            settings = form.save(commit=False)
-            settings.updated_by = request.user
-            settings.save()
-            messages.success(request, "Wedding settings updated successfully.")
-            for form in rsvp_question_formset:
-                if form.cleaned_data:
-                    # remove empty forms
-                    if not form.cleaned_data.get("text", None):
-                        continue
-                    question: RsvpQuestion = form.save(commit=False)
-                    logger.error(f"Processing question: {question} with data: {form.cleaned_data}")
-                    if form.cleaned_data.get("DELETE", False):
-                        question.is_deleted = True
-                    else:
-                        if not question.created_by_id:  # pyright: ignore[reportAttributeAccessIssue]
-                            question.created_by = request.user
-                        else:
-                            question.updated_by = request.user
-                        question.save()
-                        if question.question_type == RsvpQuestion.QUESTION_TYPE_CHOICES.YES_NO:
-                            # create Yes and No choices
-                            yes_choice, _ = RsvpQuestionChoice.objects.update_or_create(
-                                question=question,
-                                choice_text="Yes",
-                                order=1,
-                                created_by=request.user,
-                                updated_by=request.user,
-                            )
-                            no_choice, _ = RsvpQuestionChoice.objects.update_or_create(
-                                question=question,
-                                choice_text="No",
-                                order=2,
-                                created_by=request.user,
-                                updated_by=request.user,
-                            )
-                            # remove any other choices
-                            RsvpQuestionChoice.objects.filter(question=question, is_deleted=False).exclude(
-                                id__in=[yes_choice.id, no_choice.id]
-                            ).update(is_deleted=True, updated_by=request.user)
-
-                        # dont publish if choices are not defined
-                        elif question.question_type in [
-                            RsvpQuestion.QUESTION_TYPE_CHOICES.SINGLE_CHOICE,
-                            RsvpQuestion.QUESTION_TYPE_CHOICES.MULTIPLE_CHOICE,
-                        ]:
-                            if not RsvpQuestionChoice.objects.filter(question=question, is_deleted=False).exists():
-                                question.published = False
-                            question.save()
-
-                    question.save()
-            messages.success(request, "RSVP questions updated successfully.")
-            return redirect("core:wedding_settings")
-        else:
-            messages.error(request, "There were errors updating the settings and RSVP questions.")
-            for error in rsvp_question_formset.errors:
-                for field, field_errors in error.items():  # pyright: ignore[reportAttributeAccessIssue]
-                    for field_error in field_errors:
-                        messages.error(request, f"{field}: {field_error}")
-
-    else:
-        rsvp_question_formset = RsvpQuestionFormSet(
-            queryset=question_queryset, prefix="rsvp_questions", initial=[{"created_by": request.user}]
-        )
-
-    context = {
-        "breadcrumbs": [
-            {"title": "Planning", "url": reverse("core:planning_home")},
-            {"title": "Wedding Settings", "url": reverse("core:wedding_settings")},
-            {"title": "Edit", "url": None},
-        ],
-        "block_title": "Edit Wedding Settings",
-        "title": "Edit Wedding Settings",
-        "settings_form": WeddingSettingsForm(instance=settings),
-        "rsvp_question_formset": rsvp_question_formset,
-        "cancel_url": reverse("core:wedding_settings"),
-        "submit_text": "Update Settings",
-    }
-    return render(request, "core/wedding_settings_form.html", context)
+#     context = {
+#         "block_title": "Wedding Settings",
+#         "breadcrumbs": [
+#             {"title": "Planning", "url": reverse("core:planning_home")},
+#             {"title": "Wedding Settings", "url": None},
+#         ],
+#         "title": "Wedding Settings",
+#         "edit_url": reverse("core:wedding_settings_edit"),
+#         "settings": settings,
+#         "rsvp_questions": RsvpQuestion.objects.filter(is_deleted=False).order_by("-published", "order"),
+#     }
+#     return render(request, "core/wedding_settings_detail.html", context)
 
 
-@login_required
-def edit_rsvp_question_choices(request: HttpRequest, rsvp_question_uuid: str) -> HttpResponse:
-    try:
-        question = RsvpQuestion.objects.get(id=rsvp_question_uuid, is_deleted=False)
-    except RsvpQuestion.DoesNotExist:
-        messages.error(request, "RSVP Question not found.")
-        return redirect("core:wedding_settings")
+# @login_required
+# @require_http_methods(["GET", "POST"])
+# def wedding_settings_edit(request):
+#     RsvpQuestionFormSet = modelformset_factory(
+#         RsvpQuestion,
+#         form=RsvpQuestionForm,
+#         extra=0,
+#         can_delete=True,
+#     )
 
-    RsvpQuestionChoiceInlineFormSet = inlineformset_factory(
-        parent_model=RsvpQuestion,
-        model=RsvpQuestionChoice,
-        form=RsvpQuestionChoiceForm,
-        formset=RsvpQuestionChoiceChildFormSet,
-        extra=1,
-        can_delete=True,
-        min_num=0,
-        validate_min=False,
-    )
-    if request.method == "POST":
-        question_choices_formset = RsvpQuestionChoiceInlineFormSet(request.POST, instance=question, prefix="choices")
-        if question_choices_formset.is_valid():
-            instances = question_choices_formset.save(commit=False)
-            for choice in question_choices_formset.deleted_objects:
-                choice.is_deleted = True
-                choice.updated_by = request.user
-                choice.save()
-            for choice in instances:
-                if not choice.created_by_id:  # pyright: ignore[reportAttributeAccessIssue]
-                    choice.created_by = request.user
-                else:
-                    choice.updated_by = request.user
-                choice.save()
-            messages.success(request, "RSVP question choices updated successfully.")
-            return redirect("core:wedding_settings")
-        else:
-            messages.error(request, "There were errors updating the RSVP question choices.")
-            for form in question_choices_formset:
-                for field, errors in form.errors.items():
-                    for error in errors:
-                        messages.error(request, f"{field}: {error}")
-    else:
-        question_choices_formset = RsvpQuestionChoiceInlineFormSet(instance=question, prefix="choices")
+#     settings = WeddingSettings.load()
+#     question_queryset = RsvpQuestion.objects.filter(is_deleted=False).order_by("order")
 
-    context = {
-        "block_title": "Edit RSVP Question Choices",
-        "breadcrumbs": [
-            {"title": "Planning", "url": reverse("core:planning_home")},
-            {"title": "Wedding Settings", "url": reverse("core:wedding_settings")},
-            {"title": f"Edit Choices for '{question}'", "url": None},
-        ],
-        "title": f"Edit Choices for '{question}'",
-        "question_choices_formset": question_choices_formset,
-        "cancel_url": reverse("core:wedding_settings"),
-        "submit_text": "Update Choices",
-    }
-    return render(request, "core/rsvp_question_choices_form.html", context)
+#     if request.method == "POST":
+#         form = WeddingSettingsForm(request.POST, instance=settings)
+#         rsvp_question_formset = RsvpQuestionFormSet(request.POST, queryset=question_queryset, prefix="rsvp_questions")
+#         if form.is_valid() and rsvp_question_formset.is_valid():
+#             settings = form.save(commit=False)
+#             settings.updated_by = request.user
+#             settings.save()
+#             messages.success(request, "Wedding settings updated successfully.")
+#             for form in rsvp_question_formset:
+#                 if form.cleaned_data:
+#                     # remove empty forms
+#                     if not form.cleaned_data.get("text", None):
+#                         continue
+#                     question: RsvpQuestion = form.save(commit=False)
+#                     logger.error(f"Processing question: {question} with data: {form.cleaned_data}")
+#                     if form.cleaned_data.get("DELETE", False):
+#                         question.is_deleted = True
+#                     else:
+#                         if not question.created_by_id:  # pyright: ignore[reportAttributeAccessIssue]
+#                             question.created_by = request.user
+#                         else:
+#                             question.updated_by = request.user
+#                         question.save()
+#                         if question.question_type == RsvpQuestion.QUESTION_TYPE_CHOICES.YES_NO:
+#                             # create Yes and No choices
+#                             yes_choice, _ = RsvpQuestionChoice.objects.update_or_create(
+#                                 question=question,
+#                                 choice_text="Yes",
+#                                 order=1,
+#                                 created_by=request.user,
+#                                 updated_by=request.user,
+#                             )
+#                             no_choice, _ = RsvpQuestionChoice.objects.update_or_create(
+#                                 question=question,
+#                                 choice_text="No",
+#                                 order=2,
+#                                 created_by=request.user,
+#                                 updated_by=request.user,
+#                             )
+#                             # remove any other choices
+#                             RsvpQuestionChoice.objects.filter(question=question, is_deleted=False).exclude(
+#                                 id__in=[yes_choice.id, no_choice.id]
+#                             ).update(is_deleted=True, updated_by=request.user)
+
+#                         # dont publish if choices are not defined
+#                         elif question.question_type in [
+#                             RsvpQuestion.QUESTION_TYPE_CHOICES.SINGLE_CHOICE,
+#                             RsvpQuestion.QUESTION_TYPE_CHOICES.MULTIPLE_CHOICE,
+#                         ]:
+#                             if not RsvpQuestionChoice.objects.filter(question=question, is_deleted=False).exists():
+#                                 question.published = False
+#                             question.save()
+
+#                     question.save()
+#             messages.success(request, "RSVP questions updated successfully.")
+#             return redirect("core:wedding_settings")
+#         else:
+#             messages.error(request, "There were errors updating the settings and RSVP questions.")
+#             for error in rsvp_question_formset.errors:
+#                 for field, field_errors in error.items():  # pyright: ignore[reportAttributeAccessIssue]
+#                     for field_error in field_errors:
+#                         messages.error(request, f"{field}: {field_error}")
+
+#     else:
+#         rsvp_question_formset = RsvpQuestionFormSet(
+#             queryset=question_queryset, prefix="rsvp_questions", initial=[{"created_by": request.user}]
+#         )
+
+#     context = {
+#         "breadcrumbs": [
+#             {"title": "Planning", "url": reverse("core:planning_home")},
+#             {"title": "Wedding Settings", "url": reverse("core:wedding_settings")},
+#             {"title": "Edit", "url": None},
+#         ],
+#         "block_title": "Edit Wedding Settings",
+#         "title": "Edit Wedding Settings",
+#         "settings_form": WeddingSettingsForm(instance=settings),
+#         "rsvp_question_formset": rsvp_question_formset,
+#         "cancel_url": reverse("core:wedding_settings"),
+#         "submit_text": "Update Settings",
+#     }
+#     return render(request, "core/wedding_settings_form.html", context)
 
 
-@login_required
-def data_export(request: HttpRequest) -> HttpResponse:
-    """
-    Export all data from all models as an Excel file, one tab per model
+# @login_required
+# def edit_rsvp_question_choices(request: HttpRequest, rsvp_question_uuid: str) -> HttpResponse:
+#     try:
+#         question = RsvpQuestion.objects.get(id=rsvp_question_uuid, is_deleted=False)
+#     except RsvpQuestion.DoesNotExist:
+#         messages.error(request, "RSVP Question not found.")
+#         return redirect("core:wedding_settings")
 
-    Args:
-        request (HttpRequest): The HTTP request object.
-    Returns:
-        HttpResponse: Excel file download response.
-    """
-    # Create a BytesIO buffer to hold the Excel file in memory
-    buffer = io.BytesIO()
+#     RsvpQuestionChoiceInlineFormSet = inlineformset_factory(
+#         parent_model=RsvpQuestion,
+#         model=RsvpQuestionChoice,
+#         form=RsvpQuestionChoiceForm,
+#         formset=RsvpQuestionChoiceChildFormSet,
+#         extra=1,
+#         can_delete=True,
+#         min_num=0,
+#         validate_min=False,
+#     )
+#     if request.method == "POST":
+#         question_choices_formset = RsvpQuestionChoiceInlineFormSet(request.POST, instance=question, prefix="choices")
+#         if question_choices_formset.is_valid():
+#             instances = question_choices_formset.save(commit=False)
+#             for choice in question_choices_formset.deleted_objects:
+#                 choice.is_deleted = True
+#                 choice.updated_by = request.user
+#                 choice.save()
+#             for choice in instances:
+#                 if not choice.created_by_id:  # pyright: ignore[reportAttributeAccessIssue]
+#                     choice.created_by = request.user
+#                 else:
+#                     choice.updated_by = request.user
+#                 choice.save()
+#             messages.success(request, "RSVP question choices updated successfully.")
+#             return redirect("core:wedding_settings")
+#         else:
+#             messages.error(request, "There were errors updating the RSVP question choices.")
+#             for form in question_choices_formset:
+#                 for field, errors in form.errors.items():
+#                     for error in errors:
+#                         messages.error(request, f"{field}: {error}")
+#     else:
+#         question_choices_formset = RsvpQuestionChoiceInlineFormSet(instance=question, prefix="choices")
 
-    # models_to_export = [
-    #     (Guest, "Guests"),
-    #     (GuestGroup, "Guest Groups"),
-    #     (Expense, "Expenses"),
-    #     (Category, "Categories"),
-    #     (Timeline, "Timelines"),
-    #     (Deadline, "Deadlines"),
-    #     (List, "Lists"),
-    #     (ListEntry, "List Entries"),
-    #     (Inspiration, "Inspirations"),
-    #     (Question, "Questions"),
-    # ]
+#     context = {
+#         "block_title": "Edit RSVP Question Choices",
+#         "breadcrumbs": [
+#             {"title": "Planning", "url": reverse("core:planning_home")},
+#             {"title": "Wedding Settings", "url": reverse("core:wedding_settings")},
+#             {"title": f"Edit Choices for '{question}'", "url": None},
+#         ],
+#         "title": f"Edit Choices for '{question}'",
+#         "question_choices_formset": question_choices_formset,
+#         "cancel_url": reverse("core:wedding_settings"),
+#         "submit_text": "Update Choices",
+#     }
+#     return render(request, "core/rsvp_question_choices_form.html", context)
 
-    # Prepare the HTTP response with the Excel file
-    response = HttpResponse(
-        buffer.getvalue(), content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    )
-    response["Content-Disposition"] = 'attachment; filename="wedding_data_export.xlsx"'
-    return response
+
+# @login_required
+# def data_export(request: HttpRequest) -> HttpResponse:
+#     """
+#     Export all data from all models as an Excel file, one tab per model
+
+#     Args:
+#         request (HttpRequest): The HTTP request object.
+#     Returns:
+#         HttpResponse: Excel file download response.
+#     """
+#     # Create a BytesIO buffer to hold the Excel file in memory
+#     buffer = io.BytesIO()
+
+#     # models_to_export = [
+#     #     (Guest, "Guests"),
+#     #     (GuestGroup, "Guest Groups"),
+#     #     (Expense, "Expenses"),
+#     #     (Category, "Categories"),
+#     #     (Timeline, "Timelines"),
+#     #     (Deadline, "Deadlines"),
+#     #     (List, "Lists"),
+#     #     (ListEntry, "List Entries"),
+#     #     (Inspiration, "Inspirations"),
+#     #     (Question, "Questions"),
+#     # ]
+
+#     # Prepare the HTTP response with the Excel file
+#     response = HttpResponse(
+#         buffer.getvalue(), content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+#     )
+#     response["Content-Disposition"] = 'attachment; filename="wedding_data_export.xlsx"'
+#     return response

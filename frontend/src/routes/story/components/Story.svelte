@@ -1,4 +1,6 @@
 <script lang="ts">
+    import Icon from "$lib/components/Icon.svelte";
+
     const storyParts = [
         {
             title: "The Match",
@@ -60,7 +62,7 @@
                                 <div class="flex items-start gap-4">
                                     <div
                                         class="bg-{part.color}/20 rounded-full p-4 flex-shrink-0 border-2 border-{part.color}/30">
-                                        <span class="iconify {part.icon} size-8 text-{part.color}"></span>
+                                        <Icon name={part.icon} class="size-8 text-{part.color}" />
                                     </div>
                                     <div class="flex-1">
                                         <h2 class="card-title text-2xl badge badge-{part.color} mb-3">{part.title}</h2>
@@ -93,7 +95,7 @@
                                 </div>
                                 <div class="relative z-10 flex-shrink-0 mr-14">
                                     <div class="bg-{part.color}/20 rounded-full p-4 border-4 border-base-100 shadow-lg">
-                                        <span class="iconify {part.icon} size-10 text-{part.color}"></span>
+                                        <Icon name={part.icon} class="size-10 text-{part.color}" />
                                     </div>
                                 </div>
                                 <div class="w-1/2"></div>
@@ -104,7 +106,7 @@
                                 <div class="w-1/2"></div>
                                 <div class="relative z-10 flex-shrink-0 ml-14">
                                     <div class="bg-{part.color}/20 rounded-full p-4 border-4 border-base-100 shadow-lg">
-                                        <span class="iconify {part.icon} size-10 text-{part.color}"></span>
+                                        <Icon name={part.icon} class="size-10 text-{part.color}" />
                                     </div>
                                 </div>
                                 <div class="w-1/2 pl-8">

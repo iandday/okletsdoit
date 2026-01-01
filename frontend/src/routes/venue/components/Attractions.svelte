@@ -111,11 +111,11 @@
             <div class="mt-8 flex items-center justify-center gap-4">
                 <button
                     class="attractions-button-prev border-base-200 flex size-8 cursor-pointer items-center justify-center rounded-full bg-secondary text-secondary-content hover:bg-base-200 hover:text-primary-content shadow-xs transition-all hover:shadow-md max-md:shadow md:size-10">
-                    <span class="iconify lucide--chevron-left size-5"></span>
+                    <span class="icon-[lucide--chevron-left] size-5"></span>
                 </button>
                 <button
                     class="attractions-button-next border-base-200 flex size-8 cursor-pointer items-center justify-center rounded-full bg-secondary text-secondary-content hover:bg-base-200 hover:text-primary-content shadow-xs transition-all hover:shadow-md max-md:shadow md:size-10">
-                    <span class="iconify lucide--chevron-right size-5"></span>
+                    <span class="icon-[lucide--chevron-right] size-5"></span>
                 </button>
             </div>
         </div>

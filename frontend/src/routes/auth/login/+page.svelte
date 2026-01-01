@@ -66,7 +66,7 @@
 
                         {#if error}
                             <div class="alert alert-error mb-4">
-                                <span class="iconify lucide--alert-circle size-5"></span>
+                                <span class="icon-[lucide--alert-circle] size-5"></span>
                                 <span>{error}</span>
                             </div>
                         {/if}
@@ -130,9 +130,9 @@
                                         {:else if provider.id === "facebook"}
                                             <span class="iconify logos--facebook size-5"></span>
                                         {:else if provider.id === "authentik"}
-                                            <span class="iconify lucide--shield-check size-5"></span>
+                                            <span class="icon-[lucide--shield-check] size-5"></span>
                                         {:else}
-                                            <span class="iconify lucide--log-in size-5"></span>
+                                            <span class="icon-[lucide--log-in] size-5"></span>
                                         {/if}
                                         Continue with {provider.name}
                                     </button>

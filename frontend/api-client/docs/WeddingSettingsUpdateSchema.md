@@ -28,6 +28,7 @@
 | `rsvpSuccessHeadline`        | string  |
 | `standardGroupLabel`         | string  |
 | `vipGroupLabel`              | string  |
+| `accommodationGroupLabel`    | string  |
 
 ## Example
 
@@ -60,6 +61,7 @@ const example = {
     rsvpSuccessHeadline: null,
     standardGroupLabel: null,
     vipGroupLabel: null,
+    accommodationGroupLabel: null,
 } satisfies WeddingSettingsUpdateSchema;
 
 console.log(example);

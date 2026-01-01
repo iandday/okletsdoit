@@ -98,9 +98,6 @@ function createAuthStore() {
 
         async login(email: string, password: string) {
             try {
-                console.log("🔐 Attempting login to:", `${API_URL}/_allauth/${CLIENT}/v1/auth/login`);
-                console.log("📤 Payload:", JSON.stringify({ email: email, password: password }));
-
                 const csrfToken = getCsrfToken();
                 const headers: Record<string, string> = {
                     "Content-Type": "application/json",
@@ -117,33 +114,23 @@ function createAuthStore() {
                 });
 
                 const result: AuthResponse = await response.json();
-                console.log("📡 Response:", result);
-
-                // Handle 409 Conflict - user already authenticated
                 if (response.status === 409) {
-                    console.log("ℹ️ User already authenticated");
-                    // Fetch current session to get user data
                     const sessionResponse = await fetch(`${API_URL}/_allauth/${CLIENT}/v1/auth/session`, {
                         credentials: "include",
                     });
                     const sessionResult: AuthResponse = await sessionResponse.json();
                     if (sessionResult.data?.user) {
-                        console.log("✅ Retrieved user from session after conflict");
-                        console.log("📦 User data:", sessionResult.data.user);
                         set({ user: sessionResult.data.user, isAuthenticated: true, isLoading: false });
                     }
                     return { success: true };
                 }
 
                 if (!response.ok) {
-                    console.error("❌ Login failed:", result);
                     const errorMessage = result.errors?.[0]?.message || "Login failed";
                     throw new Error(errorMessage);
                 }
 
-                // Check if fully authenticated
                 if (result.meta?.is_authenticated && result.data?.user) {
-                    console.log("✅ Login successful");
                     set({ user: result.data.user, isAuthenticated: true, isLoading: false });
                     return { success: true };
                 }
@@ -159,7 +146,7 @@ function createAuthStore() {
 
                 throw new Error("Unexpected response from server");
             } catch (error) {
-                console.error("💥 Login error:", error);
+                console.error("Login error:", error);
 
                 if (error instanceof TypeError && error.message.includes("fetch")) {
                     return {
@@ -277,9 +264,6 @@ function createAuthStore() {
                     body.callback_url = callbackUrl;
                 }
 
-                // POST to the redirect endpoint - it will return a 302 redirect
-                // We need to handle this by creating a form and submitting it
-                // because fetch() doesn't follow 302 redirects that change origins
                 const form = document.createElement("form");
                 form.method = "POST";
                 form.action = `${API_URL}/_allauth/${CLIENT}/v1/auth/provider/redirect`;
@@ -330,7 +314,6 @@ function createAuthStore() {
             }
         },
 
-        // Handle provider token (for mobile apps or custom OAuth flows)
         async loginWithProviderToken(providerId: string, token: string, tokenType: string = "access_token") {
             try {
                 const csrfToken = getCsrfToken();

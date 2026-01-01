@@ -18,6 +18,9 @@ import type {
     PagedTipsSchema,
     QuestionCreateSchema,
     QuestionSchema,
+    QuestionURLCreateSchema,
+    QuestionURLSchema,
+    QuestionURLUpdateSchema,
     QuestionUpdateSchema,
     RsvpQuestionChoiceCreateSchema,
     RsvpQuestionChoiceSchema,
@@ -44,6 +47,12 @@ import {
     QuestionCreateSchemaToJSON,
     QuestionSchemaFromJSON,
     QuestionSchemaToJSON,
+    QuestionURLCreateSchemaFromJSON,
+    QuestionURLCreateSchemaToJSON,
+    QuestionURLSchemaFromJSON,
+    QuestionURLSchemaToJSON,
+    QuestionURLUpdateSchemaFromJSON,
+    QuestionURLUpdateSchemaToJSON,
     QuestionUpdateSchemaFromJSON,
     QuestionUpdateSchemaToJSON,
     RsvpQuestionChoiceCreateSchemaFromJSON,
@@ -75,6 +84,10 @@ export interface CoreApiCreateQuestionRequest {
     questionCreateSchema: QuestionCreateSchema;
 }
 
+export interface CoreApiCreateQuestionUrlRequest {
+    questionURLCreateSchema: QuestionURLCreateSchema;
+}
+
 export interface CoreApiCreateRsvpQuestionRequest {
     rsvpQuestionCreateSchema: RsvpQuestionCreateSchema;
 }
@@ -89,6 +102,10 @@ export interface CoreApiCreateTipRequest {
 
 export interface CoreApiDeleteQuestionRequest {
     questionId: string;
+}
+
+export interface CoreApiDeleteQuestionUrlRequest {
+    urlId: string;
 }
 
 export interface CoreApiDeleteRsvpQuestionRequest {
@@ -111,6 +128,10 @@ export interface CoreApiGetQuestionRequest {
     questionId: string;
 }
 
+export interface CoreApiGetQuestionUrlRequest {
+    urlId: string;
+}
+
 export interface CoreApiGetRsvpQuestionRequest {
     questionId: string;
 }
@@ -121,6 +142,10 @@ export interface CoreApiGetRsvpQuestionChoiceRequest {
 
 export interface CoreApiGetTipRequest {
     tipId: string;
+}
+
+export interface CoreApiListQuestionUrlsRequest {
+    questionId?: string | null;
 }
 
 export interface CoreApiListQuestionsRequest {
@@ -147,6 +172,11 @@ export interface CoreApiListTipsRequest {
 export interface CoreApiUpdateQuestionRequest {
     questionId: string;
     questionUpdateSchema: QuestionUpdateSchema;
+}
+
+export interface CoreApiUpdateQuestionUrlRequest {
+    urlId: string;
+    questionURLUpdateSchema: QuestionURLUpdateSchema;
 }
 
 export interface CoreApiUpdateRsvpQuestionRequest {
@@ -218,6 +248,55 @@ export class CoreApi extends runtime.BaseAPI {
         initOverrides?: RequestInit | runtime.InitOverrideFunction,
     ): Promise<QuestionSchema> {
         const response = await this.coreApiCreateQuestionRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Create a new question URL
+     * Create Question Url
+     */
+    async coreApiCreateQuestionUrlRaw(
+        requestParameters: CoreApiCreateQuestionUrlRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<QuestionURLSchema>> {
+        if (requestParameters["questionURLCreateSchema"] == null) {
+            throw new runtime.RequiredError(
+                "questionURLCreateSchema",
+                'Required parameter "questionURLCreateSchema" was null or undefined when calling coreApiCreateQuestionUrl().',
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters["Content-Type"] = "application/json";
+
+        let urlPath = `/api/core/question-urls`;
+
+        const response = await this.request(
+            {
+                path: urlPath,
+                method: "POST",
+                headers: headerParameters,
+                query: queryParameters,
+                body: QuestionURLCreateSchemaToJSON(requestParameters["questionURLCreateSchema"]),
+            },
+            initOverrides,
+        );
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => QuestionURLSchemaFromJSON(jsonValue));
+    }
+
+    /**
+     * Create a new question URL
+     * Create Question Url
+     */
+    async coreApiCreateQuestionUrl(
+        requestParameters: CoreApiCreateQuestionUrlRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<QuestionURLSchema> {
+        const response = await this.coreApiCreateQuestionUrlRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -412,6 +491,52 @@ export class CoreApi extends runtime.BaseAPI {
         initOverrides?: RequestInit | runtime.InitOverrideFunction,
     ): Promise<void> {
         await this.coreApiDeleteQuestionRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Soft delete a question URL
+     * Delete Question Url
+     */
+    async coreApiDeleteQuestionUrlRaw(
+        requestParameters: CoreApiDeleteQuestionUrlRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters["urlId"] == null) {
+            throw new runtime.RequiredError(
+                "urlId",
+                'Required parameter "urlId" was null or undefined when calling coreApiDeleteQuestionUrl().',
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        let urlPath = `/api/core/question-urls/{url_id}`;
+        urlPath = urlPath.replace(`{${"url_id"}}`, encodeURIComponent(String(requestParameters["urlId"])));
+
+        const response = await this.request(
+            {
+                path: urlPath,
+                method: "DELETE",
+                headers: headerParameters,
+                query: queryParameters,
+            },
+            initOverrides,
+        );
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Soft delete a question URL
+     * Delete Question Url
+     */
+    async coreApiDeleteQuestionUrl(
+        requestParameters: CoreApiDeleteQuestionUrlRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<void> {
+        await this.coreApiDeleteQuestionUrlRaw(requestParameters, initOverrides);
     }
 
     /**
@@ -643,6 +768,53 @@ export class CoreApi extends runtime.BaseAPI {
     }
 
     /**
+     * Get a specific question URL by ID
+     * Get Question Url
+     */
+    async coreApiGetQuestionUrlRaw(
+        requestParameters: CoreApiGetQuestionUrlRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<QuestionURLSchema>> {
+        if (requestParameters["urlId"] == null) {
+            throw new runtime.RequiredError(
+                "urlId",
+                'Required parameter "urlId" was null or undefined when calling coreApiGetQuestionUrl().',
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        let urlPath = `/api/core/question-urls/{url_id}`;
+        urlPath = urlPath.replace(`{${"url_id"}}`, encodeURIComponent(String(requestParameters["urlId"])));
+
+        const response = await this.request(
+            {
+                path: urlPath,
+                method: "GET",
+                headers: headerParameters,
+                query: queryParameters,
+            },
+            initOverrides,
+        );
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => QuestionURLSchemaFromJSON(jsonValue));
+    }
+
+    /**
+     * Get a specific question URL by ID
+     * Get Question Url
+     */
+    async coreApiGetQuestionUrl(
+        requestParameters: CoreApiGetQuestionUrlRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<QuestionURLSchema> {
+        const response = await this.coreApiGetQuestionUrlRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Get a specific RSVP question by ID
      * Get Rsvp Question
      */
@@ -817,6 +989,49 @@ export class CoreApi extends runtime.BaseAPI {
         initOverrides?: RequestInit | runtime.InitOverrideFunction,
     ): Promise<WeddingSettingsSchema> {
         const response = await this.coreApiGetWeddingSettingsRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * List all question URLs (non-deleted), optionally filtered by question_id
+     * List Question Urls
+     */
+    async coreApiListQuestionUrlsRaw(
+        requestParameters: CoreApiListQuestionUrlsRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<Array<QuestionURLSchema>>> {
+        const queryParameters: any = {};
+
+        if (requestParameters["questionId"] != null) {
+            queryParameters["question_id"] = requestParameters["questionId"];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        let urlPath = `/api/core/question-urls`;
+
+        const response = await this.request(
+            {
+                path: urlPath,
+                method: "GET",
+                headers: headerParameters,
+                query: queryParameters,
+            },
+            initOverrides,
+        );
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(QuestionURLSchemaFromJSON));
+    }
+
+    /**
+     * List all question URLs (non-deleted), optionally filtered by question_id
+     * List Question Urls
+     */
+    async coreApiListQuestionUrls(
+        requestParameters: CoreApiListQuestionUrlsRequest = {},
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<Array<QuestionURLSchema>> {
+        const response = await this.coreApiListQuestionUrlsRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -1039,6 +1254,63 @@ export class CoreApi extends runtime.BaseAPI {
         initOverrides?: RequestInit | runtime.InitOverrideFunction,
     ): Promise<QuestionSchema> {
         const response = await this.coreApiUpdateQuestionRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Update a question URL
+     * Update Question Url
+     */
+    async coreApiUpdateQuestionUrlRaw(
+        requestParameters: CoreApiUpdateQuestionUrlRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<QuestionURLSchema>> {
+        if (requestParameters["urlId"] == null) {
+            throw new runtime.RequiredError(
+                "urlId",
+                'Required parameter "urlId" was null or undefined when calling coreApiUpdateQuestionUrl().',
+            );
+        }
+
+        if (requestParameters["questionURLUpdateSchema"] == null) {
+            throw new runtime.RequiredError(
+                "questionURLUpdateSchema",
+                'Required parameter "questionURLUpdateSchema" was null or undefined when calling coreApiUpdateQuestionUrl().',
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters["Content-Type"] = "application/json";
+
+        let urlPath = `/api/core/question-urls/{url_id}`;
+        urlPath = urlPath.replace(`{${"url_id"}}`, encodeURIComponent(String(requestParameters["urlId"])));
+
+        const response = await this.request(
+            {
+                path: urlPath,
+                method: "PUT",
+                headers: headerParameters,
+                query: queryParameters,
+                body: QuestionURLUpdateSchemaToJSON(requestParameters["questionURLUpdateSchema"]),
+            },
+            initOverrides,
+        );
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => QuestionURLSchemaFromJSON(jsonValue));
+    }
+
+    /**
+     * Update a question URL
+     * Update Question Url
+     */
+    async coreApiUpdateQuestionUrl(
+        requestParameters: CoreApiUpdateQuestionUrlRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<QuestionURLSchema> {
+        const response = await this.coreApiUpdateQuestionUrlRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

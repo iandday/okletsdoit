@@ -31,13 +31,13 @@ export interface RsvpQuestionResponseSchema {
      * @type {string}
      * @memberof RsvpQuestionResponseSchema
      */
-    id: string;
+    id?: string | null;
     /**
      *
      * @type {string}
      * @memberof RsvpQuestionResponseSchema
      */
-    submissionId: string;
+    submissionId?: string | null;
     /**
      *
      * @type {string}
@@ -79,27 +79,23 @@ export interface RsvpQuestionResponseSchema {
      * @type {Date}
      * @memberof RsvpQuestionResponseSchema
      */
-    createdAt: Date;
+    createdAt?: Date | null;
     /**
      *
      * @type {Date}
      * @memberof RsvpQuestionResponseSchema
      */
-    updatedAt: Date;
+    updatedAt?: Date | null;
 }
 
 /**
  * Check if a given object implements the RsvpQuestionResponseSchema interface.
  */
 export function instanceOfRsvpQuestionResponseSchema(value: object): value is RsvpQuestionResponseSchema {
-    if (!("id" in value) || value["id"] === undefined) return false;
-    if (!("submissionId" in value) || value["submissionId"] === undefined) return false;
     if (!("questionId" in value) || value["questionId"] === undefined) return false;
     if (!("questionText" in value) || value["questionText"] === undefined) return false;
     if (!("questionType" in value) || value["questionType"] === undefined) return false;
     if (!("questionOrder" in value) || value["questionOrder"] === undefined) return false;
-    if (!("createdAt" in value) || value["createdAt"] === undefined) return false;
-    if (!("updatedAt" in value) || value["updatedAt"] === undefined) return false;
     return true;
 }
 
@@ -115,8 +111,8 @@ export function RsvpQuestionResponseSchemaFromJSONTyped(
         return json;
     }
     return {
-        id: json["id"],
-        submissionId: json["submission_id"],
+        id: json["id"] == null ? undefined : json["id"],
+        submissionId: json["submission_id"] == null ? undefined : json["submission_id"],
         questionId: json["question_id"],
         questionText: json["question_text"],
         questionType: json["question_type"],
@@ -126,8 +122,8 @@ export function RsvpQuestionResponseSchemaFromJSONTyped(
             json["response_choices"] == null
                 ? undefined
                 : (json["response_choices"] as Array<any>).map(ResponseChoiceSchemaFromJSON),
-        createdAt: new Date(json["created_at"]),
-        updatedAt: new Date(json["updated_at"]),
+        createdAt: json["created_at"] == null ? undefined : new Date(json["created_at"]),
+        updatedAt: json["updated_at"] == null ? undefined : new Date(json["updated_at"]),
     };
 }
 
@@ -155,7 +151,7 @@ export function RsvpQuestionResponseSchemaToJSONTyped(
             value["responseChoices"] == null
                 ? undefined
                 : (value["responseChoices"] as Array<any>).map(ResponseChoiceSchemaToJSON),
-        created_at: value["createdAt"].toISOString(),
-        updated_at: value["updatedAt"].toISOString(),
+        created_at: value["createdAt"] == null ? value["createdAt"] : value["createdAt"].toISOString(),
+        updated_at: value["updatedAt"] == null ? value["updatedAt"] : value["updatedAt"].toISOString(),
     };
 }

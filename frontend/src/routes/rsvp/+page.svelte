@@ -43,7 +43,7 @@
                     <div class="card bg-base-200 shadow-2xl border border-primary/20 w-full max-w-2xl pb-2">
                         <div class="card-body items-center text-center">
                             <h2 class="card-title text-accent text-2xl mb-2">
-                                <span class="iconify lucide--mail size-7 text-accent"></span>
+                                <span class="icon-[lucide--mail] size-7 text-accent"></span>
                                 Enter Your RSVP Code
                             </h2>
                             <p class="text-lg text-primary-content mb-4">
@@ -52,7 +52,7 @@
 
                             {#if form?.error}
                                 <div class="alert alert-error">
-                                    <span class="iconify lucide--alert-circle size-5"></span>
+                                    <span class="icon-[lucide--alert-circle] size-5"></span>
                                     <span>{form.error}</span>
                                 </div>
                             {/if}
@@ -88,7 +88,7 @@
                                             <span class="loading loading-spinner loading-sm"></span>
                                             Checking...
                                         {:else}
-                                            <span class="iconify lucide--arrow-right size-5"></span>
+                                            <span class="icon-[lucide--arrow-right] size-5"></span>
                                             Continue
                                         {/if}
                                     </button>

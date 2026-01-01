@@ -104,3 +104,51 @@ input:-webkit-autofill:active {
 .config-card-field-value {
     @apply text-primary-content;
 }
+
+.edit-card {
+    @apply card bg-base-200 text-primary-content shadow-md transition-shadow duration-300 hover:shadow-lg;
+}
+
+.edit-card-title {
+    @apply card-title text-lg lg:text-xl;
+}
+
+.edit-card-body {
+    @apply card-body text-primary-content px-6 py-4;
+}
+
+.edit-card-field-name {
+    @apply text-primary-content/70 font-medium;
+}
+
+.edit-card-field-value {
+    @apply text-primary-content;
+}
+
+.edit-card-field-toggle {
+    @apply toggle toggle-primary;
+}
+
+.edit-card-field-textarea {
+    @apply textarea bg-base-100 text-primary-content w-full;
+}
+
+.edit-card-field-input {
+    @apply input bg-base-100 text-primary-content w-full;
+}
+
+.edit-card-field-date {
+    @apply input bg-base-100 text-primary-content w-full;
+}
+
+.edit-card-field-select {
+    @apply select bg-base-100 text-primary-content w-full;
+}
+
+.edit-card-field-checkbox {
+    @apply checkbox checkbox-primary;
+}
+
+.edit-card-field-radio {
+    @apply radio radio-primary;
+}

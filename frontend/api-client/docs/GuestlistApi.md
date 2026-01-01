@@ -2,30 +2,31 @@
 
 All URIs are relative to _http://localhost_
 
-| Method                                                                                               | HTTP request                                                 | Description                   |
-| ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ | ----------------------------- |
-| [**guestlistApiCreateGuest**](GuestlistApi.md#guestlistapicreateguest)                               | **POST** /api/guestlist/guests                               | Create Guest                  |
-| [**guestlistApiCreateGuestGroup**](GuestlistApi.md#guestlistapicreateguestgroup)                     | **POST** /api/guestlist/guest-groups                         | Create Guest Group            |
-| [**guestlistApiCreateRsvpResponse**](GuestlistApi.md#guestlistapicreatersvpresponse)                 | **POST** /api/guestlist/rsvp-responses                       | Create Rsvp Response          |
-| [**guestlistApiCreateRsvpSubmission**](GuestlistApi.md#guestlistapicreatersvpsubmission)             | **POST** /api/guestlist/rsvp-submissions                     | Create Rsvp Submission        |
-| [**guestlistApiDeclineRsvp**](GuestlistApi.md#guestlistapideclinersvp)                               | **POST** /api/guestlist/rsvp-decline/{rsvp_code}             | Decline Rsvp                  |
-| [**guestlistApiDeleteGuest**](GuestlistApi.md#guestlistapideleteguest)                               | **DELETE** /api/guestlist/guests/{guest_id}                  | Delete Guest                  |
-| [**guestlistApiDeleteGuestGroup**](GuestlistApi.md#guestlistapideleteguestgroup)                     | **DELETE** /api/guestlist/guest-groups/{group_id}            | Delete Guest Group            |
-| [**guestlistApiDeleteRsvpResponse**](GuestlistApi.md#guestlistapideletersvpresponse)                 | **DELETE** /api/guestlist/rsvp-responses/{response_id}       | Delete Rsvp Response          |
-| [**guestlistApiDeleteRsvpSubmission**](GuestlistApi.md#guestlistapideletersvpsubmission)             | **DELETE** /api/guestlist/rsvp-submissions/{submission_id}   | Delete Rsvp Submission        |
-| [**guestlistApiGetGuest**](GuestlistApi.md#guestlistapigetguest)                                     | **GET** /api/guestlist/guests/{guest_id}                     | Get Guest                     |
-| [**guestlistApiGetGuestGroup**](GuestlistApi.md#guestlistapigetguestgroup)                           | **GET** /api/guestlist/guest-groups/{group_id}               | Get Guest Group               |
-| [**guestlistApiGetRsvpAcceptanceQuestions**](GuestlistApi.md#guestlistapigetrsvpacceptancequestions) | **GET** /api/guestlist/rsvp-acceptance-questions/{rsvp_code} | Get Rsvp Acceptance Questions |
-| [**guestlistApiGetRsvpResponse**](GuestlistApi.md#guestlistapigetrsvpresponse)                       | **GET** /api/guestlist/rsvp-responses/{response_id}          | Get Rsvp Response             |
-| [**guestlistApiGetRsvpSubmission**](GuestlistApi.md#guestlistapigetrsvpsubmission)                   | **GET** /api/guestlist/rsvp-submissions/{submission_id}      | Get Rsvp Submission           |
-| [**guestlistApiListGuestGroups**](GuestlistApi.md#guestlistapilistguestgroups)                       | **GET** /api/guestlist/guest-groups                          | List Guest Groups             |
-| [**guestlistApiListGuests**](GuestlistApi.md#guestlistapilistguests)                                 | **GET** /api/guestlist/guests                                | List Guests                   |
-| [**guestlistApiListRsvpResponses**](GuestlistApi.md#guestlistapilistrsvpresponses)                   | **GET** /api/guestlist/rsvp-responses                        | List Rsvp Responses           |
-| [**guestlistApiListRsvpSubmissions**](GuestlistApi.md#guestlistapilistrsvpsubmissions)               | **GET** /api/guestlist/rsvp-submissions                      | List Rsvp Submissions         |
-| [**guestlistApiUpdateGuest**](GuestlistApi.md#guestlistapiupdateguest)                               | **PUT** /api/guestlist/guests/{guest_id}                     | Update Guest                  |
-| [**guestlistApiUpdateGuestGroup**](GuestlistApi.md#guestlistapiupdateguestgroup)                     | **PUT** /api/guestlist/guest-groups/{group_id}               | Update Guest Group            |
-| [**guestlistApiUpdateRsvpResponse**](GuestlistApi.md#guestlistapiupdatersvpresponse)                 | **PUT** /api/guestlist/rsvp-responses/{response_id}          | Update Rsvp Response          |
-| [**guestlistApiUpdateRsvpSubmission**](GuestlistApi.md#guestlistapiupdatersvpsubmission)             | **PUT** /api/guestlist/rsvp-submissions/{submission_id}      | Update Rsvp Submission        |
+| Method                                                                                                             | HTTP request                                                 | Description                           |
+| ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------- |
+| [**guestlistApiCreateGuest**](GuestlistApi.md#guestlistapicreateguest)                                             | **POST** /api/guestlist/guests                               | Create Guest                          |
+| [**guestlistApiCreateGuestGroup**](GuestlistApi.md#guestlistapicreateguestgroup)                                   | **POST** /api/guestlist/guest-groups                         | Create Guest Group                    |
+| [**guestlistApiCreateRsvpResponse**](GuestlistApi.md#guestlistapicreatersvpresponse)                               | **POST** /api/guestlist/rsvp-responses                       | Create Rsvp Response                  |
+| [**guestlistApiCreateRsvpSubmission**](GuestlistApi.md#guestlistapicreatersvpsubmission)                           | **POST** /api/guestlist/rsvp-submissions                     | Create Rsvp Submission                |
+| [**guestlistApiDeclineRsvp**](GuestlistApi.md#guestlistapideclinersvp)                                             | **POST** /api/guestlist/rsvp-decline/{rsvp_code}             | Decline Rsvp                          |
+| [**guestlistApiDeleteGuest**](GuestlistApi.md#guestlistapideleteguest)                                             | **DELETE** /api/guestlist/guests/{guest_id}                  | Delete Guest                          |
+| [**guestlistApiDeleteGuestGroup**](GuestlistApi.md#guestlistapideleteguestgroup)                                   | **DELETE** /api/guestlist/guest-groups/{group_id}            | Delete Guest Group                    |
+| [**guestlistApiDeleteRsvpResponse**](GuestlistApi.md#guestlistapideletersvpresponse)                               | **DELETE** /api/guestlist/rsvp-responses/{response_id}       | Delete Rsvp Response                  |
+| [**guestlistApiDeleteRsvpSubmission**](GuestlistApi.md#guestlistapideletersvpsubmission)                           | **DELETE** /api/guestlist/rsvp-submissions/{submission_id}   | Delete Rsvp Submission                |
+| [**guestlistApiGetGuest**](GuestlistApi.md#guestlistapigetguest)                                                   | **GET** /api/guestlist/guests/{guest_id}                     | Get Guest                             |
+| [**guestlistApiGetGuestGroup**](GuestlistApi.md#guestlistapigetguestgroup)                                         | **GET** /api/guestlist/guest-groups/{group_id}               | Get Guest Group                       |
+| [**guestlistApiGetRsvpAcceptanceQuestions**](GuestlistApi.md#guestlistapigetrsvpacceptancequestions)               | **GET** /api/guestlist/rsvp-acceptance-questions/{rsvp_code} | Get Rsvp Acceptance Questions         |
+| [**guestlistApiGetRsvpAcceptenceQuestionsPreview**](GuestlistApi.md#guestlistapigetrsvpacceptencequestionspreview) | **GET** /api/guestlist/rsvp-acceptance-questions/preview     | Get Rsvp Acceptence Questions Preview |
+| [**guestlistApiGetRsvpResponse**](GuestlistApi.md#guestlistapigetrsvpresponse)                                     | **GET** /api/guestlist/rsvp-responses/{response_id}          | Get Rsvp Response                     |
+| [**guestlistApiGetRsvpSubmission**](GuestlistApi.md#guestlistapigetrsvpsubmission)                                 | **GET** /api/guestlist/rsvp-submissions/{submission_id}      | Get Rsvp Submission                   |
+| [**guestlistApiListGuestGroups**](GuestlistApi.md#guestlistapilistguestgroups)                                     | **GET** /api/guestlist/guest-groups                          | List Guest Groups                     |
+| [**guestlistApiListGuests**](GuestlistApi.md#guestlistapilistguests)                                               | **GET** /api/guestlist/guests                                | List Guests                           |
+| [**guestlistApiListRsvpResponses**](GuestlistApi.md#guestlistapilistrsvpresponses)                                 | **GET** /api/guestlist/rsvp-responses                        | List Rsvp Responses                   |
+| [**guestlistApiListRsvpSubmissions**](GuestlistApi.md#guestlistapilistrsvpsubmissions)                             | **GET** /api/guestlist/rsvp-submissions                      | List Rsvp Submissions                 |
+| [**guestlistApiUpdateGuest**](GuestlistApi.md#guestlistapiupdateguest)                                             | **PUT** /api/guestlist/guests/{guest_id}                     | Update Guest                          |
+| [**guestlistApiUpdateGuestGroup**](GuestlistApi.md#guestlistapiupdateguestgroup)                                   | **PUT** /api/guestlist/guest-groups/{group_id}               | Update Guest Group                    |
+| [**guestlistApiUpdateRsvpResponse**](GuestlistApi.md#guestlistapiupdatersvpresponse)                               | **PUT** /api/guestlist/rsvp-responses/{response_id}          | Update Rsvp Response                  |
+| [**guestlistApiUpdateRsvpSubmission**](GuestlistApi.md#guestlistapiupdatersvpsubmission)                           | **PUT** /api/guestlist/rsvp-submissions/{submission_id}      | Update Rsvp Submission                |
 
 ## guestlistApiCreateGuest
 
@@ -779,6 +780,61 @@ example().catch(console.error);
 | Name         | Type     | Description | Notes                     |
 | ------------ | -------- | ----------- | ------------------------- |
 | **rsvpCode** | `string` |             | [Defaults to `undefined`] |
+
+### Return type
+
+[**Array&lt;RsvpQuestionResponseSchema&gt;**](RsvpQuestionResponseSchema.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## guestlistApiGetRsvpAcceptenceQuestionsPreview
+
+> Array&lt;RsvpQuestionResponseSchema&gt; guestlistApiGetRsvpAcceptenceQuestionsPreview()
+
+Get Rsvp Acceptence Questions Preview
+
+Get RSVP acceptance questions for preview mode
+
+### Example
+
+```ts
+import { Configuration, GuestlistApi } from "";
+import type { GuestlistApiGetRsvpAcceptenceQuestionsPreviewRequest } from "";
+
+async function example() {
+    console.log("🚀 Testing  SDK...");
+    const api = new GuestlistApi();
+
+    try {
+        const data = await api.guestlistApiGetRsvpAcceptenceQuestionsPreview();
+        console.log(data);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+This endpoint does not need any parameter.
 
 ### Return type
 

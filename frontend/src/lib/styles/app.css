@@ -18,7 +18,7 @@
 /* Animations */
 @plugin "tailwindcss-motion";
 
-/* Iconify (Lucide icons) */
+/* Iconify (Lucide icons) - for static icon references */
 @plugin "@iconify/tailwind4" {
     prefixes: lucide;
 }

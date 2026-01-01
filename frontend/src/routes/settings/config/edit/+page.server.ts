@@ -72,6 +72,6 @@ export const actions = {
             });
         }
 
-        throw redirect(303, "/config");
+        throw redirect(303, "/settings/config");
     },
 } satisfies Actions;

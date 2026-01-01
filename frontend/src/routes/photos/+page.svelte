@@ -30,7 +30,7 @@
                             <h2
                                 class="card-title
     text-accent text-2xl mb-2">
-                                <span class="iconify lucide--camera size-7 text-accent"></span>
+                                <span class="icon-[lucide--camera] size-7 text-accent"></span>
                                 Photo Sharing Coming Soon!
                             </h2>
                             <p class="text-lg text-primary-content mb-4">

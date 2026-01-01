@@ -33,6 +33,38 @@
         },
     ];
 
+    const protectedMenu: IMenuItem[] = [
+        { title: "FAQ", href: "/settings/faq", icon: "icon-[lucide--help-circle]" },
+        {
+            title: "Settings",
+            href: "/settings/config",
+            icon: "icon-[lucide--settings]",
+        },
+    ];
+    const previewMenu: IMenuItem[] = [
+        {
+            title: "FAQ",
+            href: "/settings/preview/faq",
+        },
+
+        {
+            title: "RSVP Landing",
+            href: "/settings/preview/rsvp/landing",
+        },
+        {
+            title: "RSVP Accept 1",
+            href: "/settings/preview/rsvp/accept",
+        },
+        {
+            title: "RSVP Accept 2",
+            href: "/settings/preview/rsvp/complete?accepted=true",
+        },
+        {
+            title: "RSVP Declined",
+            href: "/settings/preview/rsvp/complete?accepted=false",
+        },
+    ];
+
     const legacyLinks: IMenuItem[] = [
         {
             title: "Dashboard",
@@ -70,10 +102,10 @@
             title: "Timeline",
             href: "/timeline/",
         },
-        {
-            title: "FAQ",
-            href: "/question/",
-        },
+        // {
+        //     title: "FAQ",
+        //     href: "/question/",
+        // },
         // {
         //     title: "Settings",
         //     href: "/settings/",
@@ -122,7 +154,7 @@
             <div class="text-primary-content dropdown dropdown-hover md:dropdown-center dropdown-end">
                 <div class="avatar cursor-pointer">
                     <div class="bg-base-200 mask mask-squircle w-6">
-                        <span class="iconify lucide--user-circle size-6"></span>
+                        <span class="icon-[lucide--user-circle] size-6"></span>
                     </div>
                 </div>
                 <div tabIndex={0} class="dropdown-content bg-base-300 rounded-box z-1 w-44 p-2 text-sm shadow-sm">
@@ -139,17 +171,44 @@
                             {/each}
                             <div class="border-t border-base-200 my-2"></div>
                             <li>
-                                <a class="text-primary-content flex items-center gap-2 px-3 py-1.5" href="/config">
-                                    <span class="iconify lucide--user size-4" />
-                                    <span>Config</span>
-                                </a>
+                                <details>
+                                    <summary class="text-primary-content flex items-center gap-2 px-3 py-1.5">
+                                        <span class="icon-[lucide--eye] size-4" />
+                                        <span>Preview</span>
+                                    </summary>
+                                    <ul>
+                                        {#each previewMenu as item, index (index)}
+                                            <li>
+                                                <a
+                                                    class="text-primary-content flex items-center gap-2 px-3 py-1.5"
+                                                    target="_blank"
+                                                    href={item.href}>
+                                                    <span>{item.title}</span>
+                                                </a>
+                                            </li>
+                                        {/each}
+                                    </ul>
+                                </details>
                             </li>
+                            {#each protectedMenu as item, index (index)}
+                                <li>
+                                    <a
+                                        class="text-primary-content flex items-center gap-2 px-3 py-1.5"
+                                        href={item.href}>
+                                        {#if item.icon}
+                                            <span class="{item.icon} size-4" />
+                                        {/if}
+                                        <span>{item.title}</span>
+                                    </a>
+                                </li>
+                            {/each}
                             <div class="border-t border-base-200 my-2"></div>
+
                             <li>
                                 <a
                                     class="text-primary-content flex items-center gap-2 px-3 py-1.5"
                                     href="/settings/profile">
-                                    <span class="iconify lucide--user size-4" />
+                                    <span class="icon-[lucide--user] size-4" />
                                     <span>Profile</span>
                                 </a>
                             </li>
@@ -157,7 +216,7 @@
                                 <a
                                     class="text-primary-content flex items-center gap-2 px-3 py-1.5"
                                     href="/settings/account">
-                                    <span class="iconify lucide--settings size-4" />
+                                    <span class="icon-[lucide--settings] size-4" />
                                     <span>Account</span>
                                 </a>
                             </li>
@@ -165,7 +224,7 @@
                                 <a
                                     class="text-primary-content flex items-center gap-2 px-3 py-1.5"
                                     href="/settings/notification">
-                                    <span class="iconify lucide--bell size-4" />
+                                    <span class="icon-[lucide--bell] size-4" />
                                     <span>Notification</span>
                                 </a>
                             </li>
@@ -173,7 +232,7 @@
                                 <button
                                     onclick={() => goto("/auth/logout")}
                                     class="text-primary-content rounded-box flex items-center gap-2 px-3 py-1.5">
-                                    <span class="iconify lucide--log-out size-4" />
+                                    <span class="icon-[lucide--log-out] size-4" />
                                     <span>Logout</span>
                                 </button>
                             </li>
@@ -182,7 +241,7 @@
                                 <a
                                     class="text-primary-content rounded-box flex items-center gap-2 px-3 py-1.5"
                                     href="/auth/login">
-                                    <span class="iconify lucide--log-in size-4" />
+                                    <span class="icon-[lucide--log-in] size-4" />
                                     <span>Login</span>
                                 </a>
                             </li>
@@ -197,7 +256,7 @@
                         <label
                             for="my-drawer"
                             class="text-primary-content btn btn-sm btn-ghost btn-square drawer-button">
-                            <span class="iconify lucide--menu size-5"></span>
+                            <span class="icon-[lucide--menu] size-5"></span>
                         </label>
                     </div>
                     <div class="drawer-side">

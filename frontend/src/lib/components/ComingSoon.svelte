@@ -1,6 +1,7 @@
 <!-- components/ComingSoon.svelte -->
 <script lang="ts">
     import type { IComingSoon } from "../../types";
+    import Icon from "./Icon.svelte";
 
     const { icon, alert, intro, expectations }: IComingSoon = $props();
 </script>
@@ -11,10 +12,10 @@
             <div class="card bg-base-200 shadow-2xl border border-primary/20 w-full max-w-2xl pb-2">
                 <div class="card-body items-center text-center">
                     <div class="mb-6">
-                        <span class="iconify lucide--{icon} size-20 text-accent animate-pulse"></span>
+                        <Icon name={icon} class="size-20 text-accent animate-pulse" />
                     </div>
                     <div class="badge badge-primary badge-lg mb-4 gap-2 px-4 py-3">
-                        <span class="iconify lucide--clock size-4"></span>
+                        <span class="icon-[lucide--clock] size-4"></span>
                         {alert}
                     </div>
 
@@ -24,13 +25,13 @@
 
                     <div class="text-left w-full max-w-md">
                         <h3 class="font-bold text-primary-content text-lg mb-3 flex items-center gap-2">
-                            <span class="iconify lucide--sparkles size-5 text-primary-content"></span>
+                            <span class="icon-[lucide--sparkles] size-5 text-primary-content"></span>
                             What to Expect:
                         </h3>
                         <ul class="space-y-3">
                             {#each expectations as { text, icon }, index (index)}
                                 <li class="flex items-start gap-3">
-                                    <span class="iconify lucide--{icon} size-5 text-accent mt-0.5 flex-shrink-0"></span>
+                                    <Icon name={icon} class="size-5 text-accent mt-0.5 flex-shrink-0" />
                                     <span class="text-primary-content">{text}</span>
                                 </li>
                             {/each}
