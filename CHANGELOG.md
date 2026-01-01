@@ -1,6 +1,173 @@
 # CHANGELOG
 
 
+## v0.5.0 (2026-01-01)
+
+### Bug Fixes
+
+- **GuestList**: :memo: fix layout
+  ([`6efed0a`](https://github.com/iandday/okletsdoit/commit/6efed0adaf37aff66656cedf4ad84132a5e89157))
+
+- **Core**: :lipstick: fix icon
+  ([`645ed34`](https://github.com/iandday/okletsdoit/commit/645ed34d3e17e5f8052146b58b81ad8bb5aac5a5))
+
+- **Core**: :bug: fix icons
+  ([`0e95df4`](https://github.com/iandday/okletsdoit/commit/0e95df4ebb76f3f5772833e88a692b14a7b42c96))
+
+- :bug: update paths
+  ([`13e8528`](https://github.com/iandday/okletsdoit/commit/13e85284b1c6519848afc1105fb00cc7f3c70866))
+
+- :art: linting
+  ([`fbd7bed`](https://github.com/iandday/okletsdoit/commit/fbd7bedd6d949ebe105a1af7fca3570668d959f7))
+
+- **Core**: :ambulance: fix login redirect
+  ([`8ba6ecc`](https://github.com/iandday/okletsdoit/commit/8ba6ecceb635282900d2ad6bda5f2da2ed29cc19))
+
+- **GuestList**: :zap: linting
+  ([`ae366d0`](https://github.com/iandday/okletsdoit/commit/ae366d0b77f518fc3f2da9091b75c18ecb5966a0))
+
+- **Frontend**: Update lockfile
+  ([`935077a`](https://github.com/iandday/okletsdoit/commit/935077af28e96b6790d395c03e5394b6651555dc))
+
+- **GuestList**: :bug: actually use filters
+  ([`7e3d28d`](https://github.com/iandday/okletsdoit/commit/7e3d28d32c03e50700c9bfb85fa80ce34798c19c))
+
+- **Core**: :bug: fix paths
+  ([`dfe9334`](https://github.com/iandday/okletsdoit/commit/dfe933404f7761b51d4654796b468935147f9680))
+
+- **Core**: :art: linting
+  ([`3380e0a`](https://github.com/iandday/okletsdoit/commit/3380e0ad12c8d4b48a4e9591232a89bf23933864))
+
+- Cleanup
+  ([`a560acd`](https://github.com/iandday/okletsdoit/commit/a560acd3eae4c8e8349521a5126ae0e6ae9df337))
+
+- **CI**: :fire: use trivy config
+  ([`d565e22`](https://github.com/iandday/okletsdoit/commit/d565e22dd3611794f403e11a962de435ec32f173))
+
+- :bug: update ignore
+  ([`206e2b5`](https://github.com/iandday/okletsdoit/commit/206e2b52d85b7a448d41c6d1c7686424def09c8b))
+
+- :bug: version update
+  ([`8018da5`](https://github.com/iandday/okletsdoit/commit/8018da5ae2f4a2fdd4f44968d68a40a18d130d3d))
+
+- :bug: d'oh!
+  ([`226d00c`](https://github.com/iandday/okletsdoit/commit/226d00c7d5ae24a01e2ae3429038bfe834386019))
+
+- :bug: vuln fix
+  ([`f34ea91`](https://github.com/iandday/okletsdoit/commit/f34ea91b222d69cb876586543aa2b2cfddcdf451))
+
+### Build System
+
+- :rocket: working directories
+  ([`bc122f8`](https://github.com/iandday/okletsdoit/commit/bc122f83e073c785a3e7f2521be959170be7d530))
+
+- :zap: refactor into monorepo
+  ([`20914c8`](https://github.com/iandday/okletsdoit/commit/20914c80538f178f1736c64aa947fb71a0d10aa2))
+
+### Code Style
+
+- **Core**: :art: linting
+  ([`2efb7b3`](https://github.com/iandday/okletsdoit/commit/2efb7b35bb61680951a0d8fcf3df9b02a8db2b6a))
+
+- **GuestList**: :zap: linting
+  ([`14705fd`](https://github.com/iandday/okletsdoit/commit/14705fdabcc8e916940fe726318a697136c79c2f))
+
+- Linting
+  ([`0e3ad13`](https://github.com/iandday/okletsdoit/commit/0e3ad131311c122b466a1a8a70d54e1578b3e8b1))
+
+### Continuous Integration
+
+- :rocket: update main branch build
+  ([`709595b`](https://github.com/iandday/okletsdoit/commit/709595b9c39dee565080c3bb8078df6376792b5b))
+
+- :rocket: consolidate build actions
+  ([`27fcf3b`](https://github.com/iandday/okletsdoit/commit/27fcf3b6c813dde0c6d71b7f01edb6cfbe8ccefe))
+
+- :zap: required steps
+  ([`d7ecb07`](https://github.com/iandday/okletsdoit/commit/d7ecb073f437e9bfa9459f6f4359554df5bbc18b))
+
+### Documentation
+
+- :memo: update instructions
+  ([`affb591`](https://github.com/iandday/okletsdoit/commit/affb5916d6debc9bc2f2d5c7521aae949522672b))
+
+### Features
+
+- **Core**: :sparkles: migrate FAQ to frontend
+  ([`6ad6707`](https://github.com/iandday/okletsdoit/commit/6ad67076110e38ebf59abf31f2c82d02d5836be1))
+
+- **Core**: :zap: update settings edit
+  ([`3b25fb3`](https://github.com/iandday/okletsdoit/commit/3b25fb31fdeca9ddc28d253922740ab2a63e27da))
+
+- **Core**: :zap: update settings edit
+  ([`3b3f22e`](https://github.com/iandday/okletsdoit/commit/3b3f22ea59c92ec5a5489255578968bc6b2a778b))
+
+- **Core**: :lipstick: refactor configuration display
+  ([`dd4cec7`](https://github.com/iandday/okletsdoit/commit/dd4cec7554d555ad6edbd249ff13d3d44c5c9370))
+
+- **Core**: :sparkles: initial preview
+  ([`2ffc6c1`](https://github.com/iandday/okletsdoit/commit/2ffc6c1bff37d43329920803fb0a04b44b477317))
+
+- **Core**: :lipstick: update edit form
+  ([`6cf9dcd`](https://github.com/iandday/okletsdoit/commit/6cf9dcd38195bbb1b1ac3ac5a99eb8bfbf40b78b))
+
+- **Core**: :sparkles: edit settings in the frontend
+  ([`bbd9e8a`](https://github.com/iandday/okletsdoit/commit/bbd9e8ae3b63dfc36a209b07f8b14b3080f71cad))
+
+- **Core**: :memo: finish FAQ
+  ([`659cd61`](https://github.com/iandday/okletsdoit/commit/659cd617e40b6e5a99da34fe7f40815f072f3a9f))
+
+- **Core**: :memo: weekly planning update email
+  ([`dbf37a5`](https://github.com/iandday/okletsdoit/commit/dbf37a50628353d5e261219d0cc6187db916e3ae))
+
+- **Core**: :art: config style
+  ([`84992e6`](https://github.com/iandday/okletsdoit/commit/84992e66c3c93f0ea5e605aaff58df8324a2af1d))
+
+- **Core**: :sparkles: initial config
+  ([`a05c06b`](https://github.com/iandday/okletsdoit/commit/a05c06b5c656a5fb9e333f69b80f8652ef3442aa))
+
+- **Core**: :sparkles: initial FAQ
+  ([`f2e2bb0`](https://github.com/iandday/okletsdoit/commit/f2e2bb0b6ce6ce9a9bd7ae9b92d9f6d5140472c9))
+
+- **Core**: :sparkles: control photo sharing
+  ([`b1be326`](https://github.com/iandday/okletsdoit/commit/b1be326e785073a657f133fe76d3ba6999269cb0))
+
+- **Core**: :sparkles: dynamic show faq
+  ([`e3a4e43`](https://github.com/iandday/okletsdoit/commit/e3a4e4331aaa001a38c5478a3cf505b78edd1d5b))
+
+- **GuestList**: :sparkles: working rsvp accept
+  ([`b82a019`](https://github.com/iandday/okletsdoit/commit/b82a0190c9db7b4ae8cc90b21f9d6a8c11342d59))
+
+- **GuestList**: :sparkles: rsvp decline working
+  ([`a297ba7`](https://github.com/iandday/okletsdoit/commit/a297ba7e68305179b36c3c7708c2e59cd517d0c5))
+
+- **Core**: :sparkles: add settings endpoint
+  ([`8e5cf56`](https://github.com/iandday/okletsdoit/commit/8e5cf56c1ce6917b0dc0436e86dffd0d00775503))
+
+- **Frontend**: :art: linting
+  ([`3e16107`](https://github.com/iandday/okletsdoit/commit/3e1610713ad5f771105593d1c6e6bbfd500d389e))
+
+- **GuestList**: :sparkles: initial rsvp logic
+  ([`1320f2c`](https://github.com/iandday/okletsdoit/commit/1320f2c1d51cab4ba3aa63ef69f0996cfd799beb))
+
+- **Frontend**: :rocket: use openapi cli to generate client
+  ([`79cf6aa`](https://github.com/iandday/okletsdoit/commit/79cf6aa3eb6b365c1a7f8ea92c474fe976c4d0fd))
+
+- **GuestList**: :sparkles: initial API
+  ([`f5cadc4`](https://github.com/iandday/okletsdoit/commit/f5cadc42885ed3a0b0738e1a69c35c076ab372ff))
+
+- **CI**: :rocket: update lockfile
+  ([`f9c1fc7`](https://github.com/iandday/okletsdoit/commit/f9c1fc70730ffce635a4d9caaa5a9ddccae8ee84))
+
+### Refactoring
+
+- :zap: remove extra logging
+  ([`ade0503`](https://github.com/iandday/okletsdoit/commit/ade050329e9744a457e85c9ecbd43cc8d747a8a5))
+
+- Start of monorepo
+  ([`8fbc915`](https://github.com/iandday/okletsdoit/commit/8fbc915fb305c9965346c6b59e6f07961bb60a9f))
+
+
 ## v0.4.0 (2025-12-07)
 
 ### Bug Fixes
