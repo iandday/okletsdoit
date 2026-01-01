@@ -47,6 +47,7 @@ class WeddingSettingsSchema(Schema):
     rsvp_success_headline: str
     standard_group_label: str
     vip_group_label: str
+    accommodation_group_label: str
 
 
 class WeddingSettingsUpdateSchema(Schema):
@@ -74,6 +75,7 @@ class WeddingSettingsUpdateSchema(Schema):
     rsvp_success_headline: Optional[str] = None
     standard_group_label: Optional[str] = None
     vip_group_label: Optional[str] = None
+    accommodation_group_label: Optional[str] = None
 
 
 # Question Schemas

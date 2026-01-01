@@ -5,7 +5,7 @@ import type { Handle } from "@sveltejs/kit";
 const API_URL = env.BACKEND_API_URL;
 
 // Routes that require authentication
-const protectedRoutes: string[] = ["/config", "/config/edit"];
+const protectedRoutes: string[] = ["/settings"];
 
 export const handle: Handle = async ({ event, resolve }) => {
     const { url, cookies } = event;
@@ -18,9 +18,7 @@ export const handle: Handle = async ({ event, resolve }) => {
         event.locals.sessionCookie = sessionCookie;
     }
 
-    // Check if this route requires authentication
     const requiresAuth = protectedRoutes.some((route) => url.pathname.startsWith(route));
-
     if (requiresAuth) {
         if (!sessionCookie) {
             throw redirect(303, `/auth/login?redirect=${encodeURIComponent(url.pathname)}`);

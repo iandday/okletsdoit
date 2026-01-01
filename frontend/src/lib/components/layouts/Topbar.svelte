@@ -33,6 +33,37 @@
         },
     ];
 
+    const protectedMenu: IMenuItem[] = [
+        {
+            title: "Settings",
+            href: "/settings/config",
+            icon: "icon-[lucide--settings]",
+        },
+    ];
+    const previewMenu: IMenuItem[] = [
+        {
+            title: "FAQ",
+            href: "/settings/preview/faq",
+        },
+
+        {
+            title: "RSVP Landing",
+            href: "/settings/preview/rsvp/landing",
+        },
+        {
+            title: "RSVP Accept 1",
+            href: "/settings/preview/rsvp/accept",
+        },
+        {
+            title: "RSVP Accept 2",
+            href: "/settings/preview/rsvp/complete?accepted=true",
+        },
+        {
+            title: "RSVP Declined",
+            href: "/settings/preview/rsvp/complete?accepted=false",
+        },
+    ];
+
     const legacyLinks: IMenuItem[] = [
         {
             title: "Dashboard",
@@ -139,12 +170,39 @@
                             {/each}
                             <div class="border-t border-base-200 my-2"></div>
                             <li>
-                                <a class="text-primary-content flex items-center gap-2 px-3 py-1.5" href="/config">
-                                    <span class="icon-[lucide--user] size-4" />
-                                    <span>Config</span>
-                                </a>
+                                <details>
+                                    <summary class="text-primary-content flex items-center gap-2 px-3 py-1.5">
+                                        <span class="icon-[lucide--eye] size-4" />
+                                        <span>Preview</span>
+                                    </summary>
+                                    <ul>
+                                        {#each previewMenu as item, index (index)}
+                                            <li>
+                                                <a
+                                                    class="text-primary-content flex items-center gap-2 px-3 py-1.5"
+                                                    target="_blank"
+                                                    href={item.href}>
+                                                    <span>{item.title}</span>
+                                                </a>
+                                            </li>
+                                        {/each}
+                                    </ul>
+                                </details>
                             </li>
+                            {#each protectedMenu as item, index (index)}
+                                <li>
+                                    <a
+                                        class="text-primary-content flex items-center gap-2 px-3 py-1.5"
+                                        href={item.href}>
+                                        {#if item.icon}
+                                            <span class="{item.icon} size-4" />
+                                        {/if}
+                                        <span>{item.title}</span>
+                                    </a>
+                                </li>
+                            {/each}
                             <div class="border-t border-base-200 my-2"></div>
+
                             <li>
                                 <a
                                     class="text-primary-content flex items-center gap-2 px-3 py-1.5"

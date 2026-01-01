@@ -317,6 +317,7 @@ class WeddingSettings(models.Model):
     rsvp_end_date = models.DateField(null=True, blank=True)
     standard_group_label = models.CharField(max_length=100, default="Day")
     vip_group_label = models.CharField(max_length=100, default="Overnight")
+    accommodation_group_label = models.CharField(max_length=100, default="Accommodation")
     history = HistoricalRecords()
 
     def __str__(self):

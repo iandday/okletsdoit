@@ -2,7 +2,6 @@ import { api } from "$lib/server/api-client";
 import type { PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async () => {
-
     // Fetch real RSVP questions
     const rsvpQuestions = await api.guestlist.guestlistApiGetRsvpAcceptenceQuestionsPreview();
 

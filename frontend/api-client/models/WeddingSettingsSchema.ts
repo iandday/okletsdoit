@@ -163,6 +163,12 @@ export interface WeddingSettingsSchema {
      * @memberof WeddingSettingsSchema
      */
     vipGroupLabel: string;
+    /**
+     *
+     * @type {string}
+     * @memberof WeddingSettingsSchema
+     */
+    accommodationGroupLabel: string;
 }
 
 /**
@@ -190,6 +196,7 @@ export function instanceOfWeddingSettingsSchema(value: object): value is Wedding
     if (!("rsvpSuccessHeadline" in value) || value["rsvpSuccessHeadline"] === undefined) return false;
     if (!("standardGroupLabel" in value) || value["standardGroupLabel"] === undefined) return false;
     if (!("vipGroupLabel" in value) || value["vipGroupLabel"] === undefined) return false;
+    if (!("accommodationGroupLabel" in value) || value["accommodationGroupLabel"] === undefined) return false;
     return true;
 }
 
@@ -226,6 +233,7 @@ export function WeddingSettingsSchemaFromJSONTyped(json: any, ignoreDiscriminato
         rsvpSuccessHeadline: json["rsvp_success_headline"],
         standardGroupLabel: json["standard_group_label"],
         vipGroupLabel: json["vip_group_label"],
+        accommodationGroupLabel: json["accommodation_group_label"],
     };
 }
 
@@ -271,5 +279,6 @@ export function WeddingSettingsSchemaToJSONTyped(
         rsvp_success_headline: value["rsvpSuccessHeadline"],
         standard_group_label: value["standardGroupLabel"],
         vip_group_label: value["vipGroupLabel"],
+        accommodation_group_label: value["accommodationGroupLabel"],
     };
 }
