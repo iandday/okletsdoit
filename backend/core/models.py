@@ -295,23 +295,27 @@ class WeddingSettings(models.Model):
     rsvp_accept_button = models.TextField(default="Lets' Do This", null=True)
     rsvp_decline_button = models.TextField(default="No Thanks", null=True)
     rsvp_attending_label = models.CharField(max_length=100, default="I'll be there!")
-    rsvp_accommodation_label = models.CharField(max_length=100, default="I'll spend the weekend at the lodge")
-    rsvp_vip_label = models.CharField(max_length=100, default="I'll join the VIP experience")
+    rsvp_accommodation_label = models.CharField(
+        max_length=100, default="I'll spend the weekend at the lodge", blank=True, null=True
+    )
+    rsvp_vip_label = models.CharField(max_length=100, default="I'll join the VIP experience", blank=True, null=True)
     rsvp_accept_intro = models.TextField(default="We're so excited that you can make it!")
     rsvp_accept_success_message = models.TextField(default="We look forward to celebrating with you.")
     rsvp_decline_success_message = models.TextField(default="We'll miss you at the celebration.")
     rsvp_accommodation_intro = models.TextField(
-        default="Please let us know if you will need accommodation during the wedding weekend."
+        default="Please let us know if you will need accommodation during the wedding weekend.", blank=True, null=True
     )
     rsvp_vip_intro = models.TextField(
-        default="Please let us know if you will be joining us for the VIP overnight experience."
+        default="Please let us know if you will be joining us for the VIP overnight experience.", blank=True, null=True
     )
     rsvp_show_accommodation_intro = models.BooleanField(default=False)
     rsvp_show_vip_intro = models.BooleanField(default=False)
     rsvp_enable_email_updates = models.BooleanField(
         default=False, help_text="Allow guests to opt-in for email updates about the wedding"
     )
-    rsvp_email_update_label = models.CharField(max_length=150, default="Yes, keep me updated via email")
+    rsvp_email_update_label = models.CharField(
+        max_length=150, default="Yes, keep me updated via email", blank=True, null=True
+    )
     rsvp_success_headline = models.TextField(default="Thank you for your RSVP!")
     rsvp_start_date = models.DateField(null=True, blank=True)
     rsvp_end_date = models.DateField(null=True, blank=True)
