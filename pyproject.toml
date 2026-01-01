@@ -1,6 +1,6 @@
 [project]
 name = "okletsdoit"
-version = "0.4.0"
+version = "0.5.0"
 description = "Wedding communication platform"
 authors = [
     {name = "Ian Day", email = "ian@ianday.me"}
