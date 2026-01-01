@@ -20,7 +20,7 @@
                     <div class="alert alert-warning mb-6 flex flex-row items-center gap-4">
                         <span class="icon-[lucide--eye] size-5"></span>
                         <div class="flex flex-col items-center gap-2">
-                            <p>Preview Mode - This is how your RSVP landing page will appear to guests.</p>
+                            <p>Preview Mode This is how your RSVP landing page will appear to guests.</p>
                             <p>Buttons are disabled, guests will be able to click these to respond.</p>
                         </div>
                     </div>
@@ -35,7 +35,8 @@
                 </p>
                 <div class="flex flex-row gap-4 mt-6">
                     {#if preview}
-                        <div class="btn btn-success btn-lg gap-2 w-full sm:w-48 cursor-not-allowed">
+                        <div
+                            class="btn bg-base-100 text-primary-content btn-lg gap-2 w-full sm:w-48 cursor-not-allowed">
                             <span class="icon-[lucide--heart] size-5"></span>
                             {configData?.rsvpAcceptButton || "Accept Invitation"}
                         </div>
@@ -46,7 +47,7 @@
                         </div>
                     {:else}
                         <a
-                            class="btn btn-success btn-lg gap-2 w-full sm:w-48"
+                            class="btn bg-base-100 text-primary-content btn-lg gap-2 w-full sm:w-48"
                             href={acceptHref}
                             aria-label="Accept RSVP">
                             <span class="icon-[lucide--heart] size-5"></span>
