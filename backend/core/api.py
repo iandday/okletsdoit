@@ -33,17 +33,17 @@ class WeddingSettingsSchema(Schema):
     rsvp_accept_button: str
     rsvp_decline_button: str
     rsvp_attending_label: str
-    rsvp_accommodation_label: str
-    rsvp_vip_label: str
+    rsvp_accommodation_label: Optional[str] = None
+    rsvp_vip_label: Optional[str] = None
     rsvp_accept_intro: str
     rsvp_accept_success_message: str
     rsvp_decline_success_message: str
-    rsvp_accommodation_intro: str
+    rsvp_accommodation_intro: Optional[str] = None
     rsvp_vip_intro: str
     rsvp_show_accommodation_intro: bool
     rsvp_show_vip_intro: bool
     rsvp_enable_email_updates: bool
-    rsvp_email_update_label: str
+    rsvp_email_update_label: Optional[str] = None
     rsvp_success_headline: str
     standard_group_label: str
     vip_group_label: str
