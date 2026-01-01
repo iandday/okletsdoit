@@ -121,8 +121,6 @@ def site_vars(request):
             {"view_name": "expenses:summary", "icon": "fa-dollar-sign", "text": "Budget"},
             {"view_name": "guestlist:guestlist_summary", "icon": "fa-users", "text": "Guest List"},
             {"view_name": "core:timeline_summary", "icon": "fa-users", "text": "Timeline"},
-            {"view_name": "core:question_summary", "icon": "fa-users", "text": "FAQ"},
-            {"view_name": "core:wedding_settings", "icon": "fa-users", "text": "Settings"},
         ],
         "sidebar_app_links": [
             {"view_name": "settings", "icon": "fa-gear", "text": "Settings"},

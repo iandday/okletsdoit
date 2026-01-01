@@ -4,7 +4,6 @@ import json
 import logging
 from decimal import Decimal
 
-from django.forms import inlineformset_factory, modelformset_factory
 import polars as pl
 from attachments.forms import AttachmentUploadForm
 from attachments.models import Attachment
@@ -23,7 +22,6 @@ from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_http_methods
 from django.views.decorators.http import require_POST
 from expenses.models import Category
 from expenses.models import Expense
@@ -32,15 +30,12 @@ from guestlist.models import GuestGroup
 from list.models import List
 from list.models import ListEntry
 
-from .forms import RsvpQuestionChoiceChildFormSet, IdeaForm, RsvpQuestionChoiceForm, RsvpQuestionForm
+from .forms import IdeaForm
 from .forms import IdeaImportForm
 from .forms import InspirationForm
-from .forms import QuestionForm
 from .forms import TimelineForm
 from .forms import TimelineImportForm
-from .forms import WeddingSettingsForm
-from .models import Idea, RsvpQuestion, RsvpQuestionChoice
-from .models import Inspiration
+from .models import Idea, Inspiration
 from .models import Question
 
 from .models import Timeline
@@ -1015,175 +1010,175 @@ def inspiration_delete(request: HttpRequest, inspiration_slug: str) -> HttpRespo
         return redirect("core:inspiration_detail", inspiration_slug=inspiration.slug)
 
 
-@login_required
-def question_create(request: HttpRequest) -> HttpResponse:
-    if request.method == "POST":
-        form = QuestionForm(request.POST)
-        if form.is_valid():
-            question: Question = form.save(commit=False)
-            question.created_by = request.user
-            question.updated_by = request.user
-            question.save()
-            messages.success(request, "Question created successfully.")
-            return redirect("core:question_detail", question_slug=question.slug)
-        else:
-            for field, errors in form.errors.items():
-                for error in errors:
-                    messages.error(request, f"{field}: {error}")
-    else:
-        form = QuestionForm()
-    intro = "Create a new question for the FAQ Page"
-    breadcrumbs = [
-        {"title": "Questions", "url": reverse("core:question_summary")},
-        {"title": "New Question", "url": None},
-    ]
-    cancel_url = reverse("core:question_summary")
-    context = {
-        "block_title": "New Question",
-        "breadcrumbs": breadcrumbs,
-        "title": "Create FAQ Entry",
-        "intro": intro,
-        "form": form,
-        "submit_text": "Create",
-        "cancel_url": cancel_url,
-        "first_field": "question",
-        "hugerte_enabled": True,
-        "selector": "id_answer",
-    }
-    return render(request, "form/object.html", context)
+# @login_required
+# def question_create(request: HttpRequest) -> HttpResponse:
+#     if request.method == "POST":
+#         form = QuestionForm(request.POST)
+#         if form.is_valid():
+#             question: Question = form.save(commit=False)
+#             question.created_by = request.user
+#             question.updated_by = request.user
+#             question.save()
+#             messages.success(request, "Question created successfully.")
+#             return redirect("core:question_detail", question_slug=question.slug)
+#         else:
+#             for field, errors in form.errors.items():
+#                 for error in errors:
+#                     messages.error(request, f"{field}: {error}")
+#     else:
+#         form = QuestionForm()
+#     intro = "Create a new question for the FAQ Page"
+#     breadcrumbs = [
+#         {"title": "Questions", "url": reverse("core:question_summary")},
+#         {"title": "New Question", "url": None},
+#     ]
+#     cancel_url = reverse("core:question_summary")
+#     context = {
+#         "block_title": "New Question",
+#         "breadcrumbs": breadcrumbs,
+#         "title": "Create FAQ Entry",
+#         "intro": intro,
+#         "form": form,
+#         "submit_text": "Create",
+#         "cancel_url": cancel_url,
+#         "first_field": "question",
+#         "hugerte_enabled": True,
+#         "selector": "id_answer",
+#     }
+#     return render(request, "form/object.html", context)
 
 
-@login_required
-def question_edit(request: HttpRequest, question_slug: str) -> HttpResponse:
-    question = get_object_or_404(Question, slug=question_slug, is_deleted=False)
-    try:
-        question = Question.objects.get(slug=question_slug, is_deleted=False)
+# @login_required
+# def question_edit(request: HttpRequest, question_slug: str) -> HttpResponse:
+#     question = get_object_or_404(Question, slug=question_slug, is_deleted=False)
+#     try:
+#         question = Question.objects.get(slug=question_slug, is_deleted=False)
 
-    except Question.DoesNotExist:
-        messages.error(request, "Question not found.")
-        return redirect("core:question_summary")
+#     except Question.DoesNotExist:
+#         messages.error(request, "Question not found.")
+#         return redirect("core:question_summary")
 
-    if request.method == "POST":
-        form = QuestionForm(request.POST, instance=question)
-        if form.is_valid():
-            question = form.save(commit=False)
-            question.updated_by = request.user
-            question.save()
-            messages.success(request, "Question updated successfully.")
-            return redirect("core:question_detail", question_slug=question.slug)
-        else:
-            for field, errors in form.errors.items():
-                for error in errors:
-                    messages.error(request, f"{field}: {error}")
-    else:
-        form = QuestionForm(instance=question)
+#     if request.method == "POST":
+#         form = QuestionForm(request.POST, instance=question)
+#         if form.is_valid():
+#             question = form.save(commit=False)
+#             question.updated_by = request.user
+#             question.save()
+#             messages.success(request, "Question updated successfully.")
+#             return redirect("core:question_detail", question_slug=question.slug)
+#         else:
+#             for field, errors in form.errors.items():
+#                 for error in errors:
+#                     messages.error(request, f"{field}: {error}")
+#     else:
+#         form = QuestionForm(instance=question)
 
-    intro = "Edit an existing question"
-    breadcrumbs = [
-        {"title": "Questions", "url": reverse("core:question_summary")},
-        {"title": question, "url": reverse("core:question_detail", args=[question.slug])},
-    ]
-    cancel_url = reverse("core:question_detail", args=[question.slug])
-    context = {
-        "block_title": "Edit Question",
-        "breadcrumbs": breadcrumbs,
-        "title": "Edit Question",
-        "intro": intro,
-        "form": form,
-        "object": question,
-        "submit_text": "Update",
-        "cancel_url": cancel_url,
-        "first_field": "question",
-        "file": False,
-        "hugerte_enabled": True,
-        "selector": "id_answer",
-    }
-    return render(request, "form/object.html", context)
-
-
-@login_required
-def question_delete_modal(request: HttpRequest) -> HttpResponse | JsonResponse:
-    question_slug = request.GET.get("slug")
-    if not question_slug:
-        return JsonResponse({"error": "Question slug is required"}, status=400)
-    try:
-        question = Question.objects.get(slug=question_slug, is_deleted=False)
-    except Question.DoesNotExist:
-        return JsonResponse({"error": "Question not found"}, status=404)
-
-    context = {
-        "object": question,
-        "object_type": "Question",
-        "action_url": reverse("core:question_delete", args=[question.slug]),
-    }
-    return render(request, "components/modal/object_delete_modal_body.html", context)
+#     intro = "Edit an existing question"
+#     breadcrumbs = [
+#         {"title": "Questions", "url": reverse("core:question_summary")},
+#         {"title": question, "url": reverse("core:question_detail", args=[question.slug])},
+#     ]
+#     cancel_url = reverse("core:question_detail", args=[question.slug])
+#     context = {
+#         "block_title": "Edit Question",
+#         "breadcrumbs": breadcrumbs,
+#         "title": "Edit Question",
+#         "intro": intro,
+#         "form": form,
+#         "object": question,
+#         "submit_text": "Update",
+#         "cancel_url": cancel_url,
+#         "first_field": "question",
+#         "file": False,
+#         "hugerte_enabled": True,
+#         "selector": "id_answer",
+#     }
+#     return render(request, "form/object.html", context)
 
 
-@login_required
-def question_delete(request: HttpRequest, question_slug: str) -> HttpResponse:
-    question = get_object_or_404(Question, slug=question_slug, is_deleted=False)
-    try:
-        question = Question.objects.get(slug=question_slug, is_deleted=False)
+# @login_required
+# def question_delete_modal(request: HttpRequest) -> HttpResponse | JsonResponse:
+#     question_slug = request.GET.get("slug")
+#     if not question_slug:
+#         return JsonResponse({"error": "Question slug is required"}, status=400)
+#     try:
+#         question = Question.objects.get(slug=question_slug, is_deleted=False)
+#     except Question.DoesNotExist:
+#         return JsonResponse({"error": "Question not found"}, status=404)
 
-    except Question.DoesNotExist:
-        messages.error(request, "Question not found.")
-        return redirect("core:question_summary")
-
-    if request.method == "POST":
-        question.is_deleted = True
-        question.updated_by = request.user
-        question.save()
-        messages.success(request, f"Question '{question}' deleted successfully.")
-        return redirect("core:question_summary")
-    else:
-        messages.error(request, "Invalid request method. Please use POST to delete a question.")
-        return redirect("core:question_detail", question_slug=question.slug)
+#     context = {
+#         "object": question,
+#         "object_type": "Question",
+#         "action_url": reverse("core:question_delete", args=[question.slug]),
+#     }
+#     return render(request, "components/modal/object_delete_modal_body.html", context)
 
 
-@login_required
-def question_detail(request: HttpRequest, question_slug: str) -> HttpResponse:
-    try:
-        question = Question.objects.get(slug=question_slug, is_deleted=False)
+# @login_required
+# def question_delete(request: HttpRequest, question_slug: str) -> HttpResponse:
+#     question = get_object_or_404(Question, slug=question_slug, is_deleted=False)
+#     try:
+#         question = Question.objects.get(slug=question_slug, is_deleted=False)
 
-    except Question.DoesNotExist:
-        messages.error(request, "Question not found.")
-        return redirect("core:question_summary")
+#     except Question.DoesNotExist:
+#         messages.error(request, "Question not found.")
+#         return redirect("core:question_summary")
 
-    breadcrumbs = [
-        {"title": "FAQ", "url": reverse("core:question_summary")},
-        {"title": f"{question}", "url": None},
-    ]
-    attach_url_query = QueryDict("", mutable=True)
-    attach_url_query["next"] = request.path
-    context = {
-        "block_title": f"{question}",
-        "breadcrumbs": breadcrumbs,
-        "title": f"{question}",
-        "object": question,
-        "edit_url": reverse("core:question_edit", args=[question.slug]),
-        "status": None,
-        "status_text": None,
-        "link_url": None,
-        "image_url": None,
-        "delete_modal_url": reverse("core:question_delete_modal"),
-        "attachments": Attachment.objects.attachments_for_object(question).all(),
-        "attach_form": AttachmentUploadForm(),
-        "attach_submit_url": str(
-            reverse(
-                "attachments:add_attachment",
-                kwargs={"app_label": "core", "model_name": "Question", "pk": question.pk},
-                query=attach_url_query,
-            )
-        ),
-    }
-    return render(request, "core/question_detail.html", context)
+#     if request.method == "POST":
+#         question.is_deleted = True
+#         question.updated_by = request.user
+#         question.save()
+#         messages.success(request, f"Question '{question}' deleted successfully.")
+#         return redirect("core:question_summary")
+#     else:
+#         messages.error(request, "Invalid request method. Please use POST to delete a question.")
+#         return redirect("core:question_detail", question_slug=question.slug)
 
 
-@login_required
-def question_summary(request: HttpRequest) -> HttpResponse:
-    questions = Question.objects.filter(is_deleted=False).order_by("created_at")
-    context = {"questions": questions, "form": QuestionForm()}
-    return render(request, "core/question_summary.html", context)
+# @login_required
+# def question_detail(request: HttpRequest, question_slug: str) -> HttpResponse:
+#     try:
+#         question = Question.objects.get(slug=question_slug, is_deleted=False)
+
+#     except Question.DoesNotExist:
+#         messages.error(request, "Question not found.")
+#         return redirect("core:question_summary")
+
+#     breadcrumbs = [
+#         {"title": "FAQ", "url": reverse("core:question_summary")},
+#         {"title": f"{question}", "url": None},
+#     ]
+#     attach_url_query = QueryDict("", mutable=True)
+#     attach_url_query["next"] = request.path
+#     context = {
+#         "block_title": f"{question}",
+#         "breadcrumbs": breadcrumbs,
+#         "title": f"{question}",
+#         "object": question,
+#         "edit_url": reverse("core:question_edit", args=[question.slug]),
+#         "status": None,
+#         "status_text": None,
+#         "link_url": None,
+#         "image_url": None,
+#         "delete_modal_url": reverse("core:question_delete_modal"),
+#         "attachments": Attachment.objects.attachments_for_object(question).all(),
+#         "attach_form": AttachmentUploadForm(),
+#         "attach_submit_url": str(
+#             reverse(
+#                 "attachments:add_attachment",
+#                 kwargs={"app_label": "core", "model_name": "Question", "pk": question.pk},
+#                 query=attach_url_query,
+#             )
+#         ),
+#     }
+#     return render(request, "core/question_detail.html", context)
+
+
+# @login_required
+# def question_summary(request: HttpRequest) -> HttpResponse:
+#     questions = Question.objects.filter(is_deleted=False).order_by("created_at")
+#     context = {"questions": questions, "form": QuestionForm()}
+#     return render(request, "core/question_summary.html", context)
 
 
 @login_required

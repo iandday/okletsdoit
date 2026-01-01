@@ -54,7 +54,7 @@
                             <h2 class="config-card-title text-xl mb-4">General</h2>
 
                             <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-4">
-                                {#each sections.general.fields as field}
+                                {#each sections.general.fields as field, index (index)}
                                     <div class="flex flex-col">
                                         <div class="config-card-field-name">{field.label}</div>
                                         <div class="config-card-field-value">
@@ -184,12 +184,14 @@
                                 <div class="flex flex-col">
                                     <div class="config-card-field-name">Accept Introduction Text</div>
                                     <div class="config-card-field-value">
+                                        <!-- eslint-disable-next-line svelte/no-at-html-tags set by site admin -->
                                         {@html data.configData["rsvpAcceptIntro"]}
                                     </div>
                                 </div>
                                 <div class="flex flex-col">
                                     <div class="config-card-field-name">Attending Checkbox Label</div>
                                     <div class="config-card-field-value">
+                                        <!-- eslint-disable-next-line svelte/no-at-html-tags set by site admin -->
                                         {@html data.configData["rsvpAttendingLabel"]}
                                     </div>
                                 </div>
@@ -199,6 +201,7 @@
                                             {data.configData["accommodationGroupLabel"]} Introduction Text
                                         </div>
                                         <div class="config-card-field-value">
+                                            <!-- eslint-disable-next-line svelte/no-at-html-tags set by site admin -->
                                             {@html data.configData["rsvpAccommodationIntro"]}
                                         </div>
                                     </div>
@@ -217,6 +220,7 @@
                                             {data.configData["vipGroupLabel"]} Introduction Text
                                         </div>
                                         <div class="config-card-field-value">
+                                            <!-- eslint-disable-next-line svelte/no-at-html-tags set by site admin -->
                                             {@html data.configData["rsvpVipIntro"]}
                                         </div>
                                     </div>

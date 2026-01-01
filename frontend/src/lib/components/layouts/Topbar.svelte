@@ -34,6 +34,7 @@
     ];
 
     const protectedMenu: IMenuItem[] = [
+        { title: "FAQ", href: "/settings/faq", icon: "icon-[lucide--help-circle]" },
         {
             title: "Settings",
             href: "/settings/config",
@@ -101,10 +102,10 @@
             title: "Timeline",
             href: "/timeline/",
         },
-        {
-            title: "FAQ",
-            href: "/question/",
-        },
+        // {
+        //     title: "FAQ",
+        //     href: "/question/",
+        // },
         // {
         //     title: "Settings",
         //     href: "/settings/",

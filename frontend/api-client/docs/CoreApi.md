@@ -5,23 +5,28 @@ All URIs are relative to _http://localhost_
 | Method                                                                            | HTTP request                                           | Description                 |
 | --------------------------------------------------------------------------------- | ------------------------------------------------------ | --------------------------- |
 | [**coreApiCreateQuestion**](CoreApi.md#coreapicreatequestion)                     | **POST** /api/core/questions                           | Create Question             |
+| [**coreApiCreateQuestionUrl**](CoreApi.md#coreapicreatequestionurl)               | **POST** /api/core/question-urls                       | Create Question Url         |
 | [**coreApiCreateRsvpQuestion**](CoreApi.md#coreapicreatersvpquestion)             | **POST** /api/core/rsvp-questions                      | Create Rsvp Question        |
 | [**coreApiCreateRsvpQuestionChoice**](CoreApi.md#coreapicreatersvpquestionchoice) | **POST** /api/core/rsvp-question-choices               | Create Rsvp Question Choice |
 | [**coreApiCreateTip**](CoreApi.md#coreapicreatetip)                               | **POST** /api/core/tips                                | Create Tip                  |
 | [**coreApiDeleteQuestion**](CoreApi.md#coreapideletequestion)                     | **DELETE** /api/core/questions/{question_id}           | Delete Question             |
+| [**coreApiDeleteQuestionUrl**](CoreApi.md#coreapideletequestionurl)               | **DELETE** /api/core/question-urls/{url_id}            | Delete Question Url         |
 | [**coreApiDeleteRsvpQuestion**](CoreApi.md#coreapideletersvpquestion)             | **DELETE** /api/core/rsvp-questions/{question_id}      | Delete Rsvp Question        |
 | [**coreApiDeleteRsvpQuestionChoice**](CoreApi.md#coreapideletersvpquestionchoice) | **DELETE** /api/core/rsvp-question-choices/{choice_id} | Delete Rsvp Question Choice |
 | [**coreApiDeleteTip**](CoreApi.md#coreapideletetip)                               | **DELETE** /api/core/tips/{tip_id}                     | Delete Tip                  |
 | [**coreApiGetCategoriesContent**](CoreApi.md#coreapigetcategoriescontent)         | **GET** /api/core/rsvp-categories-content              | Get Categories Content      |
 | [**coreApiGetQuestion**](CoreApi.md#coreapigetquestion)                           | **GET** /api/core/questions/{question_id}              | Get Question                |
+| [**coreApiGetQuestionUrl**](CoreApi.md#coreapigetquestionurl)                     | **GET** /api/core/question-urls/{url_id}               | Get Question Url            |
 | [**coreApiGetRsvpQuestion**](CoreApi.md#coreapigetrsvpquestion)                   | **GET** /api/core/rsvp-questions/{question_id}         | Get Rsvp Question           |
 | [**coreApiGetRsvpQuestionChoice**](CoreApi.md#coreapigetrsvpquestionchoice)       | **GET** /api/core/rsvp-question-choices/{choice_id}    | Get Rsvp Question Choice    |
 | [**coreApiGetTip**](CoreApi.md#coreapigettip)                                     | **GET** /api/core/tips/{tip_id}                        | Get Tip                     |
 | [**coreApiGetWeddingSettings**](CoreApi.md#coreapigetweddingsettings)             | **GET** /api/core/wedding-settings                     | Get Wedding Settings        |
+| [**coreApiListQuestionUrls**](CoreApi.md#coreapilistquestionurls)                 | **GET** /api/core/question-urls                        | List Question Urls          |
 | [**coreApiListQuestions**](CoreApi.md#coreapilistquestions)                       | **GET** /api/core/questions                            | List Questions              |
 | [**coreApiListRsvpQuestions**](CoreApi.md#coreapilistrsvpquestions)               | **GET** /api/core/rsvp-questions                       | List Rsvp Questions         |
 | [**coreApiListTips**](CoreApi.md#coreapilisttips)                                 | **GET** /api/core/tips                                 | List Tips                   |
 | [**coreApiUpdateQuestion**](CoreApi.md#coreapiupdatequestion)                     | **PUT** /api/core/questions/{question_id}              | Update Question             |
+| [**coreApiUpdateQuestionUrl**](CoreApi.md#coreapiupdatequestionurl)               | **PUT** /api/core/question-urls/{url_id}               | Update Question Url         |
 | [**coreApiUpdateRsvpQuestion**](CoreApi.md#coreapiupdatersvpquestion)             | **PUT** /api/core/rsvp-questions/{question_id}         | Update Rsvp Question        |
 | [**coreApiUpdateRsvpQuestionChoice**](CoreApi.md#coreapiupdatersvpquestionchoice) | **PUT** /api/core/rsvp-question-choices/{choice_id}    | Update Rsvp Question Choice |
 | [**coreApiUpdateTip**](CoreApi.md#coreapiupdatetip)                               | **PUT** /api/core/tips/{tip_id}                        | Update Tip                  |
@@ -74,6 +79,71 @@ example().catch(console.error);
 ### Return type
 
 [**QuestionSchema**](QuestionSchema.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: `application/json`
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## coreApiCreateQuestionUrl
+
+> QuestionURLSchema coreApiCreateQuestionUrl(questionURLCreateSchema)
+
+Create Question Url
+
+Create a new question URL
+
+### Example
+
+```ts
+import {
+  Configuration,
+  CoreApi,
+} from '';
+import type { CoreApiCreateQuestionUrlRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const api = new CoreApi();
+
+  const body = {
+    // QuestionURLCreateSchema
+    questionURLCreateSchema: ...,
+  } satisfies CoreApiCreateQuestionUrlRequest;
+
+  try {
+    const data = await api.coreApiCreateQuestionUrl(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name                        | Type                                                  | Description | Notes |
+| --------------------------- | ----------------------------------------------------- | ----------- | ----- |
+| **questionURLCreateSchema** | [QuestionURLCreateSchema](QuestionURLCreateSchema.md) |             |       |
+
+### Return type
+
+[**QuestionURLSchema**](QuestionURLSchema.md)
 
 ### Authorization
 
@@ -330,6 +400,71 @@ example().catch(console.error);
 | Name           | Type     | Description | Notes                     |
 | -------------- | -------- | ----------- | ------------------------- |
 | **questionId** | `string` |             | [Defaults to `undefined`] |
+
+### Return type
+
+`void` (Empty response body)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: Not defined
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## coreApiDeleteQuestionUrl
+
+> coreApiDeleteQuestionUrl(urlId)
+
+Delete Question Url
+
+Soft delete a question URL
+
+### Example
+
+```ts
+import {
+  Configuration,
+  CoreApi,
+} from '';
+import type { CoreApiDeleteQuestionUrlRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const api = new CoreApi();
+
+  const body = {
+    // string
+    urlId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+  } satisfies CoreApiDeleteQuestionUrlRequest;
+
+  try {
+    const data = await api.coreApiDeleteQuestionUrl(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name      | Type     | Description | Notes                     |
+| --------- | -------- | ----------- | ------------------------- |
+| **urlId** | `string` |             | [Defaults to `undefined`] |
 
 ### Return type
 
@@ -674,6 +809,71 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
+## coreApiGetQuestionUrl
+
+> QuestionURLSchema coreApiGetQuestionUrl(urlId)
+
+Get Question Url
+
+Get a specific question URL by ID
+
+### Example
+
+```ts
+import {
+  Configuration,
+  CoreApi,
+} from '';
+import type { CoreApiGetQuestionUrlRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const api = new CoreApi();
+
+  const body = {
+    // string
+    urlId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+  } satisfies CoreApiGetQuestionUrlRequest;
+
+  try {
+    const data = await api.coreApiGetQuestionUrl(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name      | Type     | Description | Notes                     |
+| --------- | -------- | ----------- | ------------------------- |
+| **urlId** | `string` |             | [Defaults to `undefined`] |
+
+### Return type
+
+[**QuestionURLSchema**](QuestionURLSchema.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
 ## coreApiGetRsvpQuestion
 
 > RsvpQuestionSchema coreApiGetRsvpQuestion(questionId)
@@ -906,6 +1106,71 @@ This endpoint does not need any parameter.
 ### Return type
 
 [**WeddingSettingsSchema**](WeddingSettingsSchema.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## coreApiListQuestionUrls
+
+> Array&lt;QuestionURLSchema&gt; coreApiListQuestionUrls(questionId)
+
+List Question Urls
+
+List all question URLs (non-deleted), optionally filtered by question_id
+
+### Example
+
+```ts
+import {
+  Configuration,
+  CoreApi,
+} from '';
+import type { CoreApiListQuestionUrlsRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const api = new CoreApi();
+
+  const body = {
+    // string (optional)
+    questionId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+  } satisfies CoreApiListQuestionUrlsRequest;
+
+  try {
+    const data = await api.coreApiListQuestionUrls(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name           | Type     | Description | Notes                                |
+| -------------- | -------- | ----------- | ------------------------------------ |
+| **questionId** | `string` |             | [Optional] [Defaults to `undefined`] |
+
+### Return type
+
+[**Array&lt;QuestionURLSchema&gt;**](QuestionURLSchema.md)
 
 ### Authorization
 
@@ -1187,6 +1452,74 @@ example().catch(console.error);
 ### Return type
 
 [**QuestionSchema**](QuestionSchema.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: `application/json`
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## coreApiUpdateQuestionUrl
+
+> QuestionURLSchema coreApiUpdateQuestionUrl(urlId, questionURLUpdateSchema)
+
+Update Question Url
+
+Update a question URL
+
+### Example
+
+```ts
+import {
+  Configuration,
+  CoreApi,
+} from '';
+import type { CoreApiUpdateQuestionUrlRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const api = new CoreApi();
+
+  const body = {
+    // string
+    urlId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+    // QuestionURLUpdateSchema
+    questionURLUpdateSchema: ...,
+  } satisfies CoreApiUpdateQuestionUrlRequest;
+
+  try {
+    const data = await api.coreApiUpdateQuestionUrl(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name                        | Type                                                  | Description | Notes                     |
+| --------------------------- | ----------------------------------------------------- | ----------- | ------------------------- |
+| **urlId**                   | `string`                                              |             | [Defaults to `undefined`] |
+| **questionURLUpdateSchema** | [QuestionURLUpdateSchema](QuestionURLUpdateSchema.md) |             |                           |
+
+### Return type
+
+[**QuestionURLSchema**](QuestionURLSchema.md)
 
 ### Authorization
 

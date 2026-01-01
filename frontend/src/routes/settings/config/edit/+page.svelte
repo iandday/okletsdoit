@@ -86,7 +86,7 @@
                     <div class="config-card-body">
                         <h2 class="config-card-title text-xl mb-4">General</h2>
                         <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-4">
-                            {#each generalFields as field}
+                            {#each generalFields as field, index (index)}
                                 <div class="form-control w-full">
                                     <label class="edit-card-field-name" for={field.name}>
                                         <span>{formatLabel(field.name)}</span>

@@ -1,20 +1,28 @@
-from ninja import Router, Schema, Query, FilterSchema
-from datetime import date, datetime
-from typing import Optional, List
+from datetime import date
+from datetime import datetime
+from typing import List
+from typing import Optional
 from uuid import UUID
 
-from core.auth import multi_auth
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
-from ninja.pagination import PageNumberPagination, paginate
+from ninja import FilterSchema
+from ninja import Query
+from ninja import Router
+from ninja import Schema
+from ninja.pagination import PageNumberPagination
+from ninja.pagination import paginate
 
-from .models import WeddingSettings
+from core.auth import multi_auth
+
 from .models import Question
 from .models import QuestionCategory
-from .models import Tips
+from .models import QuestionURL
 from .models import RsvpQuestion
 from .models import RsvpQuestionChoice
+from .models import Tips
+from .models import WeddingSettings
 
 User = get_user_model()
 
@@ -120,6 +128,17 @@ class QuestionUpdateSchema(Schema):
     order: Optional[int] = None
     icon: Optional[str] = None
     published: Optional[bool] = None
+
+
+class QuestionURLCreateSchema(Schema):
+    question_id: UUID
+    url: str
+    text: Optional[str] = None
+
+
+class QuestionURLUpdateSchema(Schema):
+    url: Optional[str] = None
+    text: Optional[str] = None
 
 
 # Tips Schemas
@@ -249,8 +268,7 @@ def list_questions(request, filters: QuestionFilterSchema = Query(...)):  # pyri
             "order": question.order,
             "icon": question.icon,
             "urls": [
-                {"id": url.id, "url": url.url, "description": url.description}
-                for url in question.urls.filter(is_deleted=False)
+                {"id": url.id, "url": url.url, "text": url.text} for url in question.urls.filter(is_deleted=False)
             ],
             "published": question.published,
             "created_at": question.created_at,
@@ -264,9 +282,7 @@ def list_questions(request, filters: QuestionFilterSchema = Query(...)):  # pyri
 def get_question(request, question_id: UUID):
     """Get a specific question by ID"""
     question = get_object_or_404(Question, id=question_id, is_deleted=False)
-    urls = [
-        {"id": url.id, "url": url.url, "description": url.description} for url in question.urls.filter(is_deleted=False)
-    ]
+    urls = [{"id": url.id, "url": url.url, "text": url.text} for url in question.urls.filter(is_deleted=False)]
     return {
         "id": question.id,
         "category": question.category.name if question.category else "General",
@@ -342,9 +358,7 @@ def update_question(request, question_id: UUID, payload: QuestionUpdateSchema):
             question.updated_by = admin_user
     question.save()
 
-    urls = [
-        {"id": url.id, "url": url.url, "description": url.description} for url in question.urls.filter(is_deleted=False)
-    ]
+    urls = [{"id": url.id, "url": url.url, "text": url.text} for url in question.urls.filter(is_deleted=False)]
 
     return {
         "id": question.id,
@@ -374,6 +388,104 @@ def delete_question(request, question_id: UUID):
             question.updated_by = admin_user
     question.save()
     return {"success": True, "message": "Question deleted successfully"}
+
+
+# QuestionURL CRUD Endpoints
+@router.get("/question-urls", response=List[QuestionURLSchema])
+def list_question_urls(request, question_id: Optional[UUID] = None):
+    """List all question URLs (non-deleted), optionally filtered by question_id"""
+    queryset = QuestionURL.objects.filter(is_deleted=False)
+    if question_id:
+        queryset = queryset.filter(question_id=question_id)
+
+    return [
+        {
+            "id": url.id,
+            "url": url.url,
+            "text": url.text,
+        }
+        for url in queryset
+    ]
+
+
+@router.get("/question-urls/{url_id}", response=QuestionURLSchema)
+def get_question_url(request, url_id: UUID):
+    """Get a specific question URL by ID"""
+    url = get_object_or_404(QuestionURL, id=url_id, is_deleted=False)
+
+    return {
+        "id": url.id,
+        "url": url.url,
+        "text": url.text,
+    }
+
+
+@router.post("/question-urls", response=QuestionURLSchema)
+def create_question_url(request, payload: QuestionURLCreateSchema):
+    """Create a new question URL"""
+    data = payload.dict()
+    question_id = data.pop("question_id")
+
+    if request.user.is_authenticated:
+        data["created_by"] = request.user
+    else:
+        admin_user = User.objects.filter(is_staff=True, is_active=True).first()
+        if admin_user:
+            data["created_by"] = admin_user
+
+    question = get_object_or_404(Question, id=question_id, is_deleted=False)
+    data["question"] = question
+
+    question_url = QuestionURL.objects.create(**data)
+
+    # Add the URL to the question's urls many-to-many field
+    question.urls.add(question_url)
+
+    return {
+        "id": question_url.id,
+        "url": question_url.url,
+        "text": question_url.text,
+    }
+
+
+@router.put("/question-urls/{url_id}", response=QuestionURLSchema)
+def update_question_url(request, url_id: UUID, payload: QuestionURLUpdateSchema):
+    """Update a question URL"""
+    question_url = get_object_or_404(QuestionURL, id=url_id, is_deleted=False)
+    data = payload.dict(exclude_unset=True)
+
+    for attr, value in data.items():
+        setattr(question_url, attr, value)
+
+    if request.user.is_authenticated:
+        question_url.updated_by = request.user
+    else:
+        admin_user = User.objects.filter(is_staff=True, is_active=True).first()
+        if admin_user:
+            question_url.updated_by = admin_user
+
+    question_url.save()
+
+    return {
+        "id": question_url.id,
+        "url": question_url.url,
+        "text": question_url.text,
+    }
+
+
+@router.delete("/question-urls/{url_id}")
+def delete_question_url(request, url_id: UUID):
+    """Soft delete a question URL"""
+    question_url = get_object_or_404(QuestionURL, id=url_id, is_deleted=False)
+    question_url.is_deleted = True
+    if request.user.is_authenticated:
+        question_url.updated_by = request.user
+    else:
+        admin_user = User.objects.filter(is_staff=True, is_active=True).first()
+        if admin_user:
+            question_url.updated_by = admin_user
+    question_url.save()
+    return {"success": True, "message": "Question URL deleted successfully"}
 
 
 # Tips CRUD Endpoints

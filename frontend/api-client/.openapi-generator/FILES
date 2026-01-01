@@ -22,7 +22,9 @@ docs/PagedTipsSchema.md
 docs/QuestionCreateSchema.md
 docs/QuestionFilterSchema.md
 docs/QuestionSchema.md
+docs/QuestionURLCreateSchema.md
 docs/QuestionURLSchema.md
+docs/QuestionURLUpdateSchema.md
 docs/QuestionUpdateSchema.md
 docs/ResponseChoiceSchema.md
 docs/RsvpDeclineResponseSchema.md
@@ -66,7 +68,9 @@ models/PagedTipsSchema.ts
 models/QuestionCreateSchema.ts
 models/QuestionFilterSchema.ts
 models/QuestionSchema.ts
+models/QuestionURLCreateSchema.ts
 models/QuestionURLSchema.ts
+models/QuestionURLUpdateSchema.ts
 models/QuestionUpdateSchema.ts
 models/ResponseChoiceSchema.ts
 models/RsvpDeclineResponseSchema.ts
