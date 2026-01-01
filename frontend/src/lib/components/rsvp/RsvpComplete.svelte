@@ -28,8 +28,8 @@
                             </div>
                         </div>
                     {/if}
+                    <h1 class="text-3xl text-accent font-bold">{configData.rsvpSuccessHeadline}</h1>
                     {#if accepted}
-                        <h1 class="text-3xl text-accent font-bold">{configData.rsvpSuccessHeadline}</h1>
                         <p class="py-6 text-primary-content">
                             In the mean time you can learn more about the venue or find the answer to common questions
                             about our big day
