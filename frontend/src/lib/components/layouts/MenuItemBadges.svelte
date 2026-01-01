@@ -1,0 +1,25 @@
+<script module lang="ts">
+    export type IMenuItemBadges = {
+        badges?: Array<"new" | string>;
+    };
+</script>
+
+<script lang="ts">
+    export let badges: Array<"new" | string> | undefined;
+</script>
+
+{#if badges && badges.length}
+    <div class="inline-flex gap-2">
+        {#each badges as badge (badge)}
+            {#if badge === "new"}
+                <div class="border-primary/20 bg-primary/10 text-primary rounded-box border px-1.5 text-[12px]">
+                    New
+                </div>
+            {:else}
+                <div class="bg-secondary text-secondary-content rounded-box ms-0 px-1.5 text-[12px]">
+                    {badge}
+                </div>
+            {/if}
+        {/each}
+    </div>
+{/if}

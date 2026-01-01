@@ -1,0 +1,51 @@
+from django.urls import path
+
+from . import views
+
+app_name = "core"
+
+urlpatterns = [
+    # path("", views.home, name="home"),
+    # path("venue/", views.venue, name="venue"),
+    # path("our-story/", views.our_story, name="our_story"),
+    # path("photos/", views.photos, name="photos"),
+    # path("faq/", views.faq, name="faq"),
+    path("planning/", views.planning_home, name="planning_home"),
+    # path("settings/", views.wedding_settings, name="wedding_settings"),
+    # path("settings/edit", views.wedding_settings_edit, name="wedding_settings_edit"),
+    # path("settings/export/", views.data_export, name="data_export"),
+    # path(
+    #     "settings/<uuid:rsvp_question_uuid>/edit_choices",
+    #     views.edit_rsvp_question_choices,
+    #     name="edit_rsvp_question_choices",
+    # ),
+    path("timeline/", views.timeline_summary, name="timeline_summary"),
+    path("timeline_data/", views.timeline_data, name="timeline_data"),
+    path("timeline_delete_modal/", views.timeline_delete_modal, name="timeline_delete_modal"),
+    path("timeline/import/", views.timeline_import, name="timeline_import"),
+    path("timeline/create/", views.timeline_create, name="timeline_create"),
+    path("timeline/<slug:timeline_slug>/", views.timeline_detail, name="timeline_detail"),
+    path("timeline/<slug:timeline_slug>/edit/", views.timeline_edit, name="timeline_edit"),
+    path("timeline/<slug:timeline_slug>/delete/", views.timeline_delete, name="timeline_delete"),
+    path("idea/", views.idea_list, name="idea_list"),
+    path("idea/template/download/", views.idea_template_download, name="idea_template_download"),
+    path("idea/import/", views.idea_import, name="idea_import"),
+    path("idea_delete_modal/", views.idea_delete_modal, name="idea_delete_modal"),
+    path("idea/<slug:idea_slug>/", views.idea_detail, name="idea_detail"),
+    path("idea/<slug:idea_slug>/edit/", views.idea_edit, name="idea_edit"),
+    path("idea/<slug:idea_slug>/delete/", views.idea_delete, name="idea_delete"),
+    path("idea_create/", views.idea_create, name="idea_create"),
+    path("inpiration_delete_modal/", views.inspiration_delete_modal, name="inspiration_delete_modal"),
+    path("inspiration/", views.inspiration_summary, name="inspiration_summary"),
+    path("inspiration/create/", views.inspiration_create, name="inspiration_create"),
+    path("inspiration/<slug:inspiration_slug>/", views.inspiration_detail, name="inspiration_detail"),
+    path("inspiration/<slug:inspiration_slug>/edit/", views.inspiration_edit, name="inspiration_edit"),
+    path("inspiration/<slug:inspiration_slug>/delete/", views.inspiration_delete, name="inspiration_delete"),
+    # path("question_delete_modal/", views.question_delete_modal, name="question_delete_modal"),
+    # path("question/", views.question_summary, name="question_summary"),
+    # path("question/<slug:question_slug>/", views.question_detail, name="question_detail"),
+    # path("question/<slug:question_slug>/edit/", views.question_edit, name="question_edit"),
+    # path("question/<slug:question_slug>/delete/", views.question_delete, name="question_delete"),
+    # path("question_create/", views.question_create, name="question_create"),
+    path("csp-report/", views.csp_report, name="csp_report"),
+]

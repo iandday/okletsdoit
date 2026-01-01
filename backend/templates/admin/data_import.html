@@ -1,0 +1,267 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+    .import-container {
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 20px;
+    }
+    .import-section {
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 25px;
+        margin-bottom: 25px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .import-section h2 {
+        color: #67260b;
+        margin-top: 0;
+        margin-bottom: 15px;
+        font-size: 1.4em;
+        border-bottom: 2px solid #67260b;
+        padding-bottom: 10px;
+    }
+    .import-section p {
+        color: #666;
+        line-height: 1.6;
+        margin-bottom: 15px;
+    }
+    .button-group {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+        align-items: center;
+        margin-top: 20px;
+    }
+    .import-button {
+        background: #67260b;
+        color: white;
+        padding: 12px 24px;
+        text-decoration: none;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: background 0.2s;
+    }
+    .import-button:hover {
+        background: #8c4417;
+        color: white;
+    }
+    .cancel-button {
+        background: #6c757d;
+        color: white;
+        padding: 12px 24px;
+        text-decoration: none;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: background 0.2s;
+        margin-left: 10px;
+    }
+    .cancel-button:hover {
+        background: #5a6268;
+        color: white;
+    }
+    .template-button {
+        background: #28a745;
+        color: white;
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 6px;
+        font-size: 13px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: background 0.2s;
+    }
+    .template-button:hover {
+        background: #218838;
+        color: white;
+    }
+    .import-form {
+        display: none;
+        margin-top: 20px;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 6px;
+        border: 1px solid #dee2e6;
+    }
+    .import-form.active {
+        display: block;
+    }
+    .form-field {
+        margin-bottom: 15px;
+    }
+    .form-field label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 5px;
+        color: #333;
+    }
+    .form-field input[type="file"] {
+        padding: 8px;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        width: 100%;
+        max-width: 500px;
+    }
+    .form-field .checkbox-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .form-field .help-text {
+        font-size: 12px;
+        color: #6c757d;
+        margin-top: 5px;
+    }
+    .warning-text {
+        color: #dc3545;
+        font-weight: 500;
+    }
+    .submit-row {
+        border-top: 1px solid #dee2e6;
+        padding-top: 15px;
+        margin-top: 15px;
+    }
+    .page-header {
+        background: linear-gradient(135deg, #67260b 0%, #8c4417 100%);
+        color: white;
+        padding: 30px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+    }
+    .page-header h1 {
+        margin: 0;
+        font-size: 2em;
+    }
+    .page-header p {
+        margin: 10px 0 0 0;
+        opacity: 0.9;
+    }
+</style>
+<script nonce="{{request.csp_nonce}}">
+document.addEventListener('DOMContentLoaded', function() {
+    const showButtons = document.querySelectorAll('[data-show-form]');
+    const cancelButtons = document.querySelectorAll('[data-cancel-form]');
+    
+    showButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const formId = this.getAttribute('data-show-form');
+            document.querySelectorAll('.import-form').forEach(form => {
+                form.classList.remove('active');
+            });
+            const targetForm = document.getElementById(formId);
+            if (targetForm) {
+                targetForm.classList.add('active');
+                targetForm.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        });
+    });
+    
+    cancelButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const formId = this.getAttribute('data-cancel-form');
+            const targetForm = document.getElementById(formId);
+            if (targetForm) {
+                targetForm.classList.remove('active');
+            }
+        });
+    });
+});
+</script>
+{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <a href="{% url 'admin:index' %}">Home</a>
+    &rsaquo; Data Import
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="import-container">
+    <div class="page-header">
+        <h1>📊 Data Import Center</h1>
+        <p>Import data from Excel files into the system. Download templates, fill them out, and upload to populate your data.</p>
+    </div>
+
+    <!-- FAQ Data Import Section -->
+    <div class="import-section">
+        <h2>📋 FAQ Data Import</h2>
+        <p>
+            Import FAQ categories, questions, URLs, and tips from a single Excel file. 
+            The Excel file should contain 2 sheets: Questions (with category info and up to 3 URLs per question) 
+            and Tips (referencing existing categories).
+        </p>
+        
+        <div class="button-group">
+            <button type="button" data-show-form="faq-import-form" class="import-button">
+                ⬆️ Import FAQ Data
+            </button>
+            <a href="{% url 'admin:data_import_faq_template' %}" class="template-button">
+                📥 Download FAQ Template
+            </a>
+        </div>
+
+        <!-- FAQ Import Form (hidden by default) -->
+        <div id="faq-import-form" class="import-form">
+            <h3 style="margin-top: 0;">Upload FAQ Excel File</h3>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="import_type" value="faq">
+                
+                <div class="form-field">
+                    <label for="faq_file">Excel File (.xlsx)</label>
+                    <input type="file" id="faq_file" name="excel_file" accept=".xlsx" required>
+                    <p class="help-text">Upload an Excel file with FAQ data. Use the template button above to get the correct format.</p>
+                </div>
+
+                <div class="form-field">
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="clear_existing" name="clear_existing" value="true">
+                        <label for="clear_existing" style="margin: 0;">Clear existing FAQ data before import</label>
+                    </div>
+                    <p class="help-text warning-text">⚠️ WARNING: This will delete all existing categories, questions, URLs, and tips before importing.</p>
+                </div>
+
+                <div class="submit-row">
+                    <button type="submit" class="import-button">Import FAQ Data</button>
+                    <button type="button" data-cancel-form="faq-import-form" class="cancel-button">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Additional Import Sections Can Be Added Here -->
+    <!-- Example placeholder for future imports -->
+    <div class="import-section" style="background: #f8f9fa; border-style: dashed;">
+        <h2>➕ More Import Options</h2>
+        <p style="color: #6c757d;">
+            Additional data import options can be added here as needed. 
+            Examples: Timeline events, Ideas, Inspirations, Guest lists, etc.
+        </p>
+    </div>
+
+    <!-- Back Button -->
+    <div style="margin-top: 30px;">
+        <a href="{% url 'admin:index' %}" style="color: #67260b; text-decoration: none; font-weight: 500;">
+            ← Back to Admin Home
+        </a>
+    </div>
+</div>
+{% endblock %}

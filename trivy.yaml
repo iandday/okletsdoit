@@ -1,0 +1,22 @@
+# Trivy configuration file
+# Matches the settings used in GitHub Actions workflows
+
+format: sarif
+exit-code: 1
+severity:
+  - CRITICAL
+  - HIGH
+ignorefile: .trivyignore.yaml
+output: trivy-results.sarif
+vulnerability:
+  ignore-unfixed: true
+scan:
+  scanners:
+    - vuln
+    - secret
+pkg:
+  types:
+    - os
+    - library
+secret:
+  config: "trivy-secret.yaml"

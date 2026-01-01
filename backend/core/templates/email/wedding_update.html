@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        .countdown {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 1.2em;
+            margin: 20px 0;
+        }
+        .stats {
+            display: table;
+            width: 100%;
+            margin: 15px 0;
+        }
+        .stat-row {
+            display: table-row;
+        }
+        .stat-label {
+            display: table-cell;
+            padding: 8px 0;
+            font-weight: 600;
+            color: #555;
+        }
+        .stat-value {
+            display: table-cell;
+            padding: 8px 0;
+            text-align: right;
+            color: #333;
+        }
+        .deadline-list {
+            margin: 15px 0;
+        }
+        .deadline-item {
+            padding: 12px;
+            margin: 8px 0;
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+            border-radius: 4px;
+        }
+        .deadline-item.overdue {
+            background-color: #fff5f5;
+            border-left-color: #e74c3c;
+        }
+        .deadline-item a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .deadline-item a:hover {
+            text-decoration: underline;
+        }
+        .deadline-meta {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 4px;
+        }
+        .budget-variance {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-weight: 600;
+        }
+        .budget-over {
+            background-color: #fff5f5;
+            color: #e74c3c;
+        }
+        .budget-under {
+            background-color: #f0fdf4;
+            color: #16a34a;
+        }
+        .budget-exact {
+            background-color: #f0f9ff;
+            color: #0284c7;
+        }
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #e5e7eb;
+            color: #6b7280;
+            font-size: 0.9em;
+            text-align: center;
+        }
+        .section-icon {
+            font-size: 1.2em;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎊 Wedding Planning Update</h1>
+        
+        {% if days_until_wedding is not none %}
+        <div class="countdown">
+            {% if days_until_wedding > 0 %}
+                🎉 {{ days_until_wedding }} days until the big day!
+            {% elif days_until_wedding == 0 %}
+                🎉 Today is the big day!
+            {% else %}
+                🎉 Your wedding was {{ days_since_wedding }} days ago!
+            {% endif %}
+        </div>
+        {% endif %}
+        
+        <h2><span class="section-icon">📋</span>Deadline Summary</h2>
+        <div class="stats">
+            <div class="stat-row">
+                <div class="stat-label">Total Deadlines:</div>
+                <div class="stat-value">{{ total_deadlines }}</div>
+            </div>
+            <div class="stat-row">
+                <div class="stat-label">Completed:</div>
+                <div class="stat-value">{{ completed_deadlines }} ({{ completion_percentage }}%)</div>
+            </div>
+            <div class="stat-row">
+                <div class="stat-label">Pending:</div>
+                <div class="stat-value">{{ pending_deadlines }}</div>
+            </div>
+        </div>
+        
+        {% if overdue_deadlines %}
+        <h2><span class="section-icon">⚠️</span>Overdue Deadlines</h2>
+        <div class="deadline-list">
+            {% for deadline in overdue_deadlines %}
+            <div class="deadline-item overdue">
+                <a href="{{ deadline.url }}">{{ deadline.name }}</a>
+                <div class="deadline-meta">
+                    Due: {{ deadline.due_date|date:"M d, Y" }} ({{ deadline.days_overdue }} days overdue)
+                    {% if deadline.assigned_to %} &bull; Assigned to {{ deadline.assigned_to }}{% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        {% if upcoming_deadlines %}
+        <h2><span class="section-icon">📅</span>Upcoming Deadlines (Next 30 Days)</h2>
+        <div class="deadline-list">
+            {% for deadline in upcoming_deadlines %}
+            <div class="deadline-item">
+                <a href="{{ deadline.url }}">{{ deadline.name }}</a>
+                <div class="deadline-meta">
+                    Due: {{ deadline.due_date|date:"M d, Y" }} (in {{ deadline.days_until }} days)
+                    {% if deadline.assigned_to %} &bull; Assigned to {{ deadline.assigned_to }}{% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <h2><span class="section-icon">💰</span>Budget Summary</h2>
+        <div class="stats">
+            <div class="stat-row">
+                <div class="stat-label">Estimated Budget:</div>
+                <div class="stat-value">${{ total_estimated_formatted }}</div>
+            </div>
+            <div class="stat-row">
+                <div class="stat-label">Actual Spending:</div>
+                <div class="stat-value">${{ total_actual_formatted }}</div>
+            </div>
+        </div>
+        
+        {% if budget_variance > 0 %}
+        <div class="budget-variance budget-over">Variance: ${{ budget_variance_formatted }} OVER budget</div>
+        {% elif budget_variance < 0 %}
+        <div class="budget-variance budget-under">Variance: ${{ budget_variance_abs_formatted }} UNDER budget</div>
+        {% else %}
+        <div class="budget-variance budget-exact">Variance: On budget</div>
+        {% endif %}
+        
+        <div class="stats">
+            <div class="stat-row">
+                <div class="stat-label">Purchased Items:</div>
+                <div class="stat-value">{{ purchased_expenses }} of {{ total_expenses }}</div>
+            </div>
+        </div>
+        
+        <h2><span class="section-icon">👥</span>Guest List Summary</h2>
+        <div class="stats">
+            <div class="stat-row">
+                <div class="stat-label">Total Guests:</div>
+                <div class="stat-value">{{ total_guests }}</div>
+            </div>
+            <div class="stat-row">
+                <div class="stat-label">Total Groups:</div>
+                <div class="stat-value">{{ total_groups }}</div>
+            </div>
+            {% if guests_attending > 0 or guests_declined > 0 %}
+            <div class="stat-row">
+                <div class="stat-label">Attending:</div>
+                <div class="stat-value">{{ guests_attending }}</div>
+            </div>
+            <div class="stat-row">
+                <div class="stat-label">Declined:</div>
+                <div class="stat-value">{{ guests_declined }}</div>
+            </div>
+            <div class="stat-row">
+                <div class="stat-label">Pending:</div>
+                <div class="stat-value">{{ guests_pending }}</div>
+            </div>
+            {% if total_guests > 0 %}
+            <div class="stat-row">
+                <div class="stat-label">Response Rate:</div>
+                <div class="stat-value">{{ response_rate }}%</div>
+            </div>
+            {% endif %}
+            {% endif %}
+        </div>
+        
+        <div class="footer">
+            This is an automated update from your wedding planning application.<br>
+            Generated on {{ generated_date }}
+        </div>
+    </div>
+</body>
+</html>

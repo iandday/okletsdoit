@@ -9,8 +9,8 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
     python3-dev \
     libffi-dev \
-    postgresql-client-17 \
-    libpq5 \
+    postgresql-client-17=17.6-0+deb13u1  \
+    libpq5=17.6-0+deb13u1   \
     libsqlite3-0 \
     libpam-modules \
     libpam-runtime \
@@ -35,7 +35,7 @@ COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen --no-cache --group dev 
 
 RUN mkdir -p /app/app
-COPY app/ /app/app
+COPY backend/ /app/app
 
 # Set up entrypoint
 COPY --chown=django:django ./docker/docker-entrypoint.sh ./docker-entrypoint.sh
@@ -65,7 +65,8 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
     python3-dev \
     libffi-dev \
-    libpq-dev \
+    postgresql-client-17=17.6-0+deb13u1  \
+    libpq5=17.6-0+deb13u1   \
     gcc \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
@@ -83,7 +84,7 @@ COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen --no-cache 
 
 # Copy source code
-COPY app/ .
+COPY backend/ .
 
 FROM python:3.14-slim-trixie AS production
 
@@ -95,8 +96,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 RUN apt-get update \
     && apt-get upgrade -y \
     && apt-get install -y --no-install-recommends \
-    postgresql-client-17 \
-    libpq5 \
+    postgresql-client-17=17.6-0+deb13u1  \
+    libpq5=17.6-0+deb13u1   \
     libsqlite3-0 \
     libpam-modules \
     libpam-runtime \

@@ -1,9 +1,10 @@
-name: Auto PR
+name: Generate Development Pull Request
 
 on:
   push:
     branches-ignore:
       - main
+      - develop
 
 permissions:
   contents: write
@@ -25,14 +26,8 @@ jobs:
         id: branch_info
         run: |
           BRANCH_NAME="${GITHUB_REF#refs/heads/}"
+          BASE_BRANCH="develop"
           echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
-          
-          # Determine base branch: develop → main, everything else → develop
-          if [ "$BRANCH_NAME" = "develop" ]; then
-            BASE_BRANCH="main"
-          else
-            BASE_BRANCH="develop"
-          fi
           echo "base_branch=$BASE_BRANCH" >> $GITHUB_OUTPUT
           
           # Get commit count since branching from base

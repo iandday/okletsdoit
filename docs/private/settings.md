@@ -9,12 +9,16 @@ Quick notes
 
 ## Display Details
 - **Wedding Date** — Date of the wedding. Shown on public pages and used in countdowns. Use YYYY‑MM‑DD.
-- **Site Title / Headings** — Short strings used for page titles and breadcrumb headings.
+- **Standard Group Label** — 
+- **VIP Group Label** - 
+- **Show FAQ** - 
 
 ## RSVP Settings
 These values control the top-level RSVP experience.
 
 - **Allow RSVP** — Toggle to show or hide the RSVP flow to guests.
+- **RSVP Start** - 
+- **RSVP End** - 
 - **RSVP Accept Button Text** — The label on the button guests press to accept (e.g. "Yes, I'll be there").
 - **RSVP Decline Button Text** — The label on the button guests press to decline (e.g. "Sorry, can't make it").
 - **RSVP Accept Success Message** — Short confirmation shown after a guest accepts.

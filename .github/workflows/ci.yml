@@ -12,9 +12,14 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-css:
+  backend-build-css:
     runs-on: ubuntu-latest
     if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
+    needs:
+      - backend-lint
+    defaults:
+      run:
+        working-directory: ./backend
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
@@ -32,9 +37,12 @@ jobs:
         run: |
           npm run build-css-ci
 
-  lint:
+  backend-lint:
     runs-on: ubuntu-latest
     if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
+    defaults:
+      run:
+        working-directory: ./backend
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
@@ -82,3 +90,45 @@ jobs:
 
       - name: Minimize uv cache
         run: uv cache prune --ci
+
+  frontend-lint:
+    runs-on: ubuntu-latest
+    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
+    defaults:
+      run:
+        working-directory: ./frontend
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+            bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Run ESLint
+        run: bun run lint
+  frontend-build:
+    runs-on: ubuntu-latest
+    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
+    needs: frontend-lint
+    defaults:
+      run:
+        working-directory: ./frontend
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+            bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Build application
+        run: bun run build
