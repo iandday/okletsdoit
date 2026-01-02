@@ -20,9 +20,11 @@
         editingUrlId = null;
         editingUrl = { url: "", text: "" };
     }
+
+    const relativeCrumbs = [{ title: "FAQ" }, { title: "Edit Question" }];
 </script>
 
-<ProtectedPageShell>
+<ProtectedPageShell {relativeCrumbs}>
     <div class="container mx-auto p-4 max-w-4xl">
         <div class="flex justify-between items-center mb-6">
             <div>

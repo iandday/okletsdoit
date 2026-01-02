@@ -6,9 +6,11 @@
     const { data, form } = $props();
 
     let submitting = $state(false);
+
+    const relativeCrumbs = [{ title: "FAQ", href: "/settings/faq" }, { title: "Add Question" }];
 </script>
 
-<ProtectedPageShell>
+<ProtectedPageShell {relativeCrumbs}>
     <div class="container mx-auto p-4 max-w-4xl">
         <div class="flex justify-between items-center mb-6">
             <div>

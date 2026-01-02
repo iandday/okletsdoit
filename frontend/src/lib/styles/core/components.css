@@ -152,3 +152,100 @@ input:-webkit-autofill:active {
 .edit-card-field-radio {
     @apply radio radio-primary;
 }
+
+.list-card {
+    @apply card bg-primary text-primary-content shadow-md transition-shadow duration-300 hover:shadow-lg;
+}
+
+.list-card-title {
+    @apply card-title text-accent text-lg lg:text-xl;
+}
+
+.list-card-body {
+    @apply card-body text-primary-content px-6 py-4;
+}
+
+.list-card-item {
+    @apply text-primary-content/90;
+}
+
+.list-card-actions {
+    @apply card-actions border-base-300 mt-4 justify-end border-t pt-4;
+}
+
+/* start detail object view */
+.detail-card {
+    @apply card bg-base-300 text-primary-content shadow-xl transition-shadow duration-300 hover:shadow-2xl;
+}
+
+.detail-card-title {
+    @apply card-title text-accent mb-4 text-lg lg:text-xl;
+}
+
+.detail-card-body {
+    @apply card-body px-6 py-4;
+}
+
+.detail-card-field-name {
+    @apply text-primary-content/60 font-semibold;
+}
+
+.detail-card-field-value {
+    @apply text-primary-content font-medium;
+}
+
+.detail-card-field-value-secondary {
+    @apply text-primary-content/50 font-medium;
+}
+
+.detail-card-actions {
+    @apply card-actions mt-4 justify-center space-x-4;
+}
+
+.detail-action-card {
+    @apply card bg-base-200 text-base-content mt-6 shadow-xl transition-shadow duration-300 hover:shadow-2xl;
+}
+
+.detail-action-card-title {
+    @apply card-title text-base-content mb-4 text-lg lg:text-xl;
+}
+
+.detail-action-card-body {
+    @apply card-body px-6 py-4;
+}
+
+/* end detail object view */
+/* start table listing items from associated models */
+.associated-card {
+    @apply card bg-neutral text-base-content shadow-xl transition-shadow duration-300 hover:shadow-2xl;
+}
+
+.associated-card-title {
+    @apply card-title text-base-content text-lg lg:text-xl;
+}
+
+.associated-card-body {
+    @apply card-body px-6 py-4;
+}
+
+.associated-table {
+    @apply bg-base-300 text-secondary-content table w-full;
+}
+
+.associated-table-header {
+    @apply text-primary;
+}
+
+.associated-table-checkbox {
+    @apply checkbox border-neutral bg-base-100 checked:bg-base-100 checked:text-accent-content;
+}
+
+.associated-table-toggle {
+    @apply toggle border-neutral bg-base-100 checked:text-accent-content;
+}
+
+.associated-table-footer {
+    @apply font-bold text-blue-500;
+}
+
+/* end table listing items from associated models */

@@ -39,7 +39,7 @@ class DeadlineList(models.Model):
         """Return completion percentage of associated deadlines"""
         if self.completed_count == 0:
             return 0
-        return round((self.completed_count / len(self.deadlines.all())) * 100, 1)
+        return round((self.completed_count / self.count) * 100, 1)
 
     def __str__(self):
         return self.name
