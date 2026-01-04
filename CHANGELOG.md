@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.6.1 (2026-01-04)
+
+### Bug Fixes
+
+- **CI**: Fix build again
+  ([`0394676`](https://github.com/iandday/okletsdoit/commit/039467676950ddc1988a565cf365997333daafb7))
+
+
 ## v0.6.0 (2026-01-04)
 
 ### Bug Fixes
