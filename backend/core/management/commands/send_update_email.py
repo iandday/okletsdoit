@@ -41,9 +41,7 @@ class Command(BaseCommand):
         if options.get("recipients"):
             recipients = options["recipients"]
         else:
-            recipients = list(
-                User.objects.filter(is_admin=True, email_notifications=True).values_list("email", flat=True)
-            )
+            recipients = list(User.objects.filter(email_notifications=True).values_list("email", flat=True))
 
         if not recipients:
             self.stdout.write(
