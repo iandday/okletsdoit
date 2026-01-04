@@ -2,7 +2,7 @@
  * Server-side API client using the OpenAPI generated client
  * Configured with service token authentication for backend-to-backend communication
  */
-import { Configuration, GuestlistApi, CoreApi } from "../../../api-client";
+import { Configuration, GuestlistApi, CoreApi, DeadlinesApi } from "../../../api-client";
 import type { Middleware } from "../../../api-client/runtime";
 
 const API_BASE_PATH = process.env.BACKEND_API_URL;
@@ -79,6 +79,7 @@ export function createApiClient() {
     return {
         guestlist: new GuestlistApi(config),
         core: new CoreApi(config),
+        deadlines: new DeadlinesApi(config),
     };
 }
 

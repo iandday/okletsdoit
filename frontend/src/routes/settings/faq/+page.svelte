@@ -70,9 +70,10 @@
 
     const totalQuestions = data.questions?.length || 0;
     const totalTips = data.tips?.length || 0;
+    const relativeCrumbs = [{ title: "FAQ" }];
 </script>
 
-<ProtectedPageShell>
+<ProtectedPageShell {relativeCrumbs}>
     <div class="container mx-auto p-4 max-w-6xl">
         <div class="flex justify-between items-center mb-6">
             <div>

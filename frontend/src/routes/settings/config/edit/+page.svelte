@@ -45,9 +45,11 @@
         { name: "showFaq", type: "checkbox" },
         { name: "weddingDate", type: "date" },
     ];
+
+    const relativeCrumbs = [{ title: "Configuration", href: "/settings/config" }, { title: "Edit" }];
 </script>
 
-<ProtectedPageShell>
+<ProtectedPageShell {relativeCrumbs}>
     <div class="container mx-auto p-4 max-w-6xl">
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-3xl font-bold">Edit Wedding Configuration</h1>

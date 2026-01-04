@@ -6,6 +6,31 @@ applyTo: "frontend/**/*"
 "We use the @sveltejs/adapter-static for deployment to GitHub Pages".
 "Prioritize the new Svelte 5 runes syntax for state management and effects". 
 
+## API Usage Rules
+
+**CRITICAL**: Never guess at API client patterns or imports. Always check existing code first.
+
+When working with API clients:
+1. **Always check** `frontend/src/lib/server/api-client.ts` to see what APIs are already imported and available
+2. **Never assume** API methods exist - use `grep_search` or `file_search` to verify
+3. **Follow existing patterns exactly** - if other pages use `api.core.methodName({})`, use the same pattern
+4. **Before adding new API imports**, check if the OpenAPI client has been regenerated to include new endpoints
+5. **If an API class is missing**, tell the user the OpenAPI client needs to be regenerated first, don't just add the import
+
+Common mistakes to avoid:
+- Making up `api(cookies)` or other non-existent patterns
+- Adding imports like `DeadlinesApi` before confirming it exists in the generated client
+- Creating try/catch wrappers that don't exist in other similar files
+- Inventing new authentication patterns
+
+Always look at existing similar pages (FAQ, guestlist, etc.) for the correct pattern.
+
+CRITICAL: When using throw redirect() in SvelteKit form actions:
+
+NEVER place throw redirect() inside a try-catch block
+ALWAYS move redirects outside the try-catch to prevent them from being caught as errors
+If you need data from the API call for the redirect URL, store it in a variable declared before the try block.  The redirect is a Response object that should propagate naturally through SvelteKit's request handling - catching it breaks the flow.
+
 
 When connected to the svelte-llm MCP server, you have access to comprehensive Svelte 5 and SvelteKit documentation. Here's how to use the available tools effectively:
 

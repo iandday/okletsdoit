@@ -8,7 +8,6 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db.models import Sum, DecimalField
 from django.utils import timezone
-from django.urls import reverse
 from django.template.loader import render_to_string
 
 from core.models import WeddingSettings
@@ -187,7 +186,7 @@ class Command(BaseCommand):
         overdue_deadlines = []
         for deadline in data["overdue_deadlines"]:
             days_overdue = (timezone.now().date() - deadline.due_date).days
-            deadline_url = f"{base_url}{reverse('deadline:deadline_detail', kwargs={'deadline_slug': deadline.slug})}"
+            deadline_url = f"{base_url}/settings/deadline/deadline/{deadline.id}"
             overdue_deadlines.append(
                 {
                     "name": deadline.name,
@@ -201,7 +200,7 @@ class Command(BaseCommand):
         upcoming_deadlines = []
         for deadline in data["upcoming_deadlines"]:
             days_until = (deadline.due_date - timezone.now().date()).days
-            deadline_url = f"{base_url}{reverse('deadline:deadline_detail', kwargs={'deadline_slug': deadline.slug})}"
+            deadline_url = f"{base_url}/settings/deadline/deadline/{deadline.id}"
             upcoming_deadlines.append(
                 {
                     "name": deadline.name,

@@ -33,17 +33,17 @@
             <div class="mb-8">
                 <!-- Category Header -->
                 <div class="flex items-center gap-3 mb-4">
-                    <div class="h-px flex-grow bg-gradient-to-r from-transparent via-primary to-transparent"></div>
+                    <div class="h-px flex-grow bg-gradient-to-r from-transparent to-primary"></div>
                     <h3 class="text-xl font-bold text-primary">{cat.categoryName}</h3>
-                    <div class="h-px flex-grow bg-gradient-to-r from-primary via-transparent to-transparent"></div>
+                    <div class="h-px flex-grow bg-gradient-to-r from-primary to-transparent"></div>
                 </div>
 
                 <!-- FAQ Items -->
                 <div class="space-y-3">
                     {#each cat.questions as question (question.id)}
                         <div
-                            class="collapse collapse-plus bg-secondary text-secondary-content border border-base-300 shadow-md hover:shadow-lg transition-shadow">
-                            <input type="radio" name="faq-accordion-{question.id}" />
+                            class="collapse collapse-arrow bg-secondary text-secondary-content border border-base-300 shadow-md hover:shadow-lg transition-shadow">
+                            <input type="radio" name="faq-accordion-{cat.categoryId}" />
                             <div class="collapse-title text-lg font-medium flex items-center gap-3">
                                 <div class="rounded-full p-2 flex-shrink-0">
                                     <Icon name={question.icon} class="size-6 font-strong text-primary-content" />
