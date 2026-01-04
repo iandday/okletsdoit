@@ -1,6 +1,41 @@
 # CHANGELOG
 
 
+## v0.6.0 (2026-01-04)
+
+### Bug Fixes
+
+- **CI**: :bug: build part two
+  ([`02bf609`](https://github.com/iandday/okletsdoit/commit/02bf60998b2b64237d18771e46e5bca2f5cba171))
+
+- **CI**: :bug: update build
+  ([`aa90725`](https://github.com/iandday/okletsdoit/commit/aa907259d9a4bfe1dac68fc20068d323dd216139))
+
+- :rocket: update version build
+  ([`6e2f72e`](https://github.com/iandday/okletsdoit/commit/6e2f72ecae5e4ca1727c6f7515ce7b2b61dc423f))
+
+- **GuestList**: :art: minor UI changes
+  ([`147deac`](https://github.com/iandday/okletsdoit/commit/147deacaca91bc509f0f203040ac80cf123c8b09))
+
+### Chores
+
+- Sync files from main after release
+  ([`2f4824d`](https://github.com/iandday/okletsdoit/commit/2f4824d098eb82325f03e3037347cb61a7823e8d))
+
+### Continuous Integration
+
+- :rocket: update auto-pr
+  ([`954713b`](https://github.com/iandday/okletsdoit/commit/954713b2259bfd749b4c17a7f281bc393a906f35))
+
+### Features
+
+- **Deadline**: :sparkles: finish deadlines in frontend
+  ([`dd991f0`](https://github.com/iandday/okletsdoit/commit/dd991f0cd9f56d625e05d6496f31aeb0adfa865e))
+
+- **GuestList**: :lipstick: initial move to frontend
+  ([`2b8f34b`](https://github.com/iandday/okletsdoit/commit/2b8f34b1aa450a06a7c6b7a772ae869e6a6b8dc6))
+
+
 ## v0.5.0 (2026-01-01)
 
 ### Bug Fixes
