@@ -48,9 +48,9 @@ jobs:
         with: 
           version: "latest"
 
-      - name: Update uv. lock with new version
+      - name: Update uv.lock with new version
         if: steps.release.outputs.released == 'true'
-        run: uv lock --no-install
+        run: uv lock --upgrade-package okletsdoit
 
       - name: Commit and push uv.lock
         if: steps.release.outputs.released == 'true'
