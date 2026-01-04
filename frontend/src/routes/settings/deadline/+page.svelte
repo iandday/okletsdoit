@@ -14,24 +14,29 @@
             <h1 class="text-3xl font-bold text-base-content">Deadline Summary</h1>
             <p class="text-base-content/70 mt-2">Manage your wedding planning deadlines and tasks</p>
         </div>
-        <a href="/settings/deadline/list/new" class="btn btn-primary gap-2">
-            <Icon name="plus" class="size-5" />
-            New List
-        </a>
+        <div>
+            <a href="/settings/deadline/list/new" class="btn btn-primary gap-2">
+                <span class="icon-[lucide--plus] size-5"></span>
+                New List
+            </a>
+            <a href="/settings/deadline/all" class="btn btn-primary gap-2">
+                <span class="icon-[lucide--calendar-check] size-5"></span>
+                View All Deadlines</a>
+        </div>
     </div>
 
     {#if data.deadlineLists.length === 0}
         <!-- Empty State -->
         <div class="card bg-base-100 border border-base-300 shadow-lg">
             <div class="card-body items-center text-center py-16">
-                <Icon name="clipboard-list" class="size-16 text-base-content/30 mb-4" />
+                <span class="icon-[lucide--clipboard-list] size-16 text-base-content/30 mb-4"></span>
                 <h3 class="text-xl font-semibold text-base-content mb-2">No deadline lists yet</h3>
                 <p class="text-base-content/70 mb-6 max-w-md">
                     Create your first deadline list to start organizing your wedding planning tasks and staying on
                     track.
                 </p>
                 <a href="/settings/deadline/list/new" class="btn btn-primary gap-2">
-                    <Icon name="plus" class="size-5" />
+                    <span class="icon-[lucide--plus] size-5"></span>
                     Create First List
                 </a>
             </div>

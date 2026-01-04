@@ -4,10 +4,10 @@
 - [x] Settings
 - [X] FAQ
 - [ ] Deadlines
-  - [ ] List View
-  - [ ] Delete List and Item
-  - [ ] Toggle completion
-  - [ ] Disable Django components
+  - [X] List View
+  - [x] Delete List and Item
+  - [x] Toggle completion
+  - [x] Disable Django components
 - [ ] Guestlist
 - [ ] Timeline
 - [ ] Contacts
@@ -35,6 +35,7 @@
     * [ ] Photo approval (Private)
 - [X] Deadlines
     * [X] Notification of upcoming deadlines
+    * [ ] Deletion of deadline list and all associated deadlines
 - [ ] Private Documentation
     * [X] Settings
     * [ ] Dashboard

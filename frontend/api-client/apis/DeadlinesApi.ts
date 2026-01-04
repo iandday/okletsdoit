@@ -78,6 +78,10 @@ export interface DeadlineApiListDeadlinesRequest {
     pageSize?: number | null;
 }
 
+export interface DeadlineApiToggleDeadlineCompleteRequest {
+    deadlineId: string;
+}
+
 export interface DeadlineApiUpdateDeadlineRequest {
     deadlineId: string;
     deadlineUpdateSchema: DeadlineUpdateSchema;
@@ -479,6 +483,53 @@ export class DeadlinesApi extends runtime.BaseAPI {
         initOverrides?: RequestInit | runtime.InitOverrideFunction,
     ): Promise<PagedDeadlineSchema> {
         const response = await this.deadlineApiListDeadlinesRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Toggle the completion status of a deadline
+     * Toggle Deadline Complete
+     */
+    async deadlineApiToggleDeadlineCompleteRaw(
+        requestParameters: DeadlineApiToggleDeadlineCompleteRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<DeadlineSchema>> {
+        if (requestParameters["deadlineId"] == null) {
+            throw new runtime.RequiredError(
+                "deadlineId",
+                'Required parameter "deadlineId" was null or undefined when calling deadlineApiToggleDeadlineComplete().',
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        let urlPath = `/api/deadline/deadlines/{deadline_id}/toggle_complete`;
+        urlPath = urlPath.replace(`{${"deadline_id"}}`, encodeURIComponent(String(requestParameters["deadlineId"])));
+
+        const response = await this.request(
+            {
+                path: urlPath,
+                method: "POST",
+                headers: headerParameters,
+                query: queryParameters,
+            },
+            initOverrides,
+        );
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => DeadlineSchemaFromJSON(jsonValue));
+    }
+
+    /**
+     * Toggle the completion status of a deadline
+     * Toggle Deadline Complete
+     */
+    async deadlineApiToggleDeadlineComplete(
+        requestParameters: DeadlineApiToggleDeadlineCompleteRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<DeadlineSchema> {
+        const response = await this.deadlineApiToggleDeadlineCompleteRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

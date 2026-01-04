@@ -199,7 +199,7 @@ input:-webkit-autofill:active {
 }
 
 .detail-card-actions {
-    @apply card-actions mt-4 justify-center space-x-4;
+    @apply card-actions mt-4 justify-center pb-4;
 }
 
 .detail-action-card {

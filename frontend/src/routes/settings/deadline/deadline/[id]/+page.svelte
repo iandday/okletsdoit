@@ -41,6 +41,7 @@
     {status}
     {statusText}
     editLink={`/settings/deadline/deadline/${data.deadline.id}/edit`}
+    deleteAction="?/delete"
     object={data.deadline}>
     {#snippet mainSnippet()}
         <div class="space-y-4">
@@ -100,8 +101,21 @@
     {/snippet}
 
     {#snippet mainActionsSnippet()}
+        <form method="POST" action="?/toggleComplete">
+            <button
+                type="submit"
+                class="btn btn-sm gap-2"
+                class:btn-success={!data.deadline.completed}
+                class:btn-warning={data.deadline.completed}>
+                <span
+                    class:icon-[lucide--check-circle]={!data.deadline.completed}
+                    class:icon-[lucide--x-circle]={data.deadline.completed}
+                    class="size-4"></span>
+                {data.deadline.completed ? "Mark Incomplete" : "Mark Complete"}
+            </button>
+        </form>
         <a href="/settings/deadline/deadline/{data.deadline.id}/edit" class="btn btn-sm btn-outline btn-primary gap-2">
-            <Icon name="pencil" class="size-4" />
+            <span class="icon-[lucide--edit] size-4"></span>
             Edit
         </a>
     {/snippet}

@@ -337,6 +337,48 @@ def create_deadline(request, payload: DeadlineCreateSchema):
     }
 
 
+@router.post("/deadlines/{deadline_id}/toggle_complete", response=DeadlineSchema)
+def toggle_deadline_complete(request, deadline_id: UUID):
+    """Toggle the completion status of a deadline"""
+    deadline = get_object_or_404(Deadline, id=deadline_id, is_deleted=False)
+    deadline.completed = not deadline.completed
+    if deadline.completed:
+        deadline.completed_at = datetime.now()
+    else:
+        deadline.completed_at = None
+
+    if request.user.is_authenticated:
+        deadline.updated_by = request.user
+    else:
+        admin_user = User.objects.filter(is_staff=True, is_active=True).first()
+        if admin_user:
+            deadline.updated_by = admin_user
+
+    deadline.save()
+
+    return {
+        "id": deadline.id,
+        "name": deadline.name,
+        "slug": deadline.slug,
+        "description": deadline.description,
+        "deadline_list_id": deadline.deadline_list.id if deadline.deadline_list else None,
+        "deadline_list_name": deadline.deadline_list.name if deadline.deadline_list else None,
+        "due_date": deadline.due_date,
+        "assigned_to_id": deadline.assigned_to.id if deadline.assigned_to else None,
+        "assigned_to_name": deadline.assigned_to.get_full_name() if deadline.assigned_to else None,
+        "completed": deadline.completed,
+        "completed_at": deadline.completed_at,
+        "completed_note": deadline.completed_note,
+        "overdue": deadline.overdue_status(),
+        "created_by_id": deadline.created_by.id if deadline.created_by else None,
+        "created_by_name": deadline.created_by.get_full_name() if deadline.created_by else None,
+        "updated_by_id": deadline.updated_by.id if deadline.updated_by else None,
+        "updated_by_name": deadline.updated_by.get_full_name() if deadline.updated_by else None,
+        "created_at": deadline.created_at,
+        "updated_at": deadline.updated_at,
+    }
+
+
 @router.put("/deadlines/{deadline_id}", response=DeadlineSchema)
 def update_deadline(request, deadline_id: UUID, payload: DeadlineUpdateSchema):
     """Update a deadline"""

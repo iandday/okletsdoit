@@ -2,18 +2,19 @@
 
 All URIs are relative to _http://localhost_
 
-| Method                                                                             | HTTP request                                      | Description          |
-| ---------------------------------------------------------------------------------- | ------------------------------------------------- | -------------------- |
-| [**deadlineApiCreateDeadline**](DeadlinesApi.md#deadlineapicreatedeadline)         | **POST** /api/deadline/deadlines                  | Create Deadline      |
-| [**deadlineApiCreateDeadlineList**](DeadlinesApi.md#deadlineapicreatedeadlinelist) | **POST** /api/deadline/deadline-lists             | Create Deadline List |
-| [**deadlineApiDeleteDeadline**](DeadlinesApi.md#deadlineapideletedeadline)         | **DELETE** /api/deadline/deadlines/{deadline_id}  | Delete Deadline      |
-| [**deadlineApiDeleteDeadlineList**](DeadlinesApi.md#deadlineapideletedeadlinelist) | **DELETE** /api/deadline/deadline-lists/{list_id} | Delete Deadline List |
-| [**deadlineApiGetDeadline**](DeadlinesApi.md#deadlineapigetdeadline)               | **GET** /api/deadline/deadlines/{deadline_id}     | Get Deadline         |
-| [**deadlineApiGetDeadlineList**](DeadlinesApi.md#deadlineapigetdeadlinelist)       | **GET** /api/deadline/deadline-lists/{list_id}    | Get Deadline List    |
-| [**deadlineApiListDeadlineLists**](DeadlinesApi.md#deadlineapilistdeadlinelists)   | **GET** /api/deadline/deadline-lists              | List Deadline Lists  |
-| [**deadlineApiListDeadlines**](DeadlinesApi.md#deadlineapilistdeadlines)           | **GET** /api/deadline/deadlines                   | List Deadlines       |
-| [**deadlineApiUpdateDeadline**](DeadlinesApi.md#deadlineapiupdatedeadline)         | **PUT** /api/deadline/deadlines/{deadline_id}     | Update Deadline      |
-| [**deadlineApiUpdateDeadlineList**](DeadlinesApi.md#deadlineapiupdatedeadlinelist) | **PUT** /api/deadline/deadline-lists/{list_id}    | Update Deadline List |
+| Method                                                                                     | HTTP request                                                   | Description              |
+| ------------------------------------------------------------------------------------------ | -------------------------------------------------------------- | ------------------------ |
+| [**deadlineApiCreateDeadline**](DeadlinesApi.md#deadlineapicreatedeadline)                 | **POST** /api/deadline/deadlines                               | Create Deadline          |
+| [**deadlineApiCreateDeadlineList**](DeadlinesApi.md#deadlineapicreatedeadlinelist)         | **POST** /api/deadline/deadline-lists                          | Create Deadline List     |
+| [**deadlineApiDeleteDeadline**](DeadlinesApi.md#deadlineapideletedeadline)                 | **DELETE** /api/deadline/deadlines/{deadline_id}               | Delete Deadline          |
+| [**deadlineApiDeleteDeadlineList**](DeadlinesApi.md#deadlineapideletedeadlinelist)         | **DELETE** /api/deadline/deadline-lists/{list_id}              | Delete Deadline List     |
+| [**deadlineApiGetDeadline**](DeadlinesApi.md#deadlineapigetdeadline)                       | **GET** /api/deadline/deadlines/{deadline_id}                  | Get Deadline             |
+| [**deadlineApiGetDeadlineList**](DeadlinesApi.md#deadlineapigetdeadlinelist)               | **GET** /api/deadline/deadline-lists/{list_id}                 | Get Deadline List        |
+| [**deadlineApiListDeadlineLists**](DeadlinesApi.md#deadlineapilistdeadlinelists)           | **GET** /api/deadline/deadline-lists                           | List Deadline Lists      |
+| [**deadlineApiListDeadlines**](DeadlinesApi.md#deadlineapilistdeadlines)                   | **GET** /api/deadline/deadlines                                | List Deadlines           |
+| [**deadlineApiToggleDeadlineComplete**](DeadlinesApi.md#deadlineapitoggledeadlinecomplete) | **POST** /api/deadline/deadlines/{deadline_id}/toggle_complete | Toggle Deadline Complete |
+| [**deadlineApiUpdateDeadline**](DeadlinesApi.md#deadlineapiupdatedeadline)                 | **PUT** /api/deadline/deadlines/{deadline_id}                  | Update Deadline          |
+| [**deadlineApiUpdateDeadlineList**](DeadlinesApi.md#deadlineapiupdatedeadlinelist)         | **PUT** /api/deadline/deadline-lists/{list_id}                 | Update Deadline List     |
 
 ## deadlineApiCreateDeadline
 
@@ -529,6 +530,71 @@ example().catch(console.error);
 ### Return type
 
 [**PagedDeadlineSchema**](PagedDeadlineSchema.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## deadlineApiToggleDeadlineComplete
+
+> DeadlineSchema deadlineApiToggleDeadlineComplete(deadlineId)
+
+Toggle Deadline Complete
+
+Toggle the completion status of a deadline
+
+### Example
+
+```ts
+import {
+  Configuration,
+  DeadlinesApi,
+} from '';
+import type { DeadlineApiToggleDeadlineCompleteRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const api = new DeadlinesApi();
+
+  const body = {
+    // string
+    deadlineId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+  } satisfies DeadlineApiToggleDeadlineCompleteRequest;
+
+  try {
+    const data = await api.deadlineApiToggleDeadlineComplete(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name           | Type     | Description | Notes                     |
+| -------------- | -------- | ----------- | ------------------------- |
+| **deadlineId** | `string` |             | [Defaults to `undefined`] |
+
+### Return type
+
+[**DeadlineSchema**](DeadlineSchema.md)
 
 ### Authorization
 
