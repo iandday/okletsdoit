@@ -1,24 +1,43 @@
 # Roadmap
 
+## Frontend Migration for Private sections
+- [x] Settings
+- [X] FAQ
+- [ ] Deadlines
+  - [X] List View
+  - [x] Delete List and Item
+  - [x] Toggle completion
+  - [x] Disable Django components
+- [ ] Guestlist
+- [ ] Timeline
+- [ ] Contacts
+- [ ] Dashboard
+- [ ] Inspiration
+- [ ] Ideas
+- [ ] Lists
+- [ ] Budget
+
 ## New Functionality
-- [ ] Customized Settings
+- [ ] Settings
     * [ ] Timezone
     * [x] Allow RSVP
     * [x] Show FAQ
-    * [ ] Automatically allow RSVP
+    * [ ] Enable RSVP during configured date ranges
 - [ ] Guestlist
-    * [ ] RSVP Form Configuration (Private)
-    * [ ] RSVP Form (Public)
-    * [ ] RSVP Preview
+    * [X] RSVP Form Configuration (Private)
+    * [X] RSVP Form (Public)
+    * [X ] RSVP Preview
 - [ ] Settings Page
   - [ ] Cleanup import function
 - [ ] Photo Upload
     * [ ] Upload form (Public)
     * [ ] Gallery (Public)
     * [ ] Photo approval (Private)
-- [ ] Deadlines
-    * [ ] Notification of upcoming deadlines
+- [X] Deadlines
+    * [X] Notification of upcoming deadlines
+    * [ ] Deletion of deadline list and all associated deadlines
 - [ ] Private Documentation
+    * [X] Settings
     * [ ] Dashboard
     * [ ] Ideas
     * [ ] Inspiration
@@ -59,9 +78,6 @@
 
 ## Future Enhancements
 
-### Cotton Templates
-
-* Add description button if description not in record
 
 ### Configuration Options
 

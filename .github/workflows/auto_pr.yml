@@ -1,10 +1,9 @@
-name: Generate Development Pull Request
+name: Generate Pull Requests
 
 on:
   push:
     branches-ignore:
       - main
-      - develop
 
 permissions:
   contents: write
@@ -26,7 +25,14 @@ jobs:
         id: branch_info
         run: |
           BRANCH_NAME="${GITHUB_REF#refs/heads/}"
-          BASE_BRANCH="develop"
+          
+          # Determine base branch based on current branch
+          if [ "$BRANCH_NAME" = "develop" ]; then
+            BASE_BRANCH="main"
+          else
+            BASE_BRANCH="develop"
+          fi
+          
           echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
           echo "base_branch=$BASE_BRANCH" >> $GITHUB_OUTPUT
           

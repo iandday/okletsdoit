@@ -30,10 +30,7 @@
                     {/if}
                     <h1 class="text-3xl text-accent font-bold">{configData.rsvpSuccessHeadline}</h1>
                     {#if accepted}
-                        <p class="py-6 text-primary-content">
-                            In the mean time you can learn more about the venue or find the answer to common questions
-                            about our big day
-                        </p>
+                        <p class="py-6 text-primary-content">{configData.rsvpAcceptSuccessMessage}</p>
                         <div class="flex flex-row gap-4 justify-center">
                             <a href="/venue" class="btn btn-accent text-primary-content w-32">Venue Info</a>
                             <a href="/faq" class="btn btn-accent text-primary-content w-32">FAQ</a>

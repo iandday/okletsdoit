@@ -252,13 +252,13 @@
         <div class="card-actions justify-end gap-3">
             {#if preview}
                 <div class="btn btn-error cursor-not-allowed">Back</div>
-                <div class="btn btn-success cursor-not-allowed">
+                <div class="btn bg-base-100 text-primary-content cursor-not-allowed">
                     <span class="icon-[lucide--check] size-5"></span>
                     Submit RSVP
                 </div>
             {:else}
                 <a href="/{guestData.rsvpCode}" class="btn btn-error"> Back </a>
-                <button type="submit" class="btn btn-success" disabled={submitting}>
+                <button type="submit" class="btn bg-base-100 text-primary-content" disabled={submitting}>
                     {#if submitting}
                         <span class="loading loading-spinner loading-sm"></span>
                         Submitting...

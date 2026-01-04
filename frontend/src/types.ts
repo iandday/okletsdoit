@@ -9,3 +9,9 @@ export type IComingSoon = {
     intro: string;
     expectations: IExpectations[];
 };
+
+export type IBreadcrumb = {
+    title: string;
+    href?: string;
+    icon?: string;
+};

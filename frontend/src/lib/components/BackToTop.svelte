@@ -25,6 +25,6 @@
     data-show={$show}
     on:click={toTop}
     data-tip="Back to top"
-    class="btn tooltip btn-circle translate-y-4 scale-90 opacity-0 transition-all duration-300 data-[show=true]:translate-y-0 data-[show=true]:scale-100 data-[show=true]:opacity-100">
+    class="btn bg-accent tooltip tooltip-accent btn-circle translate-y-4 scale-90 opacity-0 transition-all duration-300 data-[show=true]:translate-y-0 data-[show=true]:scale-100 data-[show=true]:opacity-100">
     <span class="icon-[lucide--arrow-up] size-5.5" />
 </button>

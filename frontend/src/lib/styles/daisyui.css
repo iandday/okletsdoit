@@ -17,11 +17,11 @@
     --color-neutral-content: #1a1f17;
     --color-info: #6b9dc9;
     --color-info-content: #f0f5fa;
-    --color-success: #819d76;
-    --color-success-content: #1a1f17;
+    --color-success: oklch(76% 0.177 163.223);
+    --color-success-content: oklch(37% 0.077 168.94);
     --color-warning: #e0960b;
     --color-warning-content: #1a0f02;
-    --color-error: #a84856;
+    --color-error: #ed4337;
     --color-error-content: #fef3f5;
 
     --color-base-100: #303a2b;
@@ -38,9 +38,33 @@
     --border: 1px;
     --card-p: 20px;
     --card-fs: var(--text-base);
+    --depth: 1;
+    --noise: 1;
+    --ck-spacking-standard: 3em;
 
     --depth: 0;
     --noise: 0;
+    /* Component styling */
+    --rounded-box: 0rem;
+    --rounded-btn: 0rem;
+    --rounded-badge: 0rem;
+    --animation-btn: 0.25s;
+    --animation-input: 0.2s;
+    --btn-focus-scale: 0.95;
+    --border-btn: 1px;
+    --tab-border: 1px;
+    --tab-radius: 0rem;
+    /* curves are bad, i guess */
+    --radius-box: 0rem;
+    --radius-card: 0rem;
+    --radius-input: 0rem;
+    --radius-field: 0rem;
+    --radius-select: 0rem;
+    --radius-toggle: 0rem;
+    --radius-badge: 0rem;
+    --radius-dropdown: 0rem;
+    --radius-modal: 0rem;
+    --radius-alert: 0rem;
 }
 
 @plugin "daisyui/theme" {

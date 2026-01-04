@@ -80,6 +80,7 @@ jobs:
           PR_NUMBER=$(gh pr list --head sync-release-${{ needs.release.outputs.version }} --json number --jq '.[0].number')
           if [ -n "$PR_NUMBER" ]; then
             gh pr merge $PR_NUMBER --auto --squash
+          fi
 
       - name: checkout develop branch again
         uses: actions/checkout@v5
