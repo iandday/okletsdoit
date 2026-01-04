@@ -5,9 +5,15 @@
     import type { ActionData, PageData } from "./$types";
 
     const { data, form }: { data: PageData; form: ActionData } = $props();
+
+    const relativeCrumbs = [
+        { title: "Deadline Lists", href: "/settings/deadline" },
+        { title: data.deadlineList.name, href: `/settings/deadline/list/${data.deadlineList.id}` },
+        { title: "Edit" },
+    ];
 </script>
 
-<ProtectedPageShell>
+<ProtectedPageShell {relativeCrumbs}>
     <div class="container mx-auto p-4 max-w-6xl">
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-3xl font-bold">Edit Deadline List</h1>
