@@ -52,8 +52,7 @@
                                 name="name"
                                 class="edit-card-field-input"
                                 value={data.deadlineList.name}
-                                required
-                                autofocus />
+                                required />
                         </div>
                     </div>
                 </div>
@@ -62,7 +61,7 @@
             <div class="flex gap-4 mt-6 justify-end">
                 <a href="/settings/deadline/list/{data.deadlineList.id}" class="btn btn-error">Cancel</a>
                 <button type="submit" class="btn btn-primary gap-2">
-                    <Icon name="save" class="size-5" />
+                    <span class="icon-[lucide--check] size-5"></span>
                     Save Changes
                 </button>
             </div>
