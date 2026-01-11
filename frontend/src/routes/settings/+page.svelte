@@ -1,5 +1,4 @@
 <script lang="ts">
-    import Icon from "$lib/components/Icon.svelte";
     import ProtectedPageShell from "$lib/components/layouts/ProtectedPageShell.svelte";
 
     const sections = [

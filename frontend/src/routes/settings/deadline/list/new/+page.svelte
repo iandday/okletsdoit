@@ -1,19 +1,19 @@
 <script lang="ts">
     import { enhance } from "$app/forms";
     import Icon from "$lib/components/Icon.svelte";
+    import ProtectedPageHeader from "$lib/components/layouts/ProtectedPageHeader.svelte";
     import ProtectedPageShell from "$lib/components/layouts/ProtectedPageShell.svelte";
     import type { ActionData } from "./$types";
 
     const { form }: { form: ActionData } = $props();
+    const relativeCrumbs = [{ title: "Deadlines", href: "/settings/deadline" }, { title: "New List" }];
 </script>
 
-<ProtectedPageShell>
+<ProtectedPageShell {relativeCrumbs}>
+    <ProtectedPageHeader
+        title="Create Deadline List"
+        description="Create a new list to organize your wedding planning deadlines" />
     <div class="container mx-auto p-4 max-w-6xl">
-        <div class="flex justify-between items-center mb-6">
-            <h1 class="text-3xl font-bold">Create Deadline List</h1>
-            <a href="/settings/deadline" class="btn btn-error">Cancel</a>
-        </div>
-
         {#if form?.error}
             <div class="alert alert-error mb-4">
                 <svg
@@ -34,9 +34,6 @@
         <form method="POST" use:enhance>
             <div class="config-card">
                 <div class="config-card-body">
-                    <p class="mb-4 text-base-content/70">
-                        Create a new list to organize your wedding planning deadlines
-                    </p>
                     <div class="grid grid-cols-1 gap-4">
                         <div class="form-control w-full">
                             <label class="edit-card-field-name" for="name">
@@ -50,7 +47,7 @@
                                 placeholder="e.g., Vendor Tasks, Guest List To-Dos"
                                 required
                                 autofocus />
-                            <span class="text-sm text-base-content/70 mt-1">
+                            <span class="text-sm edit-card-field-name/70 mt-1">
                                 Choose a descriptive name for your deadline list
                             </span>
                         </div>
