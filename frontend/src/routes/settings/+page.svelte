@@ -30,6 +30,14 @@
             href: "/settings/preview/faq",
             items: ["FAQ page preview", "RSVP flow preview"],
         },
+        {
+            title: "Contacts Management",
+            description:
+                "Organize and manage your wedding contacts and vendors along with associated uploaded documents and lists",
+            icon: "book-user",
+            href: "/settings/contact",
+            items: ["Contacts overview", "Vendor management", "Document uploads", "List associations"],
+        },
     ];
 </script>
 

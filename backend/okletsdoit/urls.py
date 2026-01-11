@@ -19,11 +19,11 @@ urlpatterns = [
     # path("deadline/", include("deadline.urls")),
     path("guestlist/", include("guestlist.urls")),
     path("attachments/", include("attachments.urls")),
-    re_path(
-        r"^(?P<code>[0-9A-F]{10})$",
-        RedirectView.as_view(url="/guestlist/rsvp/?code=%(code)s", permanent=False),
-        name="rsvp_redirect",
-    ),
+    # re_path(
+    #     r"^(?P<code>[0-9A-F]{10})$",
+    #     RedirectView.as_view(url="/guestlist/rsvp/?code=%(code)s", permanent=False),
+    #     name="rsvp_redirect",
+    # ),
     path("api/", api.urls),
     path("", include("core.urls")),
 ]

@@ -1,6 +1,14 @@
 /* tslint:disable */
 /* eslint-disable */
+export * from "./AttachmentFilterSchema";
+export * from "./AttachmentSchema";
+export * from "./AttachmentUpdateSchema";
 export * from "./CategoryContentSchema";
+export * from "./ContactCreateSchema";
+export * from "./ContactFilterSchema";
+export * from "./ContactSchema";
+export * from "./ContactUpdateSchema";
+export * from "./ContentTypeSchema";
 export * from "./DeadlineCreateSchema";
 export * from "./DeadlineFilterSchema";
 export * from "./DeadlineListCreateSchema";
@@ -16,6 +24,8 @@ export * from "./GuestGroupUpdateSchema";
 export * from "./GuestSchema";
 export * from "./GuestUpdateSchema";
 export * from "./Input";
+export * from "./PagedAttachmentSchema";
+export * from "./PagedContactSchema";
 export * from "./PagedDeadlineListSchema";
 export * from "./PagedDeadlineSchema";
 export * from "./PagedGuestGroupSchema";

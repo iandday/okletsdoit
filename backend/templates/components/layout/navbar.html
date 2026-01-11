@@ -25,8 +25,11 @@
                                        class="btn btn-ghost text-primary-content">{{ item.text }}</a>
                                 </li>
                             {% endfor %}
-                            <li><a href="/settings/faq" class="btn btn-ghost text-primary-content">FAQ</a></li>
                             <li><a href="/settings/config" class="btn btn-ghost text-primary-content" >Settings</a></li>
+                            <li><a href="/settings/contact" class="btn btn-ghost text-primary-content">Contacts</a></li>
+                            <li><a href="/settings/faq" class="btn btn-ghost text-primary-content">FAQ</a></li>
+                            <li><a href="/settings/deadline" class="btn btn-ghost text-primary-content">Deadlines</a></li>
+
                         </ul>
                     </details>
                 </li>
@@ -73,6 +76,10 @@
                             </a>
                         </li>
                     {% endfor %}
+                    <li><a href="/settings/config" class="btn btn-ghost text-primary-content" >Settings</a></li>
+                    <li><a href="/settings/contact" class="btn btn-ghost text-primary-content">Contacts</a></li>
+                    <li><a href="/settings/faq" class="btn btn-ghost text-primary-content">FAQ</a></li>
+                    <li><a href="/settings/deadline" class="btn btn-ghost text-primary-content">Deadlines</a></li>
                     <li>
                         <a href="{% url 'account_logout' %}" class="btn btn-ghost">
                             <i class="inline-block w-5 h-5 mr-2 fa fa-sign-out-alt"></i>
