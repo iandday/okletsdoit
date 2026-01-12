@@ -8,8 +8,9 @@
         description?: string;
         centered?: boolean;
         image?: string;
+        children?: import("svelte").Snippet;
     };
-    const { label, title, description, centered = true, image }: IPageShell = $props();
+    const { label, title, description, centered = true, image, children }: IPageShell = $props();
 </script>
 
 <div>
@@ -17,7 +18,7 @@
     <div class="pt-2 px-6 pb-8 lg:pb-16 xl:pb-24 2xl:pb-28">
         <div class="relative">
             <PageTitle {label} {title} {description} {centered} {image} />
-            <slot></slot>
+            {@render children?.()}
         </div>
     </div>
 </div>

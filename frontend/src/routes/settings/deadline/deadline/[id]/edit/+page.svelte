@@ -1,6 +1,7 @@
 <script lang="ts">
     import { enhance } from "$app/forms";
     import Icon from "$lib/components/Icon.svelte";
+    import ProtectedPageHeader from "$lib/components/layouts/ProtectedPageHeader.svelte";
     import ProtectedPageShell from "$lib/components/layouts/ProtectedPageShell.svelte";
     import type { ActionData, PageData } from "./$types";
 
@@ -33,12 +34,8 @@
 </script>
 
 <ProtectedPageShell {relativeCrumbs}>
+    <ProtectedPageHeader title="Edit Deadline" description="Update the details of your deadline" />
     <div class="container mx-auto p-4 max-w-6xl">
-        <div class="flex justify-between items-center mb-6">
-            <h1 class="text-3xl font-bold">Edit Deadline</h1>
-            <a href={backUrl} class="btn btn-error">Cancel</a>
-        </div>
-
         {#if form?.error}
             <div class="alert alert-error mb-4">
                 <svg

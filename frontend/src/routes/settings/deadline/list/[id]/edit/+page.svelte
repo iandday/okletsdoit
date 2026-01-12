@@ -1,19 +1,22 @@
 <script lang="ts">
     import { enhance } from "$app/forms";
     import Icon from "$lib/components/Icon.svelte";
+    import ProtectedPageHeader from "$lib/components/layouts/ProtectedPageHeader.svelte";
     import ProtectedPageShell from "$lib/components/layouts/ProtectedPageShell.svelte";
     import type { ActionData, PageData } from "./$types";
 
     const { data, form }: { data: PageData; form: ActionData } = $props();
+
+    const relativeCrumbs = [
+        { title: "Deadline Lists", href: "/settings/deadline" },
+        { title: data.deadlineList.name, href: `/settings/deadline/list/${data.deadlineList.id}` },
+        { title: "Edit" },
+    ];
 </script>
 
-<ProtectedPageShell>
+<ProtectedPageShell {relativeCrumbs}>
+    <ProtectedPageHeader title="Edit Deadline List" description="Update the name of your deadline list" />
     <div class="container mx-auto p-4 max-w-6xl">
-        <div class="flex justify-between items-center mb-6">
-            <h1 class="text-3xl font-bold">Edit Deadline List</h1>
-            <a href="/settings/deadline/list/{data.deadlineList.id}" class="btn btn-error">Cancel</a>
-        </div>
-
         {#if form?.error}
             <div class="alert alert-error mb-4">
                 <svg
@@ -46,8 +49,7 @@
                                 name="name"
                                 class="edit-card-field-input"
                                 value={data.deadlineList.name}
-                                required
-                                autofocus />
+                                required />
                         </div>
                     </div>
                 </div>
@@ -56,7 +58,7 @@
             <div class="flex gap-4 mt-6 justify-end">
                 <a href="/settings/deadline/list/{data.deadlineList.id}" class="btn btn-error">Cancel</a>
                 <button type="submit" class="btn btn-primary gap-2">
-                    <Icon name="save" class="size-5" />
+                    <span class="icon-[lucide--check] size-5"></span>
                     Save Changes
                 </button>
             </div>
