@@ -68,10 +68,10 @@
     ];
 
     const legacyLinks: IMenuItem[] = [
-        {
-            title: "Dashboard",
-            href: "/planning/",
-        },
+        // {
+        //     title: "Dashboard",
+        //     href: "/planning/",
+        // },
         {
             title: "Inspiration",
             href: "/inspiration/",
