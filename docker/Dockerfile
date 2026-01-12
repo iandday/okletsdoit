@@ -9,8 +9,8 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
     python3-dev \
     libffi-dev \
-    postgresql-client-17=17.6-0+deb13u1  \
-    libpq5=17.6-0+deb13u1   \
+    postgresql-client-17 \
+    libpq5 \
     libsqlite3-0 \
     libpam-modules \
     libpam-runtime \
@@ -65,8 +65,8 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
     python3-dev \
     libffi-dev \
-    postgresql-client-17=17.6-0+deb13u1  \
-    libpq5=17.6-0+deb13u1   \
+    postgresql-client-17 \
+    libpq5 \
     gcc \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
@@ -96,8 +96,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 RUN apt-get update \
     && apt-get upgrade -y \
     && apt-get install -y --no-install-recommends \
-    postgresql-client-17=17.6-0+deb13u1  \
-    libpq5=17.6-0+deb13u1   \
+    postgresql-client-17 \
+    libpq5 \
     libsqlite3-0 \
     libpam-modules \
     libpam-runtime \
