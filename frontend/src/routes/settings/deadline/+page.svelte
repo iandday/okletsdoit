@@ -1,5 +1,7 @@
 <script lang="ts">
     import Icon from "$lib/components/Icon.svelte";
+    import CreateObject from "$lib/components/buttons/CreateObject.svelte";
+    import ProtectedPageHeader from "$lib/components/layouts/ProtectedPageHeader.svelte";
     import ProtectedPageShell from "$lib/components/layouts/ProtectedPageShell.svelte";
     import type { PageData } from "./$types";
 
@@ -8,17 +10,11 @@
 </script>
 
 <ProtectedPageShell {relativeCrumbs}>
+    <ProtectedPageHeader title="Deadline Summary" description="Manage your wedding planning deadlines and tasks" />
     <!-- Header -->
     <div class="flex items-center justify-between mb-8">
         <div>
-            <h1 class="text-3xl font-bold text-base-content">Deadline Summary</h1>
-            <p class="text-base-content/70 mt-2">Manage your wedding planning deadlines and tasks</p>
-        </div>
-        <div>
-            <a href="/settings/deadline/list/new" class="btn btn-primary gap-2">
-                <span class="icon-[lucide--plus] size-5"></span>
-                New List
-            </a>
+            <CreateObject href="/settings/deadline/list/new" label="New List" />
             <a href="/settings/deadline/all" class="btn btn-primary gap-2">
                 <span class="icon-[lucide--calendar-check] size-5"></span>
                 View All Deadlines</a>

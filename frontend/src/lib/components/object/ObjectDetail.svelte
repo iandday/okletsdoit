@@ -7,8 +7,8 @@
     type IObjectDetail<T> = {
         relativeCrumbs?: IBreadcrumb[];
         title?: string;
-        status: boolean;
-        statusText: string;
+        status?: boolean | null;
+        statusText?: string | null;
         editLink: string;
         deleteAction?: string;
         deleteRedirect?: string;
@@ -23,8 +23,8 @@
     const {
         relativeCrumbs = [],
         title,
-        status,
-        statusText,
+        status = null,
+        statusText = null,
         editLink,
         deleteAction,
         deleteRedirect,
@@ -41,7 +41,7 @@
     <div class="mb-6 flex items-center justify-between">
         <div>
             <h1 class="text-3xl font-bold text-base-content">{title}</h1>
-            <ObjectStatus text={statusText} {status} />
+            {#if status !== null}<ObjectStatus text={statusText} {status} />{/if}
         </div>
         <div class="flex gap-2">
             <a class="btn btn-success gap-2" href={editLink}> Edit </a>

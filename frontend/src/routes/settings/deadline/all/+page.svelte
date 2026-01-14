@@ -1,5 +1,6 @@
 <script lang="ts">
     import Icon from "$lib/components/Icon.svelte";
+    import ProtectedPageHeader from "$lib/components/layouts/ProtectedPageHeader.svelte";
     import ProtectedPageShell from "$lib/components/layouts/ProtectedPageShell.svelte";
     import type { PageData } from "./$types";
 
@@ -21,32 +22,27 @@
 </script>
 
 <ProtectedPageShell {relativeCrumbs}>
-    <!-- Header -->
-    <div class="flex items-center justify-between mb-8">
-        <div>
-            <h1 class="text-3xl font-bold text-base-content">All Deadlines</h1>
-            <p class="text-base-content/70 mt-2">
+    <ProtectedPageHeader
+        title="All Deadlines"
+        description={data.filterListId
+            ? "Showing deadlines from selected list"
+            : "View and manage all your wedding planning deadlines"}>
+        <!-- Header -->
+        <div class="flex items-center justify-between mb-8">
+            <div class="flex gap-2">
                 {#if data.filterListId}
-                    Showing deadlines from selected list
-                {:else}
-                    View and manage all your wedding planning deadlines
+                    <a href="/settings/deadline/deadline/all" class="btn btn-ghost gap-2">
+                        <Icon name="x" class="size-5" />
+                        Clear Filter
+                    </a>
                 {/if}
-            </p>
-        </div>
-        <div class="flex gap-2">
-            {#if data.filterListId}
-                <a href="/settings/deadline/deadline/all" class="btn btn-ghost gap-2">
-                    <Icon name="x" class="size-5" />
-                    Clear Filter
+                <a href="/settings/deadline" class="btn btn-primary gap-2">
+                    <Icon name="arrow-left" class="size-5" />
+                    Back to Lists
                 </a>
-            {/if}
-            <a href="/settings/deadline" class="btn btn-primary gap-2">
-                <Icon name="arrow-left" class="size-5" />
-                Back to Lists
-            </a>
+            </div>
         </div>
-    </div>
-
+    </ProtectedPageHeader>
     {#if data.deadlines.items.length === 0}
         <!-- Empty State -->
         <div class="card bg-base-100 border border-base-300 shadow-lg">

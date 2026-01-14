@@ -1,0 +1,42 @@
+# ContactCreateSchema
+
+## Properties
+
+| Name       | Type   |
+| ---------- | ------ |
+| `name`     | string |
+| `company`  | string |
+| `email`    | string |
+| `phone`    | string |
+| `website`  | string |
+| `category` | string |
+| `notes`    | string |
+
+## Example
+
+```typescript
+import type { ContactCreateSchema } from "";
+
+// TODO: Update the object below with actual values
+const example = {
+    name: null,
+    company: null,
+    email: null,
+    phone: null,
+    website: null,
+    category: null,
+    notes: null,
+} satisfies ContactCreateSchema;
+
+console.log(example);
+
+// Convert the instance to a JSON string
+const exampleJSON: string = JSON.stringify(example);
+console.log(exampleJSON);
+
+// Parse the JSON string back to an object
+const exampleParsed = JSON.parse(exampleJSON) as ContactCreateSchema;
+console.log(exampleParsed);
+```
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
