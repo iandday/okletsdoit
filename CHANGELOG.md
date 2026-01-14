@@ -1,6 +1,48 @@
 # CHANGELOG
 
 
+## v0.7.0 (2026-01-14)
+
+### Bug Fixes
+
+- **Core**: Cleanup nav
+  ([`e6b1322`](https://github.com/iandday/okletsdoit/commit/e6b13220ab6cfec5d21dc3e4f607685dfd79a6ce))
+
+- **Deadline**: :art: update breadcrumbs
+  ([`5e04b12`](https://github.com/iandday/okletsdoit/commit/5e04b1233a5ebe998973f25287c57918069e6963))
+
+- **Core**: :ambulance: fix email selection
+  ([`1d90bfc`](https://github.com/iandday/okletsdoit/commit/1d90bfc4d2df3b25c309a803a5ef19573014a6ac))
+
+### Build System
+
+- :rocket: version bump
+  ([`3e1a4cd`](https://github.com/iandday/okletsdoit/commit/3e1a4cdfc34452092bb435d9045cc5fe83704afe))
+
+### Chores
+
+- Sync files from main after release ([#53](https://github.com/iandday/okletsdoit/pull/53),
+  [`99be00d`](https://github.com/iandday/okletsdoit/commit/99be00d264e6cbbb01d4ca8259be1013af10adf3))
+
+Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
+
+### Code Style
+
+- **Core**: :art: style update
+  ([`5ddde4d`](https://github.com/iandday/okletsdoit/commit/5ddde4d9b793e11d6da0a0e3321e6c02a1754eef))
+
+### Features
+
+- **Contacts**: :lipstick: migrate contacts to frontend
+  ([`92e4dce`](https://github.com/iandday/okletsdoit/commit/92e4dceb5b1391c23940b502c5931c8c0c0438fb))
+
+- **Core**: :art: finish protectedpageheader transition
+  ([`ecdc9ab`](https://github.com/iandday/okletsdoit/commit/ecdc9ab67c686c0cd8181958d89f2d0c0b650412))
+
+- **Core**: :art: add ProtectedPageHeader
+  ([`cd92de2`](https://github.com/iandday/okletsdoit/commit/cd92de29ad7ff12f71a6dfd3d9265f3b59fa3fa4))
+
+
 ## v0.6.1 (2026-01-04)
 
 ### Bug Fixes
