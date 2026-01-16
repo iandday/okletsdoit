@@ -130,16 +130,16 @@
                         <!-- Attachments Section -->
                         {#if contact.attachments && contact.attachments.length > 0}
                             <div class="divider my-4">Attachments ({contact.attachments.length})</div>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                            <div class="grid grid-cols-1 gap-3">
                                 {#each contact.attachments as attachment (attachment.id)}
                                     <div class="flex items-center gap-2 p-3 bg-base-200 rounded-lg">
                                         <span class="icon-[lucide--file] size-5 list-card-item"></span>
                                         <div class="flex-1 min-w-0">
-                                            <p class="text-sm font-medium truncate">
+                                            <p class="text-sm font-medium">
                                                 {attachment.name || attachment.filename}
                                             </p>
                                             {#if attachment.description}
-                                                <p class="text-xs text-base-content/60 truncate">
+                                                <p class="text-xs truncate">
                                                     {attachment.description}
                                                 </p>
                                             {/if}
