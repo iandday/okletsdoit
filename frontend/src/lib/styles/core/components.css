@@ -31,11 +31,11 @@
     }
 }
 
-.timeline:not(.timeline-vertical) > li > hr {
+.timeline:not(.timeline-vertical)>li>hr {
     height: 2px;
 }
 
-.timeline.timeline-vertical > li > hr {
+.timeline.timeline-vertical>li>hr {
     width: 2px;
 }
 
@@ -170,7 +170,7 @@ input:-webkit-autofill:active {
 }
 
 .list-card-actions {
-    @apply card-actions border-base-300 mt-4 justify-end border-t pt-4;
+    @apply card-actions border-base-300 justify-end px-4 pb-4;
 }
 
 /* start detail object view */

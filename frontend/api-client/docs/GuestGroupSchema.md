@@ -17,7 +17,9 @@
 | `state`               | string |
 | `zipCode`             | string |
 | `relationship`        | string |
+| `relationshipDisplay` | string |
 | `priority`            | number |
+| `priorityDisplay`     | string |
 | `rsvpCode`            | string |
 | `groupCount`          | number |
 | `groupStandard`       | number |
@@ -49,7 +51,9 @@ const example = {
     state: null,
     zipCode: null,
     relationship: null,
+    relationshipDisplay: null,
     priority: null,
+    priorityDisplay: null,
     rsvpCode: null,
     groupCount: null,
     groupStandard: null,

@@ -31,6 +31,10 @@ NEVER place throw redirect() inside a try-catch block
 ALWAYS move redirects outside the try-catch to prevent them from being caught as errors
 If you need data from the API call for the redirect URL, store it in a variable declared before the try block.  The redirect is a Response object that should propagate naturally through SvelteKit's request handling - catching it breaks the flow.
 
+## Icon Usage
+- **Icon component**: Only use `<Icon name={variable} />` when the icon name comes from API data, props, or variables
+- **Hardcoded icons**: Always use `<span class="icon-[lucide--icon-name] size-X"></span>` for any hardcoded icon names
+- Never use `<Icon name="hardcoded-string" />` - this is incorrect
 
 When connected to the svelte-llm MCP server, you have access to comprehensive Svelte 5 and SvelteKit documentation. Here's how to use the available tools effectively:
 

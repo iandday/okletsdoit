@@ -99,10 +99,22 @@ export interface GuestGroupSchema {
     relationship: string;
     /**
      *
+     * @type {string}
+     * @memberof GuestGroupSchema
+     */
+    relationshipDisplay: string;
+    /**
+     *
      * @type {number}
      * @memberof GuestGroupSchema
      */
     priority: number;
+    /**
+     *
+     * @type {string}
+     * @memberof GuestGroupSchema
+     */
+    priorityDisplay: string;
     /**
      *
      * @type {string}
@@ -182,7 +194,9 @@ export function instanceOfGuestGroupSchema(value: object): value is GuestGroupSc
     if (!("state" in value) || value["state"] === undefined) return false;
     if (!("zipCode" in value) || value["zipCode"] === undefined) return false;
     if (!("relationship" in value) || value["relationship"] === undefined) return false;
+    if (!("relationshipDisplay" in value) || value["relationshipDisplay"] === undefined) return false;
     if (!("priority" in value) || value["priority"] === undefined) return false;
+    if (!("priorityDisplay" in value) || value["priorityDisplay"] === undefined) return false;
     if (!("rsvpCode" in value) || value["rsvpCode"] === undefined) return false;
     if (!("groupCount" in value) || value["groupCount"] === undefined) return false;
     if (!("groupStandard" in value) || value["groupStandard"] === undefined) return false;
@@ -218,7 +232,9 @@ export function GuestGroupSchemaFromJSONTyped(json: any, ignoreDiscriminator: bo
         state: json["state"],
         zipCode: json["zip_code"],
         relationship: json["relationship"],
+        relationshipDisplay: json["relationship_display"],
         priority: json["priority"],
+        priorityDisplay: json["priority_display"],
         rsvpCode: json["rsvp_code"],
         groupCount: json["group_count"],
         groupStandard: json["group_standard"],
@@ -258,7 +274,9 @@ export function GuestGroupSchemaToJSONTyped(
         state: value["state"],
         zip_code: value["zipCode"],
         relationship: value["relationship"],
+        relationship_display: value["relationshipDisplay"],
         priority: value["priority"],
+        priority_display: value["priorityDisplay"],
         rsvp_code: value["rsvpCode"],
         group_count: value["groupCount"],
         group_standard: value["groupStandard"],

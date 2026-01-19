@@ -22,7 +22,7 @@ class GuestGroup(models.Model):
     slug = models.SlugField(max_length=250, null=True, blank=True, unique=True)
     name = models.CharField(max_length=100)
     address_name = models.CharField(max_length=250, blank=True)
-    notes = models.TextField(blank=True)
+    notes = models.TextField(blank=True, null=True)
     email = models.EmailField(blank=True)
     phone = models.CharField(max_length=20, blank=True)
     address = models.TextField(blank=True)
@@ -116,7 +116,7 @@ class Guest(models.Model):
         default=False, help_text="Indicates if this guest will use overnight accommodation"
     )
     vip = models.BooleanField(default=False, help_text="Indicates if this guest is a VIP")
-    notes = models.TextField(blank=True)
+    notes = models.TextField(blank=True, null=True)
     created_by = models.ForeignKey(User, related_name="created_by_guest", on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_by = models.ForeignKey(

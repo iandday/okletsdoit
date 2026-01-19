@@ -36,7 +36,7 @@ class GuestGroupSchema(Schema):
     slug: str
     name: str
     address_name: str
-    notes: str
+    notes: Optional[str] = None
     email: str
     phone: str
     address: str
@@ -45,7 +45,9 @@ class GuestGroupSchema(Schema):
     state: str
     zip_code: str
     relationship: str
+    relationship_display: str
     priority: int
+    priority_display: str
     rsvp_code: str
     group_count: int
     group_standard: int
@@ -56,6 +58,14 @@ class GuestGroupSchema(Schema):
     group_declined_count: int
     created_at: datetime
     updated_at: datetime
+
+    @staticmethod
+    def resolve_relationship_display(obj):
+        return obj.get_relationship_display()
+
+    @staticmethod
+    def resolve_priority_display(obj):
+        return obj.get_priority_display()
 
 
 class GuestGroupFilterSchema(FilterSchema):
@@ -114,7 +124,7 @@ class GuestSchema(Schema):
     accept_vip: bool
     accommodation: bool
     vip: bool
-    notes: str
+    notes: Optional[str] = None
     created_at: datetime
     updated_at: datetime
 
@@ -302,6 +312,10 @@ def create_guest(request, payload: GuestCreateSchema):
     data = payload.dict()
     group_id = data.pop("group_id", None)
 
+    # Validate group_id if provided
+    if group_id is not None:
+        group = get_object_or_404(GuestGroup, id=group_id, is_deleted=False)
+
     if request.user.is_authenticated:
         data["created_by"] = request.user
     else:
@@ -313,6 +327,7 @@ def create_guest(request, payload: GuestCreateSchema):
         **data,
         group_id=group_id,
     )
+
     return guest
 
 
@@ -321,7 +336,12 @@ def update_guest(request, guest_id: UUID, payload: GuestUpdateSchema):
     """Update a guest"""
     guest = get_object_or_404(Guest, id=guest_id, is_deleted=False)
 
-    for attr, value in payload.dict(exclude_unset=True).items():
+    data = payload.dict(exclude_unset=True)
+    # Validate group_id if it's being changed
+    if "group_id" in data:
+        get_object_or_404(GuestGroup, id=data["group_id"], is_deleted=False)
+
+    for attr, value in data.items():
         setattr(guest, attr, value)
 
     if request.user.is_authenticated:
@@ -374,6 +394,9 @@ def create_rsvp_submission(request, payload: RsvpSubmissionCreateSchema):
     data = payload.dict()
     guest_group_id = data.pop("guest_group_id")
 
+    # Validate that the guest_group exists
+    get_object_or_404(GuestGroup, id=guest_group_id, is_deleted=False)
+
     submission = RsvpSubmission.objects.create(guest_group_id=guest_group_id, **data)
     return submission
 
@@ -383,7 +406,12 @@ def update_rsvp_submission(request, submission_id: UUID, payload: RsvpSubmission
     """Update an RSVP submission"""
     submission = get_object_or_404(RsvpSubmission, id=submission_id)
 
-    for attr, value in payload.dict(exclude_unset=True).items():
+    data = payload.dict(exclude_unset=True)
+    # Validate guest_group_id if it's being changed
+    if "guest_group_id" in data:
+        get_object_or_404(GuestGroup, id=data["guest_group_id"], is_deleted=False)
+
+    for attr, value in data.items():
         setattr(submission, attr, value)
 
     submission.save()
@@ -526,6 +554,10 @@ def create_rsvp_response(request, payload: RsvpQuestionResponseCreateSchema):
     """Create a new RSVP question response"""
     data = payload.dict()
     choice_ids = data.pop("response_choice_ids", [])
+
+    # Validate that the submission and question exist
+    get_object_or_404(RsvpSubmission, id=data["submission_id"], is_deleted=False)
+    get_object_or_404(RsvpAcceptanceQuestion, id=data["question_id"], is_deleted=False)
 
     rsvp_response = RsvpQuestionResponse.objects.create(
         submission_id=data["submission_id"],
