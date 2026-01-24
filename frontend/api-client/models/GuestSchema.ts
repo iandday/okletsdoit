@@ -102,7 +102,7 @@ export interface GuestSchema {
      * @type {string}
      * @memberof GuestSchema
      */
-    notes: string;
+    notes?: string | null;
     /**
      *
      * @type {Date}
@@ -133,7 +133,6 @@ export function instanceOfGuestSchema(value: object): value is GuestSchema {
     if (!("acceptVip" in value) || value["acceptVip"] === undefined) return false;
     if (!("accommodation" in value) || value["accommodation"] === undefined) return false;
     if (!("vip" in value) || value["vip"] === undefined) return false;
-    if (!("notes" in value) || value["notes"] === undefined) return false;
     if (!("createdAt" in value) || value["createdAt"] === undefined) return false;
     if (!("updatedAt" in value) || value["updatedAt"] === undefined) return false;
     return true;
@@ -161,7 +160,7 @@ export function GuestSchemaFromJSONTyped(json: any, ignoreDiscriminator: boolean
         acceptVip: json["accept_vip"],
         accommodation: json["accommodation"],
         vip: json["vip"],
-        notes: json["notes"],
+        notes: json["notes"] == null ? undefined : json["notes"],
         createdAt: new Date(json["created_at"]),
         updatedAt: new Date(json["updated_at"]),
     };

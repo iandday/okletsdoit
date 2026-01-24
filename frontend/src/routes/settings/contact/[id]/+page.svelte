@@ -1,6 +1,5 @@
 <script lang="ts">
     import { enhance } from "$app/forms";
-    import Icon from "$lib/components/Icon.svelte";
     import ObjectDetail from "$lib/components/object/ObjectDetail.svelte";
     import type { PageData } from "./$types";
 
@@ -58,13 +57,12 @@
                 {/if}
             </div>
 
-            <!-- Contact Information -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {#if data.contact.email}
                     <div>
                         <div class="detail-card-field-name">Email</div>
                         <div class="detail-card-field-value flex items-center gap-2">
-                            <Icon name="mail" class="size-4 text-base-content/50" />
+                            <span class="icon-[lucide--mail] size-4 text-base-content"></span>
                             <a href="mailto:{data.contact.email}" class="link link-hover">{data.contact.email}</a>
                         </div>
                     </div>
@@ -74,7 +72,7 @@
                     <div>
                         <div class="detail-card-field-name">Phone</div>
                         <div class="detail-card-field-value flex items-center gap-2">
-                            <Icon name="phone" class="size-4 text-base-content/50" />
+                            <span class="icon-[lucide--phone] size-4 text-base-content"></span>
                             <a href="tel:{data.contact.phone}" class="link link-hover">{data.contact.phone}</a>
                         </div>
                     </div>
@@ -84,7 +82,7 @@
                     <div>
                         <div class="detail-card-field-name">Website</div>
                         <div class="detail-card-field-value flex items-center gap-2">
-                            <Icon name="globe" class="size-4 text-base-content/50" />
+                            <span class="icon-[lucide--globe] size-4 text-base-content"></span>
                             <a
                                 href={data.contact.website}
                                 target="_blank"
@@ -115,7 +113,7 @@
                         type="button"
                         onclick={() => (showUploadForm = !showUploadForm)}
                         class="btn btn-sm btn-primary gap-2">
-                        <Icon name={showUploadForm ? "x" : "plus"} class="size-4" />
+                        <span class="icon-[lucide--plus] size-4"></span>
                         {showUploadForm ? "Cancel" : "Add Attachment"}
                     </button>
                 </div>
@@ -187,7 +185,7 @@
                                         <span class="loading loading-spinner loading-sm"></span>
                                         Uploading...
                                     {:else}
-                                        <Icon name="upload" class="size-4" />
+                                        <span class="icon-[lucide--upload] size-4"></span>
                                         Upload
                                     {/if}
                                 </button>

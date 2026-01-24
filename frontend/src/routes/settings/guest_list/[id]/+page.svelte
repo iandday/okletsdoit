@@ -66,6 +66,12 @@
                         <span class="badge badge-primary">{data.guestGroup.relationshipDisplay}</span>
                     </div>
                 </div>
+                <div>
+                    <div class="detail-card-field-name">Associated With</div>
+                    <div class="detail-card-field-value">
+                        <span class="badge badge-primary">{data.guestGroup.associatedWithFirstName}</span>
+                    </div>
+                </div>
 
                 <div>
                     <div class="detail-card-field-name">Priority</div>
@@ -352,9 +358,7 @@
                                 {/if}
                             </div>
                             <div class="list-card-actions flex gap-2">
-                                <ViewDetails
-                                    href={`/settings/guest_list/${data.guestGroup.id}/guests/${guest.id}`}
-                                    label="View Details" />
+                                <ViewDetails href={`/settings/guest/${guest.id}`} label="View Details" />
                                 <DeleteObject
                                     action="?/deleteGuest"
                                     href="#"

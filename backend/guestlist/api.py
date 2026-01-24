@@ -48,6 +48,9 @@ class GuestGroupSchema(Schema):
     relationship_display: str
     priority: int
     priority_display: str
+    associated_with_id: Optional[UUID] = None
+    associated_with_first_name: Optional[str] = None
+    associated_with_last_name: Optional[str] = None
     rsvp_code: str
     group_count: int
     group_standard: int
@@ -66,6 +69,14 @@ class GuestGroupSchema(Schema):
     @staticmethod
     def resolve_priority_display(obj):
         return obj.get_priority_display()
+
+    @staticmethod
+    def resolve_associated_with_first_name(obj):
+        return obj.associated_with.first_name if obj.associated_with else None
+
+    @staticmethod
+    def resolve_associated_with_last_name(obj):
+        return obj.associated_with.last_name if obj.associated_with else None
 
 
 class GuestGroupFilterSchema(FilterSchema):
@@ -93,6 +104,7 @@ class GuestGroupCreateSchema(Schema):
     zip_code: Optional[str] = ""
     relationship: Optional[str] = "Rel"
     priority: Optional[int] = 2
+    associated_with_id: Optional[UUID] = None
 
 
 class GuestGroupUpdateSchema(Schema):
@@ -108,6 +120,7 @@ class GuestGroupUpdateSchema(Schema):
     zip_code: Optional[str] = None
     relationship: Optional[str] = None
     priority: Optional[int] = None
+    associated_with_id: Optional[UUID] = None
 
 
 class GuestSchema(Schema):

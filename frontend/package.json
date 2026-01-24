@@ -58,6 +58,7 @@
         "@iconify/tailwind4": "^1.2.0",
         "motion": "^12.23.26",
         "simplebar": "^6.3.3",
+        "svelte-headless-table": "^0.18.3",
         "swiper": "^11.2.10"
     }
 }
