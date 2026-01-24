@@ -34,6 +34,7 @@
             fields: [
                 { name: "allowPhotos", label: "Allow Photos" },
                 { name: "showFaq", label: "Show FAQ" },
+                { name: "showVenue", label: "Show Venue" },
                 { name: "weddingDate", label: "Wedding Date" },
             ],
         },

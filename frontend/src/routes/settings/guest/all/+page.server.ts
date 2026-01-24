@@ -56,10 +56,7 @@ export const load: PageServerLoad = async () => {
             return allGroups;
         };
 
-        const [guests, groups] = await Promise.all([
-            fetchAllGuests(),
-            fetchAllGroups(),
-        ]);
+        const [guests, groups] = await Promise.all([fetchAllGuests(), fetchAllGroups()]);
 
         // Create a map of group ID to group info for quick lookup
         const groupMap = new Map(
@@ -72,7 +69,7 @@ export const load: PageServerLoad = async () => {
                     relationship: group.relationship,
                     relationshipDisplay: group.relationshipDisplay,
                 },
-            ])
+            ]),
         );
 
         // Attach group information to each guest

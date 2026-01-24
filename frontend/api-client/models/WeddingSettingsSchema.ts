@@ -45,6 +45,12 @@ export interface WeddingSettingsSchema {
     showFaq: boolean;
     /**
      *
+     * @type {boolean}
+     * @memberof WeddingSettingsSchema
+     */
+    showVenue: boolean;
+    /**
+     *
      * @type {Date}
      * @memberof WeddingSettingsSchema
      */
@@ -179,6 +185,7 @@ export function instanceOfWeddingSettingsSchema(value: object): value is Wedding
     if (!("allowRsvp" in value) || value["allowRsvp"] === undefined) return false;
     if (!("allowPhotos" in value) || value["allowPhotos"] === undefined) return false;
     if (!("showFaq" in value) || value["showFaq"] === undefined) return false;
+    if (!("showVenue" in value) || value["showVenue"] === undefined) return false;
     if (!("rsvpAcceptButton" in value) || value["rsvpAcceptButton"] === undefined) return false;
     if (!("rsvpDeclineButton" in value) || value["rsvpDeclineButton"] === undefined) return false;
     if (!("rsvpAttendingLabel" in value) || value["rsvpAttendingLabel"] === undefined) return false;
@@ -209,6 +216,7 @@ export function WeddingSettingsSchemaFromJSONTyped(json: any, ignoreDiscriminato
         allowRsvp: json["allow_rsvp"],
         allowPhotos: json["allow_photos"],
         showFaq: json["show_faq"],
+        showVenue: json["show_venue"],
         weddingDate: json["wedding_date"] == null ? undefined : new Date(json["wedding_date"]),
         rsvpStartDate: json["rsvp_start_date"] == null ? undefined : new Date(json["rsvp_start_date"]),
         rsvpEndDate: json["rsvp_end_date"] == null ? undefined : new Date(json["rsvp_end_date"]),
@@ -250,6 +258,7 @@ export function WeddingSettingsSchemaToJSONTyped(
         allow_rsvp: value["allowRsvp"],
         allow_photos: value["allowPhotos"],
         show_faq: value["showFaq"],
+        show_venue: value["showVenue"],
         wedding_date:
             value["weddingDate"] == null ? value["weddingDate"] : value["weddingDate"].toISOString().substring(0, 10),
         rsvp_start_date:

@@ -553,7 +553,7 @@ class WeddingSettingsAdmin(SimpleHistoryAdmin):
     fieldsets = (
         (
             "General Settings",
-            {"fields": ("wedding_date", "allow_rsvp", "allow_photos", "show_faq", "default_data_loaded")},
+            {"fields": ("wedding_date", "allow_rsvp", "allow_photos", "show_faq", "show_venue", "default_data_loaded")},
         ),
         (
             "RSVP Button Text",

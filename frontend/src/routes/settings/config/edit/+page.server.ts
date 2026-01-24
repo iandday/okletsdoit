@@ -15,11 +15,11 @@ export const load: PageServerLoad = async ({ parent }) => {
     return {
         configData: configData
             ? {
-                  ...configData,
-                  weddingDate: formatDateForInput(configData.weddingDate),
-                  rsvpStartDate: formatDateForInput(configData.rsvpStartDate),
-                  rsvpEndDate: formatDateForInput(configData.rsvpEndDate),
-              }
+                ...configData,
+                weddingDate: formatDateForInput(configData.weddingDate),
+                rsvpStartDate: formatDateForInput(configData.rsvpStartDate),
+                rsvpEndDate: formatDateForInput(configData.rsvpEndDate),
+            }
             : null,
     };
 };
@@ -41,6 +41,7 @@ export const actions = {
             allowRsvp: formData.get("allowRsvp") === "on",
             allowPhotos: formData.get("allowPhotos") === "on",
             showFaq: formData.get("showFaq") === "on",
+            showVenue: formData.get("showVenue") === "on",
             rsvpStartDate: parseDate(formData.get("rsvpStartDate")),
             rsvpEndDate: parseDate(formData.get("rsvpEndDate")),
             rsvpAcceptButton: formData.get("rsvpAcceptButton") as string,

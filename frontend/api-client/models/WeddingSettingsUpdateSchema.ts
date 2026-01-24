@@ -51,6 +51,12 @@ export interface WeddingSettingsUpdateSchema {
     showFaq?: boolean | null;
     /**
      *
+     * @type {boolean}
+     * @memberof WeddingSettingsUpdateSchema
+     */
+    showVenue?: boolean | null;
+    /**
+     *
      * @type {Date}
      * @memberof WeddingSettingsUpdateSchema
      */
@@ -195,6 +201,7 @@ export function WeddingSettingsUpdateSchemaFromJSONTyped(
         allowPhotos: json["allow_photos"] == null ? undefined : json["allow_photos"],
         weddingDate: json["wedding_date"] == null ? undefined : new Date(json["wedding_date"]),
         showFaq: json["show_faq"] == null ? undefined : json["show_faq"],
+        showVenue: json["show_venue"] == null ? undefined : json["show_venue"],
         rsvpStartDate: json["rsvp_start_date"] == null ? undefined : new Date(json["rsvp_start_date"]),
         rsvpEndDate: json["rsvp_end_date"] == null ? undefined : new Date(json["rsvp_end_date"]),
         rsvpAcceptButton: json["rsvp_accept_button"] == null ? undefined : json["rsvp_accept_button"],
@@ -242,6 +249,7 @@ export function WeddingSettingsUpdateSchemaToJSONTyped(
         wedding_date:
             value["weddingDate"] == null ? value["weddingDate"] : value["weddingDate"].toISOString().substring(0, 10),
         show_faq: value["showFaq"],
+        show_venue: value["showVenue"],
         rsvp_start_date:
             value["rsvpStartDate"] == null
                 ? value["rsvpStartDate"]

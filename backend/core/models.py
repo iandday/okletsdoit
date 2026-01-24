@@ -289,6 +289,7 @@ class WeddingSettings(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     default_data_loaded = models.BooleanField(default=False)
     show_faq = models.BooleanField(default=False, help_text="Enable or disable FAQ section on the site")
+    show_venue = models.BooleanField(default=False, help_text="Enable or disable Venue section on the site")
     wedding_date = models.DateField(null=True, blank=True)
     allow_rsvp = models.BooleanField(default=False, help_text="Enable or disable RSVP functionality")
     allow_photos = models.BooleanField(default=False, help_text="Enable or disable Photo Sharing functionality")
