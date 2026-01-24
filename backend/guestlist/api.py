@@ -327,7 +327,7 @@ def create_guest(request, payload: GuestCreateSchema):
 
     # Validate group_id if provided
     if group_id is not None:
-        group = get_object_or_404(GuestGroup, id=group_id, is_deleted=False)
+        _ = get_object_or_404(GuestGroup, id=group_id, is_deleted=False)
 
     if request.user.is_authenticated:
         data["created_by"] = request.user
@@ -570,7 +570,7 @@ def create_rsvp_response(request, payload: RsvpQuestionResponseCreateSchema):
 
     # Validate that the submission and question exist
     get_object_or_404(RsvpSubmission, id=data["submission_id"], is_deleted=False)
-    get_object_or_404(RsvpAcceptanceQuestion, id=data["question_id"], is_deleted=False)
+    get_object_or_404(RsvpQuestion, id=data["question_id"], is_deleted=False)
 
     rsvp_response = RsvpQuestionResponse.objects.create(
         submission_id=data["submission_id"],

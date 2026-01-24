@@ -178,7 +178,7 @@
                         </label>
                         <select id="priority-filter" class="select select-bordered" bind:value={priorityFilter}>
                             <option value="">All Priorities</option>
-                            {#each availablePriorities as { value, label }}
+                            {#each availablePriorities as { value, label } (value)}
                                 <option {value}>{label}</option>
                             {/each}
                         </select>
@@ -190,7 +190,7 @@
                         </label>
                         <select id="relationship-filter" class="select select-bordered" bind:value={relationshipFilter}>
                             <option value="">All Relationships</option>
-                            {#each availableRelationships as { value, label }}
+                            {#each availableRelationships as { value, label } (value)}
                                 <option {value}>{label}</option>
                             {/each}
                         </select>
@@ -218,7 +218,7 @@
         </div>
     {:else}
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {#each filteredGuestGroups as group}
+            {#each filteredGuestGroups as group (group.id)}
                 {@const rsvpProgress = getRsvpProgress(group)}
                 <a href="/settings/guest_list/{group.id}" class="list-card">
                     <div class="list-card-body">

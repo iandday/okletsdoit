@@ -104,10 +104,10 @@
 
     <table {...$tableAttrs} class="table table-zebra table-pin-rows bg-base-200 w-full">
         <thead>
-            {#each $headerRows as headerRow}
+            {#each $headerRows as headerRow, headerRowIndex (headerRowIndex)}
                 <Subscribe rowAttrs={headerRow.attrs()}>
                     <tr>
-                        {#each headerRow.cells as cell}
+                        {#each headerRow.cells as cell (cell.id)}
                             <Subscribe attrs={cell.attrs()} let:attrs props={cell.props()} let:props>
                                 <th {...attrs} class:cursor-pointer={props.sort.disabled === false}>
                                     {#if props.sort.disabled === false}
@@ -130,10 +130,10 @@
             {/each}
         </thead>
         <tbody {...$tableBodyAttrs}>
-            {#each $pageRows as row}
+            {#each $pageRows as row (row.id)}
                 <Subscribe rowAttrs={row.attrs()}>
                     <tr class="hover">
-                        {#each row.cells as cell}
+                        {#each row.cells as cell (cell.id)}
                             <Subscribe attrs={cell.attrs()}>
                                 <td>
                                     {#if cell.column.id === "actions"}
