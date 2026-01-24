@@ -473,11 +473,11 @@ No authorization required
 
 ## deadlineApiListDeadlines
 
-> PagedDeadlineSchema deadlineApiListDeadlines(deadlineListId, completed, assignedToId, page, pageSize)
+> PagedDeadlineSchema deadlineApiListDeadlines(deadlineListId, completed, assignedToId, overdue, search, page, pageSize)
 
 List Deadlines
 
-List all deadlines (non-deleted)
+List all deadlines (non-deleted) with optional filtering
 
 ### Example
 
@@ -499,6 +499,10 @@ async function example() {
     completed: true,
     // string (optional)
     assignedToId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+    // boolean (optional)
+    overdue: true,
+    // string (optional)
+    search: search_example,
     // number (optional)
     page: 56,
     // number (optional)
@@ -524,6 +528,8 @@ example().catch(console.error);
 | **deadlineListId** | `string`  |             | [Optional] [Defaults to `undefined`] |
 | **completed**      | `boolean` |             | [Optional] [Defaults to `undefined`] |
 | **assignedToId**   | `string`  |             | [Optional] [Defaults to `undefined`] |
+| **overdue**        | `boolean` |             | [Optional] [Defaults to `undefined`] |
+| **search**         | `string`  |             | [Optional] [Defaults to `undefined`] |
 | **page**           | `number`  |             | [Optional] [Defaults to `1`]         |
 | **pageSize**       | `number`  |             | [Optional] [Defaults to `undefined`] |
 
