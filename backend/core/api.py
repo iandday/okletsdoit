@@ -35,6 +35,7 @@ class WeddingSettingsSchema(Schema):
     allow_rsvp: bool
     allow_photos: bool
     show_faq: bool
+    show_venue: bool
     wedding_date: Optional[date] = None
     rsvp_start_date: Optional[date] = None
     rsvp_end_date: Optional[date] = None
@@ -64,6 +65,7 @@ class WeddingSettingsUpdateSchema(Schema):
     allow_photos: Optional[bool] = None
     wedding_date: Optional[date] = None
     show_faq: Optional[bool] = None
+    show_venue: Optional[bool] = None
     rsvp_start_date: Optional[date] = None
     rsvp_end_date: Optional[date] = None
     rsvp_accept_button: Optional[str] = None

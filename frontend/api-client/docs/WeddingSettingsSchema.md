@@ -8,6 +8,7 @@
 | `allowRsvp`                  | boolean |
 | `allowPhotos`                | boolean |
 | `showFaq`                    | boolean |
+| `showVenue`                  | boolean |
 | `weddingDate`                | Date    |
 | `rsvpStartDate`              | Date    |
 | `rsvpEndDate`                | Date    |
@@ -41,6 +42,7 @@ const example = {
     allowRsvp: null,
     allowPhotos: null,
     showFaq: null,
+    showVenue: null,
     weddingDate: null,
     rsvpStartDate: null,
     rsvpEndDate: null,

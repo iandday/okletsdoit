@@ -9,7 +9,7 @@
     let formData = $state<WeddingSettingsUpdateSchema>({
         weddingDate: data.configData?.weddingDate || null,
         allowRsvp: data.configData?.allowRsvp ?? false,
-
+        showVenue: data.configData?.showVenue ?? false,
         showFaq: data.configData?.showFaq ?? false,
         rsvpStartDate: data.configData?.rsvpStartDate || null,
         rsvpEndDate: data.configData?.rsvpEndDate || null,
@@ -44,6 +44,7 @@
     const generalFields = [
         { name: "allowPhotos", type: "checkbox" },
         { name: "showFaq", type: "checkbox" },
+        { name: "showVenue", type: "checkbox" },
         { name: "weddingDate", type: "date" },
     ];
 

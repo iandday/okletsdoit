@@ -91,6 +91,12 @@ export interface GuestGroupCreateSchema {
      * @memberof GuestGroupCreateSchema
      */
     priority?: number | null;
+    /**
+     *
+     * @type {string}
+     * @memberof GuestGroupCreateSchema
+     */
+    associatedWithId?: string | null;
 }
 
 /**
@@ -122,6 +128,7 @@ export function GuestGroupCreateSchemaFromJSONTyped(json: any, ignoreDiscriminat
         zipCode: json["zip_code"] == null ? undefined : json["zip_code"],
         relationship: json["relationship"] == null ? undefined : json["relationship"],
         priority: json["priority"] == null ? undefined : json["priority"],
+        associatedWithId: json["associated_with_id"] == null ? undefined : json["associated_with_id"],
     };
 }
 
@@ -150,5 +157,6 @@ export function GuestGroupCreateSchemaToJSONTyped(
         zip_code: value["zipCode"],
         relationship: value["relationship"],
         priority: value["priority"],
+        associated_with_id: value["associatedWithId"],
     };
 }
