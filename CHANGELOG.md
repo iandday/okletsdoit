@@ -1,6 +1,53 @@
 # CHANGELOG
 
 
+## v0.8.0 (2026-01-25)
+
+### Bug Fixes
+
+- :art: linting
+  ([`5d2bc9e`](https://github.com/iandday/okletsdoit/commit/5d2bc9ee7e3d199df92f30cb7f18eca8ab8ed7ea))
+
+- :bug: lock file
+  ([`7ab965d`](https://github.com/iandday/okletsdoit/commit/7ab965d6f9c48ad8fae66115a6b6f732902faa2c))
+
+- :bug: linting
+  ([`8741cda`](https://github.com/iandday/okletsdoit/commit/8741cda72a0a2fbafd379b0509526bcf064a0879))
+
+- **Contacts**: Update file name display
+  ([`939a721`](https://github.com/iandday/okletsdoit/commit/939a7211524f3e7de79facea68eedb02befc5920))
+
+### Chores
+
+- Sync files from main after release ([#57](https://github.com/iandday/okletsdoit/pull/57),
+  [`dd3a9d2`](https://github.com/iandday/okletsdoit/commit/dd3a9d285e4e35f236f8bce29cadc2e61f2cebf8))
+
+Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
+
+### Features
+
+- **Core**: :zap: refactor venue page
+  ([`f67199a`](https://github.com/iandday/okletsdoit/commit/f67199a1d4abd21dab14664e738ef1b25ee0a055))
+
+- **Core**: :art: use venue data from backend
+  ([`4ba8275`](https://github.com/iandday/okletsdoit/commit/4ba8275e0cb490aa7bb806f7367d71c3d0773118))
+
+- **Core**: :art: refactor landing page
+  ([`becb4f8`](https://github.com/iandday/okletsdoit/commit/becb4f868f55931990d08de5559231a3f3e21c3b))
+
+- **Deadline**: :zap: restore full table
+  ([`15eee6e`](https://github.com/iandday/okletsdoit/commit/15eee6e7b0bf7d3c140cd8d5395a376683345e35))
+
+- **Core**: :ambulance: show/hide venue
+  ([`3b85350`](https://github.com/iandday/okletsdoit/commit/3b85350acad2147e51a36a3ae1239c0c40ca1943))
+
+- **GuestList**: :sparkles: initial feature
+  ([`4d332fa`](https://github.com/iandday/okletsdoit/commit/4d332fa38f305a0ba2d37a7c0e1ece5688ce9858))
+
+- **GuestList**: :art: guest list detail page
+  ([`f6df9a9`](https://github.com/iandday/okletsdoit/commit/f6df9a9e9a996edff87c433283ea21b7f640fa7a))
+
+
 ## v0.7.0 (2026-01-14)
 
 ### Bug Fixes
