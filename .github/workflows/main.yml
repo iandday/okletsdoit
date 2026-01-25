@@ -77,6 +77,14 @@ jobs:
           git fetch origin main
           git checkout origin/main -- .
 
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with: 
+          version: "latest"
+
+      - name: Update uv.lock
+        run: uv lock
+
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
         with:
@@ -100,6 +108,7 @@ jobs:
           if [ -n "$PR_NUMBER" ]; then
             gh pr merge $PR_NUMBER --auto --squash
           fi
+
 
   update-docs:
     runs-on: ubuntu-latest
