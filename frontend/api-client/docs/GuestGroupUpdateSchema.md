@@ -2,20 +2,21 @@
 
 ## Properties
 
-| Name           | Type   |
-| -------------- | ------ |
-| `name`         | string |
-| `addressName`  | string |
-| `notes`        | string |
-| `email`        | string |
-| `phone`        | string |
-| `address`      | string |
-| `addressTwo`   | string |
-| `city`         | string |
-| `state`        | string |
-| `zipCode`      | string |
-| `relationship` | string |
-| `priority`     | number |
+| Name               | Type   |
+| ------------------ | ------ |
+| `name`             | string |
+| `addressName`      | string |
+| `notes`            | string |
+| `email`            | string |
+| `phone`            | string |
+| `address`          | string |
+| `addressTwo`       | string |
+| `city`             | string |
+| `state`            | string |
+| `zipCode`          | string |
+| `relationship`     | string |
+| `priority`         | number |
+| `associatedWithId` | string |
 
 ## Example
 
@@ -36,6 +37,7 @@ const example = {
     zipCode: null,
     relationship: null,
     priority: null,
+    associatedWithId: null,
 } satisfies GuestGroupUpdateSchema;
 
 console.log(example);

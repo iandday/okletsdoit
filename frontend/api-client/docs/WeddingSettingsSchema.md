@@ -8,6 +8,7 @@
 | `allowRsvp`                  | boolean |
 | `allowPhotos`                | boolean |
 | `showFaq`                    | boolean |
+| `showVenue`                  | boolean |
 | `weddingDate`                | Date    |
 | `rsvpStartDate`              | Date    |
 | `rsvpEndDate`                | Date    |
@@ -29,6 +30,18 @@
 | `standardGroupLabel`         | string  |
 | `vipGroupLabel`              | string  |
 | `accommodationGroupLabel`    | string  |
+| `venuePageTitle`             | string  |
+| `venuePageDescription`       | string  |
+| `venueName`                  | string  |
+| `venueAddressLineOne`        | string  |
+| `venueAddressLineTwo`        | string  |
+| `venueCity`                  | string  |
+| `venueState`                 | string  |
+| `venueZipcode`               | string  |
+| `venueCountry`               | string  |
+| `venueParking`               | string  |
+| `venueGalleryTitle`          | string  |
+| `venueGalleryDescription`    | string  |
 
 ## Example
 
@@ -41,6 +54,7 @@ const example = {
     allowRsvp: null,
     allowPhotos: null,
     showFaq: null,
+    showVenue: null,
     weddingDate: null,
     rsvpStartDate: null,
     rsvpEndDate: null,
@@ -62,6 +76,18 @@ const example = {
     standardGroupLabel: null,
     vipGroupLabel: null,
     accommodationGroupLabel: null,
+    venuePageTitle: null,
+    venuePageDescription: null,
+    venueName: null,
+    venueAddressLineOne: null,
+    venueAddressLineTwo: null,
+    venueCity: null,
+    venueState: null,
+    venueZipcode: null,
+    venueCountry: null,
+    venueParking: null,
+    venueGalleryTitle: null,
+    venueGalleryDescription: null,
 } satisfies WeddingSettingsSchema;
 
 console.log(example);

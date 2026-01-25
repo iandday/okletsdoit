@@ -21,7 +21,7 @@
     <Topbar />
     <div class="pt-2 px-6 pb-8 lg:pb-16 xl:pb-24 2xl:pb-28">
         <Breadcrumbs breadcrumbs={crumbs} />
-        <div class="container mx-auto p-4 max-w-6xl">
+        <div class="container mx-auto p-4">
             {@render children?.()}
         </div>
     </div>

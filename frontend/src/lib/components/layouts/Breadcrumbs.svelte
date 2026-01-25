@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { iBreadcrumb } from "$lib/types";
+    import type { iBreadcrumb } from "../../types";
 
     type iBreadcrumbsProps = {
         breadcrumbs: iBreadcrumb[];

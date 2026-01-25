@@ -553,7 +553,7 @@ class WeddingSettingsAdmin(SimpleHistoryAdmin):
     fieldsets = (
         (
             "General Settings",
-            {"fields": ("wedding_date", "allow_rsvp", "allow_photos", "show_faq", "default_data_loaded")},
+            {"fields": ("wedding_date", "allow_rsvp", "allow_photos", "show_faq", "show_venue", "default_data_loaded")},
         ),
         (
             "RSVP Button Text",
@@ -571,6 +571,7 @@ class WeddingSettingsAdmin(SimpleHistoryAdmin):
                     "rsvp_vip_label",
                     "standard_group_label",
                     "vip_group_label",
+                    "accommodation_group_label",
                 ),
                 "classes": ("collapse",),
             },
@@ -597,6 +598,33 @@ class WeddingSettingsAdmin(SimpleHistoryAdmin):
                     "rsvp_show_vip_intro",
                     "rsvp_enable_email_updates",
                     "rsvp_email_update_label",
+                ),
+                "classes": ("collapse",),
+            },
+        ),
+        (
+            "RSVP Dates",
+            {
+                "fields": ("rsvp_start_date", "rsvp_end_date"),
+                "classes": ("collapse",),
+            },
+        ),
+        (
+            "Venue Information",
+            {
+                "fields": (
+                    "venue_page_title",
+                    "venue_page_description",
+                    "venue_name",
+                    "venue_address_line_one",
+                    "venue_address_line_two",
+                    "venue_city",
+                    "venue_state",
+                    "venue_zipcode",
+                    "venue_country",
+                    "venue_parking",
+                    "venue_gallery_title",
+                    "venue_gallery_description",
                 ),
                 "classes": ("collapse",),
             },

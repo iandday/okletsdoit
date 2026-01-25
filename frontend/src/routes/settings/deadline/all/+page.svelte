@@ -1,5 +1,8 @@
 <script lang="ts">
     import Icon from "$lib/components/Icon.svelte";
+    import DeleteObject from "$lib/components/buttons/DeleteObject.svelte";
+    import ViewDetails from "$lib/components/buttons/ViewDetails.svelte";
+    import ViewDetailsButton from "$lib/components/buttons/ViewDetails.svelte";
     import ProtectedPageHeader from "$lib/components/layouts/ProtectedPageHeader.svelte";
     import ProtectedPageShell from "$lib/components/layouts/ProtectedPageShell.svelte";
     import type { PageData } from "./$types";
@@ -63,19 +66,60 @@
             </div>
         </div>
     {:else}
-        <!-- Deadlines List -->
-        <div class="space-y-4">
-            {#each data.deadlines.items as deadline (deadline.id)}
-                <div class="list-card">
-                    <div class="list-card-body">
-                        <div class="flex items-start justify-between gap-4">
-                            <div class="flex-1">
-                                <div class="flex items-center gap-3 mb-2">
-                                    <h3 class="text-lg font-semibold">
-                                        <a href="/settings/deadline/deadline/{deadline.id}" class="link link-hover">
-                                            {deadline.name}
+        <!-- Deadlines Table -->
+        <div class="card bg-base-100 border border-base-300 shadow-lg w-full">
+            <div class="overflow-x-auto w-full">
+                <table class="table bg-base-300 text-primary-content w-full">
+                    <thead class="text-accent">
+                        <tr>
+                            <th>Deadline</th>
+                            <th>Description</th>
+                            <th>List</th>
+                            <th>Due Date</th>
+                            <th>Assignee</th>
+                            <th>Status</th>
+                            <th class="text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {#each data.deadlines.items as deadline (deadline.id)}
+                            <tr class="hover">
+                                <td>
+                                    <a class="link link-accent" href="/settings/deadline/deadline/{deadline.id}">
+                                        {deadline.name}
+                                    </a>
+                                </td>
+                                <td>
+                                    <div class="max-w-xs truncate">
+                                        {deadline.description || "—"}
+                                    </div>
+                                </td>
+                                <td>
+                                    {#if deadline.deadlineListName}
+                                        <a
+                                            href="/settings/deadline/list/{deadline.deadlineListId}"
+                                            class="link link-accent">
+                                            {deadline.deadlineListName}
                                         </a>
-                                    </h3>
+                                    {:else}
+                                        —
+                                    {/if}
+                                </td>
+                                <td>
+                                    <div class="flex items-center gap-2">
+                                        {formatDate(deadline.dueDate)}
+                                    </div>
+                                </td>
+                                <td>
+                                    {#if deadline.assignedToName}
+                                        <div class="flex items-center gap-2">
+                                            {deadline.assignedToName.split(" ")[0]}
+                                        </div>
+                                    {:else}
+                                        —
+                                    {/if}
+                                </td>
+                                <td>
                                     {#if deadline.completed}
                                         <span class="badge badge-success gap-2">
                                             <span class="icon-[lucide--check-circle] size-4"></span>
@@ -92,55 +136,29 @@
                                             Pending
                                         </span>
                                     {/if}
-                                </div>
+                                </td>
+                                <td>
+                                    <div class="flex items-center justify-end gap-1">
+                                        <ViewDetailsButton href="/settings/deadline/deadline/{deadline.id}" />
 
-                                {#if deadline.description}
-                                    <p class="mb-3">{deadline.description}</p>
-                                {/if}
-
-                                <div class="flex flex-wrap gap-4 text-sm">
-                                    {#if deadline.deadlineListName}
-                                        <div class="flex items-center gap-2">
-                                            <span class="icon-[lucide--list] size-4"></span>
-                                            <a
-                                                href="/settings/deadline/list/{deadline.deadlineListId}"
-                                                class="link link-accent">
-                                                {deadline.deadlineListName}
-                                            </a>
-                                        </div>
-                                    {/if}
-
-                                    <div class="flex items-center gap-2">
-                                        <span class="icon-[lucide--calendar] size-4"></span>
-                                        <span>{formatDate(deadline.dueDate)}</span>
+                                        <a
+                                            href="/settings/deadline/deadline/{deadline.id}/edit"
+                                            class="btn btn-sm bg-base-100 text-primary-content gap-2"
+                                            aria-label="Edit Deadline">
+                                            <span class="icon-[lucide--pencil] size-4"></span>
+                                        </a>
+                                        <DeleteObject
+                                            action="?/deleteDeadline"
+                                            href="#"
+                                            value={deadline.id}
+                                            confirmMessage="Are you sure you want to remove this deadline?" />
                                     </div>
-
-                                    {#if deadline.assignedToName}
-                                        <div class="flex items-center gap-2">
-                                            <span class="icon-[lucide--user] size-4"></span>
-                                            <span>{deadline.assignedToName}</span>
-                                        </div>
-                                    {/if}
-
-                                    {#if deadline.completed && deadline.completedAt}
-                                        <div class="flex items-center gap-2">
-                                            <span class="icon-[lucide--check-circle] size-4"></span>
-                                            <span>Completed {formatDate(deadline.completedAt)}</span>
-                                        </div>
-                                    {/if}
-                                </div>
-                            </div>
-
-                            <a
-                                href="/settings/deadline/deadline/{deadline.id}/edit"
-                                class="btn btn-sm btn-ghost gap-2"
-                                aria-label="Edit Deadline">
-                                <span class="icon-[lucide--pencil] size-4"></span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            {/each}
+                                </td>
+                            </tr>
+                        {/each}
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <!-- Pagination Controls -->

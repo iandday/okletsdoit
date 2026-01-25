@@ -7,6 +7,8 @@
 | `deadlineListId` | string  |
 | `completed`      | boolean |
 | `assignedToId`   | string  |
+| `overdue`        | boolean |
+| `search`         | string  |
 
 ## Example
 
@@ -18,6 +20,8 @@ const example = {
     deadlineListId: null,
     completed: null,
     assignedToId: null,
+    overdue: null,
+    search: null,
 } satisfies DeadlineFilterSchema;
 
 console.log(example);

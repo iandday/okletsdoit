@@ -1,32 +1,24 @@
 <script lang="ts">
-    import CallToAction from "$lib/components/CallToAction.svelte";
-    import PageShell from "$lib/components/layouts/PageShell.svelte";
-    import Accommodations from "./components/Accommodations.svelte";
-    import Attractions from "./components/Attractions.svelte";
-    import Gallery from "./components/Gallery.svelte";
-    import Location from "./components/Location.svelte";
-    import Timeline from "./components/Timeline.svelte";
+    import Venue from "$lib/components/Venue.svelte";
+    import { redirect } from "@sveltejs/kit";
+
+    const { data } = $props();
 </script>
 
-<div>
-    <PageShell
-        title="Timberframe Lodge"
-        description="Join us at Timberframe Lodge, tucked away in the Hocking Hills region of southeastern Ohio.">
-        <img
-            src="/images/venue/timberframeExterior.webp"
-            alt="Timberframe Lodge"
-            class="mb-8 w-auto max-w-full mx-auto pt-6" />
-
-        <Gallery />
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-            <Location />
-            <Timeline />
-        </div>
-        <Accommodations />
-        <Attractions />
-
-        <CallToAction
-            title="Join Us on Our Big Day!"
-            content="The Timberframe Lodge provides the perfect backdrop for our special day. We're excited to share this beautiful venue with our family and friends as we begin our journey together." />
-    </PageShell>
-</div>
+{#if data.configData}
+    <Venue
+        showContent={data.configData.showVenue}
+        title={data.configData.venuePageTitle}
+        description={data.configData.venuePageDescription}
+        galleryTitle={data.configData.venueGalleryTitle}
+        galleryDescription={data.configData.venueGalleryDescription}
+        venueName={data.configData.venueName}
+        venueAddressLineOne={data.configData.venueAddressLineOne}
+        venueAddressLineTwo={data.configData.venueAddressLineTwo}
+        venueCity={data.configData.venueCity}
+        venueState={data.configData.venueState}
+        venueZip={data.configData.venueZipcode}
+        venueParking={data.configData.venueParking} />
+{:else}
+    {redirect(302, "/")}
+{/if}

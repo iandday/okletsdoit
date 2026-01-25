@@ -45,6 +45,12 @@ export interface WeddingSettingsSchema {
     showFaq: boolean;
     /**
      *
+     * @type {boolean}
+     * @memberof WeddingSettingsSchema
+     */
+    showVenue: boolean;
+    /**
+     *
      * @type {Date}
      * @memberof WeddingSettingsSchema
      */
@@ -169,6 +175,78 @@ export interface WeddingSettingsSchema {
      * @memberof WeddingSettingsSchema
      */
     accommodationGroupLabel: string;
+    /**
+     *
+     * @type {string}
+     * @memberof WeddingSettingsSchema
+     */
+    venuePageTitle: string;
+    /**
+     *
+     * @type {string}
+     * @memberof WeddingSettingsSchema
+     */
+    venuePageDescription: string;
+    /**
+     *
+     * @type {string}
+     * @memberof WeddingSettingsSchema
+     */
+    venueName: string;
+    /**
+     *
+     * @type {string}
+     * @memberof WeddingSettingsSchema
+     */
+    venueAddressLineOne: string;
+    /**
+     *
+     * @type {string}
+     * @memberof WeddingSettingsSchema
+     */
+    venueAddressLineTwo?: string | null;
+    /**
+     *
+     * @type {string}
+     * @memberof WeddingSettingsSchema
+     */
+    venueCity: string;
+    /**
+     *
+     * @type {string}
+     * @memberof WeddingSettingsSchema
+     */
+    venueState: string;
+    /**
+     *
+     * @type {string}
+     * @memberof WeddingSettingsSchema
+     */
+    venueZipcode: string;
+    /**
+     *
+     * @type {string}
+     * @memberof WeddingSettingsSchema
+     */
+    venueCountry: string;
+    /**
+     *
+     * @type {string}
+     * @memberof WeddingSettingsSchema
+     */
+    venueParking?: string | null;
+    /**
+     *
+     * @type {string}
+     * @memberof WeddingSettingsSchema
+     */
+    venueGalleryTitle: string;
+    /**
+     *
+     * @type {string}
+     * @memberof WeddingSettingsSchema
+     */
+    venueGalleryDescription: string;
 }
 
 /**
@@ -179,6 +257,7 @@ export function instanceOfWeddingSettingsSchema(value: object): value is Wedding
     if (!("allowRsvp" in value) || value["allowRsvp"] === undefined) return false;
     if (!("allowPhotos" in value) || value["allowPhotos"] === undefined) return false;
     if (!("showFaq" in value) || value["showFaq"] === undefined) return false;
+    if (!("showVenue" in value) || value["showVenue"] === undefined) return false;
     if (!("rsvpAcceptButton" in value) || value["rsvpAcceptButton"] === undefined) return false;
     if (!("rsvpDeclineButton" in value) || value["rsvpDeclineButton"] === undefined) return false;
     if (!("rsvpAttendingLabel" in value) || value["rsvpAttendingLabel"] === undefined) return false;
@@ -193,6 +272,16 @@ export function instanceOfWeddingSettingsSchema(value: object): value is Wedding
     if (!("standardGroupLabel" in value) || value["standardGroupLabel"] === undefined) return false;
     if (!("vipGroupLabel" in value) || value["vipGroupLabel"] === undefined) return false;
     if (!("accommodationGroupLabel" in value) || value["accommodationGroupLabel"] === undefined) return false;
+    if (!("venuePageTitle" in value) || value["venuePageTitle"] === undefined) return false;
+    if (!("venuePageDescription" in value) || value["venuePageDescription"] === undefined) return false;
+    if (!("venueName" in value) || value["venueName"] === undefined) return false;
+    if (!("venueAddressLineOne" in value) || value["venueAddressLineOne"] === undefined) return false;
+    if (!("venueCity" in value) || value["venueCity"] === undefined) return false;
+    if (!("venueState" in value) || value["venueState"] === undefined) return false;
+    if (!("venueZipcode" in value) || value["venueZipcode"] === undefined) return false;
+    if (!("venueCountry" in value) || value["venueCountry"] === undefined) return false;
+    if (!("venueGalleryTitle" in value) || value["venueGalleryTitle"] === undefined) return false;
+    if (!("venueGalleryDescription" in value) || value["venueGalleryDescription"] === undefined) return false;
     return true;
 }
 
@@ -209,6 +298,7 @@ export function WeddingSettingsSchemaFromJSONTyped(json: any, ignoreDiscriminato
         allowRsvp: json["allow_rsvp"],
         allowPhotos: json["allow_photos"],
         showFaq: json["show_faq"],
+        showVenue: json["show_venue"],
         weddingDate: json["wedding_date"] == null ? undefined : new Date(json["wedding_date"]),
         rsvpStartDate: json["rsvp_start_date"] == null ? undefined : new Date(json["rsvp_start_date"]),
         rsvpEndDate: json["rsvp_end_date"] == null ? undefined : new Date(json["rsvp_end_date"]),
@@ -230,6 +320,18 @@ export function WeddingSettingsSchemaFromJSONTyped(json: any, ignoreDiscriminato
         standardGroupLabel: json["standard_group_label"],
         vipGroupLabel: json["vip_group_label"],
         accommodationGroupLabel: json["accommodation_group_label"],
+        venuePageTitle: json["venue_page_title"],
+        venuePageDescription: json["venue_page_description"],
+        venueName: json["venue_name"],
+        venueAddressLineOne: json["venue_address_line_one"],
+        venueAddressLineTwo: json["venue_address_line_two"] == null ? undefined : json["venue_address_line_two"],
+        venueCity: json["venue_city"],
+        venueState: json["venue_state"],
+        venueZipcode: json["venue_zipcode"],
+        venueCountry: json["venue_country"],
+        venueParking: json["venue_parking"] == null ? undefined : json["venue_parking"],
+        venueGalleryTitle: json["venue_gallery_title"],
+        venueGalleryDescription: json["venue_gallery_description"],
     };
 }
 
@@ -250,6 +352,7 @@ export function WeddingSettingsSchemaToJSONTyped(
         allow_rsvp: value["allowRsvp"],
         allow_photos: value["allowPhotos"],
         show_faq: value["showFaq"],
+        show_venue: value["showVenue"],
         wedding_date:
             value["weddingDate"] == null ? value["weddingDate"] : value["weddingDate"].toISOString().substring(0, 10),
         rsvp_start_date:
@@ -276,5 +379,17 @@ export function WeddingSettingsSchemaToJSONTyped(
         standard_group_label: value["standardGroupLabel"],
         vip_group_label: value["vipGroupLabel"],
         accommodation_group_label: value["accommodationGroupLabel"],
+        venue_page_title: value["venuePageTitle"],
+        venue_page_description: value["venuePageDescription"],
+        venue_name: value["venueName"],
+        venue_address_line_one: value["venueAddressLineOne"],
+        venue_address_line_two: value["venueAddressLineTwo"],
+        venue_city: value["venueCity"],
+        venue_state: value["venueState"],
+        venue_zipcode: value["venueZipcode"],
+        venue_country: value["venueCountry"],
+        venue_parking: value["venueParking"],
+        venue_gallery_title: value["venueGalleryTitle"],
+        venue_gallery_description: value["venueGalleryDescription"],
     };
 }

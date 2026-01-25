@@ -37,6 +37,18 @@ export interface DeadlineFilterSchema {
      * @memberof DeadlineFilterSchema
      */
     assignedToId?: string | null;
+    /**
+     *
+     * @type {boolean}
+     * @memberof DeadlineFilterSchema
+     */
+    overdue?: boolean | null;
+    /**
+     *
+     * @type {string}
+     * @memberof DeadlineFilterSchema
+     */
+    search?: string | null;
 }
 
 /**
@@ -58,6 +70,8 @@ export function DeadlineFilterSchemaFromJSONTyped(json: any, ignoreDiscriminator
         deadlineListId: json["deadline_list_id"] == null ? undefined : json["deadline_list_id"],
         completed: json["completed"] == null ? undefined : json["completed"],
         assignedToId: json["assigned_to_id"] == null ? undefined : json["assigned_to_id"],
+        overdue: json["overdue"] == null ? undefined : json["overdue"],
+        search: json["search"] == null ? undefined : json["search"],
     };
 }
 
@@ -77,5 +91,7 @@ export function DeadlineFilterSchemaToJSONTyped(
         deadline_list_id: value["deadlineListId"],
         completed: value["completed"],
         assigned_to_id: value["assignedToId"],
+        overdue: value["overdue"],
+        search: value["search"],
     };
 }

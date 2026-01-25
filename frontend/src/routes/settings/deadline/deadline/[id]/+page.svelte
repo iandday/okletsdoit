@@ -68,12 +68,12 @@
                     <div class="detail-card-field-value">
                         {#if data.deadline.completed}
                             <span class="badge badge-success gap-2">
-                                <Icon name="check-circle" class="size-4" />
+                                <span class="icon-[lucide--check-circle] size-4"></span>
                                 Completed
                             </span>
                         {:else}
                             <span class="badge badge-warning gap-2">
-                                <Icon name="clock" class="size-4" />
+                                <span class="icon-[lucide--clock] size-4"></span>
                                 Pending
                             </span>
                         {/if}
@@ -85,7 +85,7 @@
                 <div>
                     <div class="detail-card-field-name">Assigned To</div>
                     <div class="detail-card-field-value flex items-center gap-2">
-                        <Icon name="user" class="size-4 text-base-content/50" />
+                        <span class="icon-[lucide--user] size-4"></span>
                         {data.deadline.assignedToName}
                     </div>
                 </div>

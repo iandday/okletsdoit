@@ -41,6 +41,7 @@ export const actions = {
             allowRsvp: formData.get("allowRsvp") === "on",
             allowPhotos: formData.get("allowPhotos") === "on",
             showFaq: formData.get("showFaq") === "on",
+            showVenue: formData.get("showVenue") === "on",
             rsvpStartDate: parseDate(formData.get("rsvpStartDate")),
             rsvpEndDate: parseDate(formData.get("rsvpEndDate")),
             rsvpAcceptButton: formData.get("rsvpAcceptButton") as string,
@@ -60,6 +61,18 @@ export const actions = {
             rsvpShowAccommodationIntro: formData.get("rsvpShowAccommodationIntro") === "on",
             rsvpShowVipIntro: formData.get("rsvpShowVipIntro") === "on",
             rsvpEnableEmailUpdates: formData.get("rsvpEnableEmailUpdates") === "on",
+            venuePageTitle: formData.get("venuePageTitle") as string,
+            venuePageDescription: formData.get("venuePageDescription") as string,
+            venueName: formData.get("venueName") as string,
+            venueAddressLineOne: formData.get("venueAddressLineOne") as string,
+            venueAddressLineTwo: formData.get("venueAddressLineTwo") as string,
+            venueCity: formData.get("venueCity") as string,
+            venueState: formData.get("venueState") as string,
+            venueZipcode: formData.get("venueZipcode") as string,
+            venueCountry: formData.get("venueCountry") as string,
+            venueParking: formData.get("venueParking") as string,
+            venueGalleryTitle: formData.get("venueGalleryTitle") as string,
+            venueGalleryDescription: formData.get("venueGalleryDescription") as string,
         };
 
         try {

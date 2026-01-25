@@ -75,6 +75,8 @@ class DeadlineFilterSchema(FilterSchema):
     deadline_list_id: Optional[UUID] = None
     completed: Optional[bool] = None
     assigned_to_id: Optional[UUID] = None
+    overdue: Optional[bool] = None
+    search: Optional[str] = None
 
 
 class DeadlineCreateSchema(Schema):
@@ -230,9 +232,25 @@ def delete_deadline_list(request, list_id: UUID):
 @router.get("/deadlines", response=List[DeadlineSchema])
 @paginate(PageNumberPagination, page_size=50)
 def list_deadlines(request, filters: DeadlineFilterSchema = Query(...)):  # pyright: ignore[reportCallIssue]
-    """List all deadlines (non-deleted)"""
+    """List all deadlines (non-deleted) with optional filtering"""
     q = Q(is_deleted=False)
+
+    # Apply standard filter schema fields
     q &= filters.get_filter_expression()
+
+    # Apply search filter if provided
+    if filters.search:
+        q &= Q(name__icontains=filters.search) | Q(description__icontains=filters.search)
+
+    # Apply overdue filter if provided
+    if filters.overdue is not None:
+        if filters.overdue:
+            # Overdue: not completed and due_date < today
+            q &= Q(completed=False, due_date__lt=date.today())
+        else:
+            # Not overdue: either completed or due_date >= today or no due_date
+            q &= Q(completed=True) | Q(due_date__gte=date.today()) | Q(due_date__isnull=True)
+
     deadlines = (
         Deadline.objects.filter(q).select_related("deadline_list", "assigned_to").order_by("due_date", "created_at")
     )

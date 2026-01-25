@@ -48,7 +48,7 @@ export interface GuestGroupSchema {
      * @type {string}
      * @memberof GuestGroupSchema
      */
-    notes: string;
+    notes?: string | null;
     /**
      *
      * @type {string}
@@ -99,10 +99,40 @@ export interface GuestGroupSchema {
     relationship: string;
     /**
      *
+     * @type {string}
+     * @memberof GuestGroupSchema
+     */
+    relationshipDisplay: string;
+    /**
+     *
      * @type {number}
      * @memberof GuestGroupSchema
      */
     priority: number;
+    /**
+     *
+     * @type {string}
+     * @memberof GuestGroupSchema
+     */
+    priorityDisplay: string;
+    /**
+     *
+     * @type {string}
+     * @memberof GuestGroupSchema
+     */
+    associatedWithId?: string | null;
+    /**
+     *
+     * @type {string}
+     * @memberof GuestGroupSchema
+     */
+    associatedWithFirstName?: string | null;
+    /**
+     *
+     * @type {string}
+     * @memberof GuestGroupSchema
+     */
+    associatedWithLastName?: string | null;
     /**
      *
      * @type {string}
@@ -173,7 +203,6 @@ export function instanceOfGuestGroupSchema(value: object): value is GuestGroupSc
     if (!("slug" in value) || value["slug"] === undefined) return false;
     if (!("name" in value) || value["name"] === undefined) return false;
     if (!("addressName" in value) || value["addressName"] === undefined) return false;
-    if (!("notes" in value) || value["notes"] === undefined) return false;
     if (!("email" in value) || value["email"] === undefined) return false;
     if (!("phone" in value) || value["phone"] === undefined) return false;
     if (!("address" in value) || value["address"] === undefined) return false;
@@ -182,7 +211,9 @@ export function instanceOfGuestGroupSchema(value: object): value is GuestGroupSc
     if (!("state" in value) || value["state"] === undefined) return false;
     if (!("zipCode" in value) || value["zipCode"] === undefined) return false;
     if (!("relationship" in value) || value["relationship"] === undefined) return false;
+    if (!("relationshipDisplay" in value) || value["relationshipDisplay"] === undefined) return false;
     if (!("priority" in value) || value["priority"] === undefined) return false;
+    if (!("priorityDisplay" in value) || value["priorityDisplay"] === undefined) return false;
     if (!("rsvpCode" in value) || value["rsvpCode"] === undefined) return false;
     if (!("groupCount" in value) || value["groupCount"] === undefined) return false;
     if (!("groupStandard" in value) || value["groupStandard"] === undefined) return false;
@@ -209,7 +240,7 @@ export function GuestGroupSchemaFromJSONTyped(json: any, ignoreDiscriminator: bo
         slug: json["slug"],
         name: json["name"],
         addressName: json["address_name"],
-        notes: json["notes"],
+        notes: json["notes"] == null ? undefined : json["notes"],
         email: json["email"],
         phone: json["phone"],
         address: json["address"],
@@ -218,7 +249,14 @@ export function GuestGroupSchemaFromJSONTyped(json: any, ignoreDiscriminator: bo
         state: json["state"],
         zipCode: json["zip_code"],
         relationship: json["relationship"],
+        relationshipDisplay: json["relationship_display"],
         priority: json["priority"],
+        priorityDisplay: json["priority_display"],
+        associatedWithId: json["associated_with_id"] == null ? undefined : json["associated_with_id"],
+        associatedWithFirstName:
+            json["associated_with_first_name"] == null ? undefined : json["associated_with_first_name"],
+        associatedWithLastName:
+            json["associated_with_last_name"] == null ? undefined : json["associated_with_last_name"],
         rsvpCode: json["rsvp_code"],
         groupCount: json["group_count"],
         groupStandard: json["group_standard"],
@@ -258,7 +296,12 @@ export function GuestGroupSchemaToJSONTyped(
         state: value["state"],
         zip_code: value["zipCode"],
         relationship: value["relationship"],
+        relationship_display: value["relationshipDisplay"],
         priority: value["priority"],
+        priority_display: value["priorityDisplay"],
+        associated_with_id: value["associatedWithId"],
+        associated_with_first_name: value["associatedWithFirstName"],
+        associated_with_last_name: value["associatedWithLastName"],
         rsvp_code: value["rsvpCode"],
         group_count: value["groupCount"],
         group_standard: value["groupStandard"],
