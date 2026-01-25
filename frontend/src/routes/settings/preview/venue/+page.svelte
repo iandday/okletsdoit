@@ -5,7 +5,7 @@
 </script>
 
 <Venue
-    showContent={data.configData.showVenue}
+    showContent={true}
     title={data.configData.venuePageTitle}
     description={data.configData.venuePageDescription}
     galleryTitle={data.configData.venueGalleryTitle}

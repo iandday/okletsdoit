@@ -37,11 +37,11 @@
         galleryDescription: string;
         venueName: string;
         venueAddressLineOne: string;
-        venueAddressLineTwo: string | undefined;
+        venueAddressLineTwo: string | null | undefined;
         venueCity: string;
         venueState: string;
         venueZip: string;
-        venueParking: string;
+        venueParking: string | null | undefined;
     }
 
     let {
@@ -52,11 +52,11 @@
         galleryDescription,
         venueName,
         venueAddressLineOne,
-        venueAddressLineTwo = undefined,
+        venueAddressLineTwo = null,
         venueCity,
         venueState,
         venueZip,
-        venueParking,
+        venueParking = null,
     }: VenuePageData = $props();
 </script>
 
