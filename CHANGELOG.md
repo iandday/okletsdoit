@@ -1,6 +1,26 @@
 # CHANGELOG
 
 
+## v0.9.0 (2026-01-25)
+
+### Bug Fixes
+
+- **Core**: :bug: fix venue preview
+  ([`42994ad`](https://github.com/iandday/okletsdoit/commit/42994adee2e12d2f290e7478c9d6964dcbd203f7))
+
+### Chores
+
+- Sync files from main after release ([#60](https://github.com/iandday/okletsdoit/pull/60),
+  [`dc0a525`](https://github.com/iandday/okletsdoit/commit/dc0a52522c3d165d980989ab0b0c361f178363ad))
+
+Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
+
+### Features
+
+- Update uv during build
+  ([`b06babd`](https://github.com/iandday/okletsdoit/commit/b06babd511a767d44f84de71f81f853ec165b669))
+
+
 ## v0.8.0 (2026-01-25)
 
 ### Bug Fixes
