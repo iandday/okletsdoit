@@ -1,5 +1,22 @@
 <script lang="ts">
-    const { data } = $props();
+    interface LocationProps {
+        venueName: string;
+        venueAddressLineOne: string;
+        venueAddressLineTwo?: string;
+        venueCity: string;
+        venueState: string;
+        venueZip: string;
+        venueParking: string;
+    }
+    let {
+        venueName,
+        venueAddressLineOne,
+        venueAddressLineTwo = "",
+        venueCity,
+        venueState,
+        venueZip,
+        venueParking,
+    }: LocationProps = $props();
 </script>
 
 <div class="card bg-base-300 shadow-lg p-8">
@@ -13,34 +30,32 @@
             <div>
                 <p class="mb-1"><strong>Address:</strong></p>
                 <p class="mb-1">
-                    {data.configData.venueName} <br />
-                    {data.configData.venueAddressLineOne}
-                    {#if data.configData.venueAddressLineTwo}<br />{data.configData.venueAddressLineTwo}{/if}
+                    {venueName} <br />
+                    {venueAddressLineOne}
+                    {#if venueAddressLineTwo}<br />{venueAddressLineTwo}{/if}
                     <br />
-                    {data.configData.venueCity}, {data.configData.venueState}
-                    {data.configData.venueZip}
+                    {venueCity}, {venueState}
+                    {venueZip}
                 </p>
             </div>
             <div>
                 <p class="mb-1"><strong>Parking:</strong></p>
-                <p class="mb-1">{data.configData.venueParking}</p>
+                <p class="mb-1">{venueParking}</p>
             </div>
             <div>
                 <p><strong>Directions:</strong></p>
-                <p class="mb-1">{data.configData.venueDirections}</p>
+                <p class="mb-1"></p>
             </div>
 
             <div class="flex flex-wrap justify-center gap-4">
                 <a
-                    href="https://maps.google.com/?q={data.configData.venueAddressLineOne},{data.configData
-                        .venueCity},{data.configData.venueState},{data.configData.venueZip}"
+                    href="https://maps.google.com/?q={venueAddressLineOne},{venueCity},{venueState},{venueZip}"
                     target="_blank"
                     rel="noopener noreferrer">
                     <img src="images/googleMaps.svg" alt="Google Maps" class="h-10 w-10 mr-2" />
                 </a>
                 <a
-                    href="https://maps.apple.com/?address={data.configData.venueAddressLineOne},{data.configData
-                        .venueCity},{data.configData.venueState},{data.configData.venueZip}"
+                    href="https://maps.apple.com/?address={venueAddressLineOne},{venueCity},{venueState},{venueZip}"
                     target="_blank"
                     rel="noopener noreferrer">
                     <img src="images/appleMaps.png" alt="Apple Maps" class="h-10 w-10 mr-2" />

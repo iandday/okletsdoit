@@ -31,11 +31,11 @@
     }
 }
 
-.timeline:not(.timeline-vertical) > li > hr {
+.timeline:not(.timeline-vertical)>li>hr {
     height: 2px;
 }
 
-.timeline.timeline-vertical > li > hr {
+.timeline.timeline-vertical>li>hr {
     width: 2px;
 }
 

@@ -48,7 +48,10 @@
             title: "FAQ",
             href: "/settings/preview/faq",
         },
-
+        {
+            title: "Venue",
+            href: "/settings/preview/venue",
+        },
         {
             title: "RSVP Landing",
             href: "/settings/preview/rsvp/landing",
@@ -153,14 +156,16 @@
         </div>
 
         <div class="flex items-center gap-2">
-            <div class="text-primary-content dropdown dropdown-hover md:dropdown-center dropdown-end">
+            <div class="text-primary-content dropdown dropdown-hover dropdown-end pr-4">
                 <div class="avatar cursor-pointer">
                     <div class="bg-base-200 mask mask-squircle w-6">
                         <span class="icon-[lucide--user-circle] size-6"></span>
                     </div>
                 </div>
-                <div tabIndex={0} class="dropdown-content bg-base-300 rounded-box z-1 w-44 p-2 text-sm shadow-sm">
-                    <ul class="menu w-full p-0">
+                <div
+                    tabIndex={0}
+                    class="dropdown-content bg-base-300 rounded-box z-1 w-44 p-2 text-sm shadow-sm right-0">
+                    <ul class="menu w-full p-2">
                         {#if $auth.isAuthenticated}
                             {#each legacyLinks as item, index (index)}
                                 <li>

@@ -15,11 +15,11 @@ export const load: PageServerLoad = async ({ parent }) => {
     return {
         configData: configData
             ? {
-                  ...configData,
-                  weddingDate: formatDateForInput(configData.weddingDate),
-                  rsvpStartDate: formatDateForInput(configData.rsvpStartDate),
-                  rsvpEndDate: formatDateForInput(configData.rsvpEndDate),
-              }
+                ...configData,
+                weddingDate: formatDateForInput(configData.weddingDate),
+                rsvpStartDate: formatDateForInput(configData.rsvpStartDate),
+                rsvpEndDate: formatDateForInput(configData.rsvpEndDate),
+            }
             : null,
     };
 };
