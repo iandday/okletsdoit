@@ -37,11 +37,11 @@
         galleryDescription: string;
         venueName: string;
         venueAddressLineOne: string;
-        venueAddressLineTwo: string | null | undefined;
+        venueAddressLineTwo: string | undefined;
         venueCity: string;
         venueState: string;
         venueZip: string;
-        venueParking: string | null | undefined;
+        venueParking: string;
     }
 
     let {
@@ -52,7 +52,7 @@
         galleryDescription,
         venueName,
         venueAddressLineOne,
-        venueAddressLineTwo,
+        venueAddressLineTwo = undefined,
         venueCity,
         venueState,
         venueZip,

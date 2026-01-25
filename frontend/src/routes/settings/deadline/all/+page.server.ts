@@ -1,6 +1,6 @@
 import { api } from "$lib/server/api-client";
 import { error, redirect } from "@sveltejs/kit";
-import type { PageServerLoad } from "../deadline/all/$types";
+import type { PageServerLoad } from "./$types";
 import type { Actions } from "./$types";
 
 export const load: PageServerLoad = async ({ url }) => {
