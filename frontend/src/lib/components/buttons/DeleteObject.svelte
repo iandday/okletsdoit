@@ -4,7 +4,7 @@
 
     type iDeleteObjectProps = {
         href: string;
-        label: string;
+        label?: string;
         action: string;
         value: string | number;
         confirmMessage?: string;

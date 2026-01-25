@@ -33,19 +33,19 @@
 
 <div>
     {#if !data?.configData?.showVenue}
-        <PageShell title="Venue"><ComingSoon {...comingSoon} /></PageShell>
+        <PageShell title={data.configData?.venuePageTitle}><ComingSoon {...comingSoon} /></PageShell>
     {:else}
-        <PageShell
-            title="Timberframe Lodge"
-            description="Join us at Timberframe Lodge, tucked away in the Hocking Hills region of southeastern Ohio.">
+        <PageShell title={data.configData.venuePageTitle} description={data.configData.venuePageDescription}>
             <img
-                src="/images/venue/timberframeExterior.webp"
-                alt="Timberframe Lodge"
+                src="/images/venue/gallery/patio.png"
+                alt={data.configData.venuePageTitle}
                 class="mb-8 w-auto max-w-full mx-auto pt-6" />
 
-            <Gallery />
+            <Gallery
+                galleryTitle={data.configData?.venueGalleryTitle}
+                galleryDescription={data.configData?.venueGalleryDescription} />
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-                <Location />
+                <Location {data} />
                 <Timeline />
             </div>
             <Accommodations />
@@ -53,7 +53,7 @@
 
             <CallToAction
                 title="Join Us on Our Big Day!"
-                content="The Timberframe Lodge provides the perfect backdrop for our special day. We're excited to share this beautiful venue with our family and friends as we begin our journey together." />
+                content={`The ${data.configData.venueName} provides the perfect backdrop for our special day. We're excited to share this beautiful venue with our family and friends as we begin our journey together.`} />
         </PageShell>
     {/if}
 </div>

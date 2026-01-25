@@ -30,6 +30,18 @@
         rsvpShowAccommodationIntro: data.configData?.rsvpShowAccommodationIntro ?? false,
         rsvpShowVipIntro: data.configData?.rsvpShowVipIntro ?? false,
         rsvpEnableEmailUpdates: data.configData?.rsvpEnableEmailUpdates ?? false,
+        venuePageTitle: data.configData?.venuePageTitle || "",
+        venuePageDescription: data.configData?.venuePageDescription || "",
+        venueName: data.configData?.venueName || "",
+        venueAddressLineOne: data.configData?.venueAddressLineOne || "",
+        venueAddressLineTwo: data.configData?.venueAddressLineTwo || "",
+        venueCity: data.configData?.venueCity || "",
+        venueState: data.configData?.venueState || "",
+        venueZipcode: data.configData?.venueZipcode || "",
+        venueCountry: data.configData?.venueCountry || "",
+        venueParking: data.configData?.venueParking || "",
+        venueGalleryTitle: data.configData?.venueGalleryTitle || "",
+        venueGalleryDescription: data.configData?.venueGalleryDescription || "",
     });
 
     let submitting = $state(false);
@@ -401,6 +413,151 @@
                                 id="rsvpDeclineSuccessMessage"
                                 class="edit-card-field-textarea"
                                 value={formData.rsvpDeclineSuccessMessage}></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Venue Section -->
+            <div class="config-card" id="venue-section">
+                <div class="config-card-body">
+                    <h2 class="config-card-title text-xl mb-4">Venue</h2>
+                    <div class="grid grid-cols-1 gap-4 mt-4">
+                        <div class="form-control w-full">
+                            <label class="edit-card-field-name" for="venuePageTitle">
+                                <span>Venue Page Title</span>
+                            </label>
+                            <input
+                                type="text"
+                                name="venuePageTitle"
+                                id="venuePageTitle"
+                                class="edit-card-field-input"
+                                value={formData.venuePageTitle} />
+                        </div>
+                        <div class="form-control w-full">
+                            <label class="edit-card-field-name" for="venuePageDescription">
+                                <span>Venue Page Description</span>
+                            </label>
+                            <textarea
+                                name="venuePageDescription"
+                                id="venuePageDescription"
+                                class="edit-card-field-textarea"
+                                value={formData.venuePageDescription}></textarea>
+                        </div>
+                    </div>
+
+                    <div class="divider divider-accent">Venue Details</div>
+                    <div class="grid grid-cols-1 gap-4 mt-4">
+                        <div class="form-control w-full">
+                            <label class="edit-card-field-name" for="venueName">
+                                <span>Venue Name</span>
+                            </label>
+                            <input
+                                type="text"
+                                name="venueName"
+                                id="venueName"
+                                class="edit-card-field-input"
+                                value={formData.venueName} />
+                        </div>
+                        <div class="form-control w-full">
+                            <label class="edit-card-field-name" for="venueAddressLineOne">
+                                <span>Address Line 1</span>
+                            </label>
+                            <input
+                                type="text"
+                                name="venueAddressLineOne"
+                                id="venueAddressLineOne"
+                                class="edit-card-field-input"
+                                value={formData.venueAddressLineOne} />
+                        </div>
+                        <div class="form-control w-full">
+                            <label class="edit-card-field-name" for="venueAddressLineTwo">
+                                <span>Address Line 2 (Optional)</span>
+                            </label>
+                            <input
+                                type="text"
+                                name="venueAddressLineTwo"
+                                id="venueAddressLineTwo"
+                                class="edit-card-field-input"
+                                value={formData.venueAddressLineTwo} />
+                        </div>
+                        <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
+                            <div class="form-control w-full">
+                                <label class="edit-card-field-name" for="venueCity">
+                                    <span>City</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    name="venueCity"
+                                    id="venueCity"
+                                    class="edit-card-field-input"
+                                    value={formData.venueCity} />
+                            </div>
+                            <div class="form-control w-full">
+                                <label class="edit-card-field-name" for="venueState">
+                                    <span>State</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    name="venueState"
+                                    id="venueState"
+                                    class="edit-card-field-input"
+                                    value={formData.venueState} />
+                            </div>
+                            <div class="form-control w-full">
+                                <label class="edit-card-field-name" for="venueZipcode">
+                                    <span>Zip Code</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    name="venueZipcode"
+                                    id="venueZipcode"
+                                    class="edit-card-field-input"
+                                    value={formData.venueZipcode} />
+                            </div>
+                            <div class="form-control w-full">
+                                <label class="edit-card-field-name" for="venueCountry">
+                                    <span>Country</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    name="venueCountry"
+                                    id="venueCountry"
+                                    class="edit-card-field-input"
+                                    value={formData.venueCountry} />
+                            </div>
+                        </div>
+                        <div class="form-control w-full">
+                            <label class="edit-card-field-name" for="venueParking">
+                                <span>Parking Information (Optional)</span>
+                            </label>
+                            <textarea
+                                name="venueParking"
+                                id="venueParking"
+                                class="edit-card-field-textarea"
+                                value={formData.venueParking}></textarea>
+                        </div>
+                        <div class="divider divider-accent">Venue Gallery</div>
+                        <div class="form-control w-full">
+                            <label class="edit-card-field-name" for="venueGalleryTitle">
+                                <span>Gallery Title</span>
+                            </label>
+                            <input
+                                type="text"
+                                name="venueGalleryTitle"
+                                id="venueGalleryTitle"
+                                class="edit-card-field-input"
+                                value={formData.venueGalleryTitle} />
+                        </div>
+                        <div class="form-control w-full">
+                            <label class="edit-card-field-name" for="venueGalleryDescription">
+                                <span>Gallery Description</span>
+                            </label>
+                            <textarea
+                                name="venueGalleryDescription"
+                                id="venueGalleryDescription"
+                                class="edit-card-field-textarea"
+                                value={formData.venueGalleryDescription}></textarea>
                         </div>
                     </div>
                 </div>

@@ -323,6 +323,22 @@ class WeddingSettings(models.Model):
     standard_group_label = models.CharField(max_length=100, default="Day")
     vip_group_label = models.CharField(max_length=100, default="Overnight")
     accommodation_group_label = models.CharField(max_length=100, default="Accommodation")
+    venue_page_title = models.CharField(max_length=150, default="Our Venue")
+    venue_page_description = models.TextField(
+        default="Discover the beautiful location where we'll be celebrating our special day."
+    )
+    venue_name = models.CharField(max_length=150, default="The Lodge")
+    venue_address_line_one = models.CharField(max_length=250, default="1234 Wedding Lane")
+    venue_address_line_two = models.CharField(max_length=250, blank=True, null=True)
+    venue_city = models.CharField(max_length=100, default="Hocking Hills")
+    venue_state = models.CharField(max_length=100, default="Ohio")
+    venue_zipcode = models.CharField(max_length=20, default="43119")
+    venue_country = models.CharField(max_length=100, default="USA")
+    venue_parking = models.TextField(blank=True, null=True)
+    venue_gallery_title = models.CharField(max_length=150, default="Check Out Our Venue")
+    venue_gallery_description = models.TextField(
+        default="We’re really excited to celebrate with you - take a look at our venue while we wait for the big day!"
+    )
     history = HistoricalRecords()
 
     def __str__(self):

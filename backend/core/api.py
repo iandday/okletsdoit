@@ -57,6 +57,18 @@ class WeddingSettingsSchema(Schema):
     standard_group_label: str
     vip_group_label: str
     accommodation_group_label: str
+    venue_page_title: str
+    venue_page_description: str
+    venue_name: str
+    venue_address_line_one: str
+    venue_address_line_two: Optional[str] = None
+    venue_city: str
+    venue_state: str
+    venue_zipcode: str
+    venue_country: str
+    venue_parking: Optional[str] = None
+    venue_gallery_title: str
+    venue_gallery_description: str
 
 
 class WeddingSettingsUpdateSchema(Schema):
@@ -86,6 +98,18 @@ class WeddingSettingsUpdateSchema(Schema):
     standard_group_label: Optional[str] = None
     vip_group_label: Optional[str] = None
     accommodation_group_label: Optional[str] = None
+    venue_page_title: Optional[str] = None
+    venue_page_description: Optional[str] = None
+    venue_name: Optional[str] = None
+    venue_address_line_one: Optional[str] = None
+    venue_address_line_two: Optional[str] = None
+    venue_city: Optional[str] = None
+    venue_state: Optional[str] = None
+    venue_zipcode: Optional[str] = None
+    venue_country: Optional[str] = None
+    venue_parking: Optional[str] = None
+    venue_gallery_title: Optional[str] = None
+    venue_gallery_description: Optional[str] = None
 
 
 # Question Schemas

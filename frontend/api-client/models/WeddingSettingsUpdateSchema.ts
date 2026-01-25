@@ -175,6 +175,78 @@ export interface WeddingSettingsUpdateSchema {
      * @memberof WeddingSettingsUpdateSchema
      */
     accommodationGroupLabel?: string | null;
+    /**
+     *
+     * @type {string}
+     * @memberof WeddingSettingsUpdateSchema
+     */
+    venuePageTitle?: string | null;
+    /**
+     *
+     * @type {string}
+     * @memberof WeddingSettingsUpdateSchema
+     */
+    venuePageDescription?: string | null;
+    /**
+     *
+     * @type {string}
+     * @memberof WeddingSettingsUpdateSchema
+     */
+    venueName?: string | null;
+    /**
+     *
+     * @type {string}
+     * @memberof WeddingSettingsUpdateSchema
+     */
+    venueAddressLineOne?: string | null;
+    /**
+     *
+     * @type {string}
+     * @memberof WeddingSettingsUpdateSchema
+     */
+    venueAddressLineTwo?: string | null;
+    /**
+     *
+     * @type {string}
+     * @memberof WeddingSettingsUpdateSchema
+     */
+    venueCity?: string | null;
+    /**
+     *
+     * @type {string}
+     * @memberof WeddingSettingsUpdateSchema
+     */
+    venueState?: string | null;
+    /**
+     *
+     * @type {string}
+     * @memberof WeddingSettingsUpdateSchema
+     */
+    venueZipcode?: string | null;
+    /**
+     *
+     * @type {string}
+     * @memberof WeddingSettingsUpdateSchema
+     */
+    venueCountry?: string | null;
+    /**
+     *
+     * @type {string}
+     * @memberof WeddingSettingsUpdateSchema
+     */
+    venueParking?: string | null;
+    /**
+     *
+     * @type {string}
+     * @memberof WeddingSettingsUpdateSchema
+     */
+    venueGalleryTitle?: string | null;
+    /**
+     *
+     * @type {string}
+     * @memberof WeddingSettingsUpdateSchema
+     */
+    venueGalleryDescription?: string | null;
 }
 
 /**
@@ -227,6 +299,19 @@ export function WeddingSettingsUpdateSchemaFromJSONTyped(
         vipGroupLabel: json["vip_group_label"] == null ? undefined : json["vip_group_label"],
         accommodationGroupLabel:
             json["accommodation_group_label"] == null ? undefined : json["accommodation_group_label"],
+        venuePageTitle: json["venue_page_title"] == null ? undefined : json["venue_page_title"],
+        venuePageDescription: json["venue_page_description"] == null ? undefined : json["venue_page_description"],
+        venueName: json["venue_name"] == null ? undefined : json["venue_name"],
+        venueAddressLineOne: json["venue_address_line_one"] == null ? undefined : json["venue_address_line_one"],
+        venueAddressLineTwo: json["venue_address_line_two"] == null ? undefined : json["venue_address_line_two"],
+        venueCity: json["venue_city"] == null ? undefined : json["venue_city"],
+        venueState: json["venue_state"] == null ? undefined : json["venue_state"],
+        venueZipcode: json["venue_zipcode"] == null ? undefined : json["venue_zipcode"],
+        venueCountry: json["venue_country"] == null ? undefined : json["venue_country"],
+        venueParking: json["venue_parking"] == null ? undefined : json["venue_parking"],
+        venueGalleryTitle: json["venue_gallery_title"] == null ? undefined : json["venue_gallery_title"],
+        venueGalleryDescription:
+            json["venue_gallery_description"] == null ? undefined : json["venue_gallery_description"],
     };
 }
 
@@ -274,5 +359,17 @@ export function WeddingSettingsUpdateSchemaToJSONTyped(
         standard_group_label: value["standardGroupLabel"],
         vip_group_label: value["vipGroupLabel"],
         accommodation_group_label: value["accommodationGroupLabel"],
+        venue_page_title: value["venuePageTitle"],
+        venue_page_description: value["venuePageDescription"],
+        venue_name: value["venueName"],
+        venue_address_line_one: value["venueAddressLineOne"],
+        venue_address_line_two: value["venueAddressLineTwo"],
+        venue_city: value["venueCity"],
+        venue_state: value["venueState"],
+        venue_zipcode: value["venueZipcode"],
+        venue_country: value["venueCountry"],
+        venue_parking: value["venueParking"],
+        venue_gallery_title: value["venueGalleryTitle"],
+        venue_gallery_description: value["venueGalleryDescription"],
     };
 }

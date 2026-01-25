@@ -278,6 +278,98 @@
                         </div>
                     </div>
                 </div>
+                <div class="config-card" id="venue-section">
+                    <div class="config-card-body">
+                        <h2 class="config-card-title text-xl mb-4">Venue</h2>
+                        <div class="grid grid-cols-1 gap-4 mt-4">
+                            <div class="flex flex-col">
+                                <div class="config-card-field-name">Venue Page Title</div>
+                                <div class="config-card-field-value">
+                                    {formatValue(data.configData["venuePageTitle"])}
+                                </div>
+                            </div>
+                            <div class="flex flex-col">
+                                <div class="config-card-field-name">Venue Page Description</div>
+                                <div class="config-card-field-value">
+                                    {formatValue(data.configData["venuePageDescription"])}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="divider divider-accent">Venue Details</div>
+                        <div class="grid grid-cols-1 gap-4 mt-4">
+                            <div class="flex flex-col">
+                                <div class="config-card-field-name">Venue Name</div>
+                                <div class="config-card-field-value">
+                                    {formatValue(data.configData["venueName"])}
+                                </div>
+                            </div>
+                            <div class="flex flex-col">
+                                <div class="config-card-field-name">Address Line 1</div>
+                                <div class="config-card-field-value">
+                                    {formatValue(data.configData["venueAddressLineOne"])}
+                                </div>
+                            </div>
+                            {#if data.configData["venueAddressLineTwo"]}
+                                <div class="flex flex-col">
+                                    <div class="config-card-field-name">Address Line 2</div>
+                                    <div class="config-card-field-value">
+                                        {formatValue(data.configData["venueAddressLineTwo"])}
+                                    </div>
+                                </div>
+                            {/if}
+                            <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
+                                <div class="flex flex-col">
+                                    <div class="config-card-field-name">City</div>
+                                    <div class="config-card-field-value">
+                                        {formatValue(data.configData["venueCity"])}
+                                    </div>
+                                </div>
+                                <div class="flex flex-col">
+                                    <div class="config-card-field-name">State</div>
+                                    <div class="config-card-field-value">
+                                        {formatValue(data.configData["venueState"])}
+                                    </div>
+                                </div>
+                                <div class="flex flex-col">
+                                    <div class="config-card-field-name">Zip Code</div>
+                                    <div class="config-card-field-value">
+                                        {formatValue(data.configData["venueZipcode"])}
+                                    </div>
+                                </div>
+                                <div class="flex flex-col">
+                                    <div class="config-card-field-name">Country</div>
+                                    <div class="config-card-field-value">
+                                        {formatValue(data.configData["venueCountry"])}
+                                    </div>
+                                </div>
+                            </div>
+                            {#if data.configData["venueParking"]}
+                                <div class="flex flex-col">
+                                    <div class="config-card-field-name">Parking Information</div>
+                                    <div class="config-card-field-value">
+                                        <!-- eslint-disable-next-line svelte/no-at-html-tags set by site admin -->
+                                        {@html data.configData["venueParking"]}
+                                    </div>
+                                </div>
+                            {/if}
+                        </div>
+                        <div class="divider divider-accent">Venue Gallery</div>
+                        <div class="grid grid-cols-1 gap-4 mt-4">
+                            <div class="flex flex-col">
+                                <div class="config-card-field-name">Gallery Title</div>
+                                <div class="config-card-field-value">
+                                    {formatValue(data.configData["venueGalleryTitle"])}
+                                </div>
+                            </div>
+                            <div class="flex flex-col">
+                                <div class="config-card-field-name">Gallery Description</div>
+                                <div class="config-card-field-value">
+                                    {formatValue(data.configData["venueGalleryDescription"])}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         {:else}
             <div class="alert alert-info">

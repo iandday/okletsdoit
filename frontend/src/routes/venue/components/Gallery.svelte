@@ -7,11 +7,20 @@
 
     // Gallery configuration
     const photos = [
-        { src: "/images/venue/gallery/boardwalk.webp", alt: "Venue Photo 1" },
-        { src: "/images/venue/gallery/ceremonyLocation.webp", alt: "Venue Photo 2" },
-        { src: "/images/venue/gallery/neighbors1.webp", alt: "Venue Photo 3" },
-        { src: "/images/venue/gallery/neighbors2.webp", alt: "Venue Photo 4" },
-        { src: "/images/venue/gallery/timberframe.webp", alt: "Venue Photo 5" },
+        {
+            src: "https://ap.rdcpix.com/0de51b5f1edc9071f184316718d3abf7l-b3696519640rd-w1280_h960.webp",
+            alt: "Venue Photo 5",
+        },
+        { src: "/images/venue/gallery/glass3.webp", alt: "Venue Photo 5" },
+        {
+            src: "https://media-cdn.tripadvisor.com/media/photo-s/09/7f/a7/91/rockmill-brewery.jpg",
+            alt: "Venue Photo 2",
+        },
+        { src: "/images/venue/gallery/IMG_5622.jpeg", alt: "Venue Photo 5" },
+        { src: "/images/venue/gallery/glass2.jpg", alt: "Venue Photo 5" },
+        { src: "/images/venue/gallery/sign.webp", alt: "Venue Photo 4" },
+        { src: "/images/venue/gallery/glass.jpg", alt: "Venue Photo 5" },
+        { src: "/images/venue/gallery/IMG_5613.jpeg", alt: "Venue Photo 5" },
     ];
 
     const swiperOptions = {
@@ -48,15 +57,21 @@
     $effect(() => {
         new Swiper(".gallery-swiper", swiperOptions);
     });
+
+    type iGalleryProps = {
+        galleryTitle: string;
+        galleryDescription: string;
+    };
+    const { galleryTitle, galleryDescription }: iGalleryProps = $props();
 </script>
 
 <div class="mx-auto my-16 max-w-7xl px-4 sm:px-6 lg:px-8">
     <h2
         class="text-center text-2xl leading-tight font-bold sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent mb-4">
-        Check Out The Venue
+        {galleryTitle}
     </h2>
     <p class="text-base-content/70 text-lg text-center mb-12 max-w-3xl mx-auto">
-        We’re really excited to celebrate with you - take a look at our venue while we wait for the big day!
+        {galleryDescription}
     </p>
     <!-- Swiper Gallery -->
     <div class="relative">

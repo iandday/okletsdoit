@@ -36,32 +36,69 @@
     };
     const attractions: iAttactions[] = [
         {
-            img: "https://innatcedarfalls.com/wp-content/uploads/2024/05/GettyImages-820732146copy.jpg",
-            alt: "Venue Photo 1",
-            url: "https://thehockinghills.org/",
-            name: "Hocking Hills State Park",
-            description: "A beautiful state park known for its stunning landscapes, hiking trails, and waterfalls.",
+            img: "https://static.wixstatic.com/media/a1e33b_abe9db5c30d142b0896c170d37afa36a~mv2.jpg/v1/crop/x_389,y_0,w_2222,h_2000/fill/w_874,h_786,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/_U0A4483_edited.jpg",
+            alt: "Picture Perfect Ranch",
+            url: "https://www.pictureperfectranchohio.com/",
+            name: "Picture Perfect Ranch",
+            description: "A charming ranch offering horseback riding, wagon rides, and beautiful scenery.",
+        },
+
+        {
+            img: "https://cdn.prod.website-files.com/6388d2265a4d0f337a19f2e2/63d03846fdcc39857716ea02_318106388_543818087601457_5959550014220502441_n.jpg",
+            alt: "Otherworld",
+            url: "https://otherworld.com/",
+            name: "Otherworld",
+            description:
+                "An immersive entertainment complex featuring arcade games, virtual reality experiences, and more.",
         },
         {
-            img: "https://lirp.cdn-website.com/ea63b10e/dms3rep/multi/opt/IMG_1093-97c1078e-1920w.jpeg",
-            alt: "Venue Photo 1",
-            url: "https://www.hockinghillswinery.com/",
-            name: "Hocking Hills Winery",
-            description: "A charming winery offering tastings and beautiful views of the Hocking Hills.",
+            img: "https://fairfieldcountyparks.org/wp-content/uploads/2018/09/rock-mill-covered-bridge-2017.jpg",
+            alt: "Historic Rock Mill Covered Bridge",
+            url: "https://fairfieldcountyparks.org/bridges/",
+            name: "Historic Rock Mill Covered Bridge",
+            description: "A picturesque covered bridge surrounded by scenic walking trails and picnic areas.",
         },
         {
-            img: "https://wagonpilot.com/wp-content/uploads/2020/05/Hocking-Hills-Ash-Cave-5-1-1536x1024.jpg",
-            alt: "Venue Photo 1",
-            url: "https://www.hockinghills.com/ash_cave.html",
-            name: "Ash Cave",
-            description: "The largest recess cave in Ohio, offering a picturesque waterfall and scenic views.",
+            img: "https://www.metroparks.net/wp-content/uploads/2020/08/BLK_buttonbush-swamp-w-sedge-grasses_J-Watts-640x900.jpg",
+            alt: "Blacklick Woods Metro Park",
+            url: "http://www.metroparks.net/parks-and-trails/blacklick-woods/",
+            name: "Blacklick Woods Metro Park",
+            description: "A beautiful park with hiking trails, picnic areas, and a nature center.",
         },
         {
-            img: "https://innatcedarfalls.com/wp-content/uploads/2024/05/GettyImages-820732146copy.jpg",
-            alt: "Venue Photo 1",
-            url: "https://www.hockinghills.com/old_mans_cave.html",
-            name: "Old Man's Cave",
-            description: "A popular hiking destination featuring unique rock formations and lush forests.",
+            img: "https://www.metroparks.net/wp-content/uploads/2021/01/WAL_sunlight-and-snow-Tall-Pines_Feb_Tracey-De-Feyter.jpg",
+            alt: "Walnut Woods Metro Park",
+            url: "https://www.metroparks.net/parks-and-trails/walnut-woods/",
+            name: "Walnut Woods Metro Park",
+            description: "A serene park known for its scenic trails, fishing spots, and peaceful picnic areas.",
+        },
+        {
+            img: "https://images.ctfassets.net/b0qgo9rl751g/sZ84e0weEFnPd0jEJJ00P/06937ce65131100149b0004a49ef355c/DoghouseColumbus1.jpg",
+            alt: "BrewDog Brewery & Taproom",
+            url: "https://drink.brewdog.com/usa/brewdog-dogtap-columbus",
+            name: "BrewDog Brewery & Taproom",
+            description: "A lively brewery offering a variety of craft beers and a vibrant atmosphere.",
+        },
+        {
+            img: "https://static.wixstatic.com/media/b10931_3f3c6c18a3b74c368a079c2981c5e362~mv2_d_2111_2999_s_2.png/v1/fill/w_1214,h_420,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/b10931_3f3c6c18a3b74c368a079c2981c5e362~mv2_d_2111_2999_s_2.png",
+            alt: "Rockside Winery and Vineyards",
+            url: "http://www.rocksidewinery.com/",
+            name: "Rockside Winery and Vineyards",
+            description: "A charming winery offering wine tastings, tours, and beautiful vineyard views.",
+        },
+        {
+            img: "https://visitfairfieldcounty.org/wp-content/uploads/2024/03/Slate-Run-Vineyard-1.jpg",
+            alt: "Slate Run Vineyard Winery",
+            url: "http://www.slaterunwine.com/",
+            name: "Slate Run Vineyard Winery",
+            description: "A family-owned winery known for its handcrafted wines and scenic setting.",
+        },
+        {
+            img: "https://images.squarespace-cdn.com/content/v1/55e1deb4e4b01d70a6f1d0f7/1768329319185-5FI4W1RGGKV6K4R7XV66/image-asset.jpeg",
+            alt: "Rockmill Brewery Taproom",
+            url: "https://www.rockmillbrewery.com/",
+            name: "Rockmill Brewery Taproom",
+            description: "A cozy taproom featuring locally brewed beers and a rustic ambiance.",
         },
     ];
 </script>
@@ -72,8 +109,7 @@
         Explore the Area
     </h2>
     <p class="text-base-content/70 text-xl italic max-w-2xl mx-auto">
-        If you have time to kill and want to explore the area, these are a few of our favorite places to visit in
-        Hocking Hills.
+        If you have time to kill and want to explore the area, these are a few of our nearby favorite places to visit.
     </p>
     <div
         class="mt-8 flex scroll-mt-36 justify-center overflow-visible transition-all delay-1500 duration-1000 md:mt-12 xl:mt-16 starting:opacity-0">

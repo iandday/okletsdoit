@@ -74,6 +74,8 @@ export interface DeadlineApiListDeadlinesRequest {
     deadlineListId?: string | null;
     completed?: boolean | null;
     assignedToId?: string | null;
+    overdue?: boolean | null;
+    search?: string | null;
     page?: number;
     pageSize?: number | null;
 }
@@ -428,7 +430,7 @@ export class DeadlinesApi extends runtime.BaseAPI {
     }
 
     /**
-     * List all deadlines (non-deleted)
+     * List all deadlines (non-deleted) with optional filtering
      * List Deadlines
      */
     async deadlineApiListDeadlinesRaw(
@@ -447,6 +449,14 @@ export class DeadlinesApi extends runtime.BaseAPI {
 
         if (requestParameters["assignedToId"] != null) {
             queryParameters["assigned_to_id"] = requestParameters["assignedToId"];
+        }
+
+        if (requestParameters["overdue"] != null) {
+            queryParameters["overdue"] = requestParameters["overdue"];
+        }
+
+        if (requestParameters["search"] != null) {
+            queryParameters["search"] = requestParameters["search"];
         }
 
         if (requestParameters["page"] != null) {
@@ -475,7 +485,7 @@ export class DeadlinesApi extends runtime.BaseAPI {
     }
 
     /**
-     * List all deadlines (non-deleted)
+     * List all deadlines (non-deleted) with optional filtering
      * List Deadlines
      */
     async deadlineApiListDeadlines(
