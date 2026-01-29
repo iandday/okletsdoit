@@ -5,7 +5,9 @@ import adapter from "svelte-adapter-bun";
 const config = {
     preprocess: vitePreprocess(),
     kit: {
-        adapter: adapter(),
+        adapter: adapter({
+            maxBodySize: 10000 * 1024 * 1024,
+        }),
     },
     compilerOptions: {
         // disable all warnings coming from node_modules and all accessibility warnings
