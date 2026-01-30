@@ -53,36 +53,14 @@ class AttachmentFilterSchema(FilterSchema):
 class AttachmentCreateSchema(Schema):
     name: Optional[str] = None
     description: Optional[str] = None
-    content_type_id: int
+    app_label: str
+    model: str
     object_id: UUID
 
 
 class AttachmentUpdateSchema(Schema):
     name: Optional[str] = None
     description: Optional[str] = None
-
-
-class ContentTypeSchema(Schema):
-    id: int
-    app_label: str
-    model: str
-
-
-# Helper endpoint to get content type ID
-@router.get("/content-types/{app_label}/{model}", response=ContentTypeSchema)
-def get_content_type(request, app_label: str, model: str):
-    """Get content type ID for a given app and model"""
-    try:
-        content_type = ContentType.objects.get(app_label=app_label, model=model.lower())
-        return {
-            "id": content_type.id,
-            "app_label": content_type.app_label,
-            "model": content_type.model,
-        }
-    except ContentType.DoesNotExist:
-        from django.http import Http404
-
-        raise Http404(f"Content type not found for {app_label}.{model}")
 
 
 # Attachment CRUD Endpoints
@@ -154,13 +132,20 @@ def get_attachment(request, attachment_id: UUID):
 def create_attachment(
     request,
     file: UploadedFile,
-    content_type_id: int,
+    app_label: str,
+    model: str,
     object_id: UUID,
     name: Optional[str] = None,
     description: Optional[str] = None,
 ):
     """Create a new attachment with file upload"""
-    content_type = get_object_or_404(ContentType, id=content_type_id)
+    # Look up the content type
+    try:
+        content_type = ContentType.objects.get(app_label=app_label, model=model.lower())
+    except ContentType.DoesNotExist:
+        from django.http import Http404
+
+        raise Http404(f"Content type not found for {app_label}.{model}")
 
     data = {
         "name": name or file.name,

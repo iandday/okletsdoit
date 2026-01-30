@@ -11,26 +11,20 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import type {
-    AttachmentSchema,
-    AttachmentUpdateSchema,
-    ContentTypeSchema,
-    PagedAttachmentSchema,
-} from "../models/index";
+import type { AttachmentSchema, AttachmentUpdateSchema, PagedAttachmentSchema } from "../models/index";
 import {
     AttachmentSchemaFromJSON,
     AttachmentSchemaToJSON,
     AttachmentUpdateSchemaFromJSON,
     AttachmentUpdateSchemaToJSON,
-    ContentTypeSchemaFromJSON,
-    ContentTypeSchemaToJSON,
     PagedAttachmentSchemaFromJSON,
     PagedAttachmentSchemaToJSON,
 } from "../models/index";
 import * as runtime from "../runtime";
 
 export interface AttachmentsApiCreateAttachmentRequest {
-    contentTypeId: number;
+    appLabel: string;
+    model: string;
     objectId: string;
     file: Blob;
     name?: string | null;
@@ -43,11 +37,6 @@ export interface AttachmentsApiDeleteAttachmentRequest {
 
 export interface AttachmentsApiGetAttachmentRequest {
     attachmentId: string;
-}
-
-export interface AttachmentsApiGetContentTypeRequest {
-    appLabel: string;
-    model: string;
 }
 
 export interface AttachmentsApiListAttachmentsRequest {
@@ -75,10 +64,17 @@ export class AttachmentsApi extends runtime.BaseAPI {
         requestParameters: AttachmentsApiCreateAttachmentRequest,
         initOverrides?: RequestInit | runtime.InitOverrideFunction,
     ): Promise<runtime.ApiResponse<AttachmentSchema>> {
-        if (requestParameters["contentTypeId"] == null) {
+        if (requestParameters["appLabel"] == null) {
             throw new runtime.RequiredError(
-                "contentTypeId",
-                'Required parameter "contentTypeId" was null or undefined when calling attachmentsApiCreateAttachment().',
+                "appLabel",
+                'Required parameter "appLabel" was null or undefined when calling attachmentsApiCreateAttachment().',
+            );
+        }
+
+        if (requestParameters["model"] == null) {
+            throw new runtime.RequiredError(
+                "model",
+                'Required parameter "model" was null or undefined when calling attachmentsApiCreateAttachment().',
             );
         }
 
@@ -98,8 +94,12 @@ export class AttachmentsApi extends runtime.BaseAPI {
 
         const queryParameters: any = {};
 
-        if (requestParameters["contentTypeId"] != null) {
-            queryParameters["content_type_id"] = requestParameters["contentTypeId"];
+        if (requestParameters["appLabel"] != null) {
+            queryParameters["app_label"] = requestParameters["appLabel"];
+        }
+
+        if (requestParameters["model"] != null) {
+            queryParameters["model"] = requestParameters["model"];
         }
 
         if (requestParameters["objectId"] != null) {
@@ -258,61 +258,6 @@ export class AttachmentsApi extends runtime.BaseAPI {
         initOverrides?: RequestInit | runtime.InitOverrideFunction,
     ): Promise<AttachmentSchema> {
         const response = await this.attachmentsApiGetAttachmentRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Get content type ID for a given app and model
-     * Get Content Type
-     */
-    async attachmentsApiGetContentTypeRaw(
-        requestParameters: AttachmentsApiGetContentTypeRequest,
-        initOverrides?: RequestInit | runtime.InitOverrideFunction,
-    ): Promise<runtime.ApiResponse<ContentTypeSchema>> {
-        if (requestParameters["appLabel"] == null) {
-            throw new runtime.RequiredError(
-                "appLabel",
-                'Required parameter "appLabel" was null or undefined when calling attachmentsApiGetContentType().',
-            );
-        }
-
-        if (requestParameters["model"] == null) {
-            throw new runtime.RequiredError(
-                "model",
-                'Required parameter "model" was null or undefined when calling attachmentsApiGetContentType().',
-            );
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        let urlPath = `/api/attachments/content-types/{app_label}/{model}`;
-        urlPath = urlPath.replace(`{${"app_label"}}`, encodeURIComponent(String(requestParameters["appLabel"])));
-        urlPath = urlPath.replace(`{${"model"}}`, encodeURIComponent(String(requestParameters["model"])));
-
-        const response = await this.request(
-            {
-                path: urlPath,
-                method: "GET",
-                headers: headerParameters,
-                query: queryParameters,
-            },
-            initOverrides,
-        );
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => ContentTypeSchemaFromJSON(jsonValue));
-    }
-
-    /**
-     * Get content type ID for a given app and model
-     * Get Content Type
-     */
-    async attachmentsApiGetContentType(
-        requestParameters: AttachmentsApiGetContentTypeRequest,
-        initOverrides?: RequestInit | runtime.InitOverrideFunction,
-    ): Promise<ContentTypeSchema> {
-        const response = await this.attachmentsApiGetContentTypeRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

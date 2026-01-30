@@ -8,7 +8,6 @@ export * from "./ContactCreateSchema";
 export * from "./ContactFilterSchema";
 export * from "./ContactSchema";
 export * from "./ContactUpdateSchema";
-export * from "./ContentTypeSchema";
 export * from "./DeadlineCreateSchema";
 export * from "./DeadlineFilterSchema";
 export * from "./DeadlineListCreateSchema";
