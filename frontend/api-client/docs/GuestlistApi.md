@@ -13,6 +13,7 @@ All URIs are relative to _http://localhost_
 | [**guestlistApiDeleteGuestGroup**](GuestlistApi.md#guestlistapideleteguestgroup)                                   | **DELETE** /api/guestlist/guest-groups/{group_id}            | Delete Guest Group                    |
 | [**guestlistApiDeleteRsvpResponse**](GuestlistApi.md#guestlistapideletersvpresponse)                               | **DELETE** /api/guestlist/rsvp-responses/{response_id}       | Delete Rsvp Response                  |
 | [**guestlistApiDeleteRsvpSubmission**](GuestlistApi.md#guestlistapideletersvpsubmission)                           | **DELETE** /api/guestlist/rsvp-submissions/{submission_id}   | Delete Rsvp Submission                |
+| [**guestlistApiExportAddressCsv**](GuestlistApi.md#guestlistapiexportaddresscsv)                                   | **GET** /api/guestlist/export_address_csv                    | Export Address Csv                    |
 | [**guestlistApiGetGuest**](GuestlistApi.md#guestlistapigetguest)                                                   | **GET** /api/guestlist/guests/{guest_id}                     | Get Guest                             |
 | [**guestlistApiGetGuestGroup**](GuestlistApi.md#guestlistapigetguestgroup)                                         | **GET** /api/guestlist/guest-groups/{group_id}               | Get Guest Group                       |
 | [**guestlistApiGetRsvpAcceptanceQuestions**](GuestlistApi.md#guestlistapigetrsvpacceptancequestions)               | **GET** /api/guestlist/rsvp-acceptance-questions/{rsvp_code} | Get Rsvp Acceptance Questions         |
@@ -588,6 +589,59 @@ example().catch(console.error);
 | Name             | Type     | Description | Notes                     |
 | ---------------- | -------- | ----------- | ------------------------- |
 | **submissionId** | `string` |             | [Defaults to `undefined`] |
+
+### Return type
+
+`void` (Empty response body)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: Not defined
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## guestlistApiExportAddressCsv
+
+> guestlistApiExportAddressCsv()
+
+Export Address Csv
+
+### Example
+
+```ts
+import { Configuration, GuestlistApi } from "";
+import type { GuestlistApiExportAddressCsvRequest } from "";
+
+async function example() {
+    console.log("🚀 Testing  SDK...");
+    const api = new GuestlistApi();
+
+    try {
+        const data = await api.guestlistApiExportAddressCsv();
+        console.log(data);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+This endpoint does not need any parameter.
 
 ### Return type
 

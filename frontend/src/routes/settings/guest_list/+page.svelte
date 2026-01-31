@@ -1,10 +1,11 @@
 <!-- src/routes/settings/guest_list/+page.svelte -->
 <script lang="ts">
+    import Stats from "$lib/components/Stats.svelte";
     import CreateObject from "$lib/components/buttons/CreateObject.svelte";
     import ViewDetails from "$lib/components/buttons/ViewDetails.svelte";
     import ProtectedPageHeader from "$lib/components/layouts/ProtectedPageHeader.svelte";
     import ProtectedPageShell from "$lib/components/layouts/ProtectedPageShell.svelte";
-    import type { PageData } from "./$types";
+    import type { PageData, iStat } from "./$types";
 
     const { data }: { data: PageData } = $props();
     const relativeCrumbs = [{ title: "Guest List" }];
@@ -40,18 +41,26 @@
     );
 
     const filteredGuestGroups = $derived(
-        data.guestGroups.filter((group) => {
-            if (nameFilter && !group.name.toLowerCase().includes(nameFilter.toLowerCase())) {
-                return false;
-            }
-            if (priorityFilter && group.priority?.toString() !== priorityFilter) {
-                return false;
-            }
-            if (relationshipFilter && group.relationship !== relationshipFilter) {
-                return false;
-            }
-            return true;
-        }),
+        data.guestGroups
+            .filter((group) => {
+                if (nameFilter && !group.name.toLowerCase().includes(nameFilter.toLowerCase())) {
+                    return false;
+                }
+                if (priorityFilter && group.priority?.toString() !== priorityFilter) {
+                    return false;
+                }
+                if (relationshipFilter && group.relationship !== relationshipFilter) {
+                    return false;
+                }
+                return true;
+            })
+            // sort by priority descending, then name ascending
+            .sort((a, b) => {
+                if (b.priority !== a.priority) {
+                    return (b.priority || 0) - (a.priority || 0);
+                }
+                return a.name.localeCompare(b.name);
+            }),
     );
 
     function clearFilters() {
@@ -92,109 +101,109 @@
         if (relativePosition >= 0.33) return "badge-warning"; // Medium priority
         return "badge-info"; // Low priority
     }
+
+    const guestStats: iStat[] = [
+        {
+            title: "Guest Groups",
+            value: filteredGuestGroups.length,
+            description: `of ${data.count} total`,
+            icon: "users",
+        },
+        {
+            title: "Guests",
+            value: filteredGuestGroups.reduce((sum, group) => sum + group.groupCount, 0),
+            description: `of ${data.guestGroups.reduce((sum, group) => sum + group.groupCount, 0)} total`,
+            icon: "user",
+        },
+    ];
+    const inviteStats: iStat[] = [
+        {
+            title: "Invited",
+            value: filteredGuestGroups.reduce((sum, group) => sum + group.groupInvitedCount, 0),
+            description: `of ${data.guestGroups.reduce((sum, group) => sum + group.groupInvitedCount, 0)} total`,
+            icon: "mail",
+        },
+        {
+            title: "Attending",
+            value: filteredGuestGroups.reduce((sum, group) => sum + group.groupAttendingCount, 0),
+            description: `of ${data.guestGroups.reduce((sum, group) => sum + group.groupAttendingCount, 0)} total`,
+            icon: "check-circle",
+        },
+    ];
 </script>
 
 <ProtectedPageShell {relativeCrumbs}>
-    <ProtectedPageHeader title="Guest List" description="Manage your wedding guest groups and RSVPs">
-        <div class="stats shadow mt-8 w-full">
-            <div class="stat">
-                <div class="stat-figure text-primary">
-                    <span class="icon-[lucide--users] size-8"></span>
-                </div>
-                <div class="stat-title">Guest Groups</div>
-                <div class="stat-value text-primary">{filteredGuestGroups.length}</div>
-                <div class="stat-desc">of {data.count} total</div>
-            </div>
+    <ProtectedPageHeader
+        title="Guest List"
+        description="Manage your wedding guest groups and RSVPs"
+        showButtons={false}>
+        <div class="w-full flex justify-start">
+            <div class="flex flex-col md:flex-row gap-6 mb-8">
+                <div class="config-card w-full md:w-96" id="filter-panel">
+                    <div class="config-card-body">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-semibold">Filters</h3>
+                            <button onclick={clearFilters} class="btn btn-error btn-sm">
+                                <span class="icon-[lucide--x] size-4"></span>
+                                Clear All
+                            </button>
+                        </div>
+                        <div class="grid grid-cols-1 gap-4">
+                            <div class="form-control">
+                                <label class="label" for="name-filter">
+                                    <span class="config-card-field-name">Name</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    id="name-filter"
+                                    class="input input-bordered"
+                                    placeholder="Search by name..."
+                                    bind:value={nameFilter} />
+                            </div>
 
-            <div class="stat">
-                <div class="stat-figure text-secondary">
-                    <span class="icon-[lucide--user] size-8"></span>
-                </div>
-                <div class="stat-title">Guests</div>
-                <div class="stat-value text-secondary">
-                    {filteredGuestGroups.reduce((sum, group) => sum + group.groupCount, 0)}
-                </div>
-                <div class="stat-desc">
-                    of {data.guestGroups.reduce((sum, group) => sum + group.groupCount, 0)} total
-                </div>
-            </div>
+                            <div class="form-control">
+                                <label class="label" for="priority-filter">
+                                    <span class="config-card-field-name">Priority</span>
+                                </label>
+                                <select id="priority-filter" class="select select-bordered" bind:value={priorityFilter}>
+                                    <option value="">All Priorities</option>
+                                    {#each availablePriorities as { value, label } (value)}
+                                        <option {value}>{label}</option>
+                                    {/each}
+                                </select>
+                            </div>
 
-            <div class="stat">
-                <div class="stat-figure text-success">
-                    <span class="icon-[lucide--check-circle] size-8"></span>
-                </div>
-                <div class="stat-title">Attending</div>
-                <div class="stat-value text-success">
-                    {filteredGuestGroups.reduce((sum, group) => sum + group.groupAttendingCount, 0)}
-                </div>
-                <div class="stat-desc">
-                    of {data.guestGroups.reduce((sum, group) => sum + group.groupAttendingCount, 0)} total
-                </div>
-            </div>
-
-            <div class="stat">
-                <div class="stat-figure text-info">
-                    <span class="icon-[lucide--mail] size-8"></span>
-                </div>
-                <div class="stat-title">Invited</div>
-                <div class="stat-value text-info">
-                    {filteredGuestGroups.reduce((sum, group) => sum + group.groupInvitedCount, 0)}
-                </div>
-                <div class="stat-desc">
-                    of {data.guestGroups.reduce((sum, group) => sum + group.groupInvitedCount, 0)} total
-                </div>
-            </div>
-        </div>
-        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
-            <CreateObject href="/settings/guest_list/new" label="New Guest Group" />
-        </div>
-
-        <!-- Filters -->
-        <div class="config-card mb-6">
-            <div class="config-card-body">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-lg font-semibold">Filters</h3>
-                    <button onclick={clearFilters} class="btn btn-ghost btn-sm">
-                        <span class="icon-[lucide--x] size-4"></span>
-                        Clear All
-                    </button>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="form-control">
-                        <label class="label" for="name-filter">
-                            <span class="label-text">Name</span>
-                        </label>
-                        <input
-                            type="text"
-                            id="name-filter"
-                            class="input input-bordered"
-                            placeholder="Search by name..."
-                            bind:value={nameFilter} />
+                            <div class="form-control">
+                                <label class="label" for="relationship-filter">
+                                    <span class="config-card-field-name">Relationship</span>
+                                </label>
+                                <select
+                                    id="relationship-filter"
+                                    class="select select-bordered"
+                                    bind:value={relationshipFilter}>
+                                    <option value="">All Relationships</option>
+                                    {#each availableRelationships as { value, label } (value)}
+                                        <option {value}>{label}</option>
+                                    {/each}
+                                </select>
+                            </div>
+                        </div>
                     </div>
-
-                    <div class="form-control">
-                        <label class="label" for="priority-filter">
-                            <span class="label-text">Priority</span>
-                        </label>
-                        <select id="priority-filter" class="select select-bordered" bind:value={priorityFilter}>
-                            <option value="">All Priorities</option>
-                            {#each availablePriorities as { value, label } (value)}
-                                <option {value}>{label}</option>
-                            {/each}
-                        </select>
-                    </div>
-
-                    <div class="form-control">
-                        <label class="label" for="relationship-filter">
-                            <span class="label-text">Relationship</span>
-                        </label>
-                        <select id="relationship-filter" class="select select-bordered" bind:value={relationshipFilter}>
-                            <option value="">All Relationships</option>
-                            {#each availableRelationships as { value, label } (value)}
-                                <option {value}>{label}</option>
-                            {/each}
-                        </select>
-                    </div>
+                </div>
+                <div class="flex flex-col items-center gap-6" id="stats-overview">
+                    <Stats objects={guestStats} />
+                    <Stats objects={inviteStats} />
+                </div>
+                <div class="flex flex-row md:flex-col gap-4">
+                    <CreateObject href="/settings/guest_list/new" label="New Guest Group" />
+                    <a href="/settings/guest/all" class="btn btn-accent gap-2">
+                        <span class="icon-[lucide--users] size-5"></span>
+                        View All Guests
+                    </a>
+                    <a href="/api/guestlist/export_address_csv" class="btn btn-secondary gap-2">
+                        <span class="icon-[lucide--download] size-5"></span>
+                        Export Address Data
+                    </a>
                 </div>
             </div>
         </div>
@@ -220,7 +229,9 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {#each filteredGuestGroups as group (group.id)}
                 {@const rsvpProgress = getRsvpProgress(group)}
-                <a href="/settings/guest_list/{group.id}" class="list-card">
+                <div
+                    class="list-card cursor-pointer"
+                    onclick={() => (window.location.href = `/settings/guest_list/${group.id}`)}>
                     <div class="list-card-body">
                         <div class="flex items-start justify-between gap-2">
                             <h2 class="list-card-title text-lg">{group.name}</h2>
@@ -301,7 +312,7 @@
                             <ViewDetails href="/settings/guest_list/{group.id}" label="View Details" />
                         </div>
                     </div>
-                </a>
+                </div>
             {/each}
         </div>
     {/if}

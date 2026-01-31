@@ -123,37 +123,35 @@
 
                         {#if contact.notes}
                             <div class="text-sm list-card-item mb-4">
-                                <p class="whitespace-pre-wrap">{contact.notes}</p>
+                                <div class="prose prose-sm max-w-none">
+                                    <!-- eslint-disable-next-line svelte/no-at-html-tags set by site admin-->
+                                    {@html contact.notes}
+                                </div>
                             </div>
                         {/if}
 
                         <!-- Attachments Section -->
                         {#if contact.attachments && contact.attachments.length > 0}
                             <div class="divider my-4">Attachments ({contact.attachments.length})</div>
-                            <div class="grid grid-cols-1 gap-3">
-                                {#each contact.attachments as attachment (attachment.id)}
-                                    <div class="flex items-center gap-2 p-3 bg-base-200 rounded-lg">
-                                        <span class="icon-[lucide--file] size-5 list-card-item"></span>
-                                        <div class="flex-1 min-w-0">
-                                            <p class="text-sm font-medium">
-                                                {attachment.name || attachment.filename}
-                                            </p>
+                            <div class="form-control">
+                                <select
+                                    class="select select-bordered w-full"
+                                    onchange={(e) => {
+                                        const url = e.currentTarget.value;
+                                        if (url) {
+                                            window.open(url, "_blank", "noopener,noreferrer");
+                                            e.currentTarget.value = "";
+                                        }
+                                    }}>
+                                    <option value="">Select attachment to view...</option>
+                                    {#each contact.attachments as attachment (attachment.id)}
+                                        <option value={attachment.fileUrl}>
+                                            {attachment.name || attachment.filename}
                                             {#if attachment.description}
-                                                <p class="text-xs truncate">
-                                                    {attachment.description}
-                                                </p>
-                                            {/if}
-                                        </div>
-                                        <a
-                                            href={attachment.fileUrl}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            class="btn btn-xs"
-                                            title="View attachment">
-                                            <span class="icon-[lucide--eye] size-4 list-card-item"></span>
-                                        </a>
-                                    </div>
-                                {/each}
+                                                - {attachment.description}{/if}
+                                        </option>
+                                    {/each}
+                                </select>
                             </div>
                         {/if}
                     </div>
