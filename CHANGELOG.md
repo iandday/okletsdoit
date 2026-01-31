@@ -1,6 +1,21 @@
 # CHANGELOG
 
 
+## v0.10.1 (2026-01-31)
+
+### Bug Fixes
+
+- :ambulance: enable deprecated apps
+  ([`7d4da1c`](https://github.com/iandday/okletsdoit/commit/7d4da1c080215f1a586d253645a13912bca220fa))
+
+### Chores
+
+- Sync files from main after release ([#64](https://github.com/iandday/okletsdoit/pull/64),
+  [`00f843a`](https://github.com/iandday/okletsdoit/commit/00f843aa367fe9b2388820c93210dc12e2978b6f))
+
+Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
+
+
 ## v0.10.0 (2026-01-31)
 
 ### Bug Fixes
