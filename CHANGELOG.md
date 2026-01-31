@@ -1,6 +1,49 @@
 # CHANGELOG
 
 
+## v0.10.0 (2026-01-31)
+
+### Bug Fixes
+
+- :ambulance: restore scanning
+  ([`b71bd7e`](https://github.com/iandday/okletsdoit/commit/b71bd7e833bc06918b9d47fb023ef829072973ac))
+
+- :ambulance: pin openssl
+  ([`bd3af8a`](https://github.com/iandday/okletsdoit/commit/bd3af8a1ad33dbf13f55079323deeaf0d1415c17))
+
+- :rocket: fix local port
+  ([`722c664`](https://github.com/iandday/okletsdoit/commit/722c66417c00ab175bd4c3e59c93adcfacfc1e52))
+
+- :art: linting
+  ([`7891fec`](https://github.com/iandday/okletsdoit/commit/7891fecd3ef62940cf5a2997bb3ea6102c050dfb))
+
+- :rocket: uploads work
+  ([`addc9d9`](https://github.com/iandday/okletsdoit/commit/addc9d977caf2836c6531f85bd4111de1e2ed51a))
+
+- **Attachments**: :zap: remove endpoint
+  ([`84da5e4`](https://github.com/iandday/okletsdoit/commit/84da5e4415cd3cc2bbd6c620275f7d5ee48f12b6))
+
+- :ambulance: increase upload size
+  ([`185657c`](https://github.com/iandday/okletsdoit/commit/185657c8a4f3a9f5e6a80eaece52c756e0321ca5))
+
+### Chores
+
+- Sync files from main after release ([#62](https://github.com/iandday/okletsdoit/pull/62),
+  [`4368606`](https://github.com/iandday/okletsdoit/commit/4368606217887318c28c3145766861c0827d1dbd))
+
+Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
+
+### Continuous Integration
+
+- :ambulance: testing trivy
+  ([`0aae1a2`](https://github.com/iandday/okletsdoit/commit/0aae1a2fa4ae10bc15f20b4ada7d2897c8de01e4))
+
+### Features
+
+- **GuestList**: :art: transition guestlist to frontend
+  ([`70fe776`](https://github.com/iandday/okletsdoit/commit/70fe776a86323b8adaab8dd949ea38aa02c7b2e6))
+
+
 ## v0.9.0 (2026-01-25)
 
 ### Bug Fixes
