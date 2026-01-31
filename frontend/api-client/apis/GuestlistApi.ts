@@ -611,6 +611,38 @@ export class GuestlistApi extends runtime.BaseAPI {
     }
 
     /**
+     * Export Address Csv
+     */
+    async guestlistApiExportAddressCsvRaw(
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<void>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        let urlPath = `/api/guestlist/export_address_csv`;
+
+        const response = await this.request(
+            {
+                path: urlPath,
+                method: "GET",
+                headers: headerParameters,
+                query: queryParameters,
+            },
+            initOverrides,
+        );
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Export Address Csv
+     */
+    async guestlistApiExportAddressCsv(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.guestlistApiExportAddressCsvRaw(initOverrides);
+    }
+
+    /**
      * Get a specific guest by ID
      * Get Guest
      */

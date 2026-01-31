@@ -15,3 +15,10 @@ export type IBreadcrumb = {
     href?: string;
     icon?: string;
 };
+
+export type IStat = {
+    title: string;
+    value: string | number;
+    description?: string;
+    icon?: string;
+};

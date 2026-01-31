@@ -640,3 +640,24 @@ def delete_rsvp_response(request, response_id: UUID):
     response.is_deleted = True
     response.save()
     return {"success": True, "message": "RSVP response deleted successfully"}
+
+
+@router.get("/export_address_csv")
+def export_address_csv(request):
+    import csv
+    from django.http import HttpResponse
+
+    guest_groups = GuestGroup.objects.filter(is_deleted=False)
+
+    response = HttpResponse(content_type="text/csv")
+    response["Content-Disposition"] = 'attachment; filename="guest_addresses.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(["Name", "Address", "Address2", "City", "State", "Zip", "Email"])
+
+    for group in guest_groups:
+        writer.writerow(
+            [group.address_name, group.address, group.address_two, group.city, group.state, group.zip_code, group.email]
+        )
+
+    return response

@@ -12,16 +12,9 @@ export const load: PageServerLoad = async ({ params }) => {
             objectId: contact.id,
         });
 
-        // Get content type ID for Contact model using the new endpoint
-        const contentType = await api.attachments.attachmentsApiGetContentType({
-            appLabel: "contacts",
-            model: "contact",
-        });
-
         return {
             contact,
             attachments: attachments.items || [],
-            contentTypeId: contentType.id,
         };
     } catch (err) {
         console.error("Error loading contact:", err);
@@ -52,25 +45,34 @@ export const actions = {
             return fail(400, { error: "Please select a file to upload" });
         }
 
+        console.log(`[Upload] File: ${file.name}, Size: ${file.size} bytes, Type: ${file.type}`);
+
         try {
-            // Get content type ID for Contact model
-            const contentType = await api.attachments.attachmentsApiGetContentType({
+            console.log(`[Upload] Uploading to object: ${params.id}`);
+
+            const result = await api.attachments.attachmentsApiCreateAttachment({
+                file: file,
                 appLabel: "contacts",
                 model: "contact",
-            });
-
-            await api.attachments.attachmentsApiCreateAttachment({
-                file: file,
-                contentTypeId: contentType.id,
                 objectId: params.id,
                 name: name || null,
                 description: description || null,
             });
 
+            console.log(`[Upload] Success! Attachment ID: ${result.id}`);
             return { success: true };
-        } catch (err) {
-            console.error("Failed to upload attachment:", err);
-            return fail(500, { error: "Failed to upload attachment" });
+        } catch (err: any) {
+            console.error("[Upload] Error details:", {
+                message: err?.message,
+                status: err?.status,
+                statusText: err?.statusText,
+                body: err?.body,
+                stack: err?.stack,
+            });
+            return fail(500, {
+                error: "Failed to upload attachment",
+                details: err?.message || String(err),
+            });
         }
     },
     deleteAttachment: async ({ request }) => {

@@ -37,6 +37,8 @@
         { title: "Contacts", href: "/settings/contact", icon: "icon-[lucide--book-user]" },
         { title: "FAQ", href: "/settings/faq", icon: "icon-[lucide--help-circle]" },
         { title: "Deadlines", href: "/settings/deadline", icon: "icon-[lucide--calendar-check]" },
+        { title: "Guest List", href: "/settings/guest_list", icon: "icon-[lucide--users]" },
+
         {
             title: "Settings",
             href: "/settings/config",
@@ -99,10 +101,10 @@
             title: "Budget",
             href: "/expenses/",
         },
-        {
-            title: "Guest List",
-            href: "/guestlist/",
-        },
+        // {
+        //     title: "Guest List",
+        //     href: "/guestlist/",
+        // },
         {
             title: "Timeline",
             href: "/timeline/",

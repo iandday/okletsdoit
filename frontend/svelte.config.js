@@ -5,7 +5,9 @@ import adapter from "svelte-adapter-bun";
 const config = {
     preprocess: vitePreprocess(),
     kit: {
-        adapter: adapter(),
+        adapter: adapter({
+            out: "build",
+        }),
     },
     compilerOptions: {
         // disable all warnings coming from node_modules and all accessibility warnings

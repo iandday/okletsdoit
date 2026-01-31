@@ -2,18 +2,17 @@
 
 All URIs are relative to _http://localhost_
 
-| Method                                                                                 | HTTP request                                               | Description       |
-| -------------------------------------------------------------------------------------- | ---------------------------------------------------------- | ----------------- |
-| [**attachmentsApiCreateAttachment**](AttachmentsApi.md#attachmentsapicreateattachment) | **POST** /api/attachments/attachments                      | Create Attachment |
-| [**attachmentsApiDeleteAttachment**](AttachmentsApi.md#attachmentsapideleteattachment) | **DELETE** /api/attachments/attachments/{attachment_id}    | Delete Attachment |
-| [**attachmentsApiGetAttachment**](AttachmentsApi.md#attachmentsapigetattachment)       | **GET** /api/attachments/attachments/{attachment_id}       | Get Attachment    |
-| [**attachmentsApiGetContentType**](AttachmentsApi.md#attachmentsapigetcontenttype)     | **GET** /api/attachments/content-types/{app_label}/{model} | Get Content Type  |
-| [**attachmentsApiListAttachments**](AttachmentsApi.md#attachmentsapilistattachments)   | **GET** /api/attachments/attachments                       | List Attachments  |
-| [**attachmentsApiUpdateAttachment**](AttachmentsApi.md#attachmentsapiupdateattachment) | **PUT** /api/attachments/attachments/{attachment_id}       | Update Attachment |
+| Method                                                                                 | HTTP request                                            | Description       |
+| -------------------------------------------------------------------------------------- | ------------------------------------------------------- | ----------------- |
+| [**attachmentsApiCreateAttachment**](AttachmentsApi.md#attachmentsapicreateattachment) | **POST** /api/attachments/attachments                   | Create Attachment |
+| [**attachmentsApiDeleteAttachment**](AttachmentsApi.md#attachmentsapideleteattachment) | **DELETE** /api/attachments/attachments/{attachment_id} | Delete Attachment |
+| [**attachmentsApiGetAttachment**](AttachmentsApi.md#attachmentsapigetattachment)       | **GET** /api/attachments/attachments/{attachment_id}    | Get Attachment    |
+| [**attachmentsApiListAttachments**](AttachmentsApi.md#attachmentsapilistattachments)   | **GET** /api/attachments/attachments                    | List Attachments  |
+| [**attachmentsApiUpdateAttachment**](AttachmentsApi.md#attachmentsapiupdateattachment) | **PUT** /api/attachments/attachments/{attachment_id}    | Update Attachment |
 
 ## attachmentsApiCreateAttachment
 
-> AttachmentSchema attachmentsApiCreateAttachment(contentTypeId, objectId, file, name, description)
+> AttachmentSchema attachmentsApiCreateAttachment(appLabel, model, objectId, file, name, description)
 
 Create Attachment
 
@@ -33,8 +32,10 @@ async function example() {
   const api = new AttachmentsApi();
 
   const body = {
-    // number
-    contentTypeId: 56,
+    // string
+    appLabel: appLabel_example,
+    // string
+    model: model_example,
     // string
     objectId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
     // Blob
@@ -59,13 +60,14 @@ example().catch(console.error);
 
 ### Parameters
 
-| Name              | Type     | Description | Notes                                |
-| ----------------- | -------- | ----------- | ------------------------------------ |
-| **contentTypeId** | `number` |             | [Defaults to `undefined`]            |
-| **objectId**      | `string` |             | [Defaults to `undefined`]            |
-| **file**          | `Blob`   |             | [Defaults to `undefined`]            |
-| **name**          | `string` |             | [Optional] [Defaults to `undefined`] |
-| **description**   | `string` |             | [Optional] [Defaults to `undefined`] |
+| Name            | Type     | Description | Notes                                |
+| --------------- | -------- | ----------- | ------------------------------------ |
+| **appLabel**    | `string` |             | [Defaults to `undefined`]            |
+| **model**       | `string` |             | [Defaults to `undefined`]            |
+| **objectId**    | `string` |             | [Defaults to `undefined`]            |
+| **file**        | `Blob`   |             | [Defaults to `undefined`]            |
+| **name**        | `string` |             | [Optional] [Defaults to `undefined`] |
+| **description** | `string` |             | [Optional] [Defaults to `undefined`] |
 
 ### Return type
 
@@ -200,71 +202,6 @@ example().catch(console.error);
 ### Return type
 
 [**AttachmentSchema**](AttachmentSchema.md)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: `application/json`
-
-### HTTP response details
-
-| Status code | Description | Response headers |
-| ----------- | ----------- | ---------------- |
-| **200**     | OK          | -                |
-
-[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
-
-## attachmentsApiGetContentType
-
-> ContentTypeSchema attachmentsApiGetContentType(appLabel, model)
-
-Get Content Type
-
-Get content type ID for a given app and model
-
-### Example
-
-```ts
-import { Configuration, AttachmentsApi } from "";
-import type { AttachmentsApiGetContentTypeRequest } from "";
-
-async function example() {
-    console.log("🚀 Testing  SDK...");
-    const api = new AttachmentsApi();
-
-    const body = {
-        // string
-        appLabel: appLabel_example,
-        // string
-        model: model_example,
-    } satisfies AttachmentsApiGetContentTypeRequest;
-
-    try {
-        const data = await api.attachmentsApiGetContentType(body);
-        console.log(data);
-    } catch (error) {
-        console.error(error);
-    }
-}
-
-// Run the test
-example().catch(console.error);
-```
-
-### Parameters
-
-| Name         | Type     | Description | Notes                     |
-| ------------ | -------- | ----------- | ------------------------- |
-| **appLabel** | `string` |             | [Defaults to `undefined`] |
-| **model**    | `string` |             | [Defaults to `undefined`] |
-
-### Return type
-
-[**ContentTypeSchema**](ContentTypeSchema.md)
 
 ### Authorization
 

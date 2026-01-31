@@ -1,4 +1,5 @@
 FROM python:3.14-slim-trixie AS development
+
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     DJANGO_SETTINGS_MODULE=okletsdoit.settings \
@@ -7,6 +8,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 RUN apt-get update \
     && apt-get upgrade -y \
     && apt-get install -y --no-install-recommends \
+    openssl=3.5.4-1~deb13u2 \
+    libssl3t64=3.5.4-1~deb13u2 \
     python3-dev \
     libffi-dev \
     postgresql-client-17 \
@@ -63,6 +66,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 RUN apt-get update \
     && apt-get upgrade -y \
     && apt-get install -y --no-install-recommends \
+    openssl=3.5.4-1~deb13u2 \
+    libssl3t64=3.5.4-1~deb13u2 \
     python3-dev \
     libffi-dev \
     postgresql-client-17 \
@@ -96,6 +101,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 RUN apt-get update \
     && apt-get upgrade -y \
     && apt-get install -y --no-install-recommends \
+    openssl=3.5.4-1~deb13u2 \
+    libssl3t64=3.5.4-1~deb13u2 \
     postgresql-client-17 \
     libpq5 \
     libsqlite3-0 \

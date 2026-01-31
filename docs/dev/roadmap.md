@@ -3,12 +3,12 @@
 ## Frontend Migration for Private sections
 - [x] Settings
 - [X] FAQ
-- [ ] Deadlines
+- [X] Deadlines
   - [X] List View
   - [x] Delete List and Item
   - [x] Toggle completion
   - [x] Disable Django components
-- [ ] Guestlist
+- [X] Guestlist
 - [ ] Timeline
 - [ ] Contacts
 - [ ] Dashboard
@@ -23,10 +23,13 @@
     * [x] Allow RSVP
     * [x] Show FAQ
     * [ ] Enable RSVP during configured date ranges
-- [ ] Guestlist
-    * [X] RSVP Form Configuration (Private)
-    * [X] RSVP Form (Public)
-    * [X ] RSVP Preview
+- [ ] Preview
+    * [X] Public venue page
+    * [X] Public FAQ page
+    * [X] RSVP landing page
+    * [X] RSVP accept part one
+    * [X] RSVP accept part two
+    * [X] RSVP declined 
 - [ ] Settings Page
   - [ ] Cleanup import function
 - [ ] Photo Upload
@@ -65,9 +68,6 @@
     - [ ] Delete deadline list
     - [ ] Pre-populate new deadline form with list value
   
-### Guestlist
-
-- [ ] Add delete modal for guests in the guest group detail view
 
 ### User
 

@@ -2,8 +2,7 @@
 Custom authentication classes for Django Ninja API
 """
 
-from ninja.security import APIKeyHeader
-from django.contrib.auth.models import AnonymousUser
+from ninja.security import APIKeyHeader, SessionAuth
 from django.conf import settings
 from allauth.headless.contrib.ninja.security import x_session_token_auth
 
@@ -20,34 +19,13 @@ class ServiceTokenAuth(APIKeyHeader):
         """Authenticate using service token"""
         service_token = getattr(settings, "SERVICE_TOKEN", None)
         if service_token and key == service_token:
-            return AnonymousUser()
-        return None
-
-
-class MultiAuth:
-    """
-    Combines multiple authentication methods.
-    Tries each auth method in order until one succeeds.
-    """
-
-    def __init__(self, *auth_methods):
-        self.auth_methods = auth_methods
-
-    def __call__(self, request):
-        for auth in self.auth_methods:
-            if callable(auth):
-                user = auth(request)
-            else:
-                # For Django Ninja security classes
-                auth_result = auth.authenticate(request, request.headers.get(auth.param_name))
-                user = auth_result
-
-            if user:
-                request.auth = user
-                return user
+            # Return the authenticated user if exists, otherwise return True for valid service token
+            return request.user if hasattr(request, "user") and request.user.is_authenticated else True
         return None
 
 
 # Create reusable auth instances
 service_token_auth = ServiceTokenAuth()
-multi_auth = MultiAuth(service_token_auth, x_session_token_auth)
+
+# Combine multiple authentication methods
+multi_auth = [service_token_auth, SessionAuth(), x_session_token_auth]

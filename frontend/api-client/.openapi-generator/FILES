@@ -14,7 +14,6 @@ docs/ContactFilterSchema.md
 docs/ContactSchema.md
 docs/ContactUpdateSchema.md
 docs/ContactsApi.md
-docs/ContentTypeSchema.md
 docs/CoreApi.md
 docs/DeadlineCreateSchema.md
 docs/DeadlineFilterSchema.md
@@ -82,7 +81,6 @@ models/ContactCreateSchema.ts
 models/ContactFilterSchema.ts
 models/ContactSchema.ts
 models/ContactUpdateSchema.ts
-models/ContentTypeSchema.ts
 models/DeadlineCreateSchema.ts
 models/DeadlineFilterSchema.ts
 models/DeadlineListCreateSchema.ts
