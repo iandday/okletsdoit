@@ -145,7 +145,7 @@ jobs:
       
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.33.1
-        continue-on-error: true  # Don't fail the workflow, just report findings
+        continue-on-error: False
         with:
           image-ref: ${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}:${{ github.sha }}
           trivy-config: trivy.yaml
@@ -245,6 +245,7 @@ jobs:
       
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.33.1
+        continue-on-error: False
         with:
           image-ref: ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:${{ github.sha }}
           trivy-config: trivy.yaml

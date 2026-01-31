@@ -1,8 +1,5 @@
-# Trivy configuration file
-# Matches the settings used in GitHub Actions workflows
-
 format: sarif
-exit-code: 0 # Temporarily set to 0 to see findings without failing
+exit-code: 1
 severity:
   - CRITICAL
   - HIGH
