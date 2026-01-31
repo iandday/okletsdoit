@@ -11,6 +11,9 @@ services:
       - "--entrypoints.web.http.redirections.entrypoint.to=web-secure"
       - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
       - "--entrypoints.web.http.redirections.entrypoint.permanent=true"
+      - "--entrypoints.web-secure.transport.respondingTimeouts.readTimeout=600s"
+      - "--entrypoints.web-secure.transport.respondingTimeouts.writeTimeout=600s"
+      - "--entrypoints.web-secure.transport.respondingTimeouts.idleTimeout=180s"
       - "--log.level=INFO"
     ports:
       - "80:80"
@@ -22,27 +25,6 @@ services:
     depends_on:
       - frontend
       - django-server
-  nginx:
-    image: nginx:latest
-    volumes:
-      - ./nginx/default.conf.template:/etc/nginx/templates/default.conf.template
-    environment:
-      - DJANGO_HOST=django-server
-      - DJANGO_PORT=8000
-      - NGINX_SERVER_NAME=dev.internal
-      - NGINX_CLIENT_MAX_BODY_SIZE=100M
-      - NGINX_ENVSUBST_TEMPLATE_SUFFIX=.template
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.nginx-secure.entrypoints=web-secure"
-      - "traefik.http.routers.nginx-secure.rule=Host(`dev.internal`) && (PathPrefix(`/admin`) || PathPrefix(`/static`) || PathPrefix(`/media`) || PathPrefix(`/api`) || PathPrefix(`/accounts`) || PathPrefix(`/_allauth`) || PathPrefix(`/planning`) || PathPrefix(`/inspiration`) || PathPrefix(`/idea`) || PathPrefix(`/contacts`) || PathPrefix(`/lists`) || PathPrefix(`/deadline`) || PathPrefix(`/expenses`) || PathPrefix(`/guestlist`) || PathPrefix(`/timeline`))"
-      - "traefik.http.routers.nginx-secure.tls=true"
-      - "traefik.http.services.nginx-secure.loadbalancer.server.port=80"
-    depends_on:
-      - traefik
-    expose:
-      - "80"
-    restart: unless-stopped
   postgres:
     image: postgres:17.4
     expose:
@@ -88,7 +70,14 @@ services:
       retries: 5
       start_period: 40s
     labels:
-      - "traefik.enable=false"
+      - "traefik.enable=true"
+      - "traefik.http.routers.django-server.entrypoints=web-secure"
+      - "traefik.http.routers.django-server.rule=Host(`dev.internal`) && (PathPrefix(`/admin`) || PathPrefix(`/static`) || PathPrefix(`/media`) || PathPrefix(`/api`) || PathPrefix(`/accounts`) || PathPrefix(`/_allauth`) || PathPrefix(`/planning`) || PathPrefix(`/inspiration`) || PathPrefix(`/idea`) || PathPrefix(`/contacts`) || PathPrefix(`/lists`) || PathPrefix(`/deadline`) || PathPrefix(`/expenses`) || PathPrefix(`/guestlist`) || PathPrefix(`/timeline`))"
+      - "traefik.http.routers.django-server.tls=true"
+      - "traefik.http.services.django-server.loadbalancer.server.port=8000"
+      - "traefik.http.middlewares.file-upload.buffering.maxRequestBodyBytes=1073741824"
+      - "traefik.http.middlewares.file-upload.buffering.memRequestBodyBytes=107374182"
+      - "traefik.http.routers.django-server.middlewares=file-upload"
   beats:
     build:
       context: ..
@@ -135,6 +124,7 @@ services:
       - CHOKIDAR_USEPOLLING=true
       - VITE_ALLOWED_HOSTS=dev.internal
       - NODE_ENV=development
+      - BODY_SIZE_LIMIT=1G
     volumes:
       - ../frontend:/app
       - frontend-node-modules:/app/node_modules
@@ -146,7 +136,10 @@ services:
       - "traefik.http.routers.frontend-secure.rule=Host(`dev.internal`)"
       - "traefik.http.routers.frontend-secure.priority=5"
       - "traefik.http.routers.frontend-secure.tls=true"
-      - "traefik.http.services.frontend-secure.loadbalancer.server.port=5173"
+      - "traefik.http.services.frontend-secure.loadbalancer.server.port=3000"
+      - "traefik.http.middlewares.frontend-file-upload.buffering.maxRequestBodyBytes=1073741824"
+      - "traefik.http.middlewares.frontend-file-upload.buffering.memRequestBodyBytes=107374182"
+      - "traefik.http.routers.frontend-secure.middlewares=frontend-file-upload"
 
 volumes:
   frontend-node-modules:
