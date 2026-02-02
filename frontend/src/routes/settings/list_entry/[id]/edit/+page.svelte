@@ -1,6 +1,5 @@
 <script lang="ts">
     import { enhance } from "$app/forms";
-    import Icon from "$lib/components/Icon.svelte";
     import ProtectedPageHeader from "$lib/components/layouts/ProtectedPageHeader.svelte";
     import ProtectedPageShell from "$lib/components/layouts/ProtectedPageShell.svelte";
     import type { ActionData, PageData } from "./$types";
@@ -125,7 +124,7 @@
                             </label>
                             <select id="vendorId" name="vendorId" class="edit-card-field-select">
                                 <option value="">No vendor selected</option>
-                                {#each data.vendors as vendor}
+                                {#each data.vendors as vendor, index (vendor.id)}
                                     <option value={vendor.id} selected={vendor.id === data.entry.vendorId}>
                                         {vendor.name || vendor.company || "Unnamed Contact"}
                                     </option>
@@ -163,7 +162,7 @@
             <div class="flex gap-4 mt-6 justify-end">
                 <a href="/settings/list_entry/{data.entry.id}" class="btn btn-error">Cancel</a>
                 <button type="submit" class="btn btn-primary gap-2">
-                    <Icon name="save" class="size-5" />
+                    <span class="icon-[lucide--save] size-5"></span>
                     Save Changes
                 </button>
             </div>

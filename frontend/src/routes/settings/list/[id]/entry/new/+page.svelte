@@ -131,7 +131,7 @@
                             </label>
                             <select id="vendorId" name="vendorId" class="edit-card-field-select">
                                 <option value="">No vendor selected</option>
-                                {#each data.vendors as vendor}
+                                {#each data.vendors as vendor, index (vendor.id)}
                                     <option value={vendor.id}>
                                         {vendor.name || vendor.company || "Unnamed Contact"}
                                     </option>
