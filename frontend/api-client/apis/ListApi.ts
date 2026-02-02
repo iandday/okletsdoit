@@ -71,6 +71,7 @@ export interface ListApiListListEntriesRequest {
     isCompleted?: boolean | null;
     purchased?: boolean | null;
     vendorId?: string | null;
+    associatedExpenseId?: string | null;
     page?: number;
     pageSize?: number | null;
 }
@@ -463,6 +464,10 @@ export class ListApi extends runtime.BaseAPI {
 
         if (requestParameters["vendorId"] != null) {
             queryParameters["vendor_id"] = requestParameters["vendorId"];
+        }
+
+        if (requestParameters["associatedExpenseId"] != null) {
+            queryParameters["associated_expense_id"] = requestParameters["associatedExpenseId"];
         }
 
         if (requestParameters["page"] != null) {

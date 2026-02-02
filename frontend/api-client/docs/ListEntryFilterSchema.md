@@ -2,13 +2,14 @@
 
 ## Properties
 
-| Name          | Type    |
-| ------------- | ------- |
-| `item`        | string  |
-| `listId`      | string  |
-| `isCompleted` | boolean |
-| `purchased`   | boolean |
-| `vendorId`    | string  |
+| Name                  | Type    |
+| --------------------- | ------- |
+| `item`                | string  |
+| `listId`              | string  |
+| `isCompleted`         | boolean |
+| `purchased`           | boolean |
+| `vendorId`            | string  |
+| `associatedExpenseId` | string  |
 
 ## Example
 
@@ -22,6 +23,7 @@ const example = {
     isCompleted: null,
     purchased: null,
     vendorId: null,
+    associatedExpenseId: null,
 } satisfies ListEntryFilterSchema;
 
 console.log(example);

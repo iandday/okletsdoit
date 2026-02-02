@@ -110,7 +110,7 @@
             <div class="overflow-x-auto">
                 <table {...$tableAttrs} class="w-full">
                     <thead class="bg-base-300 text-accent">
-                        {#each $headerRows as headerRow}
+                        {#each $headerRows as headerRow, index (headerRow.id)}
                             <Subscribe rowAttrs={headerRow.attrs()}>
                                 <tr>
                                     {#each headerRow.cells as cell (cell.id)}

@@ -98,6 +98,7 @@ class ListEntryFilterSchema(FilterSchema):
     is_completed: Optional[bool] = None
     purchased: Optional[bool] = None
     vendor_id: Optional[UUID] = None
+    associated_expense_id: Optional[UUID] = None
 
 
 class ListEntryCreateSchema(Schema):

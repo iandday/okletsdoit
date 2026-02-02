@@ -1,5 +1,6 @@
 <script lang="ts">
     import Stats from "$lib/components/Stats.svelte";
+    import CreateObject from "$lib/components/buttons/CreateObject.svelte";
     import ObjectChildItems from "$lib/components/object/ObjectChildItems.svelte";
     import ObjectDetail from "$lib/components/object/ObjectDetail.svelte";
     import type { PageData } from "./$types";
@@ -8,7 +9,7 @@
 
     const relativeCrumbs = [
         { title: "Budget", href: "/settings/budget" },
-        { title: data.category.name, href: `/settings/budget/category/${data.category.id}` },
+        { title: `${data.category.name} Category`, href: `/settings/budget/category/${data.category.id}` },
     ];
 
     const displayName = data.category.name;
@@ -43,75 +44,88 @@
                     </div>
                 </div>
             {/if}
-
-            <Stats
-                objects={[
-                    {
-                        title: "Total Expenses",
-                        value: data.expenses.length.toString(),
-                        icon: "lucide--receipt",
-                    },
-                    {
-                        title: "Estimated Budget",
-                        value: formatCurrency(data.totalEstimated),
-                        icon: "lucide--calculator",
-                    },
-                    {
-                        title: "Actual Spent",
-                        value: formatCurrency(data.totalActual),
-                        icon: "lucide--dollar-sign",
-                    },
-                    {
-                        title: "Variance",
-                        value: formatCurrency(data.variance),
-                        icon: data.variance >= 0 ? "lucide--trending-up" : "lucide--trending-down",
-                    },
-                ]} />
-        </div>
-    {/snippet}
-
-    {#snippet extraCardsSnippet()}
-        <ObjectChildItems
-            items={data.expenses}
-            title="Expenses"
-            addText="Add Expense"
-            addLink="/settings/budget/expense/new"
-            itemLink={(expense) => `/settings/budget/expense/${expense.id}`}>
-            {#snippet itemContent(expense)}
-                <div class="flex-1">
-                    <div class="font-semibold">{expense.item}</div>
-                    {#if expense.description}
-                        <div class="text-sm text-base-content/70 line-clamp-1">
-                            {expense.description}
-                        </div>
-                    {/if}
-                    <div class="flex gap-4 mt-2 text-sm">
-                        {#if expense.date}
-                            <span class="flex items-center gap-1">
-                                <span class="icon-[lucide--calendar] size-3"></span>
-                                {formatDate(expense.date)}
-                            </span>
-                        {/if}
-                        {#if expense.estimatedAmount}
-                            <span class="text-base-content/70">
-                                Est: {formatCurrency(Number(expense.estimatedAmount))}
-                            </span>
-                        {/if}
-                        {#if expense.actualAmount}
-                            <span class="font-semibold">
-                                Actual: {formatCurrency(Number(expense.actualAmount))}
-                            </span>
-                        {/if}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <div class="detail-card-field-name">Total Expenses</div>
+                    <div class="detail-card-field-value whitespace-pre-wrap">
+                        {data.expenses.length.toString()}
                     </div>
                 </div>
-                <div class="flex items-center gap-2">
-                    {#if expense.purchased}
-                        <span class="badge badge-success badge-sm">Purchased</span>
-                    {:else}
-                        <span class="badge badge-ghost badge-sm">Pending</span>
-                    {/if}
+                <div>
+                    <div class="detail-card-field-name">Estimated Budget</div>
+                    <div class="detail-card-field-value whitespace-pre-wrap">
+                        {formatCurrency(data.totalEstimated)}
+                    </div>
                 </div>
-            {/snippet}
+                <div>
+                    <div class="detail-card-field-name">Total Expenses</div>
+                    <div class="detail-card-field-value whitespace-pre-wrap">
+                        {formatCurrency(data.totalActual)}
+                    </div>
+                </div>
+                <div>
+                    <div class="detail-card-field-name">Variance</div>
+                    <div class="detail-card-field-value whitespace-pre-wrap">
+                        {formatCurrency(data.variance)}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {/snippet}
+    {#snippet mainActionsSnippet()}
+        <CreateObject href="/settings/budget/expense/new" label="Add Expense" />
+    {/snippet}
+    {#snippet extraCardsSnippet()}
+        <ObjectChildItems title="Expenses">
+            {#if data.expenses.length > 0}
+                <div class="grid gap-4 grid-cols-1 md:grid-cols-2">
+                    {#each data.expenses as expense, index (expense.id)}
+                        <div class="list-card">
+                            <div class="list-card-body">
+                                <div class="list-card-title">
+                                    <a class="link link-accent" href={`/settings/budget/expense/${expense.id}`}
+                                        >{expense.item}</a>
+                                </div>
+
+                                <div class="flex justify-between items-start">
+                                    <div class="flex-1">
+                                        <div class="flex gap-4 mt-2 text-sm">
+                                            {#if expense.date}
+                                                <span class="flex items-center gap-1">
+                                                    <span class="icon-[lucide--calendar] size-3"></span>
+                                                    {formatDate(expense.date)}
+                                                </span>
+                                            {/if}
+                                            {#if expense.estimatedAmount}
+                                                <span>
+                                                    Est: {formatCurrency(Number(expense.estimatedAmount))}
+                                                </span>
+                                            {/if}
+                                            {#if expense.actualAmount}
+                                                <span class="font-semibold">
+                                                    Actual: {formatCurrency(Number(expense.actualAmount))}
+                                                </span>
+                                            {/if}
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        {#if expense.purchased}
+                                            <span class="badge badge-success badge-sm">Purchased</span>
+                                        {:else}
+                                            <span class="badge badge-warning badge-sm">Pending</span>
+                                        {/if}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {/each}
+                </div>
+            {:else}
+                <div class="text-center py-8">
+                    <p class="text-base-content mb-4">No expenses in this category yet.</p>
+                    <CreateObject href="/settings/budget/expense/new" label="Add Expense" />
+                </div>
+            {/if}
         </ObjectChildItems>
     {/snippet}
 </ObjectDetail>

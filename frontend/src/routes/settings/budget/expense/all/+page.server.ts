@@ -19,12 +19,24 @@ export const load: PageServerLoad = async () => {
     const categoryIds = [...new Set(expenses.map((e) => e.categoryId).filter(Boolean))];
     const categoryMap = new Map();
 
+    console.log(`Loading ${categoryIds.length} unique categories for ${expenses.length} expenses`);
+    console.log("Category IDs:", categoryIds);
+
     for (const categoryId of categoryIds) {
         try {
+            console.log(`Fetching category: ${categoryId}`);
             const category = await api.expenses.expensesApiGetCategory({ categoryId });
+            console.log(`Successfully loaded category ${categoryId}:`, category.name);
             categoryMap.set(categoryId, category);
         } catch (error) {
             console.error(`Failed to load category ${categoryId}:`, error);
+            const affectedExpenses = expenses.filter((e) => e.categoryId === categoryId);
+            console.error(
+                `  Affected expenses (${affectedExpenses.length}):`,
+                affectedExpenses.map((e) => ({ id: e.id, item: e.item })),
+            );
+            // Set a placeholder so we know it was attempted
+            categoryMap.set(categoryId, { name: "Deleted Category", id: categoryId });
         }
     }
 
@@ -34,14 +46,8 @@ export const load: PageServerLoad = async () => {
     }));
 
     // Calculate totals
-    const totalEstimated = expenses.reduce(
-        (sum, e) => sum + (e.estimatedAmount ? Number(e.estimatedAmount) : 0),
-        0
-    );
-    const totalActual = expenses.reduce(
-        (sum, e) => sum + (e.actualAmount ? Number(e.actualAmount) : 0),
-        0
-    );
+    const totalEstimated = expenses.reduce((sum, e) => sum + (e.estimatedAmount ? Number(e.estimatedAmount) : 0), 0);
+    const totalActual = expenses.reduce((sum, e) => sum + (e.actualAmount ? Number(e.actualAmount) : 0), 0);
     const variance = totalActual - totalEstimated;
 
     return {

@@ -457,7 +457,7 @@ example().catch(console.error);
 
 ## listApiListListEntries
 
-> PagedListEntrySchema listApiListListEntries(item, listId, isCompleted, purchased, vendorId, page, pageSize)
+> PagedListEntrySchema listApiListListEntries(item, listId, isCompleted, purchased, vendorId, associatedExpenseId, page, pageSize)
 
 List List Entries
 
@@ -495,6 +495,8 @@ async function example() {
     purchased: true,
     // string (optional)
     vendorId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+    // string (optional)
+    associatedExpenseId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
     // number (optional)
     page: 56,
     // number (optional)
@@ -515,15 +517,16 @@ example().catch(console.error);
 
 ### Parameters
 
-| Name            | Type      | Description | Notes                                |
-| --------------- | --------- | ----------- | ------------------------------------ |
-| **item**        | `string`  |             | [Optional] [Defaults to `undefined`] |
-| **listId**      | `string`  |             | [Optional] [Defaults to `undefined`] |
-| **isCompleted** | `boolean` |             | [Optional] [Defaults to `undefined`] |
-| **purchased**   | `boolean` |             | [Optional] [Defaults to `undefined`] |
-| **vendorId**    | `string`  |             | [Optional] [Defaults to `undefined`] |
-| **page**        | `number`  |             | [Optional] [Defaults to `1`]         |
-| **pageSize**    | `number`  |             | [Optional] [Defaults to `undefined`] |
+| Name                    | Type      | Description | Notes                                |
+| ----------------------- | --------- | ----------- | ------------------------------------ |
+| **item**                | `string`  |             | [Optional] [Defaults to `undefined`] |
+| **listId**              | `string`  |             | [Optional] [Defaults to `undefined`] |
+| **isCompleted**         | `boolean` |             | [Optional] [Defaults to `undefined`] |
+| **purchased**           | `boolean` |             | [Optional] [Defaults to `undefined`] |
+| **vendorId**            | `string`  |             | [Optional] [Defaults to `undefined`] |
+| **associatedExpenseId** | `string`  |             | [Optional] [Defaults to `undefined`] |
+| **page**                | `number`  |             | [Optional] [Defaults to `1`]         |
+| **pageSize**            | `number`  |             | [Optional] [Defaults to `undefined`] |
 
 ### Return type
 

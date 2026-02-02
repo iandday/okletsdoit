@@ -1,6 +1,6 @@
 import { api } from "$lib/server/api-client";
-import type { Actions, PageServerLoad } from "./$types";
 import { redirect } from "@sveltejs/kit";
+import type { Actions, PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async ({ params }) => {
     const category = await api.expenses.expensesApiGetCategory({ categoryId: params.id });

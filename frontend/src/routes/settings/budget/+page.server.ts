@@ -40,14 +40,8 @@ export const load: PageServerLoad = async () => {
         // Calculate breakdown by category
         const categoryBreakdown = categories.map((category) => {
             const categoryExpenses = expenses.filter((e) => e.categoryId === category.id);
-            const totalEstimated = categoryExpenses.reduce(
-                (sum, e) => sum + Number(e.estimatedAmount || 0),
-                0,
-            );
-            const totalActual = categoryExpenses.reduce(
-                (sum, e) => sum + Number(e.actualAmount || 0),
-                0,
-            );
+            const totalEstimated = categoryExpenses.reduce((sum, e) => sum + Number(e.estimatedAmount || 0), 0);
+            const totalActual = categoryExpenses.reduce((sum, e) => sum + Number(e.actualAmount || 0), 0);
 
             return {
                 category,
@@ -61,14 +55,8 @@ export const load: PageServerLoad = async () => {
         // Add uncategorized expenses
         const uncategorizedExpenses = expenses.filter((e) => !e.categoryId);
         if (uncategorizedExpenses.length > 0) {
-            const totalEstimated = uncategorizedExpenses.reduce(
-                (sum, e) => sum + Number(e.estimatedAmount || 0),
-                0,
-            );
-            const totalActual = uncategorizedExpenses.reduce(
-                (sum, e) => sum + Number(e.actualAmount || 0),
-                0,
-            );
+            const totalEstimated = uncategorizedExpenses.reduce((sum, e) => sum + Number(e.estimatedAmount || 0), 0);
+            const totalActual = uncategorizedExpenses.reduce((sum, e) => sum + Number(e.actualAmount || 0), 0);
 
             categoryBreakdown.push({
                 category: {

@@ -1,6 +1,6 @@
 import { api } from "$lib/server/api-client";
-import type { Actions, PageServerLoad } from "./$types";
 import { redirect } from "@sveltejs/kit";
+import type { Actions, PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async ({ params }) => {
     const expense = await api.expenses.expensesApiGetExpense({ expenseId: params.id });
@@ -46,8 +46,20 @@ export const actions: Actions = {
         const categoryId = formData.get("category") as string;
         const vendorId = formData.get("vendor") as string;
         const date = formData.get("date") as string;
-        const estimatedAmount = formData.get("estimatedAmount") as string;
+        const quantity = formData.get("quantity") as string;
+        const unitPrice = formData.get("unitPrice") as string;
+        const additionalPrice = formData.get("additionalPrice") as string;
+        let estimatedAmount = formData.get("estimatedAmount") as string;
         const actualAmount = formData.get("actualAmount") as string;
+        const url = formData.get("url") as string;
+
+        // Calculate estimatedAmount if not provided
+        if (!estimatedAmount && quantity && unitPrice) {
+            const qty = Number(quantity);
+            const price = Number(unitPrice);
+            const additional = additionalPrice ? Number(additionalPrice) : 0;
+            estimatedAmount = String(qty * price + additional);
+        }
 
         await api.expenses.expensesApiUpdateExpense({
             expenseId: params.id,
@@ -57,8 +69,12 @@ export const actions: Actions = {
                 categoryId: categoryId || undefined,
                 vendorId: vendorId || undefined,
                 date: date ? new Date(date) : undefined,
+                quantity: quantity ? Number(quantity) : undefined,
+                unitPrice: unitPrice || undefined,
+                additionalPrice: additionalPrice || undefined,
                 estimatedAmount: estimatedAmount || undefined,
                 actualAmount: actualAmount || undefined,
+                url: url || undefined,
             },
         });
 

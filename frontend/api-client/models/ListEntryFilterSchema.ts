@@ -49,6 +49,12 @@ export interface ListEntryFilterSchema {
      * @memberof ListEntryFilterSchema
      */
     vendorId?: string | null;
+    /**
+     *
+     * @type {string}
+     * @memberof ListEntryFilterSchema
+     */
+    associatedExpenseId?: string | null;
 }
 
 /**
@@ -72,6 +78,7 @@ export function ListEntryFilterSchemaFromJSONTyped(json: any, ignoreDiscriminato
         isCompleted: json["is_completed"] == null ? undefined : json["is_completed"],
         purchased: json["purchased"] == null ? undefined : json["purchased"],
         vendorId: json["vendor_id"] == null ? undefined : json["vendor_id"],
+        associatedExpenseId: json["associated_expense_id"] == null ? undefined : json["associated_expense_id"],
     };
 }
 
@@ -93,5 +100,6 @@ export function ListEntryFilterSchemaToJSONTyped(
         is_completed: value["isCompleted"],
         purchased: value["purchased"],
         vendor_id: value["vendorId"],
+        associated_expense_id: value["associatedExpenseId"],
     };
 }
