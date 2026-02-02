@@ -201,6 +201,14 @@ export class GuestlistApi extends runtime.BaseAPI {
 
         headerParameters["Content-Type"] = "application/json";
 
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
         let urlPath = `/api/guestlist/guests`;
 
         const response = await this.request(
@@ -249,6 +257,14 @@ export class GuestlistApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         headerParameters["Content-Type"] = "application/json";
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
 
         let urlPath = `/api/guestlist/guest-groups`;
 
@@ -299,6 +315,14 @@ export class GuestlistApi extends runtime.BaseAPI {
 
         headerParameters["Content-Type"] = "application/json";
 
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
         let urlPath = `/api/guestlist/rsvp-responses`;
 
         const response = await this.request(
@@ -348,6 +372,14 @@ export class GuestlistApi extends runtime.BaseAPI {
 
         headerParameters["Content-Type"] = "application/json";
 
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
         let urlPath = `/api/guestlist/rsvp-submissions`;
 
         const response = await this.request(
@@ -394,6 +426,14 @@ export class GuestlistApi extends runtime.BaseAPI {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
 
         let urlPath = `/api/guestlist/rsvp-decline/{rsvp_code}`;
         urlPath = urlPath.replace(`{${"rsvp_code"}}`, encodeURIComponent(String(requestParameters["rsvpCode"])));
@@ -442,6 +482,14 @@ export class GuestlistApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
         let urlPath = `/api/guestlist/guests/{guest_id}`;
         urlPath = urlPath.replace(`{${"guest_id"}}`, encodeURIComponent(String(requestParameters["guestId"])));
 
@@ -487,6 +535,14 @@ export class GuestlistApi extends runtime.BaseAPI {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
 
         let urlPath = `/api/guestlist/guest-groups/{group_id}`;
         urlPath = urlPath.replace(`{${"group_id"}}`, encodeURIComponent(String(requestParameters["groupId"])));
@@ -534,6 +590,14 @@ export class GuestlistApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
         let urlPath = `/api/guestlist/rsvp-responses/{response_id}`;
         urlPath = urlPath.replace(`{${"response_id"}}`, encodeURIComponent(String(requestParameters["responseId"])));
 
@@ -580,6 +644,14 @@ export class GuestlistApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
         let urlPath = `/api/guestlist/rsvp-submissions/{submission_id}`;
         urlPath = urlPath.replace(
             `{${"submission_id"}}`,
@@ -619,6 +691,14 @@ export class GuestlistApi extends runtime.BaseAPI {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
 
         let urlPath = `/api/guestlist/export_address_csv`;
 
@@ -660,6 +740,14 @@ export class GuestlistApi extends runtime.BaseAPI {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
 
         let urlPath = `/api/guestlist/guests/{guest_id}`;
         urlPath = urlPath.replace(`{${"guest_id"}}`, encodeURIComponent(String(requestParameters["guestId"])));
@@ -708,6 +796,14 @@ export class GuestlistApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
         let urlPath = `/api/guestlist/guest-groups/{group_id}`;
         urlPath = urlPath.replace(`{${"group_id"}}`, encodeURIComponent(String(requestParameters["groupId"])));
 
@@ -755,6 +851,14 @@ export class GuestlistApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
         let urlPath = `/api/guestlist/rsvp-acceptance-questions/{rsvp_code}`;
         urlPath = urlPath.replace(`{${"rsvp_code"}}`, encodeURIComponent(String(requestParameters["rsvpCode"])));
 
@@ -793,6 +897,14 @@ export class GuestlistApi extends runtime.BaseAPI {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
 
         let urlPath = `/api/guestlist/rsvp-acceptance-questions/preview`;
 
@@ -838,6 +950,14 @@ export class GuestlistApi extends runtime.BaseAPI {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
 
         let urlPath = `/api/guestlist/rsvp-responses/{response_id}`;
         urlPath = urlPath.replace(`{${"response_id"}}`, encodeURIComponent(String(requestParameters["responseId"])));
@@ -885,6 +1005,14 @@ export class GuestlistApi extends runtime.BaseAPI {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
 
         let urlPath = `/api/guestlist/rsvp-submissions/{submission_id}`;
         urlPath = urlPath.replace(
@@ -973,6 +1101,14 @@ export class GuestlistApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
         let urlPath = `/api/guestlist/guest-groups`;
 
         const response = await this.request(
@@ -1023,6 +1159,14 @@ export class GuestlistApi extends runtime.BaseAPI {
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
 
         let urlPath = `/api/guestlist/guests`;
 
@@ -1075,6 +1219,14 @@ export class GuestlistApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
         let urlPath = `/api/guestlist/rsvp-responses`;
 
         const response = await this.request(
@@ -1125,6 +1277,14 @@ export class GuestlistApi extends runtime.BaseAPI {
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
 
         let urlPath = `/api/guestlist/rsvp-submissions`;
 
@@ -1180,6 +1340,14 @@ export class GuestlistApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         headerParameters["Content-Type"] = "application/json";
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
 
         let urlPath = `/api/guestlist/guests/{guest_id}`;
         urlPath = urlPath.replace(`{${"guest_id"}}`, encodeURIComponent(String(requestParameters["guestId"])));
@@ -1238,6 +1406,14 @@ export class GuestlistApi extends runtime.BaseAPI {
 
         headerParameters["Content-Type"] = "application/json";
 
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
         let urlPath = `/api/guestlist/guest-groups/{group_id}`;
         urlPath = urlPath.replace(`{${"group_id"}}`, encodeURIComponent(String(requestParameters["groupId"])));
 
@@ -1295,6 +1471,14 @@ export class GuestlistApi extends runtime.BaseAPI {
 
         headerParameters["Content-Type"] = "application/json";
 
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
         let urlPath = `/api/guestlist/rsvp-responses/{response_id}`;
         urlPath = urlPath.replace(`{${"response_id"}}`, encodeURIComponent(String(requestParameters["responseId"])));
 
@@ -1351,6 +1535,14 @@ export class GuestlistApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         headerParameters["Content-Type"] = "application/json";
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
 
         let urlPath = `/api/guestlist/rsvp-submissions/{submission_id}`;
         urlPath = urlPath.replace(

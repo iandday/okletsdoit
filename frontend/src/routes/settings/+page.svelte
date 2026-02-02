@@ -24,6 +24,25 @@
             items: ["Create deadline lists", "Track task progress", "Set due dates", "Mark completions"],
         },
         {
+            title: "Lists Management",
+            description: "Organize and manage your wedding planning lists and associated entries",
+            icon: "check-square",
+            href: "/settings/list",
+            items: [
+                "Create and edit lists",
+                "Manage list entries",
+                "Associate entries with expenses",
+                "Track purchased items",
+            ],
+        },
+        {
+            title: "Guest List Management",
+            description: "Organize and manage your wedding guest list and associated groups",
+            icon: "users",
+            href: "/settings/guest_list",
+            items: ["Add and edit guests", "Create guest groups", "Manage invitations", "Track RSVPs"],
+        },
+        {
             title: "Preview Pages",
             description: "Preview how your wedding pages will appear to guests",
             icon: "eye",
