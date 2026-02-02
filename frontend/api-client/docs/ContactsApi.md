@@ -29,7 +29,15 @@ import type { ContactsApiCreateContactRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new ContactsApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new ContactsApi(config);
 
   const body = {
     // ContactCreateSchema
@@ -60,7 +68,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -94,7 +102,15 @@ import type { ContactsApiDeleteContactRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new ContactsApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new ContactsApi(config);
 
   const body = {
     // string
@@ -125,7 +141,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -159,7 +175,15 @@ import type { ContactsApiGetContactRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new ContactsApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new ContactsApi(config);
 
   const body = {
     // string
@@ -190,7 +214,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -221,7 +245,15 @@ import type { ContactsApiListContactsRequest } from "";
 
 async function example() {
     console.log("🚀 Testing  SDK...");
-    const api = new ContactsApi();
+    const config = new Configuration({
+        // To configure API key authorization: SessionAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: ServiceTokenAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: XSessionTokenAuth
+        apiKey: "YOUR API KEY",
+    });
+    const api = new ContactsApi(config);
 
     const body = {
         // string (optional)
@@ -261,7 +293,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -295,7 +327,15 @@ import type { ContactsApiUpdateContactRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new ContactsApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new ContactsApi(config);
 
   const body = {
     // string
@@ -329,7 +369,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 

@@ -223,6 +223,14 @@ export class CoreApi extends runtime.BaseAPI {
 
         headerParameters["Content-Type"] = "application/json";
 
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
         let urlPath = `/api/core/questions`;
 
         const response = await this.request(
@@ -271,6 +279,14 @@ export class CoreApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         headerParameters["Content-Type"] = "application/json";
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
 
         let urlPath = `/api/core/question-urls`;
 
@@ -321,6 +337,14 @@ export class CoreApi extends runtime.BaseAPI {
 
         headerParameters["Content-Type"] = "application/json";
 
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
         let urlPath = `/api/core/rsvp-questions`;
 
         const response = await this.request(
@@ -369,6 +393,14 @@ export class CoreApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         headerParameters["Content-Type"] = "application/json";
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
 
         let urlPath = `/api/core/rsvp-question-choices`;
 
@@ -419,6 +451,14 @@ export class CoreApi extends runtime.BaseAPI {
 
         headerParameters["Content-Type"] = "application/json";
 
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
         let urlPath = `/api/core/tips`;
 
         const response = await this.request(
@@ -466,6 +506,14 @@ export class CoreApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
         let urlPath = `/api/core/questions/{question_id}`;
         urlPath = urlPath.replace(`{${"question_id"}}`, encodeURIComponent(String(requestParameters["questionId"])));
 
@@ -511,6 +559,14 @@ export class CoreApi extends runtime.BaseAPI {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
 
         let urlPath = `/api/core/question-urls/{url_id}`;
         urlPath = urlPath.replace(`{${"url_id"}}`, encodeURIComponent(String(requestParameters["urlId"])));
@@ -558,6 +614,14 @@ export class CoreApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
         let urlPath = `/api/core/rsvp-questions/{question_id}`;
         urlPath = urlPath.replace(`{${"question_id"}}`, encodeURIComponent(String(requestParameters["questionId"])));
 
@@ -603,6 +667,14 @@ export class CoreApi extends runtime.BaseAPI {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
 
         let urlPath = `/api/core/rsvp-question-choices/{choice_id}`;
         urlPath = urlPath.replace(`{${"choice_id"}}`, encodeURIComponent(String(requestParameters["choiceId"])));
@@ -650,6 +722,14 @@ export class CoreApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
         let urlPath = `/api/core/tips/{tip_id}`;
         urlPath = urlPath.replace(`{${"tip_id"}}`, encodeURIComponent(String(requestParameters["tipId"])));
 
@@ -692,6 +772,14 @@ export class CoreApi extends runtime.BaseAPI {
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
 
         let urlPath = `/api/core/rsvp-categories-content`;
 
@@ -738,6 +826,14 @@ export class CoreApi extends runtime.BaseAPI {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
 
         let urlPath = `/api/core/questions/{question_id}`;
         urlPath = urlPath.replace(`{${"question_id"}}`, encodeURIComponent(String(requestParameters["questionId"])));
@@ -786,6 +882,14 @@ export class CoreApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
         let urlPath = `/api/core/question-urls/{url_id}`;
         urlPath = urlPath.replace(`{${"url_id"}}`, encodeURIComponent(String(requestParameters["urlId"])));
 
@@ -832,6 +936,14 @@ export class CoreApi extends runtime.BaseAPI {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
 
         let urlPath = `/api/core/rsvp-questions/{question_id}`;
         urlPath = urlPath.replace(`{${"question_id"}}`, encodeURIComponent(String(requestParameters["questionId"])));
@@ -880,6 +992,14 @@ export class CoreApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
         let urlPath = `/api/core/rsvp-question-choices/{choice_id}`;
         urlPath = urlPath.replace(`{${"choice_id"}}`, encodeURIComponent(String(requestParameters["choiceId"])));
 
@@ -927,6 +1047,14 @@ export class CoreApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
         let urlPath = `/api/core/tips/{tip_id}`;
         urlPath = urlPath.replace(`{${"tip_id"}}`, encodeURIComponent(String(requestParameters["tipId"])));
 
@@ -965,6 +1093,14 @@ export class CoreApi extends runtime.BaseAPI {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
 
         let urlPath = `/api/core/wedding-settings`;
 
@@ -1007,6 +1143,14 @@ export class CoreApi extends runtime.BaseAPI {
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
 
         let urlPath = `/api/core/question-urls`;
 
@@ -1063,6 +1207,14 @@ export class CoreApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
         let urlPath = `/api/core/questions`;
 
         const response = await this.request(
@@ -1117,6 +1269,14 @@ export class CoreApi extends runtime.BaseAPI {
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
 
         let urlPath = `/api/core/rsvp-questions`;
 
@@ -1173,6 +1333,14 @@ export class CoreApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
         let urlPath = `/api/core/tips`;
 
         const response = await this.request(
@@ -1227,6 +1395,14 @@ export class CoreApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         headerParameters["Content-Type"] = "application/json";
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
 
         let urlPath = `/api/core/questions/{question_id}`;
         urlPath = urlPath.replace(`{${"question_id"}}`, encodeURIComponent(String(requestParameters["questionId"])));
@@ -1285,6 +1461,14 @@ export class CoreApi extends runtime.BaseAPI {
 
         headerParameters["Content-Type"] = "application/json";
 
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
         let urlPath = `/api/core/question-urls/{url_id}`;
         urlPath = urlPath.replace(`{${"url_id"}}`, encodeURIComponent(String(requestParameters["urlId"])));
 
@@ -1341,6 +1525,14 @@ export class CoreApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         headerParameters["Content-Type"] = "application/json";
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
 
         let urlPath = `/api/core/rsvp-questions/{question_id}`;
         urlPath = urlPath.replace(`{${"question_id"}}`, encodeURIComponent(String(requestParameters["questionId"])));
@@ -1399,6 +1591,14 @@ export class CoreApi extends runtime.BaseAPI {
 
         headerParameters["Content-Type"] = "application/json";
 
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
         let urlPath = `/api/core/rsvp-question-choices/{choice_id}`;
         urlPath = urlPath.replace(`{${"choice_id"}}`, encodeURIComponent(String(requestParameters["choiceId"])));
 
@@ -1456,6 +1656,14 @@ export class CoreApi extends runtime.BaseAPI {
 
         headerParameters["Content-Type"] = "application/json";
 
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
         let urlPath = `/api/core/tips/{tip_id}`;
         urlPath = urlPath.replace(`{${"tip_id"}}`, encodeURIComponent(String(requestParameters["tipId"])));
 
@@ -1505,6 +1713,14 @@ export class CoreApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         headerParameters["Content-Type"] = "application/json";
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
 
         let urlPath = `/api/core/wedding-settings`;
 

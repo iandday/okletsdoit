@@ -119,6 +119,14 @@ export class DeadlinesApi extends runtime.BaseAPI {
 
         headerParameters["Content-Type"] = "application/json";
 
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
         let urlPath = `/api/deadline/deadlines`;
 
         const response = await this.request(
@@ -168,6 +176,14 @@ export class DeadlinesApi extends runtime.BaseAPI {
 
         headerParameters["Content-Type"] = "application/json";
 
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
         let urlPath = `/api/deadline/deadline-lists`;
 
         const response = await this.request(
@@ -215,6 +231,14 @@ export class DeadlinesApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
         let urlPath = `/api/deadline/deadlines/{deadline_id}`;
         urlPath = urlPath.replace(`{${"deadline_id"}}`, encodeURIComponent(String(requestParameters["deadlineId"])));
 
@@ -261,6 +285,14 @@ export class DeadlinesApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
         let urlPath = `/api/deadline/deadline-lists/{list_id}`;
         urlPath = urlPath.replace(`{${"list_id"}}`, encodeURIComponent(String(requestParameters["listId"])));
 
@@ -306,6 +338,14 @@ export class DeadlinesApi extends runtime.BaseAPI {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
 
         let urlPath = `/api/deadline/deadlines/{deadline_id}`;
         urlPath = urlPath.replace(`{${"deadline_id"}}`, encodeURIComponent(String(requestParameters["deadlineId"])));
@@ -354,6 +394,14 @@ export class DeadlinesApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
         let urlPath = `/api/deadline/deadline-lists/{list_id}`;
         urlPath = urlPath.replace(`{${"list_id"}}`, encodeURIComponent(String(requestParameters["listId"])));
 
@@ -401,6 +449,14 @@ export class DeadlinesApi extends runtime.BaseAPI {
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
 
         let urlPath = `/api/deadline/deadline-lists`;
 
@@ -469,6 +525,14 @@ export class DeadlinesApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
         let urlPath = `/api/deadline/deadlines`;
 
         const response = await this.request(
@@ -514,6 +578,14 @@ export class DeadlinesApi extends runtime.BaseAPI {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
 
         let urlPath = `/api/deadline/deadlines/{deadline_id}/toggle_complete`;
         urlPath = urlPath.replace(`{${"deadline_id"}}`, encodeURIComponent(String(requestParameters["deadlineId"])));
@@ -571,6 +643,14 @@ export class DeadlinesApi extends runtime.BaseAPI {
 
         headerParameters["Content-Type"] = "application/json";
 
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
         let urlPath = `/api/deadline/deadlines/{deadline_id}`;
         urlPath = urlPath.replace(`{${"deadline_id"}}`, encodeURIComponent(String(requestParameters["deadlineId"])));
 
@@ -627,6 +707,14 @@ export class DeadlinesApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         headerParameters["Content-Type"] = "application/json";
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
 
         let urlPath = `/api/deadline/deadline-lists/{list_id}`;
         urlPath = urlPath.replace(`{${"list_id"}}`, encodeURIComponent(String(requestParameters["listId"])));

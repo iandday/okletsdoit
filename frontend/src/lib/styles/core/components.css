@@ -173,7 +173,7 @@ input:-webkit-autofill:active {
     @apply card-actions border-base-300 justify-end px-4 pb-4;
 }
 
-/* start detail object view */
+/* start detail object view hover:bg-base-300*/
 .detail-card {
     @apply card bg-base-300 text-primary-content shadow-xl transition-shadow duration-300 hover:shadow-2xl;
 }
@@ -229,11 +229,11 @@ input:-webkit-autofill:active {
 }
 
 .associated-table {
-    @apply bg-base-300 text-secondary-content table w-full;
+    @apply bg-base-300 text-secondary-content border-accent table w-full border;
 }
 
 .associated-table-header {
-    @apply text-primary;
+    @apply text-accent;
 }
 
 .associated-table-checkbox {
@@ -249,3 +249,27 @@ input:-webkit-autofill:active {
 }
 
 /* end table listing items from associated models */
+
+.table-filter-card {
+    @apply card bg-base-200 text-primary-content shadow-md transition-shadow duration-300 hover:shadow-lg;
+}
+
+.table-filter-card-title {
+    @apply card-title mb-4 flex items-center justify-between text-lg lg:text-xl;
+}
+
+.table-filter-card-body {
+    @apply card-body text-primary-content px-6 py-4;
+}
+
+.table-filter-card-field-name {
+    @apply text-primary-content/70 font-medium;
+}
+
+.table-filter-card-field-value-input {
+    @apply text-primary-content bg-base-100 border-base-300 my-2 border p-2;
+}
+
+.table-filter-card-field-value-select {
+    @apply text-primary-content bg-base-100 border-base-300 select my-2 border p-2;
+}

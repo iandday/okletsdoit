@@ -10,11 +10,11 @@
   - [x] Disable Django components
 - [X] Guestlist
 - [ ] Timeline
-- [ ] Contacts
+- [X] Contacts
 - [ ] Dashboard
 - [ ] Inspiration
 - [ ] Ideas
-- [ ] Lists
+- [X] Lists
 - [ ] Budget
 
 ## New Functionality

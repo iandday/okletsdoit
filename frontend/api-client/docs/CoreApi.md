@@ -51,7 +51,15 @@ import type { CoreApiCreateQuestionRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new CoreApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
 
   const body = {
     // QuestionCreateSchema
@@ -82,7 +90,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -116,7 +124,15 @@ import type { CoreApiCreateQuestionUrlRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new CoreApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
 
   const body = {
     // QuestionURLCreateSchema
@@ -147,7 +163,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -181,7 +197,15 @@ import type { CoreApiCreateRsvpQuestionRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new CoreApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
 
   const body = {
     // RsvpQuestionCreateSchema
@@ -212,7 +236,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -246,7 +270,15 @@ import type { CoreApiCreateRsvpQuestionChoiceRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new CoreApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
 
   const body = {
     // RsvpQuestionChoiceCreateSchema
@@ -277,7 +309,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -311,7 +343,15 @@ import type { CoreApiCreateTipRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new CoreApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
 
   const body = {
     // TipsCreateSchema
@@ -342,7 +382,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -376,7 +416,15 @@ import type { CoreApiDeleteQuestionRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new CoreApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
 
   const body = {
     // string
@@ -407,7 +455,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -441,7 +489,15 @@ import type { CoreApiDeleteQuestionUrlRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new CoreApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
 
   const body = {
     // string
@@ -472,7 +528,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -506,7 +562,15 @@ import type { CoreApiDeleteRsvpQuestionRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new CoreApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
 
   const body = {
     // string
@@ -537,7 +601,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -571,7 +635,15 @@ import type { CoreApiDeleteRsvpQuestionChoiceRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new CoreApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
 
   const body = {
     // string
@@ -602,7 +674,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -636,7 +708,15 @@ import type { CoreApiDeleteTipRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new CoreApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
 
   const body = {
     // string
@@ -667,7 +747,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -698,7 +778,15 @@ import type { CoreApiGetCategoriesContentRequest } from "";
 
 async function example() {
     console.log("🚀 Testing  SDK...");
-    const api = new CoreApi();
+    const config = new Configuration({
+        // To configure API key authorization: SessionAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: ServiceTokenAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: XSessionTokenAuth
+        apiKey: "YOUR API KEY",
+    });
+    const api = new CoreApi(config);
 
     const body = {
         // boolean (optional)
@@ -729,7 +817,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -763,7 +851,15 @@ import type { CoreApiGetQuestionRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new CoreApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
 
   const body = {
     // string
@@ -794,7 +890,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -828,7 +924,15 @@ import type { CoreApiGetQuestionUrlRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new CoreApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
 
   const body = {
     // string
@@ -859,7 +963,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -893,7 +997,15 @@ import type { CoreApiGetRsvpQuestionRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new CoreApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
 
   const body = {
     // string
@@ -924,7 +1036,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -958,7 +1070,15 @@ import type { CoreApiGetRsvpQuestionChoiceRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new CoreApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
 
   const body = {
     // string
@@ -989,7 +1109,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -1023,7 +1143,15 @@ import type { CoreApiGetTipRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new CoreApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
 
   const body = {
     // string
@@ -1054,7 +1182,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -1085,7 +1213,15 @@ import type { CoreApiGetWeddingSettingsRequest } from "";
 
 async function example() {
     console.log("🚀 Testing  SDK...");
-    const api = new CoreApi();
+    const config = new Configuration({
+        // To configure API key authorization: SessionAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: ServiceTokenAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: XSessionTokenAuth
+        apiKey: "YOUR API KEY",
+    });
+    const api = new CoreApi(config);
 
     try {
         const data = await api.coreApiGetWeddingSettings();
@@ -1109,7 +1245,7 @@ This endpoint does not need any parameter.
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -1143,7 +1279,15 @@ import type { CoreApiListQuestionUrlsRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new CoreApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
 
   const body = {
     // string (optional)
@@ -1174,7 +1318,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -1205,7 +1349,15 @@ import type { CoreApiListQuestionsRequest } from "";
 
 async function example() {
     console.log("🚀 Testing  SDK...");
-    const api = new CoreApi();
+    const config = new Configuration({
+        // To configure API key authorization: SessionAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: ServiceTokenAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: XSessionTokenAuth
+        apiKey: "YOUR API KEY",
+    });
+    const api = new CoreApi(config);
 
     const body = {
         // string (optional)
@@ -1245,7 +1397,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -1276,7 +1428,15 @@ import type { CoreApiListRsvpQuestionsRequest } from "";
 
 async function example() {
     console.log("🚀 Testing  SDK...");
-    const api = new CoreApi();
+    const config = new Configuration({
+        // To configure API key authorization: SessionAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: ServiceTokenAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: XSessionTokenAuth
+        apiKey: "YOUR API KEY",
+    });
+    const api = new CoreApi(config);
 
     const body = {
         // boolean (optional)
@@ -1316,7 +1476,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -1347,7 +1507,15 @@ import type { CoreApiListTipsRequest } from "";
 
 async function example() {
     console.log("🚀 Testing  SDK...");
-    const api = new CoreApi();
+    const config = new Configuration({
+        // To configure API key authorization: SessionAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: ServiceTokenAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: XSessionTokenAuth
+        apiKey: "YOUR API KEY",
+    });
+    const api = new CoreApi(config);
 
     const body = {
         // string (optional)
@@ -1387,7 +1555,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -1421,7 +1589,15 @@ import type { CoreApiUpdateQuestionRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new CoreApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
 
   const body = {
     // string
@@ -1455,7 +1631,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -1489,7 +1665,15 @@ import type { CoreApiUpdateQuestionUrlRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new CoreApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
 
   const body = {
     // string
@@ -1523,7 +1707,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -1557,7 +1741,15 @@ import type { CoreApiUpdateRsvpQuestionRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new CoreApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
 
   const body = {
     // string
@@ -1591,7 +1783,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -1625,7 +1817,15 @@ import type { CoreApiUpdateRsvpQuestionChoiceRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new CoreApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
 
   const body = {
     // string
@@ -1659,7 +1859,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -1693,7 +1893,15 @@ import type { CoreApiUpdateTipRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new CoreApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
 
   const body = {
     // string
@@ -1727,7 +1935,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -1761,7 +1969,15 @@ import type { CoreApiUpdateWeddingSettingsRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new CoreApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
 
   const body = {
     // WeddingSettingsUpdateSchema
@@ -1792,7 +2008,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
