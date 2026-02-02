@@ -7,7 +7,7 @@
     const { href, label = null }: iViewDetailsProps = $props();
 </script>
 
-<a {href} class="btn btn-accent btn-sm"
+<a {href} class="btn btn-accent"
     ><span class="icon-[lucide--eye] size-4"></span>
     {#if label}{label}{/if}
 </a>

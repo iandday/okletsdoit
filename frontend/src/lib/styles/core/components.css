@@ -31,11 +31,11 @@
     }
 }
 
-.timeline:not(.timeline-vertical) > li > hr {
+.timeline:not(.timeline-vertical)>li>hr {
     height: 2px;
 }
 
-.timeline.timeline-vertical > li > hr {
+.timeline.timeline-vertical>li>hr {
     width: 2px;
 }
 
@@ -229,11 +229,11 @@ input:-webkit-autofill:active {
 }
 
 .associated-table {
-    @apply bg-base-300 text-secondary-content table w-full;
+    @apply bg-base-300 text-secondary-content table w-full border border-accent;
 }
 
 .associated-table-header {
-    @apply text-primary;
+    @apply text-accent;
 }
 
 .associated-table-checkbox {

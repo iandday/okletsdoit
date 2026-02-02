@@ -10,6 +10,7 @@ import {
     ContactsApi,
     AttachmentsApi,
     ListApi,
+    ExpensesApi,
 } from "../../../api-client";
 import type { Middleware } from "../../../api-client/runtime";
 
@@ -62,9 +63,9 @@ const debugMiddleware: Middleware = {
             error: context.error,
             response: context.response
                 ? {
-                      status: context.response.status,
-                      statusText: context.response.statusText,
-                  }
+                    status: context.response.status,
+                    statusText: context.response.statusText,
+                }
                 : undefined,
         });
         return context.response;
@@ -91,6 +92,7 @@ export function createApiClient() {
         contacts: new ContactsApi(config),
         attachments: new AttachmentsApi(config),
         list: new ListApi(config),
+        expenses: new ExpensesApi(config),
     };
 }
 
