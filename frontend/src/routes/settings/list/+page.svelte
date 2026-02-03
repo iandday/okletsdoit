@@ -149,7 +149,7 @@
                     <CreateObject href="/settings/guest_list/new" label="New List" />
                     <a href="/settings/list_entry" class="btn btn-accent gap-2">
                         <span class="icon-[lucide--list-todo] size-5"></span>
-                        View All Lists
+                        View All List Entries
                     </a>
                 </div>
             </div>
