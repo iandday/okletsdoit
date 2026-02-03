@@ -170,7 +170,6 @@
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <!-- Item Search -->
                             <div class="form-control md:col-span-2">
                                 <label class="table-filter-card-field-name" for="item-filter">
                                     <span>Search Items</span>
@@ -183,7 +182,6 @@
                                     bind:value={itemFilter} />
                             </div>
 
-                            <!-- Category Filter -->
                             <div class="form-control">
                                 <label class="table-filter-card-field-name" for="category-filter">
                                     <span class="label-text">Category</span>
@@ -199,7 +197,6 @@
                                 </select>
                             </div>
 
-                            <!-- Purchased Filter -->
                             <div class="form-control">
                                 <label class="table-filter-card-field-name" for="purchased-filter">
                                     <span>Purchased</span>
@@ -218,7 +215,7 @@
                 </div>
 
                 <!-- Stats Panel -->
-                <div class="flex-1">
+                <div class="flex flex-col">
                     <Stats objects={expenseStatsA} />
                     <Stats objects={expenseStatsB} />
                 </div>
