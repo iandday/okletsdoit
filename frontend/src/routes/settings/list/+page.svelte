@@ -89,37 +89,37 @@
         title="Wedding Lists"
         description="Manage your wedding planning lists.  Each list is made up of one or more entries.  One or more entries (balloons and candles) can be associated with an expense item, such as venue decorations."
         showButtons={false}>
-        <div class="w-full flex justify-start">
-            <div class="flex flex-col md:flex-row gap-6 mb-8">
-                <div class="config-card w-full md:w-96" id="filter-panel">
-                    <div class="config-card-body">
-                        <div class="flex items-center justify-between mb-4">
-                            <h3 class="text-lg font-semibold">Filters</h3>
-                            <button onclick={clearFilters} class="btn btn-error btn-sm">
-                                <span class="icon-[lucide--x] size-4"></span>
-                                Clear All
-                            </button>
-                        </div>
-
-                        <!-- Name Filter -->
-                        <div class="form-control mb-4">
-                            <label class="label" for="name-filter">
-                                <span class="config-card-field-name">Search by Name</span>
+        <div class="w-full flex justify-around flex-col md:flex-row gap-6 mb-8">
+            <div class="table-filter-card w-full md:w-[32rem]" id="filter-panel">
+                <div class="table-filter-card-body">
+                    <div class="table-filter-card-title">
+                        Filters
+                        <button onclick={clearFilters} class="btn btn-error btn-sm">
+                            <span class="icon-[lucide--x] size-4"></span>
+                            Clear
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="form-control md:col-span-2">
+                            <label class="table-filter-card-field-name" for="name-filter">
+                                <span>Search by Name</span>
                             </label>
                             <input
                                 id="name-filter"
                                 type="text"
                                 placeholder="Search lists..."
-                                class="input input-bordered"
+                                class="table-filter-card-field-value-input"
                                 bind:value={nameFilter} />
                         </div>
 
-                        <!-- Completion Filter -->
-                        <div class="form-control mb-4">
-                            <label class="label" for="completion-filter">
-                                <span class="config-card-field-name">Completion Status</span>
+                        <div class="form-control md:col-span-2">
+                            <label class="table-filter-card-field-name" for="completion-filter">
+                                <span>Completion Status</span>
                             </label>
-                            <select id="completion-filter" class="select select-bordered" bind:value={completionFilter}>
+                            <select
+                                id="completion-filter"
+                                class="table-filter-card-field-value-select"
+                                bind:value={completionFilter}>
                                 <option value={null}>All</option>
                                 <option value="complete">Complete (100%)</option>
                                 <option value="in-progress">In Progress (1-99%)</option>
@@ -127,12 +127,14 @@
                             </select>
                         </div>
 
-                        <!-- Expenses Filter -->
-                        <div class="form-control mb-4">
-                            <label class="label" for="expenses-filter">
+                        <div class="form-control md:col-span-2">
+                            <label class="table-filter-card-field-name" for="expenses-filter">
                                 <span class="config-card-field-name">Expense Items</span>
                             </label>
-                            <select id="expenses-filter" class="select select-bordered" bind:value={hasExpensesFilter}>
+                            <select
+                                id="expenses-filter"
+                                class="table-filter-card-field-value-select"
+                                bind:value={hasExpensesFilter}>
                                 <option value={null}>All Lists</option>
                                 <option value={true}>With Expenses</option>
                                 <option value={false}>Without Expenses</option>
@@ -140,12 +142,12 @@
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="flex flex-col items-center gap-6" id="stats-overview">
-                    <Stats objects={listStats} />
-                    <Stats objects={completionStats} />
-                </div>
-                <div class="flex flex-row md:flex-col gap-4">
+            <div class="flex flex-col gap-4 items-center">
+                <Stats objects={listStats} />
+                <Stats objects={completionStats} />
+                <div class="flex flex-row gap-4">
                     <CreateObject href="/settings/guest_list/new" label="New List" />
                     <a href="/settings/list_entry" class="btn btn-accent gap-2">
                         <span class="icon-[lucide--list-todo] size-5"></span>

@@ -223,7 +223,6 @@
         </div>
     </ProtectedPageHeader>
 
-    <!-- Expenses Table -->
     <div class="shadow-lg overflow-hidden">
         <div class="overflow-x-auto">
             <table {...$tableAttrs} class="w-full">
