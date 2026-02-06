@@ -7,15 +7,13 @@ from uuid import UUID
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
-from ninja import FilterSchema
-from ninja import Query
-from ninja import Router
-from ninja import Schema
-from ninja.pagination import PageNumberPagination
-from ninja.pagination import paginate
+from ninja import FilterSchema, Query, Router, Schema
+from ninja.files import UploadedFile
+from ninja.pagination import PageNumberPagination, paginate
 
 from core.auth import multi_auth
 
+from .models import Inspiration
 from .models import Question
 from .models import QuestionCategory
 from .models import QuestionURL
@@ -253,6 +251,31 @@ class RsvpQuestionChoiceCreateSchema(Schema):
 class RsvpQuestionChoiceUpdateSchema(Schema):
     choice_text: Optional[str] = None
     order: Optional[int] = None
+
+
+# Inspiration Schemas
+class InspirationSchema(Schema):
+    id: UUID
+    name: str
+    slug: str
+    description: Optional[str] = None
+    image: Optional[str] = None
+    created_at: datetime
+    updated_at: datetime
+
+
+class InspirationFilterSchema(FilterSchema):
+    name: Optional[str] = None
+
+
+class InspirationCreateSchema(Schema):
+    name: str
+    description: Optional[str] = None
+
+
+class InspirationUpdateSchema(Schema):
+    name: Optional[str] = None
+    description: Optional[str] = None
 
 
 # WeddingSettings Endpoints
@@ -869,3 +892,164 @@ def delete_rsvp_question_choice(request, choice_id: UUID):
             choice.updated_by = admin_user
     choice.save()
     return {"success": True, "message": "RSVP question choice deleted successfully"}
+
+
+# Inspiration CRUD Endpoints
+@router.get("/inspirations", response=List[InspirationSchema])
+@paginate(PageNumberPagination, page_size=50)
+def list_inspirations(request, filters: InspirationFilterSchema = Query(...)):  # pyright: ignore[reportCallIssue]
+    """List all inspirations (non-deleted)"""
+    q = Q(is_deleted=False)
+    q &= filters.get_filter_expression()
+    inspirations = Inspiration.objects.filter(q).order_by("name")
+
+    return [
+        {
+            "id": inspiration.id,
+            "name": inspiration.name,
+            "slug": inspiration.slug,
+            "description": inspiration.description,
+            "image": inspiration.image.url if inspiration.image else None,
+            "created_at": inspiration.created_at,
+            "updated_at": inspiration.updated_at,
+        }
+        for inspiration in inspirations
+    ]
+
+
+@router.get("/inspirations/{inspiration_id}", response=InspirationSchema)
+def get_inspiration(request, inspiration_id: UUID):
+    """Get a specific inspiration by ID"""
+    inspiration = get_object_or_404(Inspiration, id=inspiration_id, is_deleted=False)
+    return {
+        "id": inspiration.id,
+        "name": inspiration.name,
+        "slug": inspiration.slug,
+        "description": inspiration.description,
+        "image": inspiration.image.url if inspiration.image else None,
+        "created_at": inspiration.created_at,
+        "updated_at": inspiration.updated_at,
+    }
+
+
+@router.post("/inspirations", response=InspirationSchema)
+def create_inspiration(request, payload: InspirationCreateSchema):
+    """Create a new inspiration"""
+    data = payload.dict()
+
+    if request.user.is_authenticated:
+        data["created_by"] = request.user
+    else:
+        admin_user = User.objects.filter(is_staff=True, is_active=True).first()
+        if admin_user:
+            data["created_by"] = admin_user
+
+    inspiration = Inspiration.objects.create(**data)
+
+    return {
+        "id": inspiration.id,
+        "name": inspiration.name,
+        "slug": inspiration.slug,
+        "description": inspiration.description,
+        "image": inspiration.image.url if inspiration.image else None,
+        "created_at": inspiration.created_at,
+        "updated_at": inspiration.updated_at,
+    }
+
+
+@router.put("/inspirations/{inspiration_id}", response=InspirationSchema)
+def update_inspiration(request, inspiration_id: UUID, payload: InspirationUpdateSchema):
+    """Update an inspiration"""
+    inspiration = get_object_or_404(Inspiration, id=inspiration_id, is_deleted=False)
+    data = payload.dict(exclude_unset=True)
+
+    for attr, value in data.items():
+        setattr(inspiration, attr, value)
+
+    if request.user.is_authenticated:
+        inspiration.updated_by = request.user
+    else:
+        admin_user = User.objects.filter(is_staff=True, is_active=True).first()
+        if admin_user:
+            inspiration.updated_by = admin_user
+
+    inspiration.save()
+
+    return {
+        "id": inspiration.id,
+        "name": inspiration.name,
+        "slug": inspiration.slug,
+        "description": inspiration.description,
+        "image": inspiration.image.url if inspiration.image else None,
+        "created_at": inspiration.created_at,
+        "updated_at": inspiration.updated_at,
+    }
+
+
+@router.delete("/inspirations/{inspiration_id}")
+def delete_inspiration(request, inspiration_id: UUID):
+    """Soft delete an inspiration"""
+    inspiration = get_object_or_404(Inspiration, id=inspiration_id, is_deleted=False)
+    inspiration.is_deleted = True
+    if request.user.is_authenticated:
+        inspiration.updated_by = request.user
+    else:
+        admin_user = User.objects.filter(is_staff=True, is_active=True).first()
+        if admin_user:
+            inspiration.updated_by = admin_user
+    inspiration.save()
+    return {"success": True, "message": "Inspiration deleted successfully"}
+
+
+@router.post("/inspirations/{inspiration_id}/upload-image", response=InspirationSchema)
+def upload_inspiration_image(request, inspiration_id: UUID, image: UploadedFile):
+    """Upload or update image for an inspiration"""
+    inspiration = get_object_or_404(Inspiration, id=inspiration_id, is_deleted=False)
+
+    # Delete old image if exists
+    if inspiration.image:
+        inspiration.image.delete(save=False)
+
+    # Save new image
+    inspiration.image = image
+
+    if request.user.is_authenticated:
+        inspiration.updated_by = request.user
+    else:
+        admin_user = User.objects.filter(is_staff=True, is_active=True).first()
+        if admin_user:
+            inspiration.updated_by = admin_user
+
+    inspiration.save()
+
+    return {
+        "id": inspiration.id,
+        "name": inspiration.name,
+        "slug": inspiration.slug,
+        "description": inspiration.description,
+        "image": inspiration.image.url if inspiration.image else None,
+        "created_at": inspiration.created_at,
+        "updated_at": inspiration.updated_at,
+    }
+
+
+@router.delete("/inspirations/{inspiration_id}/image")
+def delete_inspiration_image(request, inspiration_id: UUID):
+    """Delete image from an inspiration"""
+    inspiration = get_object_or_404(Inspiration, id=inspiration_id, is_deleted=False)
+
+    if inspiration.image:
+        inspiration.image.delete(save=False)
+        inspiration.image = None
+
+        if request.user.is_authenticated:
+            inspiration.updated_by = request.user
+        else:
+            admin_user = User.objects.filter(is_staff=True, is_active=True).first()
+            if admin_user:
+                inspiration.updated_by = admin_user
+
+        inspiration.save()
+        return {"success": True, "message": "Image deleted successfully"}
+
+    return {"success": False, "message": "No image to delete"}

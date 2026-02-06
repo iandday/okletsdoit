@@ -40,6 +40,7 @@
         { title: "Lists", href: "/settings/list", icon: "icon-[lucide--check-square]" },
         { title: "Budget", href: "/settings/budget", icon: "icon-[lucide--dollar-sign]" },
         { title: "Guest List", href: "/settings/guest_list", icon: "icon-[lucide--users]" },
+        { title: "Inspiration", href: "/settings/inspiration", icon: "icon-[lucide--lightbulb]" },
 
         {
             title: "Settings",
@@ -79,10 +80,10 @@
         //     title: "Dashboard",
         //     href: "/planning/",
         // },
-        {
-            title: "Inspiration",
-            href: "/inspiration/",
-        },
+        // {
+        //     title: "Inspiration",
+        //     href: "/inspiration/",
+        // },
         {
             title: "Ideas",
             href: "/idea/",

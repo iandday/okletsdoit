@@ -47,6 +47,10 @@ docs/GuestSchema.md
 docs/GuestUpdateSchema.md
 docs/GuestlistApi.md
 docs/Input.md
+docs/InspirationCreateSchema.md
+docs/InspirationFilterSchema.md
+docs/InspirationSchema.md
+docs/InspirationUpdateSchema.md
 docs/ListApi.md
 docs/ListCreateSchema.md
 docs/ListEntryCreateSchema.md
@@ -64,6 +68,7 @@ docs/PagedDeadlineSchema.md
 docs/PagedExpenseSchema.md
 docs/PagedGuestGroupSchema.md
 docs/PagedGuestSchema.md
+docs/PagedInspirationSchema.md
 docs/PagedListEntrySchema.md
 docs/PagedListSchema.md
 docs/PagedQuestionSchema.md
@@ -138,6 +143,10 @@ models/GuestGroupUpdateSchema.ts
 models/GuestSchema.ts
 models/GuestUpdateSchema.ts
 models/Input.ts
+models/InspirationCreateSchema.ts
+models/InspirationFilterSchema.ts
+models/InspirationSchema.ts
+models/InspirationUpdateSchema.ts
 models/ListCreateSchema.ts
 models/ListEntryCreateSchema.ts
 models/ListEntryFilterSchema.ts
@@ -154,6 +163,7 @@ models/PagedDeadlineSchema.ts
 models/PagedExpenseSchema.ts
 models/PagedGuestGroupSchema.ts
 models/PagedGuestSchema.ts
+models/PagedInspirationSchema.ts
 models/PagedListEntrySchema.ts
 models/PagedListSchema.ts
 models/PagedQuestionSchema.ts

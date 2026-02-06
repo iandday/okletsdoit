@@ -149,6 +149,10 @@ input:-webkit-autofill:active {
     @apply checkbox checkbox-primary;
 }
 
+.edit-card-file-input {
+    @apply file-input file-input-accent w-full;
+}
+
 .edit-card-field-radio {
     @apply radio radio-primary;
 }
