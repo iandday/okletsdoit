@@ -37,7 +37,10 @@
         { title: "Contacts", href: "/settings/contact", icon: "icon-[lucide--book-user]" },
         { title: "FAQ", href: "/settings/faq", icon: "icon-[lucide--help-circle]" },
         { title: "Deadlines", href: "/settings/deadline", icon: "icon-[lucide--calendar-check]" },
+        { title: "Lists", href: "/settings/list", icon: "icon-[lucide--check-square]" },
+        { title: "Budget", href: "/settings/budget", icon: "icon-[lucide--dollar-sign]" },
         { title: "Guest List", href: "/settings/guest_list", icon: "icon-[lucide--users]" },
+        { title: "Inspiration", href: "/settings/inspiration", icon: "icon-[lucide--lightbulb]" },
 
         {
             title: "Settings",
@@ -77,10 +80,10 @@
         //     title: "Dashboard",
         //     href: "/planning/",
         // },
-        {
-            title: "Inspiration",
-            href: "/inspiration/",
-        },
+        // {
+        //     title: "Inspiration",
+        //     href: "/inspiration/",
+        // },
         {
             title: "Ideas",
             href: "/idea/",
@@ -89,18 +92,18 @@
         //     title: "Contacts",
         //     href: "/contacts/",
         // },
-        {
-            title: "Lists",
-            href: "/lists/",
-        },
+        // {
+        //     title: "Lists",
+        //     href: "/lists/",
+        // },
         // {
         //     title: "Deadlines",
         //     href: "/deadline/",
         // },
-        {
-            title: "Budget",
-            href: "/expenses/",
-        },
+        // {
+        //     title: "Budget",
+        //     href: "/expenses/",
+        // },
         // {
         //     title: "Guest List",
         //     href: "/guestlist/",

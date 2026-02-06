@@ -35,7 +35,15 @@ import type { DeadlineApiCreateDeadlineRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new DeadlinesApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new DeadlinesApi(config);
 
   const body = {
     // DeadlineCreateSchema
@@ -66,7 +74,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -100,7 +108,15 @@ import type { DeadlineApiCreateDeadlineListRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new DeadlinesApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new DeadlinesApi(config);
 
   const body = {
     // DeadlineListCreateSchema
@@ -131,7 +147,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -165,7 +181,15 @@ import type { DeadlineApiDeleteDeadlineRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new DeadlinesApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new DeadlinesApi(config);
 
   const body = {
     // string
@@ -196,7 +220,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -230,7 +254,15 @@ import type { DeadlineApiDeleteDeadlineListRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new DeadlinesApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new DeadlinesApi(config);
 
   const body = {
     // string
@@ -261,7 +293,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -295,7 +327,15 @@ import type { DeadlineApiGetDeadlineRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new DeadlinesApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new DeadlinesApi(config);
 
   const body = {
     // string
@@ -326,7 +366,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -360,7 +400,15 @@ import type { DeadlineApiGetDeadlineListRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new DeadlinesApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new DeadlinesApi(config);
 
   const body = {
     // string
@@ -391,7 +439,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -422,7 +470,15 @@ import type { DeadlineApiListDeadlineListsRequest } from "";
 
 async function example() {
     console.log("🚀 Testing  SDK...");
-    const api = new DeadlinesApi();
+    const config = new Configuration({
+        // To configure API key authorization: SessionAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: ServiceTokenAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: XSessionTokenAuth
+        apiKey: "YOUR API KEY",
+    });
+    const api = new DeadlinesApi(config);
 
     const body = {
         // number (optional)
@@ -456,7 +512,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -490,7 +546,15 @@ import type { DeadlineApiListDeadlinesRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new DeadlinesApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new DeadlinesApi(config);
 
   const body = {
     // string (optional)
@@ -539,7 +603,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -573,7 +637,15 @@ import type { DeadlineApiToggleDeadlineCompleteRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new DeadlinesApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new DeadlinesApi(config);
 
   const body = {
     // string
@@ -604,7 +676,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -638,7 +710,15 @@ import type { DeadlineApiUpdateDeadlineRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new DeadlinesApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new DeadlinesApi(config);
 
   const body = {
     // string
@@ -672,7 +752,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -706,7 +786,15 @@ import type { DeadlineApiUpdateDeadlineListRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new DeadlinesApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new DeadlinesApi(config);
 
   const body = {
     // string
@@ -740,7 +828,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 

@@ -2,35 +2,115 @@
 
 All URIs are relative to _http://localhost_
 
-| Method                                                                            | HTTP request                                           | Description                 |
-| --------------------------------------------------------------------------------- | ------------------------------------------------------ | --------------------------- |
-| [**coreApiCreateQuestion**](CoreApi.md#coreapicreatequestion)                     | **POST** /api/core/questions                           | Create Question             |
-| [**coreApiCreateQuestionUrl**](CoreApi.md#coreapicreatequestionurl)               | **POST** /api/core/question-urls                       | Create Question Url         |
-| [**coreApiCreateRsvpQuestion**](CoreApi.md#coreapicreatersvpquestion)             | **POST** /api/core/rsvp-questions                      | Create Rsvp Question        |
-| [**coreApiCreateRsvpQuestionChoice**](CoreApi.md#coreapicreatersvpquestionchoice) | **POST** /api/core/rsvp-question-choices               | Create Rsvp Question Choice |
-| [**coreApiCreateTip**](CoreApi.md#coreapicreatetip)                               | **POST** /api/core/tips                                | Create Tip                  |
-| [**coreApiDeleteQuestion**](CoreApi.md#coreapideletequestion)                     | **DELETE** /api/core/questions/{question_id}           | Delete Question             |
-| [**coreApiDeleteQuestionUrl**](CoreApi.md#coreapideletequestionurl)               | **DELETE** /api/core/question-urls/{url_id}            | Delete Question Url         |
-| [**coreApiDeleteRsvpQuestion**](CoreApi.md#coreapideletersvpquestion)             | **DELETE** /api/core/rsvp-questions/{question_id}      | Delete Rsvp Question        |
-| [**coreApiDeleteRsvpQuestionChoice**](CoreApi.md#coreapideletersvpquestionchoice) | **DELETE** /api/core/rsvp-question-choices/{choice_id} | Delete Rsvp Question Choice |
-| [**coreApiDeleteTip**](CoreApi.md#coreapideletetip)                               | **DELETE** /api/core/tips/{tip_id}                     | Delete Tip                  |
-| [**coreApiGetCategoriesContent**](CoreApi.md#coreapigetcategoriescontent)         | **GET** /api/core/rsvp-categories-content              | Get Categories Content      |
-| [**coreApiGetQuestion**](CoreApi.md#coreapigetquestion)                           | **GET** /api/core/questions/{question_id}              | Get Question                |
-| [**coreApiGetQuestionUrl**](CoreApi.md#coreapigetquestionurl)                     | **GET** /api/core/question-urls/{url_id}               | Get Question Url            |
-| [**coreApiGetRsvpQuestion**](CoreApi.md#coreapigetrsvpquestion)                   | **GET** /api/core/rsvp-questions/{question_id}         | Get Rsvp Question           |
-| [**coreApiGetRsvpQuestionChoice**](CoreApi.md#coreapigetrsvpquestionchoice)       | **GET** /api/core/rsvp-question-choices/{choice_id}    | Get Rsvp Question Choice    |
-| [**coreApiGetTip**](CoreApi.md#coreapigettip)                                     | **GET** /api/core/tips/{tip_id}                        | Get Tip                     |
-| [**coreApiGetWeddingSettings**](CoreApi.md#coreapigetweddingsettings)             | **GET** /api/core/wedding-settings                     | Get Wedding Settings        |
-| [**coreApiListQuestionUrls**](CoreApi.md#coreapilistquestionurls)                 | **GET** /api/core/question-urls                        | List Question Urls          |
-| [**coreApiListQuestions**](CoreApi.md#coreapilistquestions)                       | **GET** /api/core/questions                            | List Questions              |
-| [**coreApiListRsvpQuestions**](CoreApi.md#coreapilistrsvpquestions)               | **GET** /api/core/rsvp-questions                       | List Rsvp Questions         |
-| [**coreApiListTips**](CoreApi.md#coreapilisttips)                                 | **GET** /api/core/tips                                 | List Tips                   |
-| [**coreApiUpdateQuestion**](CoreApi.md#coreapiupdatequestion)                     | **PUT** /api/core/questions/{question_id}              | Update Question             |
-| [**coreApiUpdateQuestionUrl**](CoreApi.md#coreapiupdatequestionurl)               | **PUT** /api/core/question-urls/{url_id}               | Update Question Url         |
-| [**coreApiUpdateRsvpQuestion**](CoreApi.md#coreapiupdatersvpquestion)             | **PUT** /api/core/rsvp-questions/{question_id}         | Update Rsvp Question        |
-| [**coreApiUpdateRsvpQuestionChoice**](CoreApi.md#coreapiupdatersvpquestionchoice) | **PUT** /api/core/rsvp-question-choices/{choice_id}    | Update Rsvp Question Choice |
-| [**coreApiUpdateTip**](CoreApi.md#coreapiupdatetip)                               | **PUT** /api/core/tips/{tip_id}                        | Update Tip                  |
-| [**coreApiUpdateWeddingSettings**](CoreApi.md#coreapiupdateweddingsettings)       | **PUT** /api/core/wedding-settings                     | Update Wedding Settings     |
+| Method                                                                            | HTTP request                                                  | Description                 |
+| --------------------------------------------------------------------------------- | ------------------------------------------------------------- | --------------------------- |
+| [**coreApiCreateInspiration**](CoreApi.md#coreapicreateinspiration)               | **POST** /api/core/inspirations                               | Create Inspiration          |
+| [**coreApiCreateQuestion**](CoreApi.md#coreapicreatequestion)                     | **POST** /api/core/questions                                  | Create Question             |
+| [**coreApiCreateQuestionUrl**](CoreApi.md#coreapicreatequestionurl)               | **POST** /api/core/question-urls                              | Create Question Url         |
+| [**coreApiCreateRsvpQuestion**](CoreApi.md#coreapicreatersvpquestion)             | **POST** /api/core/rsvp-questions                             | Create Rsvp Question        |
+| [**coreApiCreateRsvpQuestionChoice**](CoreApi.md#coreapicreatersvpquestionchoice) | **POST** /api/core/rsvp-question-choices                      | Create Rsvp Question Choice |
+| [**coreApiCreateTip**](CoreApi.md#coreapicreatetip)                               | **POST** /api/core/tips                                       | Create Tip                  |
+| [**coreApiDeleteInspiration**](CoreApi.md#coreapideleteinspiration)               | **DELETE** /api/core/inspirations/{inspiration_id}            | Delete Inspiration          |
+| [**coreApiDeleteInspirationImage**](CoreApi.md#coreapideleteinspirationimage)     | **DELETE** /api/core/inspirations/{inspiration_id}/image      | Delete Inspiration Image    |
+| [**coreApiDeleteQuestion**](CoreApi.md#coreapideletequestion)                     | **DELETE** /api/core/questions/{question_id}                  | Delete Question             |
+| [**coreApiDeleteQuestionUrl**](CoreApi.md#coreapideletequestionurl)               | **DELETE** /api/core/question-urls/{url_id}                   | Delete Question Url         |
+| [**coreApiDeleteRsvpQuestion**](CoreApi.md#coreapideletersvpquestion)             | **DELETE** /api/core/rsvp-questions/{question_id}             | Delete Rsvp Question        |
+| [**coreApiDeleteRsvpQuestionChoice**](CoreApi.md#coreapideletersvpquestionchoice) | **DELETE** /api/core/rsvp-question-choices/{choice_id}        | Delete Rsvp Question Choice |
+| [**coreApiDeleteTip**](CoreApi.md#coreapideletetip)                               | **DELETE** /api/core/tips/{tip_id}                            | Delete Tip                  |
+| [**coreApiGetCategoriesContent**](CoreApi.md#coreapigetcategoriescontent)         | **GET** /api/core/rsvp-categories-content                     | Get Categories Content      |
+| [**coreApiGetInspiration**](CoreApi.md#coreapigetinspiration)                     | **GET** /api/core/inspirations/{inspiration_id}               | Get Inspiration             |
+| [**coreApiGetQuestion**](CoreApi.md#coreapigetquestion)                           | **GET** /api/core/questions/{question_id}                     | Get Question                |
+| [**coreApiGetQuestionUrl**](CoreApi.md#coreapigetquestionurl)                     | **GET** /api/core/question-urls/{url_id}                      | Get Question Url            |
+| [**coreApiGetRsvpQuestion**](CoreApi.md#coreapigetrsvpquestion)                   | **GET** /api/core/rsvp-questions/{question_id}                | Get Rsvp Question           |
+| [**coreApiGetRsvpQuestionChoice**](CoreApi.md#coreapigetrsvpquestionchoice)       | **GET** /api/core/rsvp-question-choices/{choice_id}           | Get Rsvp Question Choice    |
+| [**coreApiGetTip**](CoreApi.md#coreapigettip)                                     | **GET** /api/core/tips/{tip_id}                               | Get Tip                     |
+| [**coreApiGetWeddingSettings**](CoreApi.md#coreapigetweddingsettings)             | **GET** /api/core/wedding-settings                            | Get Wedding Settings        |
+| [**coreApiListInspirations**](CoreApi.md#coreapilistinspirations)                 | **GET** /api/core/inspirations                                | List Inspirations           |
+| [**coreApiListQuestionUrls**](CoreApi.md#coreapilistquestionurls)                 | **GET** /api/core/question-urls                               | List Question Urls          |
+| [**coreApiListQuestions**](CoreApi.md#coreapilistquestions)                       | **GET** /api/core/questions                                   | List Questions              |
+| [**coreApiListRsvpQuestions**](CoreApi.md#coreapilistrsvpquestions)               | **GET** /api/core/rsvp-questions                              | List Rsvp Questions         |
+| [**coreApiListTips**](CoreApi.md#coreapilisttips)                                 | **GET** /api/core/tips                                        | List Tips                   |
+| [**coreApiUpdateInspiration**](CoreApi.md#coreapiupdateinspiration)               | **PUT** /api/core/inspirations/{inspiration_id}               | Update Inspiration          |
+| [**coreApiUpdateQuestion**](CoreApi.md#coreapiupdatequestion)                     | **PUT** /api/core/questions/{question_id}                     | Update Question             |
+| [**coreApiUpdateQuestionUrl**](CoreApi.md#coreapiupdatequestionurl)               | **PUT** /api/core/question-urls/{url_id}                      | Update Question Url         |
+| [**coreApiUpdateRsvpQuestion**](CoreApi.md#coreapiupdatersvpquestion)             | **PUT** /api/core/rsvp-questions/{question_id}                | Update Rsvp Question        |
+| [**coreApiUpdateRsvpQuestionChoice**](CoreApi.md#coreapiupdatersvpquestionchoice) | **PUT** /api/core/rsvp-question-choices/{choice_id}           | Update Rsvp Question Choice |
+| [**coreApiUpdateTip**](CoreApi.md#coreapiupdatetip)                               | **PUT** /api/core/tips/{tip_id}                               | Update Tip                  |
+| [**coreApiUpdateWeddingSettings**](CoreApi.md#coreapiupdateweddingsettings)       | **PUT** /api/core/wedding-settings                            | Update Wedding Settings     |
+| [**coreApiUploadInspirationImage**](CoreApi.md#coreapiuploadinspirationimage)     | **POST** /api/core/inspirations/{inspiration_id}/upload-image | Upload Inspiration Image    |
+
+## coreApiCreateInspiration
+
+> InspirationSchema coreApiCreateInspiration(inspirationCreateSchema)
+
+Create Inspiration
+
+Create a new inspiration
+
+### Example
+
+```ts
+import {
+  Configuration,
+  CoreApi,
+} from '';
+import type { CoreApiCreateInspirationRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
+
+  const body = {
+    // InspirationCreateSchema
+    inspirationCreateSchema: ...,
+  } satisfies CoreApiCreateInspirationRequest;
+
+  try {
+    const data = await api.coreApiCreateInspiration(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name                        | Type                                                  | Description | Notes |
+| --------------------------- | ----------------------------------------------------- | ----------- | ----- |
+| **inspirationCreateSchema** | [InspirationCreateSchema](InspirationCreateSchema.md) |             |       |
+
+### Return type
+
+[**InspirationSchema**](InspirationSchema.md)
+
+### Authorization
+
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
+
+### HTTP request headers
+
+- **Content-Type**: `application/json`
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
 ## coreApiCreateQuestion
 
@@ -51,7 +131,15 @@ import type { CoreApiCreateQuestionRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new CoreApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
 
   const body = {
     // QuestionCreateSchema
@@ -82,7 +170,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -116,7 +204,15 @@ import type { CoreApiCreateQuestionUrlRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new CoreApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
 
   const body = {
     // QuestionURLCreateSchema
@@ -147,7 +243,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -181,7 +277,15 @@ import type { CoreApiCreateRsvpQuestionRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new CoreApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
 
   const body = {
     // RsvpQuestionCreateSchema
@@ -212,7 +316,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -246,7 +350,15 @@ import type { CoreApiCreateRsvpQuestionChoiceRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new CoreApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
 
   const body = {
     // RsvpQuestionChoiceCreateSchema
@@ -277,7 +389,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -311,7 +423,15 @@ import type { CoreApiCreateTipRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new CoreApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
 
   const body = {
     // TipsCreateSchema
@@ -342,12 +462,158 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
 - **Content-Type**: `application/json`
 - **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## coreApiDeleteInspiration
+
+> coreApiDeleteInspiration(inspirationId)
+
+Delete Inspiration
+
+Soft delete an inspiration
+
+### Example
+
+```ts
+import {
+  Configuration,
+  CoreApi,
+} from '';
+import type { CoreApiDeleteInspirationRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
+
+  const body = {
+    // string
+    inspirationId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+  } satisfies CoreApiDeleteInspirationRequest;
+
+  try {
+    const data = await api.coreApiDeleteInspiration(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name              | Type     | Description | Notes                     |
+| ----------------- | -------- | ----------- | ------------------------- |
+| **inspirationId** | `string` |             | [Defaults to `undefined`] |
+
+### Return type
+
+`void` (Empty response body)
+
+### Authorization
+
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: Not defined
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## coreApiDeleteInspirationImage
+
+> coreApiDeleteInspirationImage(inspirationId)
+
+Delete Inspiration Image
+
+Delete image from an inspiration
+
+### Example
+
+```ts
+import {
+  Configuration,
+  CoreApi,
+} from '';
+import type { CoreApiDeleteInspirationImageRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
+
+  const body = {
+    // string
+    inspirationId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+  } satisfies CoreApiDeleteInspirationImageRequest;
+
+  try {
+    const data = await api.coreApiDeleteInspirationImage(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name              | Type     | Description | Notes                     |
+| ----------------- | -------- | ----------- | ------------------------- |
+| **inspirationId** | `string` |             | [Defaults to `undefined`] |
+
+### Return type
+
+`void` (Empty response body)
+
+### Authorization
+
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: Not defined
 
 ### HTTP response details
 
@@ -376,7 +642,15 @@ import type { CoreApiDeleteQuestionRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new CoreApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
 
   const body = {
     // string
@@ -407,7 +681,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -441,7 +715,15 @@ import type { CoreApiDeleteQuestionUrlRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new CoreApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
 
   const body = {
     // string
@@ -472,7 +754,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -506,7 +788,15 @@ import type { CoreApiDeleteRsvpQuestionRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new CoreApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
 
   const body = {
     // string
@@ -537,7 +827,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -571,7 +861,15 @@ import type { CoreApiDeleteRsvpQuestionChoiceRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new CoreApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
 
   const body = {
     // string
@@ -602,7 +900,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -636,7 +934,15 @@ import type { CoreApiDeleteTipRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new CoreApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
 
   const body = {
     // string
@@ -667,7 +973,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -698,7 +1004,15 @@ import type { CoreApiGetCategoriesContentRequest } from "";
 
 async function example() {
     console.log("🚀 Testing  SDK...");
-    const api = new CoreApi();
+    const config = new Configuration({
+        // To configure API key authorization: SessionAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: ServiceTokenAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: XSessionTokenAuth
+        apiKey: "YOUR API KEY",
+    });
+    const api = new CoreApi(config);
 
     const body = {
         // boolean (optional)
@@ -729,7 +1043,80 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## coreApiGetInspiration
+
+> InspirationSchema coreApiGetInspiration(inspirationId)
+
+Get Inspiration
+
+Get a specific inspiration by ID
+
+### Example
+
+```ts
+import {
+  Configuration,
+  CoreApi,
+} from '';
+import type { CoreApiGetInspirationRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
+
+  const body = {
+    // string
+    inspirationId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+  } satisfies CoreApiGetInspirationRequest;
+
+  try {
+    const data = await api.coreApiGetInspiration(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name              | Type     | Description | Notes                     |
+| ----------------- | -------- | ----------- | ------------------------- |
+| **inspirationId** | `string` |             | [Defaults to `undefined`] |
+
+### Return type
+
+[**InspirationSchema**](InspirationSchema.md)
+
+### Authorization
+
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -763,7 +1150,15 @@ import type { CoreApiGetQuestionRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new CoreApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
 
   const body = {
     // string
@@ -794,7 +1189,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -828,7 +1223,15 @@ import type { CoreApiGetQuestionUrlRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new CoreApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
 
   const body = {
     // string
@@ -859,7 +1262,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -893,7 +1296,15 @@ import type { CoreApiGetRsvpQuestionRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new CoreApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
 
   const body = {
     // string
@@ -924,7 +1335,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -958,7 +1369,15 @@ import type { CoreApiGetRsvpQuestionChoiceRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new CoreApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
 
   const body = {
     // string
@@ -989,7 +1408,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -1023,7 +1442,15 @@ import type { CoreApiGetTipRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new CoreApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
 
   const body = {
     // string
@@ -1054,7 +1481,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -1085,7 +1512,15 @@ import type { CoreApiGetWeddingSettingsRequest } from "";
 
 async function example() {
     console.log("🚀 Testing  SDK...");
-    const api = new CoreApi();
+    const config = new Configuration({
+        // To configure API key authorization: SessionAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: ServiceTokenAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: XSessionTokenAuth
+        apiKey: "YOUR API KEY",
+    });
+    const api = new CoreApi(config);
 
     try {
         const data = await api.coreApiGetWeddingSettings();
@@ -1109,7 +1544,83 @@ This endpoint does not need any parameter.
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## coreApiListInspirations
+
+> PagedInspirationSchema coreApiListInspirations(name, page, pageSize)
+
+List Inspirations
+
+List all inspirations (non-deleted)
+
+### Example
+
+```ts
+import { Configuration, CoreApi } from "";
+import type { CoreApiListInspirationsRequest } from "";
+
+async function example() {
+    console.log("🚀 Testing  SDK...");
+    const config = new Configuration({
+        // To configure API key authorization: SessionAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: ServiceTokenAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: XSessionTokenAuth
+        apiKey: "YOUR API KEY",
+    });
+    const api = new CoreApi(config);
+
+    const body = {
+        // string (optional)
+        name: name_example,
+        // number (optional)
+        page: 56,
+        // number (optional)
+        pageSize: 56,
+    } satisfies CoreApiListInspirationsRequest;
+
+    try {
+        const data = await api.coreApiListInspirations(body);
+        console.log(data);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name         | Type     | Description | Notes                                |
+| ------------ | -------- | ----------- | ------------------------------------ |
+| **name**     | `string` |             | [Optional] [Defaults to `undefined`] |
+| **page**     | `number` |             | [Optional] [Defaults to `1`]         |
+| **pageSize** | `number` |             | [Optional] [Defaults to `undefined`] |
+
+### Return type
+
+[**PagedInspirationSchema**](PagedInspirationSchema.md)
+
+### Authorization
+
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -1143,7 +1654,15 @@ import type { CoreApiListQuestionUrlsRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new CoreApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
 
   const body = {
     // string (optional)
@@ -1174,7 +1693,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -1205,7 +1724,15 @@ import type { CoreApiListQuestionsRequest } from "";
 
 async function example() {
     console.log("🚀 Testing  SDK...");
-    const api = new CoreApi();
+    const config = new Configuration({
+        // To configure API key authorization: SessionAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: ServiceTokenAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: XSessionTokenAuth
+        apiKey: "YOUR API KEY",
+    });
+    const api = new CoreApi(config);
 
     const body = {
         // string (optional)
@@ -1245,7 +1772,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -1276,7 +1803,15 @@ import type { CoreApiListRsvpQuestionsRequest } from "";
 
 async function example() {
     console.log("🚀 Testing  SDK...");
-    const api = new CoreApi();
+    const config = new Configuration({
+        // To configure API key authorization: SessionAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: ServiceTokenAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: XSessionTokenAuth
+        apiKey: "YOUR API KEY",
+    });
+    const api = new CoreApi(config);
 
     const body = {
         // boolean (optional)
@@ -1316,7 +1851,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -1347,7 +1882,15 @@ import type { CoreApiListTipsRequest } from "";
 
 async function example() {
     console.log("🚀 Testing  SDK...");
-    const api = new CoreApi();
+    const config = new Configuration({
+        // To configure API key authorization: SessionAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: ServiceTokenAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: XSessionTokenAuth
+        apiKey: "YOUR API KEY",
+    });
+    const api = new CoreApi(config);
 
     const body = {
         // string (optional)
@@ -1387,11 +1930,87 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
 - **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## coreApiUpdateInspiration
+
+> InspirationSchema coreApiUpdateInspiration(inspirationId, inspirationUpdateSchema)
+
+Update Inspiration
+
+Update an inspiration
+
+### Example
+
+```ts
+import {
+  Configuration,
+  CoreApi,
+} from '';
+import type { CoreApiUpdateInspirationRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
+
+  const body = {
+    // string
+    inspirationId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+    // InspirationUpdateSchema
+    inspirationUpdateSchema: ...,
+  } satisfies CoreApiUpdateInspirationRequest;
+
+  try {
+    const data = await api.coreApiUpdateInspiration(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name                        | Type                                                  | Description | Notes                     |
+| --------------------------- | ----------------------------------------------------- | ----------- | ------------------------- |
+| **inspirationId**           | `string`                                              |             | [Defaults to `undefined`] |
+| **inspirationUpdateSchema** | [InspirationUpdateSchema](InspirationUpdateSchema.md) |             |                           |
+
+### Return type
+
+[**InspirationSchema**](InspirationSchema.md)
+
+### Authorization
+
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
+
+### HTTP request headers
+
+- **Content-Type**: `application/json`
 - **Accept**: `application/json`
 
 ### HTTP response details
@@ -1421,7 +2040,15 @@ import type { CoreApiUpdateQuestionRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new CoreApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
 
   const body = {
     // string
@@ -1455,7 +2082,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -1489,7 +2116,15 @@ import type { CoreApiUpdateQuestionUrlRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new CoreApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
 
   const body = {
     // string
@@ -1523,7 +2158,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -1557,7 +2192,15 @@ import type { CoreApiUpdateRsvpQuestionRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new CoreApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
 
   const body = {
     // string
@@ -1591,7 +2234,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -1625,7 +2268,15 @@ import type { CoreApiUpdateRsvpQuestionChoiceRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new CoreApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
 
   const body = {
     // string
@@ -1659,7 +2310,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -1693,7 +2344,15 @@ import type { CoreApiUpdateTipRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new CoreApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
 
   const body = {
     // string
@@ -1727,7 +2386,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -1761,7 +2420,15 @@ import type { CoreApiUpdateWeddingSettingsRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new CoreApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
 
   const body = {
     // WeddingSettingsUpdateSchema
@@ -1792,11 +2459,87 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
 - **Content-Type**: `application/json`
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## coreApiUploadInspirationImage
+
+> InspirationSchema coreApiUploadInspirationImage(inspirationId, image)
+
+Upload Inspiration Image
+
+Upload or update image for an inspiration
+
+### Example
+
+```ts
+import {
+  Configuration,
+  CoreApi,
+} from '';
+import type { CoreApiUploadInspirationImageRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
+
+  const body = {
+    // string
+    inspirationId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+    // Blob
+    image: BINARY_DATA_HERE,
+  } satisfies CoreApiUploadInspirationImageRequest;
+
+  try {
+    const data = await api.coreApiUploadInspirationImage(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name              | Type     | Description | Notes                     |
+| ----------------- | -------- | ----------- | ------------------------- |
+| **inspirationId** | `string` |             | [Defaults to `undefined`] |
+| **image**         | `Blob`   |             | [Defaults to `undefined`] |
+
+### Return type
+
+[**InspirationSchema**](InspirationSchema.md)
+
+### Authorization
+
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
+
+### HTTP request headers
+
+- **Content-Type**: `multipart/form-data`
 - **Accept**: `application/json`
 
 ### HTTP response details

@@ -8,6 +8,6 @@
 </script>
 
 <button class="btn btn-success gap-2" onclick={() => (window.location.href = href)}>
-    <span class="icon-[lucide--circle-plus] size-5"></span>
+    <span class="icon-[lucide--circle-plus] size-4"></span>
     {label}
 </button>

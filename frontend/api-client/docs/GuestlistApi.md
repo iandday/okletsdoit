@@ -48,7 +48,15 @@ import type { GuestlistApiCreateGuestRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new GuestlistApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new GuestlistApi(config);
 
   const body = {
     // GuestCreateSchema
@@ -79,7 +87,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -113,7 +121,15 @@ import type { GuestlistApiCreateGuestGroupRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new GuestlistApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new GuestlistApi(config);
 
   const body = {
     // GuestGroupCreateSchema
@@ -144,7 +160,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -178,7 +194,15 @@ import type { GuestlistApiCreateRsvpResponseRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new GuestlistApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new GuestlistApi(config);
 
   const body = {
     // RsvpQuestionResponseCreateSchema
@@ -209,7 +233,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -243,7 +267,15 @@ import type { GuestlistApiCreateRsvpSubmissionRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new GuestlistApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new GuestlistApi(config);
 
   const body = {
     // RsvpSubmissionCreateSchema
@@ -274,7 +306,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -305,7 +337,15 @@ import type { GuestlistApiDeclineRsvpRequest } from "";
 
 async function example() {
     console.log("🚀 Testing  SDK...");
-    const api = new GuestlistApi();
+    const config = new Configuration({
+        // To configure API key authorization: SessionAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: ServiceTokenAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: XSessionTokenAuth
+        apiKey: "YOUR API KEY",
+    });
+    const api = new GuestlistApi(config);
 
     const body = {
         // string
@@ -336,7 +376,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -370,7 +410,15 @@ import type { GuestlistApiDeleteGuestRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new GuestlistApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new GuestlistApi(config);
 
   const body = {
     // string
@@ -401,7 +449,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -435,7 +483,15 @@ import type { GuestlistApiDeleteGuestGroupRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new GuestlistApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new GuestlistApi(config);
 
   const body = {
     // string
@@ -466,7 +522,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -500,7 +556,15 @@ import type { GuestlistApiDeleteRsvpResponseRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new GuestlistApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new GuestlistApi(config);
 
   const body = {
     // string
@@ -531,7 +595,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -565,7 +629,15 @@ import type { GuestlistApiDeleteRsvpSubmissionRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new GuestlistApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new GuestlistApi(config);
 
   const body = {
     // string
@@ -596,7 +668,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -625,7 +697,15 @@ import type { GuestlistApiExportAddressCsvRequest } from "";
 
 async function example() {
     console.log("🚀 Testing  SDK...");
-    const api = new GuestlistApi();
+    const config = new Configuration({
+        // To configure API key authorization: SessionAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: ServiceTokenAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: XSessionTokenAuth
+        apiKey: "YOUR API KEY",
+    });
+    const api = new GuestlistApi(config);
 
     try {
         const data = await api.guestlistApiExportAddressCsv();
@@ -649,7 +729,7 @@ This endpoint does not need any parameter.
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -683,7 +763,15 @@ import type { GuestlistApiGetGuestRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new GuestlistApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new GuestlistApi(config);
 
   const body = {
     // string
@@ -714,7 +802,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -748,7 +836,15 @@ import type { GuestlistApiGetGuestGroupRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new GuestlistApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new GuestlistApi(config);
 
   const body = {
     // string
@@ -779,7 +875,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -810,7 +906,15 @@ import type { GuestlistApiGetRsvpAcceptanceQuestionsRequest } from "";
 
 async function example() {
     console.log("🚀 Testing  SDK...");
-    const api = new GuestlistApi();
+    const config = new Configuration({
+        // To configure API key authorization: SessionAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: ServiceTokenAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: XSessionTokenAuth
+        apiKey: "YOUR API KEY",
+    });
+    const api = new GuestlistApi(config);
 
     const body = {
         // string
@@ -841,7 +945,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -872,7 +976,15 @@ import type { GuestlistApiGetRsvpAcceptenceQuestionsPreviewRequest } from "";
 
 async function example() {
     console.log("🚀 Testing  SDK...");
-    const api = new GuestlistApi();
+    const config = new Configuration({
+        // To configure API key authorization: SessionAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: ServiceTokenAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: XSessionTokenAuth
+        apiKey: "YOUR API KEY",
+    });
+    const api = new GuestlistApi(config);
 
     try {
         const data = await api.guestlistApiGetRsvpAcceptenceQuestionsPreview();
@@ -896,7 +1008,7 @@ This endpoint does not need any parameter.
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -930,7 +1042,15 @@ import type { GuestlistApiGetRsvpResponseRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new GuestlistApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new GuestlistApi(config);
 
   const body = {
     // string
@@ -961,7 +1081,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -995,7 +1115,15 @@ import type { GuestlistApiGetRsvpSubmissionRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new GuestlistApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new GuestlistApi(config);
 
   const body = {
     // string
@@ -1026,7 +1154,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -1057,7 +1185,15 @@ import type { GuestlistApiListGuestGroupsRequest } from "";
 
 async function example() {
     console.log("🚀 Testing  SDK...");
-    const api = new GuestlistApi();
+    const config = new Configuration({
+        // To configure API key authorization: SessionAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: ServiceTokenAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: XSessionTokenAuth
+        apiKey: "YOUR API KEY",
+    });
+    const api = new GuestlistApi(config);
 
     const body = {
         // string (optional)
@@ -1118,7 +1254,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -1152,7 +1288,15 @@ import type { GuestlistApiListGuestsRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new GuestlistApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new GuestlistApi(config);
 
   const body = {
     // string (optional)
@@ -1189,7 +1333,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -1223,7 +1367,15 @@ import type { GuestlistApiListRsvpResponsesRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new GuestlistApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new GuestlistApi(config);
 
   const body = {
     // string (optional)
@@ -1260,7 +1412,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -1291,7 +1443,15 @@ import type { GuestlistApiListRsvpSubmissionsRequest } from "";
 
 async function example() {
     console.log("🚀 Testing  SDK...");
-    const api = new GuestlistApi();
+    const config = new Configuration({
+        // To configure API key authorization: SessionAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: ServiceTokenAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: XSessionTokenAuth
+        apiKey: "YOUR API KEY",
+    });
+    const api = new GuestlistApi(config);
 
     const body = {
         // string (optional)
@@ -1328,7 +1488,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -1362,7 +1522,15 @@ import type { GuestlistApiUpdateGuestRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new GuestlistApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new GuestlistApi(config);
 
   const body = {
     // string
@@ -1396,7 +1564,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -1430,7 +1598,15 @@ import type { GuestlistApiUpdateGuestGroupRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new GuestlistApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new GuestlistApi(config);
 
   const body = {
     // string
@@ -1464,7 +1640,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -1498,7 +1674,15 @@ import type { GuestlistApiUpdateRsvpResponseRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new GuestlistApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new GuestlistApi(config);
 
   const body = {
     // string
@@ -1532,7 +1716,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 
@@ -1566,7 +1750,15 @@ import type { GuestlistApiUpdateRsvpSubmissionRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new GuestlistApi();
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new GuestlistApi(config);
 
   const body = {
     // string
@@ -1600,7 +1792,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
 
 ### HTTP request headers
 

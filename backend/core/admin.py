@@ -24,8 +24,8 @@ from contacts.admin import ContactAdmin
 from contacts.models import Contact
 from deadline.admin import DeadlineListAdmin, DeadlineAdmin
 from deadline.models import DeadlineList, Deadline
-from expenses.admin import ExpenseAdmin
-from expenses.models import Expense
+from expenses.admin import CategoryAdmin, ExpenseAdmin
+from expenses.models import Category, Expense
 from guestlist.admin import GuestAdmin, GuestGroupAdmin, RsvpSubmissionAdmin
 from guestlist.models import Guest, GuestGroup, RsvpSubmission
 from list.admin import ListAdmin, ListEntryAdmin
@@ -763,6 +763,7 @@ custom_admin_site.register(Contact, ContactAdmin)
 custom_admin_site.register(DeadlineList, DeadlineListAdmin)
 custom_admin_site.register(Deadline, DeadlineAdmin)
 custom_admin_site.register(Expense, ExpenseAdmin)
+custom_admin_site.register(Category, CategoryAdmin)
 custom_admin_site.register(Guest, GuestAdmin)
 custom_admin_site.register(GuestGroup, GuestGroupAdmin)
 custom_admin_site.register(RsvpSubmission, RsvpSubmissionAdmin)

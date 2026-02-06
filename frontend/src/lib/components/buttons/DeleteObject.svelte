@@ -25,9 +25,8 @@
     }}>
     <input type="hidden" name="value" {value} />
     <button type="submit" class="btn btn-sm btn-error" title="Remove">
-        {#if label}
+        <span class="icon-[lucide--trash] size-4"></span>{#if label}
             <span>{label}</span>
         {/if}
-        <span class="icon-[lucide--trash] size-4"></span>
     </button>
 </form>

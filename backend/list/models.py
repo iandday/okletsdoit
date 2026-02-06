@@ -150,7 +150,7 @@ class ListEntry(models.Model):
 
         # update completed_at if is_completed is True
         if self.is_completed and not self.completed_at:
-            self.completed_at = datetime.today()
+            self.completed_at = datetime.today().date()
         elif not self.is_completed:
             self.completed_at = None
 
