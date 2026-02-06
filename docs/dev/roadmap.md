@@ -12,10 +12,10 @@
 - [ ] Timeline
 - [X] Contacts
 - [ ] Dashboard
-- [ ] Inspiration
+- [X] Inspiration
 - [ ] Ideas
 - [X] Lists
-- [ ] Budget
+- [X] Budget
 
 ## New Functionality
 - [ ] Settings

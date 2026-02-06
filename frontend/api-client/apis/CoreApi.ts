@@ -13,6 +13,10 @@
  */
 import type {
     CategoryContentSchema,
+    InspirationCreateSchema,
+    InspirationSchema,
+    InspirationUpdateSchema,
+    PagedInspirationSchema,
     PagedQuestionSchema,
     PagedRsvpQuestionSchema,
     PagedTipsSchema,
@@ -37,6 +41,14 @@ import type {
 import {
     CategoryContentSchemaFromJSON,
     CategoryContentSchemaToJSON,
+    InspirationCreateSchemaFromJSON,
+    InspirationCreateSchemaToJSON,
+    InspirationSchemaFromJSON,
+    InspirationSchemaToJSON,
+    InspirationUpdateSchemaFromJSON,
+    InspirationUpdateSchemaToJSON,
+    PagedInspirationSchemaFromJSON,
+    PagedInspirationSchemaToJSON,
     PagedQuestionSchemaFromJSON,
     PagedQuestionSchemaToJSON,
     PagedRsvpQuestionSchemaFromJSON,
@@ -80,6 +92,10 @@ import {
 } from "../models/index";
 import * as runtime from "../runtime";
 
+export interface CoreApiCreateInspirationRequest {
+    inspirationCreateSchema: InspirationCreateSchema;
+}
+
 export interface CoreApiCreateQuestionRequest {
     questionCreateSchema: QuestionCreateSchema;
 }
@@ -98,6 +114,14 @@ export interface CoreApiCreateRsvpQuestionChoiceRequest {
 
 export interface CoreApiCreateTipRequest {
     tipsCreateSchema: TipsCreateSchema;
+}
+
+export interface CoreApiDeleteInspirationRequest {
+    inspirationId: string;
+}
+
+export interface CoreApiDeleteInspirationImageRequest {
+    inspirationId: string;
 }
 
 export interface CoreApiDeleteQuestionRequest {
@@ -124,6 +148,10 @@ export interface CoreApiGetCategoriesContentRequest {
     publishedOnly?: boolean;
 }
 
+export interface CoreApiGetInspirationRequest {
+    inspirationId: string;
+}
+
 export interface CoreApiGetQuestionRequest {
     questionId: string;
 }
@@ -142,6 +170,12 @@ export interface CoreApiGetRsvpQuestionChoiceRequest {
 
 export interface CoreApiGetTipRequest {
     tipId: string;
+}
+
+export interface CoreApiListInspirationsRequest {
+    name?: string | null;
+    page?: number;
+    pageSize?: number | null;
 }
 
 export interface CoreApiListQuestionUrlsRequest {
@@ -167,6 +201,11 @@ export interface CoreApiListTipsRequest {
     published?: boolean | null;
     page?: number;
     pageSize?: number | null;
+}
+
+export interface CoreApiUpdateInspirationRequest {
+    inspirationId: string;
+    inspirationUpdateSchema: InspirationUpdateSchema;
 }
 
 export interface CoreApiUpdateQuestionRequest {
@@ -198,10 +237,72 @@ export interface CoreApiUpdateWeddingSettingsRequest {
     weddingSettingsUpdateSchema: WeddingSettingsUpdateSchema;
 }
 
+export interface CoreApiUploadInspirationImageRequest {
+    inspirationId: string;
+    image: Blob;
+}
+
 /**
  *
  */
 export class CoreApi extends runtime.BaseAPI {
+    /**
+     * Create a new inspiration
+     * Create Inspiration
+     */
+    async coreApiCreateInspirationRaw(
+        requestParameters: CoreApiCreateInspirationRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<InspirationSchema>> {
+        if (requestParameters["inspirationCreateSchema"] == null) {
+            throw new runtime.RequiredError(
+                "inspirationCreateSchema",
+                'Required parameter "inspirationCreateSchema" was null or undefined when calling coreApiCreateInspiration().',
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters["Content-Type"] = "application/json";
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
+        let urlPath = `/api/core/inspirations`;
+
+        const response = await this.request(
+            {
+                path: urlPath,
+                method: "POST",
+                headers: headerParameters,
+                query: queryParameters,
+                body: InspirationCreateSchemaToJSON(requestParameters["inspirationCreateSchema"]),
+            },
+            initOverrides,
+        );
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => InspirationSchemaFromJSON(jsonValue));
+    }
+
+    /**
+     * Create a new inspiration
+     * Create Inspiration
+     */
+    async coreApiCreateInspiration(
+        requestParameters: CoreApiCreateInspirationRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<InspirationSchema> {
+        const response = await this.coreApiCreateInspirationRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
     /**
      * Create a new question
      * Create Question
@@ -485,6 +586,120 @@ export class CoreApi extends runtime.BaseAPI {
     ): Promise<TipsSchema> {
         const response = await this.coreApiCreateTipRaw(requestParameters, initOverrides);
         return await response.value();
+    }
+
+    /**
+     * Soft delete an inspiration
+     * Delete Inspiration
+     */
+    async coreApiDeleteInspirationRaw(
+        requestParameters: CoreApiDeleteInspirationRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters["inspirationId"] == null) {
+            throw new runtime.RequiredError(
+                "inspirationId",
+                'Required parameter "inspirationId" was null or undefined when calling coreApiDeleteInspiration().',
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
+        let urlPath = `/api/core/inspirations/{inspiration_id}`;
+        urlPath = urlPath.replace(
+            `{${"inspiration_id"}}`,
+            encodeURIComponent(String(requestParameters["inspirationId"])),
+        );
+
+        const response = await this.request(
+            {
+                path: urlPath,
+                method: "DELETE",
+                headers: headerParameters,
+                query: queryParameters,
+            },
+            initOverrides,
+        );
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Soft delete an inspiration
+     * Delete Inspiration
+     */
+    async coreApiDeleteInspiration(
+        requestParameters: CoreApiDeleteInspirationRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<void> {
+        await this.coreApiDeleteInspirationRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Delete image from an inspiration
+     * Delete Inspiration Image
+     */
+    async coreApiDeleteInspirationImageRaw(
+        requestParameters: CoreApiDeleteInspirationImageRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters["inspirationId"] == null) {
+            throw new runtime.RequiredError(
+                "inspirationId",
+                'Required parameter "inspirationId" was null or undefined when calling coreApiDeleteInspirationImage().',
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
+        let urlPath = `/api/core/inspirations/{inspiration_id}/image`;
+        urlPath = urlPath.replace(
+            `{${"inspiration_id"}}`,
+            encodeURIComponent(String(requestParameters["inspirationId"])),
+        );
+
+        const response = await this.request(
+            {
+                path: urlPath,
+                method: "DELETE",
+                headers: headerParameters,
+                query: queryParameters,
+            },
+            initOverrides,
+        );
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Delete image from an inspiration
+     * Delete Inspiration Image
+     */
+    async coreApiDeleteInspirationImage(
+        requestParameters: CoreApiDeleteInspirationImageRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<void> {
+        await this.coreApiDeleteInspirationImageRaw(requestParameters, initOverrides);
     }
 
     /**
@@ -809,6 +1024,64 @@ export class CoreApi extends runtime.BaseAPI {
     }
 
     /**
+     * Get a specific inspiration by ID
+     * Get Inspiration
+     */
+    async coreApiGetInspirationRaw(
+        requestParameters: CoreApiGetInspirationRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<InspirationSchema>> {
+        if (requestParameters["inspirationId"] == null) {
+            throw new runtime.RequiredError(
+                "inspirationId",
+                'Required parameter "inspirationId" was null or undefined when calling coreApiGetInspiration().',
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
+        let urlPath = `/api/core/inspirations/{inspiration_id}`;
+        urlPath = urlPath.replace(
+            `{${"inspiration_id"}}`,
+            encodeURIComponent(String(requestParameters["inspirationId"])),
+        );
+
+        const response = await this.request(
+            {
+                path: urlPath,
+                method: "GET",
+                headers: headerParameters,
+                query: queryParameters,
+            },
+            initOverrides,
+        );
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => InspirationSchemaFromJSON(jsonValue));
+    }
+
+    /**
+     * Get a specific inspiration by ID
+     * Get Inspiration
+     */
+    async coreApiGetInspiration(
+        requestParameters: CoreApiGetInspirationRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<InspirationSchema> {
+        const response = await this.coreApiGetInspirationRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Get a specific question by ID
      * Get Question
      */
@@ -1129,6 +1402,65 @@ export class CoreApi extends runtime.BaseAPI {
     }
 
     /**
+     * List all inspirations (non-deleted)
+     * List Inspirations
+     */
+    async coreApiListInspirationsRaw(
+        requestParameters: CoreApiListInspirationsRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<PagedInspirationSchema>> {
+        const queryParameters: any = {};
+
+        if (requestParameters["name"] != null) {
+            queryParameters["name"] = requestParameters["name"];
+        }
+
+        if (requestParameters["page"] != null) {
+            queryParameters["page"] = requestParameters["page"];
+        }
+
+        if (requestParameters["pageSize"] != null) {
+            queryParameters["page_size"] = requestParameters["pageSize"];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
+        let urlPath = `/api/core/inspirations`;
+
+        const response = await this.request(
+            {
+                path: urlPath,
+                method: "GET",
+                headers: headerParameters,
+                query: queryParameters,
+            },
+            initOverrides,
+        );
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => PagedInspirationSchemaFromJSON(jsonValue));
+    }
+
+    /**
+     * List all inspirations (non-deleted)
+     * List Inspirations
+     */
+    async coreApiListInspirations(
+        requestParameters: CoreApiListInspirationsRequest = {},
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<PagedInspirationSchema> {
+        const response = await this.coreApiListInspirationsRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * List all question URLs (non-deleted), optionally filtered by question_id
      * List Question Urls
      */
@@ -1365,6 +1697,74 @@ export class CoreApi extends runtime.BaseAPI {
         initOverrides?: RequestInit | runtime.InitOverrideFunction,
     ): Promise<PagedTipsSchema> {
         const response = await this.coreApiListTipsRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Update an inspiration
+     * Update Inspiration
+     */
+    async coreApiUpdateInspirationRaw(
+        requestParameters: CoreApiUpdateInspirationRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<InspirationSchema>> {
+        if (requestParameters["inspirationId"] == null) {
+            throw new runtime.RequiredError(
+                "inspirationId",
+                'Required parameter "inspirationId" was null or undefined when calling coreApiUpdateInspiration().',
+            );
+        }
+
+        if (requestParameters["inspirationUpdateSchema"] == null) {
+            throw new runtime.RequiredError(
+                "inspirationUpdateSchema",
+                'Required parameter "inspirationUpdateSchema" was null or undefined when calling coreApiUpdateInspiration().',
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters["Content-Type"] = "application/json";
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
+        let urlPath = `/api/core/inspirations/{inspiration_id}`;
+        urlPath = urlPath.replace(
+            `{${"inspiration_id"}}`,
+            encodeURIComponent(String(requestParameters["inspirationId"])),
+        );
+
+        const response = await this.request(
+            {
+                path: urlPath,
+                method: "PUT",
+                headers: headerParameters,
+                query: queryParameters,
+                body: InspirationUpdateSchemaToJSON(requestParameters["inspirationUpdateSchema"]),
+            },
+            initOverrides,
+        );
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => InspirationSchemaFromJSON(jsonValue));
+    }
+
+    /**
+     * Update an inspiration
+     * Update Inspiration
+     */
+    async coreApiUpdateInspiration(
+        requestParameters: CoreApiUpdateInspirationRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<InspirationSchema> {
+        const response = await this.coreApiUpdateInspirationRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -1747,6 +2147,90 @@ export class CoreApi extends runtime.BaseAPI {
         initOverrides?: RequestInit | runtime.InitOverrideFunction,
     ): Promise<WeddingSettingsSchema> {
         const response = await this.coreApiUpdateWeddingSettingsRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Upload or update image for an inspiration
+     * Upload Inspiration Image
+     */
+    async coreApiUploadInspirationImageRaw(
+        requestParameters: CoreApiUploadInspirationImageRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<InspirationSchema>> {
+        if (requestParameters["inspirationId"] == null) {
+            throw new runtime.RequiredError(
+                "inspirationId",
+                'Required parameter "inspirationId" was null or undefined when calling coreApiUploadInspirationImage().',
+            );
+        }
+
+        if (requestParameters["image"] == null) {
+            throw new runtime.RequiredError(
+                "image",
+                'Required parameter "image" was null or undefined when calling coreApiUploadInspirationImage().',
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
+        const consumes: runtime.Consume[] = [{ contentType: "multipart/form-data" }];
+        // @ts-ignore: canConsumeForm may be unused
+        const canConsumeForm = runtime.canConsumeForm(consumes);
+
+        let formParams: { append(param: string, value: any): any };
+        let useForm = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        useForm = canConsumeForm;
+        if (useForm) {
+            formParams = new FormData();
+        } else {
+            formParams = new URLSearchParams();
+        }
+
+        if (requestParameters["image"] != null) {
+            formParams.append("image", requestParameters["image"] as any);
+        }
+
+        let urlPath = `/api/core/inspirations/{inspiration_id}/upload-image`;
+        urlPath = urlPath.replace(
+            `{${"inspiration_id"}}`,
+            encodeURIComponent(String(requestParameters["inspirationId"])),
+        );
+
+        const response = await this.request(
+            {
+                path: urlPath,
+                method: "POST",
+                headers: headerParameters,
+                query: queryParameters,
+                body: formParams,
+            },
+            initOverrides,
+        );
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => InspirationSchemaFromJSON(jsonValue));
+    }
+
+    /**
+     * Upload or update image for an inspiration
+     * Upload Inspiration Image
+     */
+    async coreApiUploadInspirationImage(
+        requestParameters: CoreApiUploadInspirationImageRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<InspirationSchema> {
+        const response = await this.coreApiUploadInspirationImageRaw(requestParameters, initOverrides);
         return await response.value();
     }
 }
