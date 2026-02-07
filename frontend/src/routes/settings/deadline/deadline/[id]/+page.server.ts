@@ -1,8 +1,9 @@
-import { api } from "$lib/server/api-client";
+import { createApiClient } from "$lib/server/api-client";
 import { error, fail, redirect } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types";
 
-export const load: PageServerLoad = async ({ params }) => {
+export const load: PageServerLoad = async ({ params, locals }) => {
+    const api = createApiClient(locals.sessionCookie);
     try {
         const deadline = await api.deadlines.deadlineApiGetDeadline({
             deadlineId: params.id,
@@ -18,7 +19,8 @@ export const load: PageServerLoad = async ({ params }) => {
 };
 
 export const actions = {
-    toggleComplete: async ({ params }) => {
+    toggleComplete: async ({ params, locals }) => {
+        const api = createApiClient(locals.sessionCookie);
         try {
             await api.deadlines.deadlineApiToggleDeadlineComplete({
                 deadlineId: params.id,
@@ -30,7 +32,8 @@ export const actions = {
 
         return { success: true };
     },
-    delete: async ({ params }) => {
+    delete: async ({ params, locals }) => {
+        const api = createApiClient(locals.sessionCookie);
         let deadline;
         try {
             deadline = await api.deadlines.deadlineApiGetDeadline({

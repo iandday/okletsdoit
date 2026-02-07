@@ -1,8 +1,9 @@
-import { api } from "$lib/server/api-client";
+import { createApiClient } from "$lib/server/api-client";
 import { error, fail, redirect, type Redirect } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types";
 
-export const load: PageServerLoad = async ({ params }) => {
+export const load: PageServerLoad = async ({ params, locals }) => {
+    const api = createApiClient(locals.sessionCookie);
     try {
         const [question, categoriesData] = await Promise.all([
             api.core.coreApiGetQuestion({ questionId: params.id }),
@@ -19,7 +20,8 @@ export const load: PageServerLoad = async ({ params }) => {
 };
 
 export const actions = {
-    updateQuestion: async ({ request, params }) => {
+    updateQuestion: async ({ request, params, locals }) => {
+        const api = createApiClient(locals.sessionCookie);
         const formData = await request.formData();
 
         const question = formData.get("question");
@@ -67,7 +69,8 @@ export const actions = {
         }
     },
 
-    addUrl: async ({ request, params }) => {
+    addUrl: async ({ request, params, locals }) => {
+        const api = createApiClient(locals.sessionCookie);
         const formData = await request.formData();
         const url = formData.get("url");
         const text = formData.get("text");
@@ -91,7 +94,8 @@ export const actions = {
         }
     },
 
-    updateUrl: async ({ request }) => {
+    updateUrl: async ({ request, locals }) => {
+        const api = createApiClient(locals.sessionCookie);
         const formData = await request.formData();
         const urlId = formData.get("urlId");
         const url = formData.get("url");
@@ -116,7 +120,8 @@ export const actions = {
         }
     },
 
-    deleteUrl: async ({ request }) => {
+    deleteUrl: async ({ request, locals }) => {
+        const api = createApiClient(locals.sessionCookie);
         const formData = await request.formData();
         const urlId = formData.get("urlId");
 

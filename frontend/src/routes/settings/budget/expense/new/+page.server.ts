@@ -1,8 +1,9 @@
-import { api } from "$lib/server/api-client";
+import { createApiClient } from "$lib/server/api-client";
 import { redirect, error } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types";
 
-export const load: PageServerLoad = async ({ url }) => {
+export const load: PageServerLoad = async ({ url, locals }) => {
+    const api = createApiClient(locals.sessionCookie);
     try {
         // Get categoryId from query string if provided
         const categoryId = url.searchParams.get("categoryId");
@@ -49,7 +50,8 @@ export const load: PageServerLoad = async ({ url }) => {
 };
 
 export const actions: Actions = {
-    default: async ({ request }) => {
+    default: async ({ request, locals }) => {
+        const api = createApiClient(locals.sessionCookie);
         const formData = await request.formData();
 
         const item = formData.get("item") as string;

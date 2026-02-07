@@ -1,8 +1,9 @@
-import { api } from "$lib/server/api-client";
+import { createApiClient } from "$lib/server/api-client";
 import { error, fail, redirect } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types";
 
-export const load: PageServerLoad = async ({ params }) => {
+export const load: PageServerLoad = async ({ params, locals }) => {
+    const api = createApiClient(locals.sessionCookie);
     try {
         const contact = await api.contacts.contactsApiGetContact({
             contactId: params.id,
@@ -23,7 +24,8 @@ export const load: PageServerLoad = async ({ params }) => {
 };
 
 export const actions = {
-    delete: async ({ params }) => {
+    delete: async ({ params, locals }) => {
+        const api = createApiClient(locals.sessionCookie);
         try {
             await api.contacts.contactsApiDeleteContact({
                 contactId: params.id,
@@ -35,7 +37,8 @@ export const actions = {
 
         throw redirect(303, "/settings/contact");
     },
-    uploadAttachment: async ({ params, request }) => {
+    uploadAttachment: async ({ params, request, locals }) => {
+        const api = createApiClient(locals.sessionCookie);
         const formData = await request.formData();
         const file = formData.get("file") as File;
         const name = formData.get("name") as string;
@@ -75,7 +78,8 @@ export const actions = {
             });
         }
     },
-    deleteAttachment: async ({ request }) => {
+    deleteAttachment: async ({ request, locals }) => {
+        const api = createApiClient(locals.sessionCookie);
         const formData = await request.formData();
         const attachmentId = formData.get("attachmentId") as string;
 

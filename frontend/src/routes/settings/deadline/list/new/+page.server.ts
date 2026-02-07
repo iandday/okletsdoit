@@ -1,4 +1,4 @@
-import { api } from "$lib/server/api-client";
+import { createApiClient } from "$lib/server/api-client";
 import { fail, redirect } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types";
 
@@ -7,7 +7,8 @@ export const load: PageServerLoad = async () => {
 };
 
 export const actions = {
-    default: async ({ request }) => {
+    default: async ({ request, locals }) => {
+        const api = createApiClient(locals.sessionCookie);
         const formData = await request.formData();
         const name = formData.get("name");
 

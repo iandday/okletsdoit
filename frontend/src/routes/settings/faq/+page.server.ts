@@ -1,8 +1,9 @@
-import { api } from "$lib/server/api-client";
+import { createApiClient } from "$lib/server/api-client";
 import { fail } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types";
 
-export const load: PageServerLoad = async () => {
+export const load: PageServerLoad = async ({ locals }) => {
+    const api = createApiClient(locals.sessionCookie);
     const [questions, tips, categories] = await Promise.all([
         api.core.coreApiListQuestions({}),
         api.core.coreApiListTips({}),
@@ -17,7 +18,8 @@ export const load: PageServerLoad = async () => {
 };
 
 export const actions = {
-    deleteQuestion: async ({ request }) => {
+    deleteQuestion: async ({ request, locals }) => {
+        const api = createApiClient(locals.sessionCookie);
         const formData = await request.formData();
         const id = formData.get("id");
 
@@ -34,7 +36,8 @@ export const actions = {
         }
     },
 
-    deleteTip: async ({ request }) => {
+    deleteTip: async ({ request, locals }) => {
+        const api = createApiClient(locals.sessionCookie);
         const formData = await request.formData();
         const id = formData.get("id");
 
