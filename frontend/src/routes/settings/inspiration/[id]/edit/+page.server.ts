@@ -1,8 +1,9 @@
-import { api } from "$lib/server/api-client";
+import { createApiClient } from "$lib/server/api-client";
 import { fail, redirect } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types";
 
-export const load: PageServerLoad = async ({ params }) => {
+export const load: PageServerLoad = async ({ params, locals }) => {
+    const api = createApiClient(locals.sessionCookie);
     const inspiration = await api.core.coreApiGetInspiration({ inspirationId: params.id });
 
     return {
@@ -11,7 +12,8 @@ export const load: PageServerLoad = async ({ params }) => {
 };
 
 export const actions: Actions = {
-    update: async ({ request, params }) => {
+    update: async ({ request, params, locals }) => {
+        const api = createApiClient(locals.sessionCookie);
         const formData = await request.formData();
         const name = formData.get("name") as string;
         const description = formData.get("description") as string;
@@ -32,7 +34,8 @@ export const actions: Actions = {
         }
     },
 
-    uploadImage: async ({ params, request }) => {
+    uploadImage: async ({ params, request, locals }) => {
+        const api = createApiClient(locals.sessionCookie);
         const formData = await request.formData();
         const image = formData.get("image") as File;
 
@@ -64,7 +67,8 @@ export const actions: Actions = {
         }
     },
 
-    deleteImage: async ({ params }) => {
+    deleteImage: async ({ params, locals }) => {
+        const api = createApiClient(locals.sessionCookie);
         try {
             await api.core.coreApiDeleteInspirationImage({
                 inspirationId: params.id,
@@ -77,7 +81,8 @@ export const actions: Actions = {
         }
     },
 
-    saveAndReturn: async ({ request, params }) => {
+    saveAndReturn: async ({ request, params, locals }) => {
+        const api = createApiClient(locals.sessionCookie);
         const formData = await request.formData();
         const name = formData.get("name") as string;
         const description = formData.get("description") as string;

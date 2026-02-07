@@ -1,7 +1,8 @@
-import { api } from "$lib/server/api-client";
+import { createApiClient } from "$lib/server/api-client";
 import type { PageServerLoad } from "./$types";
 
-export const load: PageServerLoad = async ({ url }) => {
+export const load: PageServerLoad = async ({ url, locals }) => {
+    const api = createApiClient(locals.sessionCookie);
     try {
         // Get optional name filter from query parameter
         const nameFilter = url.searchParams.get("name");

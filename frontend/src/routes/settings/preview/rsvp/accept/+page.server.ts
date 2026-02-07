@@ -1,7 +1,8 @@
-import { api } from "$lib/server/api-client";
+import { createApiClient } from "$lib/server/api-client";
 import type { PageServerLoad } from "./$types";
 
-export const load: PageServerLoad = async () => {
+export const load: PageServerLoad = async ({ locals }) => {
+    const api = createApiClient(locals.sessionCookie);
     // Fetch real RSVP questions
     const rsvpQuestions = await api.guestlist.guestlistApiGetRsvpAcceptenceQuestionsPreview();
 

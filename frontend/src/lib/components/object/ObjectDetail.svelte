@@ -67,33 +67,26 @@
             <div class="detail-card-body">
                 <div class="detail-card-title">Item Details</div>
                 {@render mainSnippet()}
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <div class="detail-card-field-name">Created</div>
+                        <div class="detail-card-field-value">{object.createdByName}</div>
+                        <div class="detail-card-field-value">
+                            {new Date(object.createdAt).toLocaleString()}
+                        </div>
+                    </div>
+                    <div>
+                        <div class="detail-card-field-name">Last Updated</div>
+                        <div class="detail-card-field-value">{object.updatedByName}</div>
+                        <div class="detail-card-field-value">
+                            {new Date(object.updatedAt).toLocaleString()}
+                        </div>
+                    </div>
+                </div>
             </div>
             {#if mainActionsSnippet}
                 <div class="detail-card-actions flex gap-2">{@render mainActionsSnippet()}</div>
             {/if}
-        </div>
-        <div class="detail-card" id="metadata">
-            <div class="detail-card-body">
-                <div class="detail-card-title">Record Information</div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <div class="detail-card-field-name">Created By</div>
-                        <div class="detail-card-field-value">{object.createdByName}</div>
-                    </div>
-                    <div>
-                        <div class="detail-card-field-name">Created At</div>
-                        <div class="detail-card-field-value">{object.createdAt}</div>
-                    </div>
-                    <div>
-                        <div class="detail-card-field-name">Last Updated By</div>
-                        <div class="detail-card-field-value">{object.updatedByName}</div>
-                    </div>
-                    <div>
-                        <div class="detail-card-field-name">Last Updated At</div>
-                        <div class="detail-card-field-value">{object.updatedAt}</div>
-                    </div>
-                </div>
-            </div>
         </div>
 
         {#if extraCardsSnippet}

@@ -72,18 +72,25 @@ const debugMiddleware: Middleware = {
     },
 };
 
-function createConfig() {
+function createConfig(sessionCookie?: string) {
+    const headers: Record<string, string> = {
+        "X-Service-Token": SERVICE_TOKEN,
+    };
+
+    // Forward session cookie if provided for user context
+    if (sessionCookie) {
+        headers["Cookie"] = `sessionid=${sessionCookie}`;
+    }
+
     return new Configuration({
         basePath: API_BASE_PATH,
-        headers: {
-            "X-Service-Token": SERVICE_TOKEN,
-        },
+        headers,
         middleware: [debugMiddleware],
     });
 }
 
-export function createApiClient() {
-    const config = createConfig();
+export function createApiClient(sessionCookie?: string) {
+    const config = createConfig(sessionCookie);
 
     return {
         guestlist: new GuestlistApi(config),

@@ -5,16 +5,16 @@ import type { Actions, PageServerLoad } from "./$types";
 export const load: PageServerLoad = async ({ params, locals }) => {
     const api = createApiClient(locals.sessionCookie);
     try {
-        const inspiration = await api.core.coreApiGetInspiration({
-            inspirationId: params.id,
+        const idea = await api.core.coreApiGetIdea({
+            ideaId: params.id,
         });
-
+        console.log(idea);
         return {
-            inspiration,
+            idea,
         };
     } catch (err) {
-        console.error("Error loading inspiration:", err);
-        throw error(404, "Inspiration not found");
+        console.error("Error loading idea:", err);
+        throw error(404, "Idea not found");
     }
 };
 
@@ -22,14 +22,14 @@ export const actions = {
     delete: async ({ params, locals }) => {
         const api = createApiClient(locals.sessionCookie);
         try {
-            await api.core.coreApiDeleteInspiration({
-                inspirationId: params.id,
+            await api.core.coreApiDeleteIdea({
+                ideaId: params.id,
             });
         } catch (err) {
-            console.error("Failed to delete inspiration:", err);
-            return fail(500, { error: "Failed to delete inspiration" });
+            console.error("Failed to delete idea:", err);
+            return fail(500, { error: "Failed to delete idea" });
         }
 
-        throw redirect(303, "/settings/inspiration");
+        throw redirect(303, "/settings/idea");
     },
 } satisfies Actions;
