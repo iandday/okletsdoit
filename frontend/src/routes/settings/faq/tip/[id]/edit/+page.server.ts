@@ -1,8 +1,9 @@
-import { api } from "$lib/server/api-client";
+import { createApiClient } from "$lib/server/api-client";
 import { error, fail, redirect, type Redirect } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types";
 
-export const load: PageServerLoad = async ({ params }) => {
+export const load: PageServerLoad = async ({ params, locals }) => {
+    const api = createApiClient(locals.sessionCookie);
     try {
         const [tip, categoriesData] = await Promise.all([
             api.core.coreApiGetTip({ tipId: params.id }),
@@ -19,7 +20,8 @@ export const load: PageServerLoad = async ({ params }) => {
 };
 
 export const actions = {
-    default: async ({ request, params }) => {
+    default: async ({ request, params, locals }) => {
+        const api = createApiClient(locals.sessionCookie);
         const formData = await request.formData();
 
         const content = formData.get("content");

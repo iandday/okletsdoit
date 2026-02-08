@@ -1,8 +1,9 @@
-import { api } from "$lib/server/api-client";
+import { createApiClient } from "$lib/server/api-client";
 import { error } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 
-export const load: PageServerLoad = async () => {
+export const load: PageServerLoad = async ({ locals }) => {
+    const api = createApiClient(locals.sessionCookie);
     try {
         // Load all categories
         const categories = [];

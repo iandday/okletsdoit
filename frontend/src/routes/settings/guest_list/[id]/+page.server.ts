@@ -1,8 +1,9 @@
-import { api } from "$lib/server/api-client";
+import { createApiClient } from "$lib/server/api-client";
 import { error, redirect } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types";
 
-export const load: PageServerLoad = async ({ params }) => {
+export const load: PageServerLoad = async ({ params, locals }) => {
+    const api = createApiClient(locals.sessionCookie);
     try {
         const guestGroup = await api.guestlist.guestlistApiGetGuestGroup({
             groupId: params.id,
@@ -37,7 +38,8 @@ export const load: PageServerLoad = async ({ params }) => {
 };
 
 export const actions: Actions = {
-    delete: async ({ params }) => {
+    delete: async ({ params, locals }) => {
+        const api = createApiClient(locals.sessionCookie);
         try {
             await api.guestlist.guestlistApiDeleteGuestGroup({
                 groupId: params.id,
@@ -49,7 +51,8 @@ export const actions: Actions = {
 
         throw redirect(303, "/settings/guest_list");
     },
-    deleteGuest: async ({ request, params }) => {
+    deleteGuest: async ({ request, params, locals }) => {
+        const api = createApiClient(locals.sessionCookie);
         const formData = await request.formData();
         const guestId = formData.get("value") as string;
 
@@ -65,7 +68,8 @@ export const actions: Actions = {
             throw error(500, "Failed to delete guest");
         }
     },
-    addGuest: async ({ params, request }) => {
+    addGuest: async ({ params, request, locals }) => {
+        const api = createApiClient(locals.sessionCookie);
         const formData = await request.formData();
         const firstName = formData.get("firstName") as string;
         const lastName = formData.get("lastName") as string;

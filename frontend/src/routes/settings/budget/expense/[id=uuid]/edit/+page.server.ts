@@ -1,8 +1,9 @@
-import { api } from "$lib/server/api-client";
+import { createApiClient } from "$lib/server/api-client";
 import { redirect } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types";
 
-export const load: PageServerLoad = async ({ params }) => {
+export const load: PageServerLoad = async ({ params, locals }) => {
+    const api = createApiClient(locals.sessionCookie);
     const expense = await api.expenses.expensesApiGetExpense({ expenseId: params.id });
 
     // Load categories and vendors for dropdowns
@@ -38,7 +39,8 @@ export const load: PageServerLoad = async ({ params }) => {
 };
 
 export const actions: Actions = {
-    default: async ({ request, params }) => {
+    default: async ({ request, params, locals }) => {
+        const api = createApiClient(locals.sessionCookie);
         const formData = await request.formData();
 
         const item = formData.get("item") as string;

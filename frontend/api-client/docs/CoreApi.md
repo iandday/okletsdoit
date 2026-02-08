@@ -4,12 +4,14 @@ All URIs are relative to _http://localhost_
 
 | Method                                                                            | HTTP request                                                  | Description                 |
 | --------------------------------------------------------------------------------- | ------------------------------------------------------------- | --------------------------- |
+| [**coreApiCreateIdea**](CoreApi.md#coreapicreateidea)                             | **POST** /api/core/ideas                                      | Create Idea                 |
 | [**coreApiCreateInspiration**](CoreApi.md#coreapicreateinspiration)               | **POST** /api/core/inspirations                               | Create Inspiration          |
 | [**coreApiCreateQuestion**](CoreApi.md#coreapicreatequestion)                     | **POST** /api/core/questions                                  | Create Question             |
 | [**coreApiCreateQuestionUrl**](CoreApi.md#coreapicreatequestionurl)               | **POST** /api/core/question-urls                              | Create Question Url         |
 | [**coreApiCreateRsvpQuestion**](CoreApi.md#coreapicreatersvpquestion)             | **POST** /api/core/rsvp-questions                             | Create Rsvp Question        |
 | [**coreApiCreateRsvpQuestionChoice**](CoreApi.md#coreapicreatersvpquestionchoice) | **POST** /api/core/rsvp-question-choices                      | Create Rsvp Question Choice |
 | [**coreApiCreateTip**](CoreApi.md#coreapicreatetip)                               | **POST** /api/core/tips                                       | Create Tip                  |
+| [**coreApiDeleteIdea**](CoreApi.md#coreapideleteidea)                             | **DELETE** /api/core/ideas/{idea_id}                          | Delete Idea                 |
 | [**coreApiDeleteInspiration**](CoreApi.md#coreapideleteinspiration)               | **DELETE** /api/core/inspirations/{inspiration_id}            | Delete Inspiration          |
 | [**coreApiDeleteInspirationImage**](CoreApi.md#coreapideleteinspirationimage)     | **DELETE** /api/core/inspirations/{inspiration_id}/image      | Delete Inspiration Image    |
 | [**coreApiDeleteQuestion**](CoreApi.md#coreapideletequestion)                     | **DELETE** /api/core/questions/{question_id}                  | Delete Question             |
@@ -18,6 +20,7 @@ All URIs are relative to _http://localhost_
 | [**coreApiDeleteRsvpQuestionChoice**](CoreApi.md#coreapideletersvpquestionchoice) | **DELETE** /api/core/rsvp-question-choices/{choice_id}        | Delete Rsvp Question Choice |
 | [**coreApiDeleteTip**](CoreApi.md#coreapideletetip)                               | **DELETE** /api/core/tips/{tip_id}                            | Delete Tip                  |
 | [**coreApiGetCategoriesContent**](CoreApi.md#coreapigetcategoriescontent)         | **GET** /api/core/rsvp-categories-content                     | Get Categories Content      |
+| [**coreApiGetIdea**](CoreApi.md#coreapigetidea)                                   | **GET** /api/core/ideas/{idea_id}                             | Get Idea                    |
 | [**coreApiGetInspiration**](CoreApi.md#coreapigetinspiration)                     | **GET** /api/core/inspirations/{inspiration_id}               | Get Inspiration             |
 | [**coreApiGetQuestion**](CoreApi.md#coreapigetquestion)                           | **GET** /api/core/questions/{question_id}                     | Get Question                |
 | [**coreApiGetQuestionUrl**](CoreApi.md#coreapigetquestionurl)                     | **GET** /api/core/question-urls/{url_id}                      | Get Question Url            |
@@ -25,11 +28,13 @@ All URIs are relative to _http://localhost_
 | [**coreApiGetRsvpQuestionChoice**](CoreApi.md#coreapigetrsvpquestionchoice)       | **GET** /api/core/rsvp-question-choices/{choice_id}           | Get Rsvp Question Choice    |
 | [**coreApiGetTip**](CoreApi.md#coreapigettip)                                     | **GET** /api/core/tips/{tip_id}                               | Get Tip                     |
 | [**coreApiGetWeddingSettings**](CoreApi.md#coreapigetweddingsettings)             | **GET** /api/core/wedding-settings                            | Get Wedding Settings        |
+| [**coreApiListIdeas**](CoreApi.md#coreapilistideas)                               | **GET** /api/core/ideas                                       | List Ideas                  |
 | [**coreApiListInspirations**](CoreApi.md#coreapilistinspirations)                 | **GET** /api/core/inspirations                                | List Inspirations           |
 | [**coreApiListQuestionUrls**](CoreApi.md#coreapilistquestionurls)                 | **GET** /api/core/question-urls                               | List Question Urls          |
 | [**coreApiListQuestions**](CoreApi.md#coreapilistquestions)                       | **GET** /api/core/questions                                   | List Questions              |
 | [**coreApiListRsvpQuestions**](CoreApi.md#coreapilistrsvpquestions)               | **GET** /api/core/rsvp-questions                              | List Rsvp Questions         |
 | [**coreApiListTips**](CoreApi.md#coreapilisttips)                                 | **GET** /api/core/tips                                        | List Tips                   |
+| [**coreApiUpdateIdea**](CoreApi.md#coreapiupdateidea)                             | **PUT** /api/core/ideas/{idea_id}                             | Update Idea                 |
 | [**coreApiUpdateInspiration**](CoreApi.md#coreapiupdateinspiration)               | **PUT** /api/core/inspirations/{inspiration_id}               | Update Inspiration          |
 | [**coreApiUpdateQuestion**](CoreApi.md#coreapiupdatequestion)                     | **PUT** /api/core/questions/{question_id}                     | Update Question             |
 | [**coreApiUpdateQuestionUrl**](CoreApi.md#coreapiupdatequestionurl)               | **PUT** /api/core/question-urls/{url_id}                      | Update Question Url         |
@@ -38,6 +43,79 @@ All URIs are relative to _http://localhost_
 | [**coreApiUpdateTip**](CoreApi.md#coreapiupdatetip)                               | **PUT** /api/core/tips/{tip_id}                               | Update Tip                  |
 | [**coreApiUpdateWeddingSettings**](CoreApi.md#coreapiupdateweddingsettings)       | **PUT** /api/core/wedding-settings                            | Update Wedding Settings     |
 | [**coreApiUploadInspirationImage**](CoreApi.md#coreapiuploadinspirationimage)     | **POST** /api/core/inspirations/{inspiration_id}/upload-image | Upload Inspiration Image    |
+
+## coreApiCreateIdea
+
+> IdeaSchema coreApiCreateIdea(ideaCreateSchema)
+
+Create Idea
+
+Create a new idea
+
+### Example
+
+```ts
+import {
+  Configuration,
+  CoreApi,
+} from '';
+import type { CoreApiCreateIdeaRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
+
+  const body = {
+    // IdeaCreateSchema
+    ideaCreateSchema: ...,
+  } satisfies CoreApiCreateIdeaRequest;
+
+  try {
+    const data = await api.coreApiCreateIdea(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name                 | Type                                    | Description | Notes |
+| -------------------- | --------------------------------------- | ----------- | ----- |
+| **ideaCreateSchema** | [IdeaCreateSchema](IdeaCreateSchema.md) |             |       |
+
+### Return type
+
+[**IdeaSchema**](IdeaSchema.md)
+
+### Authorization
+
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
+
+### HTTP request headers
+
+- **Content-Type**: `application/json`
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
 ## coreApiCreateInspiration
 
@@ -468,6 +546,79 @@ example().catch(console.error);
 
 - **Content-Type**: `application/json`
 - **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## coreApiDeleteIdea
+
+> coreApiDeleteIdea(ideaId)
+
+Delete Idea
+
+Soft delete an idea
+
+### Example
+
+```ts
+import {
+  Configuration,
+  CoreApi,
+} from '';
+import type { CoreApiDeleteIdeaRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
+
+  const body = {
+    // string
+    ideaId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+  } satisfies CoreApiDeleteIdeaRequest;
+
+  try {
+    const data = await api.coreApiDeleteIdea(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name       | Type     | Description | Notes                     |
+| ---------- | -------- | ----------- | ------------------------- |
+| **ideaId** | `string` |             | [Defaults to `undefined`] |
+
+### Return type
+
+`void` (Empty response body)
+
+### Authorization
+
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: Not defined
 
 ### HTTP response details
 
@@ -1058,6 +1209,79 @@ example().catch(console.error);
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
+## coreApiGetIdea
+
+> IdeaSchema coreApiGetIdea(ideaId)
+
+Get Idea
+
+Get a specific idea by ID
+
+### Example
+
+```ts
+import {
+  Configuration,
+  CoreApi,
+} from '';
+import type { CoreApiGetIdeaRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
+
+  const body = {
+    // string
+    ideaId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+  } satisfies CoreApiGetIdeaRequest;
+
+  try {
+    const data = await api.coreApiGetIdea(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name       | Type     | Description | Notes                     |
+| ---------- | -------- | ----------- | ------------------------- |
+| **ideaId** | `string` |             | [Defaults to `undefined`] |
+
+### Return type
+
+[**IdeaSchema**](IdeaSchema.md)
+
+### Authorization
+
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
 ## coreApiGetInspiration
 
 > InspirationSchema coreApiGetInspiration(inspirationId)
@@ -1559,6 +1783,82 @@ This endpoint does not need any parameter.
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
+## coreApiListIdeas
+
+> PagedIdeaSchema coreApiListIdeas(name, page, pageSize)
+
+List Ideas
+
+List all ideas (non-deleted)
+
+### Example
+
+```ts
+import { Configuration, CoreApi } from "";
+import type { CoreApiListIdeasRequest } from "";
+
+async function example() {
+    console.log("🚀 Testing  SDK...");
+    const config = new Configuration({
+        // To configure API key authorization: SessionAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: ServiceTokenAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: XSessionTokenAuth
+        apiKey: "YOUR API KEY",
+    });
+    const api = new CoreApi(config);
+
+    const body = {
+        // string (optional)
+        name: name_example,
+        // number (optional)
+        page: 56,
+        // number (optional)
+        pageSize: 56,
+    } satisfies CoreApiListIdeasRequest;
+
+    try {
+        const data = await api.coreApiListIdeas(body);
+        console.log(data);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name         | Type     | Description | Notes                                |
+| ------------ | -------- | ----------- | ------------------------------------ |
+| **name**     | `string` |             | [Optional] [Defaults to `undefined`] |
+| **page**     | `number` |             | [Optional] [Defaults to `1`]         |
+| **pageSize** | `number` |             | [Optional] [Defaults to `undefined`] |
+
+### Return type
+
+[**PagedIdeaSchema**](PagedIdeaSchema.md)
+
+### Authorization
+
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
 ## coreApiListInspirations
 
 > PagedInspirationSchema coreApiListInspirations(name, page, pageSize)
@@ -1935,6 +2235,82 @@ example().catch(console.error);
 ### HTTP request headers
 
 - **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## coreApiUpdateIdea
+
+> IdeaSchema coreApiUpdateIdea(ideaId, ideaUpdateSchema)
+
+Update Idea
+
+Update an idea
+
+### Example
+
+```ts
+import {
+  Configuration,
+  CoreApi,
+} from '';
+import type { CoreApiUpdateIdeaRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
+
+  const body = {
+    // string
+    ideaId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+    // IdeaUpdateSchema
+    ideaUpdateSchema: ...,
+  } satisfies CoreApiUpdateIdeaRequest;
+
+  try {
+    const data = await api.coreApiUpdateIdea(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name                 | Type                                    | Description | Notes                     |
+| -------------------- | --------------------------------------- | ----------- | ------------------------- |
+| **ideaId**           | `string`                                |             | [Defaults to `undefined`] |
+| **ideaUpdateSchema** | [IdeaUpdateSchema](IdeaUpdateSchema.md) |             |                           |
+
+### Return type
+
+[**IdeaSchema**](IdeaSchema.md)
+
+### Authorization
+
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
+
+### HTTP request headers
+
+- **Content-Type**: `application/json`
 - **Accept**: `application/json`
 
 ### HTTP response details

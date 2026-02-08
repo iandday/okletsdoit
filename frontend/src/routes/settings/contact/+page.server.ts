@@ -1,7 +1,8 @@
-import { api } from "$lib/server/api-client";
+import { createApiClient } from "$lib/server/api-client";
 import type { PageServerLoad } from "./$types";
 
-export const load: PageServerLoad = async () => {
+export const load: PageServerLoad = async ({ locals }) => {
+    const api = createApiClient(locals.sessionCookie);
     const contacts = await api.contacts.contactsApiListContacts({});
 
     // For each contact, fetch their attachments

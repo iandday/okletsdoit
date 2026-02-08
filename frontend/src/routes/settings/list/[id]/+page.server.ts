@@ -1,8 +1,9 @@
-import { api } from "$lib/server/api-client";
+import { createApiClient } from "$lib/server/api-client";
 import { error, redirect } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types";
 
-export const load: PageServerLoad = async ({ params }) => {
+export const load: PageServerLoad = async ({ params, locals }) => {
+    const api = createApiClient(locals.sessionCookie);
     try {
         const list = await api.list.listApiGetList({
             listId: params.id,
@@ -56,7 +57,8 @@ export const load: PageServerLoad = async ({ params }) => {
 };
 
 export const actions: Actions = {
-    delete: async ({ params }) => {
+    delete: async ({ params, locals }) => {
+        const api = createApiClient(locals.sessionCookie);
         try {
             await api.list.listApiDeleteList({
                 listId: params.id,

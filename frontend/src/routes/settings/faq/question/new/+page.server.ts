@@ -1,8 +1,9 @@
-import { api } from "$lib/server/api-client";
+import { createApiClient } from "$lib/server/api-client";
 import { fail, redirect, type Redirect } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types";
 
-export const load: PageServerLoad = async () => {
+export const load: PageServerLoad = async ({ locals }) => {
+    const api = createApiClient(locals.sessionCookie);
     const categoriesData = await api.core.coreApiGetCategoriesContent({ publishedOnly: false });
 
     return {
@@ -11,7 +12,8 @@ export const load: PageServerLoad = async () => {
 };
 
 export const actions = {
-    default: async ({ request }) => {
+    default: async ({ request, locals }) => {
+        const api = createApiClient(locals.sessionCookie);
         const formData = await request.formData();
 
         const question = formData.get("question");

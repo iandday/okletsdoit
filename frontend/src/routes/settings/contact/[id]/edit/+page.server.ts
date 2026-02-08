@@ -1,9 +1,10 @@
-import { api } from "$lib/server/api-client";
+import { createApiClient } from "$lib/server/api-client";
 import { fail, redirect } from "@sveltejs/kit";
 import { error } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types";
 
-export const load: PageServerLoad = async ({ params }) => {
+export const load: PageServerLoad = async ({ params, locals }) => {
+    const api = createApiClient(locals.sessionCookie);
     const contactId = params.id;
 
     try {
@@ -19,7 +20,8 @@ export const load: PageServerLoad = async ({ params }) => {
 };
 
 export const actions = {
-    default: async ({ request, params }) => {
+    default: async ({ request, params, locals }) => {
+        const api = createApiClient(locals.sessionCookie);
         const contactId = params.id;
         const formData = await request.formData();
         const name = formData.get("name");
