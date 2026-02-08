@@ -40,12 +40,12 @@
         },
     };
 
-    const relativeCrumbs = [{ title: "Settings" }];
+    const relativeCrumbs = [{ title: "Configuration" }];
 </script>
 
 <div>
     <ProtectedPageShell {relativeCrumbs}>
-        <ProtectedPageHeader title="Wedding Settings" editLink="/settings/config/edit" editText="Edit Settings" />
+        <ProtectedPageHeader title="Configuration" editLink="/settings/config/edit" editText="Edit Settings" />
 
         {#if data.configData}
             <!-- Tabs -->
