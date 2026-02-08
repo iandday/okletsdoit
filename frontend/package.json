@@ -65,6 +65,7 @@
         "chart.js": "^4.4.7",
         "motion": "^12.23.26",
         "simplebar": "^6.3.3",
+        "svelte-dnd-action": "^0.9.69",
         "svelte-headless-table": "^0.18.3",
         "swiper": "^11.2.10"
     }

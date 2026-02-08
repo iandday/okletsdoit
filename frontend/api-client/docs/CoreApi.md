@@ -10,6 +10,7 @@ All URIs are relative to _http://localhost_
 | [**coreApiCreateQuestionUrl**](CoreApi.md#coreapicreatequestionurl)               | **POST** /api/core/question-urls                              | Create Question Url         |
 | [**coreApiCreateRsvpQuestion**](CoreApi.md#coreapicreatersvpquestion)             | **POST** /api/core/rsvp-questions                             | Create Rsvp Question        |
 | [**coreApiCreateRsvpQuestionChoice**](CoreApi.md#coreapicreatersvpquestionchoice) | **POST** /api/core/rsvp-question-choices                      | Create Rsvp Question Choice |
+| [**coreApiCreateTimeline**](CoreApi.md#coreapicreatetimeline)                     | **POST** /api/core/timelines                                  | Create Timeline             |
 | [**coreApiCreateTip**](CoreApi.md#coreapicreatetip)                               | **POST** /api/core/tips                                       | Create Tip                  |
 | [**coreApiDeleteIdea**](CoreApi.md#coreapideleteidea)                             | **DELETE** /api/core/ideas/{idea_id}                          | Delete Idea                 |
 | [**coreApiDeleteInspiration**](CoreApi.md#coreapideleteinspiration)               | **DELETE** /api/core/inspirations/{inspiration_id}            | Delete Inspiration          |
@@ -18,6 +19,7 @@ All URIs are relative to _http://localhost_
 | [**coreApiDeleteQuestionUrl**](CoreApi.md#coreapideletequestionurl)               | **DELETE** /api/core/question-urls/{url_id}                   | Delete Question Url         |
 | [**coreApiDeleteRsvpQuestion**](CoreApi.md#coreapideletersvpquestion)             | **DELETE** /api/core/rsvp-questions/{question_id}             | Delete Rsvp Question        |
 | [**coreApiDeleteRsvpQuestionChoice**](CoreApi.md#coreapideletersvpquestionchoice) | **DELETE** /api/core/rsvp-question-choices/{choice_id}        | Delete Rsvp Question Choice |
+| [**coreApiDeleteTimeline**](CoreApi.md#coreapideletetimeline)                     | **DELETE** /api/core/timelines/{timeline_id}                  | Delete Timeline             |
 | [**coreApiDeleteTip**](CoreApi.md#coreapideletetip)                               | **DELETE** /api/core/tips/{tip_id}                            | Delete Tip                  |
 | [**coreApiGetCategoriesContent**](CoreApi.md#coreapigetcategoriescontent)         | **GET** /api/core/rsvp-categories-content                     | Get Categories Content      |
 | [**coreApiGetIdea**](CoreApi.md#coreapigetidea)                                   | **GET** /api/core/ideas/{idea_id}                             | Get Idea                    |
@@ -26,6 +28,7 @@ All URIs are relative to _http://localhost_
 | [**coreApiGetQuestionUrl**](CoreApi.md#coreapigetquestionurl)                     | **GET** /api/core/question-urls/{url_id}                      | Get Question Url            |
 | [**coreApiGetRsvpQuestion**](CoreApi.md#coreapigetrsvpquestion)                   | **GET** /api/core/rsvp-questions/{question_id}                | Get Rsvp Question           |
 | [**coreApiGetRsvpQuestionChoice**](CoreApi.md#coreapigetrsvpquestionchoice)       | **GET** /api/core/rsvp-question-choices/{choice_id}           | Get Rsvp Question Choice    |
+| [**coreApiGetTimeline**](CoreApi.md#coreapigettimeline)                           | **GET** /api/core/timelines/{timeline_id}                     | Get Timeline                |
 | [**coreApiGetTip**](CoreApi.md#coreapigettip)                                     | **GET** /api/core/tips/{tip_id}                               | Get Tip                     |
 | [**coreApiGetWeddingSettings**](CoreApi.md#coreapigetweddingsettings)             | **GET** /api/core/wedding-settings                            | Get Wedding Settings        |
 | [**coreApiListIdeas**](CoreApi.md#coreapilistideas)                               | **GET** /api/core/ideas                                       | List Ideas                  |
@@ -33,6 +36,7 @@ All URIs are relative to _http://localhost_
 | [**coreApiListQuestionUrls**](CoreApi.md#coreapilistquestionurls)                 | **GET** /api/core/question-urls                               | List Question Urls          |
 | [**coreApiListQuestions**](CoreApi.md#coreapilistquestions)                       | **GET** /api/core/questions                                   | List Questions              |
 | [**coreApiListRsvpQuestions**](CoreApi.md#coreapilistrsvpquestions)               | **GET** /api/core/rsvp-questions                              | List Rsvp Questions         |
+| [**coreApiListTimelines**](CoreApi.md#coreapilisttimelines)                       | **GET** /api/core/timelines                                   | List Timelines              |
 | [**coreApiListTips**](CoreApi.md#coreapilisttips)                                 | **GET** /api/core/tips                                        | List Tips                   |
 | [**coreApiUpdateIdea**](CoreApi.md#coreapiupdateidea)                             | **PUT** /api/core/ideas/{idea_id}                             | Update Idea                 |
 | [**coreApiUpdateInspiration**](CoreApi.md#coreapiupdateinspiration)               | **PUT** /api/core/inspirations/{inspiration_id}               | Update Inspiration          |
@@ -40,6 +44,7 @@ All URIs are relative to _http://localhost_
 | [**coreApiUpdateQuestionUrl**](CoreApi.md#coreapiupdatequestionurl)               | **PUT** /api/core/question-urls/{url_id}                      | Update Question Url         |
 | [**coreApiUpdateRsvpQuestion**](CoreApi.md#coreapiupdatersvpquestion)             | **PUT** /api/core/rsvp-questions/{question_id}                | Update Rsvp Question        |
 | [**coreApiUpdateRsvpQuestionChoice**](CoreApi.md#coreapiupdatersvpquestionchoice) | **PUT** /api/core/rsvp-question-choices/{choice_id}           | Update Rsvp Question Choice |
+| [**coreApiUpdateTimeline**](CoreApi.md#coreapiupdatetimeline)                     | **PUT** /api/core/timelines/{timeline_id}                     | Update Timeline             |
 | [**coreApiUpdateTip**](CoreApi.md#coreapiupdatetip)                               | **PUT** /api/core/tips/{tip_id}                               | Update Tip                  |
 | [**coreApiUpdateWeddingSettings**](CoreApi.md#coreapiupdateweddingsettings)       | **PUT** /api/core/wedding-settings                            | Update Wedding Settings     |
 | [**coreApiUploadInspirationImage**](CoreApi.md#coreapiuploadinspirationimage)     | **POST** /api/core/inspirations/{inspiration_id}/upload-image | Upload Inspiration Image    |
@@ -464,6 +469,79 @@ example().catch(console.error);
 ### Return type
 
 [**RsvpQuestionChoiceSchema**](RsvpQuestionChoiceSchema.md)
+
+### Authorization
+
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
+
+### HTTP request headers
+
+- **Content-Type**: `application/json`
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## coreApiCreateTimeline
+
+> TimelineSchema coreApiCreateTimeline(timelineCreateSchema)
+
+Create Timeline
+
+Create a new timeline event
+
+### Example
+
+```ts
+import {
+  Configuration,
+  CoreApi,
+} from '';
+import type { CoreApiCreateTimelineRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
+
+  const body = {
+    // TimelineCreateSchema
+    timelineCreateSchema: ...,
+  } satisfies CoreApiCreateTimelineRequest;
+
+  try {
+    const data = await api.coreApiCreateTimeline(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name                     | Type                                            | Description | Notes |
+| ------------------------ | ----------------------------------------------- | ----------- | ----- |
+| **timelineCreateSchema** | [TimelineCreateSchema](TimelineCreateSchema.md) |             |       |
+
+### Return type
+
+[**TimelineSchema**](TimelineSchema.md)
 
 ### Authorization
 
@@ -1044,6 +1122,79 @@ example().catch(console.error);
 | Name         | Type     | Description | Notes                     |
 | ------------ | -------- | ----------- | ------------------------- |
 | **choiceId** | `string` |             | [Defaults to `undefined`] |
+
+### Return type
+
+`void` (Empty response body)
+
+### Authorization
+
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: Not defined
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## coreApiDeleteTimeline
+
+> coreApiDeleteTimeline(timelineId)
+
+Delete Timeline
+
+Soft delete a timeline event
+
+### Example
+
+```ts
+import {
+  Configuration,
+  CoreApi,
+} from '';
+import type { CoreApiDeleteTimelineRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
+
+  const body = {
+    // string
+    timelineId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+  } satisfies CoreApiDeleteTimelineRequest;
+
+  try {
+    const data = await api.coreApiDeleteTimeline(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name           | Type     | Description | Notes                     |
+| -------------- | -------- | ----------- | ------------------------- |
+| **timelineId** | `string` |             | [Defaults to `undefined`] |
 
 ### Return type
 
@@ -1647,6 +1798,79 @@ example().catch(console.error);
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
+## coreApiGetTimeline
+
+> TimelineSchema coreApiGetTimeline(timelineId)
+
+Get Timeline
+
+Get a specific timeline event by ID
+
+### Example
+
+```ts
+import {
+  Configuration,
+  CoreApi,
+} from '';
+import type { CoreApiGetTimelineRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
+
+  const body = {
+    // string
+    timelineId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+  } satisfies CoreApiGetTimelineRequest;
+
+  try {
+    const data = await api.coreApiGetTimeline(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name           | Type     | Description | Notes                     |
+| -------------- | -------- | ----------- | ------------------------- |
+| **timelineId** | `string` |             | [Defaults to `undefined`] |
+
+### Return type
+
+[**TimelineSchema**](TimelineSchema.md)
+
+### Authorization
+
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
 ## coreApiGetTip
 
 > TipsSchema coreApiGetTip(tipId)
@@ -2148,6 +2372,88 @@ example().catch(console.error);
 ### Return type
 
 [**PagedRsvpQuestionSchema**](PagedRsvpQuestionSchema.md)
+
+### Authorization
+
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## coreApiListTimelines
+
+> PagedTimelineSchema coreApiListTimelines(name, published, confirmed, page, pageSize)
+
+List Timelines
+
+List all timeline events (non-deleted)
+
+### Example
+
+```ts
+import { Configuration, CoreApi } from "";
+import type { CoreApiListTimelinesRequest } from "";
+
+async function example() {
+    console.log("🚀 Testing  SDK...");
+    const config = new Configuration({
+        // To configure API key authorization: SessionAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: ServiceTokenAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: XSessionTokenAuth
+        apiKey: "YOUR API KEY",
+    });
+    const api = new CoreApi(config);
+
+    const body = {
+        // string (optional)
+        name: name_example,
+        // boolean (optional)
+        published: true,
+        // boolean (optional)
+        confirmed: true,
+        // number (optional)
+        page: 56,
+        // number (optional)
+        pageSize: 56,
+    } satisfies CoreApiListTimelinesRequest;
+
+    try {
+        const data = await api.coreApiListTimelines(body);
+        console.log(data);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name          | Type      | Description | Notes                                |
+| ------------- | --------- | ----------- | ------------------------------------ |
+| **name**      | `string`  |             | [Optional] [Defaults to `undefined`] |
+| **published** | `boolean` |             | [Optional] [Defaults to `undefined`] |
+| **confirmed** | `boolean` |             | [Optional] [Defaults to `undefined`] |
+| **page**      | `number`  |             | [Optional] [Defaults to `1`]         |
+| **pageSize**  | `number`  |             | [Optional] [Defaults to `undefined`] |
+
+### Return type
+
+[**PagedTimelineSchema**](PagedTimelineSchema.md)
 
 ### Authorization
 
@@ -2683,6 +2989,82 @@ example().catch(console.error);
 ### Return type
 
 [**RsvpQuestionChoiceSchema**](RsvpQuestionChoiceSchema.md)
+
+### Authorization
+
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
+
+### HTTP request headers
+
+- **Content-Type**: `application/json`
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## coreApiUpdateTimeline
+
+> TimelineSchema coreApiUpdateTimeline(timelineId, timelineUpdateSchema)
+
+Update Timeline
+
+Update a timeline event
+
+### Example
+
+```ts
+import {
+  Configuration,
+  CoreApi,
+} from '';
+import type { CoreApiUpdateTimelineRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
+
+  const body = {
+    // string
+    timelineId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+    // TimelineUpdateSchema
+    timelineUpdateSchema: ...,
+  } satisfies CoreApiUpdateTimelineRequest;
+
+  try {
+    const data = await api.coreApiUpdateTimeline(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name                     | Type                                            | Description | Notes                     |
+| ------------------------ | ----------------------------------------------- | ----------- | ------------------------- |
+| **timelineId**           | `string`                                        |             | [Defaults to `undefined`] |
+| **timelineUpdateSchema** | [TimelineUpdateSchema](TimelineUpdateSchema.md) |             |                           |
+
+### Return type
+
+[**TimelineSchema**](TimelineSchema.md)
 
 ### Authorization
 

@@ -18,7 +18,8 @@
         venueCity={data.configData.venueCity}
         venueState={data.configData.venueState}
         venueZip={data.configData.venueZipcode}
-        venueParking={data.configData.venueParking} />
+        venueParking={data.configData.venueParking}
+        timelineEntries={data.timelines} />
 {:else}
     {redirect(302, "/")}
 {/if}

@@ -42,6 +42,7 @@
         { title: "Guest List", href: "/settings/guest_list", icon: "icon-[lucide--users]" },
         { title: "Inspiration", href: "/settings/inspiration", icon: "icon-[lucide--lightbulb]" },
         { title: "Ideas", href: "/settings/idea", icon: "icon-[lucide--brain]" },
+        { title: "Timeline", href: "/settings/timeline", icon: "icon-[lucide--timer]" },
 
         {
             title: "Settings",
@@ -109,10 +110,10 @@
         //     title: "Guest List",
         //     href: "/guestlist/",
         // },
-        {
-            title: "Timeline",
-            href: "/timeline/",
-        },
+        // {
+        //     title: "Timeline",
+        //     href: "/timeline/",
+        // },
         // {
         //     title: "FAQ",
         //     href: "/question/",
@@ -183,6 +184,19 @@
                                 </li>
                             {/each}
                             <div class="border-t border-base-200 my-2"></div>
+
+                            {#each protectedMenu as item, index (index)}
+                                <li>
+                                    <a
+                                        class="text-primary-content flex items-center gap-2 px-3 py-1.5"
+                                        href={item.href}>
+                                        {#if item.icon}
+                                            <span class="{item.icon} size-4" />
+                                        {/if}
+                                        <span>{item.title}</span>
+                                    </a>
+                                </li>
+                            {/each}
                             <li>
                                 <details>
                                     <summary class="text-primary-content flex items-center gap-2 px-3 py-1.5">
@@ -203,18 +217,6 @@
                                     </ul>
                                 </details>
                             </li>
-                            {#each protectedMenu as item, index (index)}
-                                <li>
-                                    <a
-                                        class="text-primary-content flex items-center gap-2 px-3 py-1.5"
-                                        href={item.href}>
-                                        {#if item.icon}
-                                            <span class="{item.icon} size-4" />
-                                        {/if}
-                                        <span>{item.title}</span>
-                                    </a>
-                                </li>
-                            {/each}
                             <div class="border-t border-base-200 my-2"></div>
 
                             <li>

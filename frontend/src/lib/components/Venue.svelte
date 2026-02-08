@@ -2,6 +2,7 @@
     import CallToAction from "$lib/components/CallToAction.svelte";
     import ComingSoon from "$lib/components/ComingSoon.svelte";
     import PageShell from "$lib/components/layouts/PageShell.svelte";
+    import type { TimelineSchema } from "../../../api-client";
     import type { IComingSoon } from "../../types";
     import Accommodations from "./venue/Accommodations.svelte";
     import Attractions from "./venue/Attractions.svelte";
@@ -42,6 +43,7 @@
         venueState: string;
         venueZip: string;
         venueParking: string | null | undefined;
+        timelineEntries?: TimelineSchema[];
     }
 
     let {
@@ -57,6 +59,7 @@
         venueState,
         venueZip,
         venueParking = null,
+        timelineEntries = [],
     }: VenuePageData = $props();
 </script>
 
@@ -77,7 +80,7 @@
                     {venueState}
                     {venueZip}
                     {venueParking} />
-                <Timeline />
+                <Timeline {timelineEntries} />
             </div>
             <Accommodations />
             <Attractions />
