@@ -37,6 +37,6 @@ export const actions: Actions = {
             throw error(500, "Failed to delete deadline");
         }
 
-        throw redirect(303, "/settings/deadline/all");
+        throw redirect(303, "/planning/deadline/all");
     },
 };

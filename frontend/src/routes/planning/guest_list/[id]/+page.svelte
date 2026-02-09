@@ -10,8 +10,8 @@
     const { data }: { data: PageData } = $props();
 
     const relativeCrumbs = $derived([
-        { title: "Guest List", href: "/settings/guest_list" },
-        { title: data.guestGroup.name || "Guest Group", href: `/settings/guest_list/${data.guestGroup.id}` },
+        { title: "Guest List", href: "/planning/guest_list" },
+        { title: data.guestGroup.name || "Guest Group", href: `/planning/guest_list/${data.guestGroup.id}` },
     ]);
 
     const displayName = $derived(data.guestGroup.name || "Guest Group");
@@ -23,7 +23,7 @@
 <ObjectDetail
     {relativeCrumbs}
     title={displayName}
-    editLink={`/settings/guest_list/${data.guestGroup.id}/edit`}
+    editLink={`/planning/guest_list/${data.guestGroup.id}/edit`}
     deleteAction="?/delete"
     object={data.guestGroup}>
     {#snippet mainSnippet()}
@@ -358,7 +358,7 @@
                                 {/if}
                             </div>
                             <div class="list-card-actions flex gap-2">
-                                <ViewDetails href={`/settings/guest/${guest.id}`} label="View Details" />
+                                <ViewDetails href={`/planning/guest/${guest.id}`} label="View Details" />
                                 <DeleteObject
                                     action="?/deleteGuest"
                                     href="#"

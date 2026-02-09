@@ -39,6 +39,6 @@ export const actions = {
             return fail(500, { error: "Failed to create deadline" });
         }
 
-        throw redirect(303, `/settings/deadline/list/${listId}`);
+        throw redirect(303, `/planning/deadline/list/${listId}`);
     },
 } satisfies Actions;

@@ -55,6 +55,6 @@ export const actions = {
             return fail(500, { error: "Failed to delete category" });
         }
 
-        throw redirect(303, "/settings/budget");
+        throw redirect(303, "/planning/budget");
     },
 } satisfies Actions;

@@ -6,16 +6,16 @@
     const { data }: { data: PageData } = $props();
 
     const relativeCrumbs = [
-        { title: "Deadlines", href: "/settings/deadline" },
+        { title: "Deadlines", href: "/planning/deadline" },
         ...(data.deadline.deadlineListId && data.deadline.deadlineListName
             ? [
                   {
                       title: data.deadline.deadlineListName,
-                      href: `/settings/deadline/list/${data.deadline.deadlineListId}`,
+                      href: `/planning/deadline/list/${data.deadline.deadlineListId}`,
                   },
               ]
             : []),
-        { title: data.deadline.name, href: `/settings/deadline/deadline/${data.deadline.id}` },
+        { title: data.deadline.name, href: `/planning/deadline/deadline/${data.deadline.id}` },
     ];
 
     const status = data.deadline.completed;
@@ -40,7 +40,7 @@
     title={data.deadline.name}
     {status}
     {statusText}
-    editLink={`/settings/deadline/deadline/${data.deadline.id}/edit`}
+    editLink={`/planning/deadline/deadline/${data.deadline.id}/edit`}
     deleteAction="?/delete"
     object={data.deadline}>
     {#snippet mainSnippet()}
@@ -114,7 +114,7 @@
                 {data.deadline.completed ? "Mark Incomplete" : "Mark Complete"}
             </button>
         </form>
-        <a href="/settings/deadline/deadline/{data.deadline.id}/edit" class="btn btn-sm btn-outline btn-primary gap-2">
+        <a href="/planning/deadline/deadline/{data.deadline.id}/edit" class="btn btn-sm btn-outline btn-primary gap-2">
             <span class="icon-[lucide--edit] size-4"></span>
             Edit
         </a>

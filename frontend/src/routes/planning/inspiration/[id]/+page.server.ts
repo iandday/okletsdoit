@@ -30,6 +30,6 @@ export const actions = {
             return fail(500, { error: "Failed to delete inspiration" });
         }
 
-        throw redirect(303, "/settings/inspiration");
+        throw redirect(303, "/planning/inspiration");
     },
 } satisfies Actions;

@@ -7,7 +7,7 @@
     import type { PageData } from "./$types";
 
     const { data }: { data: PageData } = $props();
-    const relativeCrumbs = [{ title: "Guest List", href: "/settings/guest_list" }, { title: "All Guests" }];
+    const relativeCrumbs = [{ title: "Guest List", href: "/planning/guest_list" }, { title: "All Guests" }];
 
     type Guest = (typeof data.guests)[0];
 
@@ -138,7 +138,7 @@
                                 <td>
                                     {#if cell.column.id === "actions"}
                                         {@const guest = row.original}
-                                        <a href="/settings/guest/{guest.id}" class="btn btn-ghost btn-sm">
+                                        <a href="/planning/guest/{guest.id}" class="btn btn-ghost btn-sm">
                                             <span class="icon-[lucide--eye] size-4"></span>
                                             View
                                         </a>

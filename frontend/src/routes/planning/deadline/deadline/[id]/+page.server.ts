@@ -49,8 +49,8 @@ export const actions = {
         }
 
         const redirectPath = deadline.deadlineListId
-            ? `/settings/deadline/list/${deadline.deadlineListId}`
-            : "/settings/deadline";
+            ? `/planning/deadline/list/${deadline.deadlineListId}`
+            : "/planning/deadline";
 
         throw redirect(303, redirectPath);
     },

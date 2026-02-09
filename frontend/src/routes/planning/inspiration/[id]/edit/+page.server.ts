@@ -100,6 +100,6 @@ export const actions: Actions = {
             return fail(500, { error: "Failed to update inspiration" });
         }
 
-        throw redirect(303, `/settings/inspiration/${params.id}`);
+        throw redirect(303, `/planning/inspiration/${params.id}`);
     },
 };

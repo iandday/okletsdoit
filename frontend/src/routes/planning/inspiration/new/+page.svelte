@@ -6,7 +6,7 @@
 
     const { form }: { form: ActionData } = $props();
 
-    const relativeCrumbs = [{ title: "Inspiration", href: "/settings/inspiration" }, { title: "New" }];
+    const relativeCrumbs = [{ title: "Inspiration", href: "/planning/inspiration" }, { title: "New" }];
 
     let imageInput: HTMLInputElement;
     let imagePreviewUrl = $state<string | null>(null);
@@ -98,7 +98,7 @@
                     </div>
 
                     <div class="card-actions justify-end mt-6">
-                        <a href="/settings/inspiration" class="btn btn-error">Cancel</a>
+                        <a href="/planning/inspiration" class="btn btn-error">Cancel</a>
                         <button type="submit" class="btn btn-success">
                             <span class="icon-[lucide--plus] size-5"></span>
                             Create Inspiration

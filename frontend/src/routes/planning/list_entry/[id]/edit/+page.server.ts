@@ -69,6 +69,6 @@ export const actions = {
             return fail(500, { error: "Failed to update list entry" });
         }
 
-        throw redirect(303, `/settings/list_entry/${entryId}`);
+        throw redirect(303, `/planning/list_entry/${entryId}`);
     },
 } satisfies Actions;

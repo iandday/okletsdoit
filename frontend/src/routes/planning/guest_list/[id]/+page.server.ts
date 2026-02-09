@@ -49,7 +49,7 @@ export const actions: Actions = {
             throw error(500, "Failed to delete guest group");
         }
 
-        throw redirect(303, "/settings/guest_list");
+        throw redirect(303, "/planning/guest_list");
     },
     deleteGuest: async ({ request, params, locals }) => {
         const api = createApiClient(locals.sessionCookie);

@@ -26,6 +26,6 @@ export const actions = {
             return fail(500, { error: "Failed to create idea" });
         }
 
-        throw redirect(303, `/settings/idea/${idea.id}`);
+        throw redirect(303, `/planning/idea/${idea.id}`);
     },
 } satisfies Actions;

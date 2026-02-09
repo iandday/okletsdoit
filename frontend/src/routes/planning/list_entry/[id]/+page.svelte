@@ -9,9 +9,9 @@
     let isSubmittingPurchased = $state(false);
 
     const relativeCrumbs = [
-        { title: "Lists", href: "/settings/list" },
-        { title: data.list.name, href: `/settings/list/${data.list.id}` },
-        { title: data.entry.item, href: `/settings/list_entry/${data.entry.id}` },
+        { title: "Lists", href: "/planning/list" },
+        { title: data.list.name, href: `/planning/list/${data.list.id}` },
+        { title: data.entry.item, href: `/planning/list_entry/${data.entry.id}` },
     ];
 
     const displayName = data.entry.item;
@@ -34,7 +34,7 @@
 <ObjectDetail
     {relativeCrumbs}
     title={displayName}
-    editLink={`/settings/list_entry/${data.entry.id}/edit`}
+    editLink={`/planning/list_entry/${data.entry.id}/edit`}
     deleteAction="?/delete"
     object={data.entry}>
     {#snippet mainSnippet()}
@@ -114,7 +114,7 @@
                         <div>
                             <div class="detail-card-field-name">Vendor Name</div>
                             <div class="detail-card-field-value">
-                                <a href="/settings/contact/{data.vendor.id}" class="link link-accent">
+                                <a href="/planning/contact/{data.vendor.id}" class="link link-accent">
                                     {data.vendor.name || data.vendor.company || "Unnamed Vendor"}
                                 </a>
                             </div>
@@ -206,7 +206,7 @@
                     </button>
                 </form>
                 {#if data.entry.associatedExpenseId}
-                    <a href="/settings/expense/{data.entry.associatedExpenseId}" class="btn btn-accent gap-2">
+                    <a href="/planning/expense/{data.entry.associatedExpenseId}" class="btn btn-accent gap-2">
                         View Expense
                     </a>
                 {/if}

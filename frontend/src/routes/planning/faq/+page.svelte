@@ -80,9 +80,9 @@
         title="Manage FAQ"
         description="Add, edit, or organize your frequently asked questions and helpful tips">
         <div class="flex flex-wrap gap-3 mb-6">
-            <CreateObject href="/settings/faq/question/new" label="Add Question" />
-            <CreateObject href="/settings/faq/tip/new" label="Add Tip" />
-            <a href="/settings/preview/faq" class="btn btn-accent" target="_blank">
+            <CreateObject href="/planning/faq/question/new" label="Add Question" />
+            <CreateObject href="/planning/faq/tip/new" label="Add Tip" />
+            <a href="/planning/preview/faq" class="btn btn-accent" target="_blank">
                 <span class="icon-[lucide--eye] size-5"></span>
                 Preview FAQ Page
             </a>
@@ -101,11 +101,11 @@
                         to make it easy for guests to find information.
                     </p>
                     <div class="flex gap-3 justify-center">
-                        <a href="/settings/faq/question/new" class="btn btn-primary">
+                        <a href="/planning/faq/question/new" class="btn btn-primary">
                             <span class="icon-[lucide--plus] size-5"></span>
                             Add First Question
                         </a>
-                        <a href="/settings/faq/tip/new" class="btn btn-secondary">
+                        <a href="/planning/faq/tip/new" class="btn btn-secondary">
                             <span class="icon-[lucide--lightbulb] size-5"></span>
                             Add First Tip
                         </a>
@@ -159,7 +159,7 @@
                                         </div>
                                         <div class="flex gap-2">
                                             <a
-                                                href="/settings/faq/question/{question.id}/edit"
+                                                href="/planning/faq/question/{question.id}/edit"
                                                 class="btn btn-success btn-sm btn-square"
                                                 aria-label="Edit Question">
                                                 <span class="icon-[lucide--pencil] size-4"></span>
@@ -202,7 +202,7 @@
                                         </div>
                                         <div class="flex gap-2">
                                             <a
-                                                href="/settings/faq/tip/{tip.id}/edit"
+                                                href="/planning/faq/tip/{tip.id}/edit"
                                                 class="btn btn-success btn-sm btn-square"
                                                 aria-label="Edit Tip">
                                                 <span class="icon-[lucide--pencil] size-4"></span>

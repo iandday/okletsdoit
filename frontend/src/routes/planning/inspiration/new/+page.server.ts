@@ -38,6 +38,6 @@ export const actions: Actions = {
             }
         }
 
-        throw redirect(303, `/settings/inspiration`);
+        throw redirect(303, `/planning/inspiration`);
     },
 };

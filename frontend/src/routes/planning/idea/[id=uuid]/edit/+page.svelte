@@ -9,12 +9,12 @@
     let description = $state(data.idea.description || "");
 
     const relativeCrumbs = [
-        { title: "Ideas", href: "/settings/idea" },
+        { title: "Ideas", href: "/planning/idea" },
         {
             title: data.idea.name,
-            href: `/settings/idea/${data.idea.id}`,
+            href: `/planning/idea/${data.idea.id}`,
         },
-        { title: "Edit", href: `/settings/idea/${data.idea.id}/edit` },
+        { title: "Edit", href: `/planning/idea/${data.idea.id}/edit` },
     ];
 </script>
 
@@ -69,7 +69,7 @@
                     </div>
 
                     <div class="flex justify-end gap-2 mt-6">
-                        <a href="/settings/idea/{data.idea.id}" class="btn btn-error">Cancel</a>
+                        <a href="/planning/idea/{data.idea.id}" class="btn btn-error">Cancel</a>
                         <button type="submit" class="btn btn-success">
                             <span class="icon-[lucide--save] size-5"></span>
                             Save Changes

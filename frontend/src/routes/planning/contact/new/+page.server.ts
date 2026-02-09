@@ -36,6 +36,6 @@ export const actions = {
             return fail(500, { error: "Failed to create contact" });
         }
 
-        throw redirect(303, `/settings/contact/${contact.id}`);
+        throw redirect(303, `/planning/contact/${contact.id}`);
     },
 } satisfies Actions;

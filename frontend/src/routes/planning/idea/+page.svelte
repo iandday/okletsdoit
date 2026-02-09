@@ -6,7 +6,7 @@
     import type { PageData } from "./$types";
 
     const { data }: { data: PageData } = $props();
-    const relativeCrumbs = [{ title: "Ideas", href: "/settings/idea" }];
+    const relativeCrumbs = [{ title: "Ideas", href: "/planning/idea" }];
 
     let searchQuery = $state("");
 
@@ -34,7 +34,7 @@
                         bind:value={searchQuery} />
                 </div>
             </div>
-            <CreateObject href="/settings/idea/new" label="New Idea" />
+            <CreateObject href="/planning/idea/new" label="New Idea" />
         </div>
     </ProtectedPageHeader>
 
@@ -47,7 +47,7 @@
                 <p class="text-base-content/70 mb-6 max-w-md">
                     Create your first idea to start organizing concepts and plans for your wedding.
                 </p>
-                <a href="/settings/idea/new" class="btn btn-primary gap-2">
+                <a href="/planning/idea/new" class="btn btn-primary gap-2">
                     <span class="icon-[lucide--plus] size-5"></span>
                     Create First Idea
                 </a>
@@ -59,10 +59,10 @@
                 <div class="list-card">
                     <div class="list-card-body">
                         <div class="list-card-title flex items-start justify-between mb-4">
-                            <a href="/settings/idea/{idea.id}" class="link link-hover">
+                            <a href="/planning/idea/{idea.id}" class="link link-hover">
                                 {idea.name}
                             </a>
-                            <EditObject href="/settings/idea/{idea.id}/edit" size="sm" />
+                            <EditObject href="/planning/idea/{idea.id}/edit" size="sm" />
                         </div>
 
                         <!-- eslint-disable-next-line svelte/no-at-html-tags set by site admin -->

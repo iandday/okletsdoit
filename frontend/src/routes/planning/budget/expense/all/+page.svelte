@@ -12,8 +12,8 @@
     const { data }: { data: PageData } = $props();
 
     const relativeCrumbs = [
-        { title: "Budget", href: "/settings/budget" },
-        { title: "All Expenses", href: "/settings/budget/expense/all" },
+        { title: "Budget", href: "/planning/budget" },
+        { title: "All Expenses", href: "/planning/budget/expense/all" },
     ];
 
     // Client-side filtering
@@ -285,7 +285,7 @@
                                             {:else if cell.id === "categoryName"}
                                                 {#if row.original.categoryName}
                                                     <a
-                                                        href="/settings/budget/category/{row.original.categoryId}"
+                                                        href="/planning/budget/category/{row.original.categoryId}"
                                                         class="link link-accent hover:underline">
                                                         <Render of={cell.render()} />
                                                     </a>
@@ -314,8 +314,8 @@
                                 {/each}
                                 <td class="px-3 py-2 whitespace-nowrap text-sm">
                                     <div class="flex gap-2">
-                                        <ViewDetails href="/settings/budget/expense/{row.original.id}" size="sm" />
-                                        <EditObject href="/settings/budget/expense/{row.original.id}/edit" size="sm" />
+                                        <ViewDetails href="/planning/budget/expense/{row.original.id}" size="sm" />
+                                        <EditObject href="/planning/budget/expense/{row.original.id}/edit" size="sm" />
                                     </div>
                                 </td>
                             </tr>

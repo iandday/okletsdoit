@@ -10,8 +10,8 @@
     const { data }: { data: PageData } = $props();
 
     const relativeCrumbs = [
-        { title: "Deadlines", href: "/settings/deadline" },
-        { title: "All Deadlines", href: "/settings/deadline/deadline/all" },
+        { title: "Deadlines", href: "/planning/deadline" },
+        { title: "All Deadlines", href: "/planning/deadline/deadline/all" },
     ];
 
     const formatDate = (date: Date | null | undefined): string => {
@@ -34,12 +34,12 @@
         <div class="flex items-center justify-between mb-8">
             <div class="flex gap-2">
                 {#if data.filterListId}
-                    <a href="/settings/deadline/deadline/all" class="btn btn-ghost gap-2">
+                    <a href="/planning/deadline/deadline/all" class="btn btn-ghost gap-2">
                         <Icon name="x" class="size-5" />
                         Clear Filter
                     </a>
                 {/if}
-                <a href="/settings/deadline" class="btn btn-primary gap-2">
+                <a href="/planning/deadline" class="btn btn-primary gap-2">
                     <Icon name="arrow-left" class="size-5" />
                     Back to Lists
                 </a>
@@ -59,7 +59,7 @@
                         You haven't created any deadlines yet. Start by creating a deadline list.
                     {/if}
                 </p>
-                <a href="/settings/deadline" class="btn btn-primary gap-2">
+                <a href="/planning/deadline" class="btn btn-primary gap-2">
                     <Icon name="arrow-left" class="size-5" />
                     Go to Deadline Lists
                 </a>
@@ -85,7 +85,7 @@
                         {#each data.deadlines.items as deadline (deadline.id)}
                             <tr class="hover">
                                 <td>
-                                    <a class="link link-accent" href="/settings/deadline/deadline/{deadline.id}">
+                                    <a class="link link-accent" href="/planning/deadline/deadline/{deadline.id}">
                                         {deadline.name}
                                     </a>
                                 </td>
@@ -97,7 +97,7 @@
                                 <td>
                                     {#if deadline.deadlineListName}
                                         <a
-                                            href="/settings/deadline/list/{deadline.deadlineListId}"
+                                            href="/planning/deadline/list/{deadline.deadlineListId}"
                                             class="link link-accent">
                                             {deadline.deadlineListName}
                                         </a>
@@ -139,10 +139,10 @@
                                 </td>
                                 <td>
                                     <div class="flex items-center justify-end gap-1">
-                                        <ViewDetailsButton href="/settings/deadline/deadline/{deadline.id}" />
+                                        <ViewDetailsButton href="/planning/deadline/deadline/{deadline.id}" />
 
                                         <a
-                                            href="/settings/deadline/deadline/{deadline.id}/edit"
+                                            href="/planning/deadline/deadline/{deadline.id}/edit"
                                             class="btn btn-sm bg-base-100 text-primary-content gap-2"
                                             aria-label="Edit Deadline">
                                             <span class="icon-[lucide--pencil] size-4"></span>
@@ -167,8 +167,8 @@
             {@const hasPrevious = data.currentPage > 1}
             {@const hasNext = data.currentPage < totalPages}
             {@const baseUrl = data.filterListId
-                ? `/settings/deadline/all?list=${data.filterListId}`
-                : "/settings/deadline/all"}
+                ? `/planning/deadline/all?list=${data.filterListId}`
+                : "/planning/deadline/all"}
 
             <div class="flex items-center justify-between mt-8">
                 <div class="text-sm text-base-content/70">

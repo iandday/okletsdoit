@@ -7,11 +7,11 @@
     const { data }: { data: PageData } = $props();
 
     const relativeCrumbs = [
-        { title: "Budget", href: "/settings/budget" },
+        { title: "Budget", href: "/planning/budget" },
         ...(data.category
-            ? [{ title: data.category.name, href: `/settings/budget/category/${data.category.id}` }]
+            ? [{ title: data.category.name, href: `/planning/budget/category/${data.category.id}` }]
             : []),
-        { title: data.expense.item, href: `/settings/budget/expense/${data.expense.id}` },
+        { title: data.expense.item, href: `/planning/budget/expense/${data.expense.id}` },
     ];
 
     const displayName = data.expense.item;
@@ -33,7 +33,7 @@
 <ObjectDetail
     {relativeCrumbs}
     title={displayName}
-    editLink={`/settings/budget/expense/${data.expense.id}/edit`}
+    editLink={`/planning/budget/expense/${data.expense.id}/edit`}
     deleteAction="?/delete"
     status={data.purchaseStatus}
     statusText={data.purchaseStatus ? "Purchased" : "Pending"}
@@ -53,7 +53,7 @@
                     <div>
                         <div class="detail-card-field-name">Category</div>
                         <div class="detail-card-field-value">
-                            <a href={`/settings/budget/category/${data.expense.categoryId}`} class="link link-accent">
+                            <a href={`/planning/budget/category/${data.expense.categoryId}`} class="link link-accent">
                                 {data.category.name}
                             </a>
                         </div>
@@ -64,7 +64,7 @@
                     <div>
                         <div class="detail-card-field-name">Vendor</div>
                         <div class="detail-card-field-value">
-                            <a href={`/settings/contact/${data.expense.vendorId}`} class="link link-accent">
+                            <a href={`/planning/contact/${data.expense.vendorId}`} class="link link-accent">
                                 {#if data.vendor.name && data.vendor.company}
                                     {data.vendor.name} ({data.vendor.company})
                                 {:else if data.vendor.name}
@@ -141,7 +141,7 @@
                             <div class="list-card-body">
                                 <div class="list-card-title">
                                     <a
-                                        href={`/settings/list_entry/${entry.id}`}
+                                        href={`/planning/list_entry/${entry.id}`}
                                         class="link link-accent font-semibold text-lg">
                                         {entry.item} ({formatCurrency(entry.totalPrice)})
                                     </a>

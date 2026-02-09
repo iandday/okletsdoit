@@ -8,7 +8,7 @@
 
     let submitting = $state(false);
 
-    const relativeCrumbs = [{ title: "FAQ", href: "/settings/faq" }, { title: "Add Question" }];
+    const relativeCrumbs = [{ title: "FAQ", href: "/planning/faq" }, { title: "Add Question" }];
 </script>
 
 <ProtectedPageShell {relativeCrumbs}>
@@ -140,7 +140,7 @@
         </div>
 
         <div class="flex gap-4 mt-6 justify-end p-6 bg-base-200">
-            <a href="/settings/faq" class="btn btn-error">Cancel</a>
+            <a href="/planning/faq" class="btn btn-error">Cancel</a>
             <button type="submit" class="btn btn-success" disabled={submitting}>
                 {#if submitting}
                     <span class="loading loading-spinner"></span>

@@ -68,6 +68,6 @@ export const actions: Actions = {
             throw error(500, "Failed to delete list");
         }
 
-        throw redirect(303, "/settings/list");
+        throw redirect(303, "/planning/list");
     },
 };

@@ -6,8 +6,8 @@
 
     const { data, form }: { data: PageData; form: ActionData } = $props();
     const relativeCrubms = [
-        { title: "Deadline Lists", href: "/settings/deadline/list" },
-        { title: data.listName, href: `/settings/deadline/list/${data.listId}` },
+        { title: "Deadline Lists", href: "/planning/deadline/list" },
+        { title: data.listName, href: `/planning/deadline/list/${data.listId}` },
         { title: "New Deadline" },
     ];
 </script>
@@ -16,7 +16,7 @@
     <div class="container mx-auto p-4 max-w-6xl">
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-3xl font-bold">Add Deadline</h1>
-            <a href="/settings/deadline/list/{data.listId}" class="btn btn-error">Cancel</a>
+            <a href="/planning/deadline/list/{data.listId}" class="btn btn-error">Cancel</a>
         </div>
 
         {#if form?.error}
@@ -84,7 +84,7 @@
             </div>
 
             <div class="flex gap-4 mt-6 justify-end">
-                <a href="/settings/deadline/list/{data.listId}" class="btn btn-error">Cancel</a>
+                <a href="/planning/deadline/list/{data.listId}" class="btn btn-error">Cancel</a>
                 <button type="submit" class="btn btn-primary gap-2">
                     <Icon name="plus" class="size-5" />
                     Add Deadline

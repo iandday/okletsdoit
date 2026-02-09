@@ -45,13 +45,13 @@ export const actions: Actions = {
 
             // Redirect to the guest group if available, otherwise to guest list
             if (guest.groupId) {
-                throw redirect(303, `/settings/guest_list/${guest.groupId}`);
+                throw redirect(303, `/planning/guest_list/${guest.groupId}`);
             }
         } catch (err) {
             console.error("Failed to delete guest:", err);
             return fail(500, { error: "Failed to delete guest" });
         }
 
-        throw redirect(303, "/settings/guest_list");
+        throw redirect(303, "/planning/guest_list");
     },
 };

@@ -12,7 +12,7 @@
 
     const { data }: { data: PageData } = $props();
 
-    const relativeCrumbs = [{ title: "Budget", href: "/settings/budget" }];
+    const relativeCrumbs = [{ title: "Budget", href: "/planning/budget" }];
 
     function formatCurrency(amount: number): string {
         return new Intl.NumberFormat("en-US", {
@@ -90,8 +90,8 @@
             size="sm" />
 
         <div class="join pb-6">
-            <CreateObject href="/settings/budget/expense/new" label="Create New Expense" />
-            <ViewDetails href="/settings/budget/expense/all" label="View All Expenses" />
+            <CreateObject href="/planning/budget/expense/new" label="Create New Expense" />
+            <ViewDetails href="/planning/budget/expense/all" label="View All Expenses" />
             <div class="dropdown">
                 <div tabindex="0" role="button" class="btn btn-secondary text-secondary-content">
                     <span class="icon-[lucide--settings] size-4"></span>Manage Categories
@@ -100,7 +100,7 @@
                     tabindex="0"
                     class="dropdown-content menu bg-secondary text-secondary-content rounded-box z-[1] w-52 p-2 shadow">
                     {#each data.categoryBreakdown as item, index (item.category.id)}
-                        <li><a href="/settings/budget/category/{item.category.id}">{item.category.name}</a></li>
+                        <li><a href="/planning/budget/category/{item.category.id}">{item.category.name}</a></li>
                     {/each}
                 </ul>
             </div>
@@ -151,8 +151,8 @@
                                                     {@const category = row.original.category}
                                                     <a
                                                         href={category.id === "uncategorized"
-                                                            ? "/settings/budget/expense/all"
-                                                            : `/settings/budget/category/${category.id}`}
+                                                            ? "/planning/budget/expense/all"
+                                                            : `/planning/budget/category/${category.id}`}
                                                         class="link link-accent font-semibold hover:underline">
                                                         {category.name}
                                                     </a>

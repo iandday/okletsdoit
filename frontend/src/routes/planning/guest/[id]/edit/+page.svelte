@@ -7,20 +7,20 @@
     const { data, form }: { data: PageData; form: ActionData } = $props();
 
     const relativeCrumbs = $derived([
-        { title: "Guest List", href: "/settings/guest_list" },
+        { title: "Guest List", href: "/planning/guest_list" },
         ...(data.guestGroup
             ? [
                   {
                       title: data.guestGroup.name || "Guest Group",
-                      href: `/settings/guest_list/${data.guestGroup.id}`,
+                      href: `/planning/guest_list/${data.guestGroup.id}`,
                   },
               ]
             : []),
         {
             title: `${data.guest.firstName} ${data.guest.lastName}`,
-            href: `/settings/guest/${data.guest.id}`,
+            href: `/planning/guest/${data.guest.id}`,
         },
-        { title: "Edit", href: `/settings/guest/${data.guest.id}/edit` },
+        { title: "Edit", href: `/planning/guest/${data.guest.id}/edit` },
     ]);
 </script>
 
@@ -149,7 +149,7 @@
                     <div class="divider"></div>
 
                     <div class="flex justify-end gap-4 mt-6">
-                        <a href="/settings/guest/{data.guest.id}" class="btn btn-ghost">Cancel</a>
+                        <a href="/planning/guest/{data.guest.id}" class="btn btn-ghost">Cancel</a>
                         <button type="submit" class="btn btn-primary">
                             <span class="icon-[lucide--save] size-4"></span>
                             Save Changes
@@ -163,7 +163,7 @@
             <div class="mt-6 text-sm text-base-content/70">
                 <p>
                     This guest belongs to:
-                    <a href="/settings/guest_list/{data.guestGroup.id}" class="link link-primary link-hover">
+                    <a href="/planning/guest_list/{data.guestGroup.id}" class="link link-primary link-hover">
                         {data.guestGroup.name}
                     </a>
                 </p>

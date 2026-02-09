@@ -10,8 +10,8 @@
     const { data }: { data: PageData } = $props();
 
     const relativeCrumbs = $derived([
-        { title: "Lists", href: "/settings/list" },
-        { title: data.list.name || "List", href: `/settings/list/${data.list.id}` },
+        { title: "Lists", href: "/planning/list" },
+        { title: data.list.name || "List", href: `/planning/list/${data.list.id}` },
     ]);
 
     const displayName = $derived(data.list.name || "List");
@@ -69,7 +69,7 @@
 <ObjectDetail
     {relativeCrumbs}
     title={displayName}
-    editLink={`/settings/list/${data.list.id}/edit`}
+    editLink={`/planning/list/${data.list.id}/edit`}
     deleteAction="?/delete"
     object={data.list}>
     {#snippet mainSnippet()}
@@ -132,7 +132,7 @@
     {#snippet extraCardsSnippet()}
         <ObjectChildItems title="List Items">
             <div class="flex items-center justify-between mb-4">
-                <a href="/settings/list/{data.list.id}/entry/new" class="btn btn-sm btn-accent gap-2">
+                <a href="/planning/list/{data.list.id}/entry/new" class="btn btn-sm btn-accent gap-2">
                     <span class="icon-[lucide--plus] size-4"></span>
                     Add Item
                 </a>
@@ -269,8 +269,8 @@
                                 {/if}
                             </div>
                             <div class="list-card-actions flex gap-2">
-                                <ViewDetails href={`/settings/list_entry/${entry.id}`} label="View Details" />
-                                <EditObject href={`/settings/list_entry/${entry.id}/edit`} label="Edit" />
+                                <ViewDetails href={`/planning/list_entry/${entry.id}`} label="View Details" />
+                                <EditObject href={`/planning/list_entry/${entry.id}/edit`} label="Edit" />
 
                                 <DeleteObject
                                     action="?/deleteEntry"

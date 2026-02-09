@@ -148,8 +148,8 @@
                 <Stats objects={listStats} />
                 <Stats objects={completionStats} />
                 <div class="flex flex-row gap-4">
-                    <CreateObject href="/settings/guest_list/new" label="New List" />
-                    <a href="/settings/list_entry" class="btn btn-accent gap-2">
+                    <CreateObject href="/planning/guest_list/new" label="New List" />
+                    <a href="/planning/list_entry" class="btn btn-accent gap-2">
                         <span class="icon-[lucide--list-todo] size-5"></span>
                         View All List Entries
                     </a>
@@ -164,7 +164,7 @@
             <div class="list-card">
                 <div class="list-card-body">
                     <h2 class="list-card-title">
-                        <a href="/settings/list/{list.id}"
+                        <a href="/planning/list/{list.id}"
                             ><span class="icon-[lucide--list] size-5"></span>
                             {list.name}</a>
                     </h2>
@@ -205,7 +205,7 @@
 
                     <!-- Action Buttons -->
                     <div class="card-actions justify-end mt-4">
-                        <ViewDetails href="/settings/list/{list.id}" label="View Items" />
+                        <ViewDetails href="/planning/list/{list.id}" label="View Items" />
                     </div>
                 </div>
             </div>
@@ -226,7 +226,7 @@
 
     <!-- Create New List Button (Floating Action Button) -->
     <div class="fixed bottom-8 right-8">
-        <a href="/settings/list/create" class="btn btn-primary btn-lg btn-circle shadow-xl">
+        <a href="/planning/list/create" class="btn btn-primary btn-lg btn-circle shadow-xl">
             <span class="icon-[lucide--plus] size-6"></span>
         </a>
     </div>

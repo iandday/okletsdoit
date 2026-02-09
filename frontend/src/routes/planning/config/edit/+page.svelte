@@ -60,11 +60,11 @@
         { name: "weddingDate", type: "date" },
     ];
 
-    const relativeCrumbs = [{ title: "Configuration", href: "/settings/config" }, { title: "Edit" }];
+    const relativeCrumbs = [{ title: "Configuration", href: "/planning/config" }, { title: "Edit" }];
 </script>
 
 <ProtectedPageShell {relativeCrumbs}>
-    <ProtectedPageHeader title="Edit Wedding Configuration" cancelLink="/settings/config" cancelText="Cancel" />
+    <ProtectedPageHeader title="Edit Wedding Configuration" cancelLink="/planning/config" cancelText="Cancel" />
 
     {#if form?.error}
         <div class="alert alert-error mb-4">
@@ -565,7 +565,7 @@
         </div>
 
         <div class="flex gap-4 mt-6 justify-end">
-            <a href="/settings/config" class="btn btn-error">Cancel</a>
+            <a href="/planning/config" class="btn btn-error">Cancel</a>
             <button type="submit" class="btn btn-primary" disabled={submitting}>
                 {#if submitting}
                     <span class="loading loading-spinner"></span>

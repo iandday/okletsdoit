@@ -82,7 +82,7 @@
                     </div>
                 </div>
             </div>
-            <CreateObject href="/settings/inspiration/new" label="Create Inspiration" />
+            <CreateObject href="/planning/inspiration/new" label="Create Inspiration" />
         </div>
     </ProtectedPageHeader>
 
@@ -90,7 +90,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {#each paginatedInspirations as inspiration (inspiration.id)}
                 <a
-                    href="/settings/inspiration/{inspiration.id}"
+                    href="/planning/inspiration/{inspiration.id}"
                     class="group relative block h-64 overflow-hidden rounded-lg shadow-lg transition-all duration-300 hover:shadow-2xl"
                     style="transform-style: preserve-3d; perspective: 1000px;">
                     <div

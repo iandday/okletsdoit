@@ -5,7 +5,7 @@
     import type { PageData } from "./$types";
 
     const { data }: { data: PageData } = $props();
-    const relativeCrumbs = [{ title: "Contacts", href: "/settings/contact" }];
+    const relativeCrumbs = [{ title: "Contacts", href: "/planning/contact" }];
 
     let searchQuery = $state("");
 
@@ -43,7 +43,7 @@
                     {/if}
                 </div>
             </div>
-            <CreateObject href="/settings/contact/new" label="New Contact" />
+            <CreateObject href="/planning/contact/new" label="New Contact" />
         </div>
     </ProtectedPageHeader>
 
@@ -57,7 +57,7 @@
                     Create your first contact to start organizing vendors, guests, and other important people for your
                     wedding.
                 </p>
-                <a href="/settings/contact/new" class="btn btn-primary gap-2">
+                <a href="/planning/contact/new" class="btn btn-primary gap-2">
                     <span class="icon-[lucide--plus] size-5"></span>
                     Create First Contact
                 </a>
@@ -72,7 +72,7 @@
                         <div class="list-card-title flex items-start justify-between mb-4">
                             <div class="flex-1">
                                 <h3 class="text-xl font-semibold mb-1">
-                                    <a href="/settings/contact/{contact.id}" class="link link-hover">
+                                    <a href="/planning/contact/{contact.id}" class="link link-hover">
                                         {#if contact.name}
                                             {contact.name}
                                             {#if contact.company}
@@ -88,7 +88,7 @@
                                 {/if}
                             </div>
                             <div class="flex gap-2">
-                                <a href="/settings/contact/{contact.id}/edit" class="btn btn-sm btn-ghost">
+                                <a href="/planning/contact/{contact.id}/edit" class="btn btn-sm btn-ghost">
                                     <span class="icon-[lucide--pencil] size-4"></span>
                                 </a>
                             </div>

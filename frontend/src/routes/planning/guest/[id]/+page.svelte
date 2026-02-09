@@ -5,18 +5,18 @@
     const { data }: { data: PageData } = $props();
 
     const relativeCrumbs = $derived([
-        { title: "Guest List", href: "/settings/guest_list" },
+        { title: "Guest List", href: "/planning/guest_list" },
         ...(data.guestGroup
             ? [
                   {
                       title: data.guestGroup.name || "Guest Group",
-                      href: `/settings/guest_list/${data.guestGroup.id}`,
+                      href: `/planning/guest_list/${data.guestGroup.id}`,
                   },
               ]
             : []),
         {
             title: `${data.guest.firstName} ${data.guest.lastName}`,
-            href: `/settings/guest/${data.guest.id}`,
+            href: `/planning/guest/${data.guest.id}`,
         },
     ]);
 
@@ -30,7 +30,7 @@
 <ObjectDetail
     {relativeCrumbs}
     title={displayName}
-    editLink={`/settings/guest/${data.guest.id}/edit`}
+    editLink={`/planning/guest/${data.guest.id}/edit`}
     deleteAction="?/delete"
     object={data.guest}>
     {#snippet mainSnippet()}
@@ -51,7 +51,7 @@
                     <div>
                         <div class="detail-card-field-name">Guest Group</div>
                         <div class="detail-card-field-value">
-                            <a href="/settings/guest_list/{data.guestGroup.id}" class="link">
+                            <a href="/planning/guest_list/{data.guestGroup.id}" class="link">
                                 {data.guestGroup.name}
                             </a>
                         </div>

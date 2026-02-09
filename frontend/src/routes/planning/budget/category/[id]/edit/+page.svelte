@@ -7,9 +7,9 @@
     const { data }: { data: PageData } = $props();
 
     const relativeCrumbs = [
-        { title: "Budget", href: "/settings/budget" },
-        { title: data.category.name, href: `/settings/budget/category/${data.category.id}` },
-        { title: "Edit", href: `/settings/budget/category/${data.category.id}/edit` },
+        { title: "Budget", href: "/planning/budget" },
+        { title: data.category.name, href: `/planning/budget/category/${data.category.id}` },
+        { title: "Edit", href: `/planning/budget/category/${data.category.id}/edit` },
     ];
 </script>
 
@@ -50,7 +50,7 @@
                                 <span class="icon-[lucide--save] size-5"></span>
                                 Save Changes
                             </button>
-                            <a href="/settings/budget/category/{data.category.id}" class="btn btn-error">Cancel</a>
+                            <a href="/planning/budget/category/{data.category.id}" class="btn btn-error">Cancel</a>
                         </div>
                     </div>
                 </div>

@@ -45,6 +45,6 @@ export const actions = {
             return fail(500, { error: "Failed to update idea" });
         }
 
-        throw redirect(303, `/settings/idea/${ideaId}`);
+        throw redirect(303, `/planning/idea/${ideaId}`);
     },
 } satisfies Actions;

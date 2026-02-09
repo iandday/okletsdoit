@@ -53,6 +53,6 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 export const actions: Actions = {
     delete: async ({ params }) => {
         await api.expenses.expensesApiDeleteExpense({ expenseId: params.id });
-        throw redirect(303, "/settings/budget");
+        throw redirect(303, "/planning/budget");
     },
 };

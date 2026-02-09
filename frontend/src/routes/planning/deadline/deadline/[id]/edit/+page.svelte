@@ -15,21 +15,21 @@
     };
 
     const backUrl = data.deadline.deadlineListId
-        ? `/settings/deadline/list/${data.deadline.deadlineListId}`
-        : "/settings/deadline";
+        ? `/planning/deadline/list/${data.deadline.deadlineListId}`
+        : "/planning/deadline";
 
     const relativeCrumbs = [
-        { title: "Deadlines", href: "/settings/deadline" },
+        { title: "Deadlines", href: "/planning/deadline" },
         ...(data.deadline.deadlineListId && data.deadline.deadlineListName
             ? [
                   {
                       title: data.deadline.deadlineListName,
-                      href: `/settings/deadline/list/${data.deadline.deadlineListId}`,
+                      href: `/planning/deadline/list/${data.deadline.deadlineListId}`,
                   },
               ]
             : []),
-        { title: data.deadline.name, href: `/settings/deadline/deadline/${data.deadline.id}` },
-        { title: "Edit", href: `/settings/deadline/deadline/${data.deadline.id}/edit` },
+        { title: data.deadline.name, href: `/planning/deadline/deadline/${data.deadline.id}` },
+        { title: "Edit", href: `/planning/deadline/deadline/${data.deadline.id}/edit` },
     ];
 </script>
 

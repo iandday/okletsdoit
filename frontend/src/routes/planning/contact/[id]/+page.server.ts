@@ -35,7 +35,7 @@ export const actions = {
             return fail(500, { error: "Failed to delete contact" });
         }
 
-        throw redirect(303, "/settings/contact");
+        throw redirect(303, "/planning/contact");
     },
     uploadAttachment: async ({ params, request, locals }) => {
         const api = createApiClient(locals.sessionCookie);

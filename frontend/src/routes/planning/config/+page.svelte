@@ -45,7 +45,7 @@
 
 <div>
     <ProtectedPageShell {relativeCrumbs}>
-        <ProtectedPageHeader title="Configuration" editLink="/settings/config/edit" editText="Edit Settings" />
+        <ProtectedPageHeader title="Configuration" editLink="/planning/config/edit" editText="Edit Settings" />
 
         {#if data.configData}
             <!-- Tabs -->
@@ -201,7 +201,7 @@
                             </div>
                             <div class="card-actions justify-center mt-4">
                                 <a
-                                    href="/settings/preview/rsvp/landing"
+                                    href="/planning/preview/rsvp/landing"
                                     class="btn btn-accent mr-4 mb-4"
                                     target="_blank">Preview Landing Page</a>
                             </div>
@@ -270,7 +270,7 @@
                                 {/if}
                             </div>
                             <div class="card-actions justify-center mt-4">
-                                <a href="/settings/preview/rsvp/accept" class="btn btn-accent mr-4 mb-4" target="_blank"
+                                <a href="/planning/preview/rsvp/accept" class="btn btn-accent mr-4 mb-4" target="_blank"
                                     >Preview Accept Page</a>
                             </div>
                             <div class="divider divider-accent">Complete</div>
@@ -297,11 +297,11 @@
                             </div>
                             <div class="card-actions justify-center mt-4">
                                 <a
-                                    href="/settings/preview/rsvp/complete?accepted=true"
+                                    href="/planning/preview/rsvp/complete?accepted=true"
                                     class="btn btn-accent mr-4 mb-4"
                                     target="_blank">Preview Accepted Complete Page</a>
                                 <a
-                                    href="/settings/preview/rsvp/complete?accepted=false"
+                                    href="/planning/preview/rsvp/complete?accepted=false"
                                     class="btn btn-accent mr-4 mb-4"
                                     target="_blank">Preview Declined Complete Page</a>
                             </div>
@@ -408,7 +408,7 @@
                             </div>
                         </div>
                         <div class="card-actions justify-center mt-4">
-                            <a href="/settings/preview/venue" class="btn btn-accent mr-4 mb-4" target="_blank"
+                            <a href="/planning/preview/venue" class="btn btn-accent mr-4 mb-4" target="_blank"
                                 >Preview Venue Page</a>
                         </div>
                     </div>

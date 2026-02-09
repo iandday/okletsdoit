@@ -8,9 +8,9 @@
     const { data, form }: { data: PageData; form: ActionData } = $props();
 
     const relativeCrumbs = [
-        { title: "Inspirations", href: "/settings/inspiration" },
-        { title: data.inspiration.name, href: `/settings/inspiration/${data.inspiration.id}` },
-        { title: "Edit", href: `/settings/inspiration/${data.inspiration.id}/edit` },
+        { title: "Inspirations", href: "/planning/inspiration" },
+        { title: data.inspiration.name, href: `/planning/inspiration/${data.inspiration.id}` },
+        { title: "Edit", href: `/planning/inspiration/${data.inspiration.id}/edit` },
     ];
 
     let imageInput: HTMLInputElement;
@@ -82,7 +82,7 @@
                                     <span class="icon-[lucide--save] size-5"></span>
                                     Save Changes
                                 </button>
-                                <a href="/settings/inspiration/{data.inspiration.id}" class="btn btn-error">Cancel</a>
+                                <a href="/planning/inspiration/{data.inspiration.id}" class="btn btn-error">Cancel</a>
                             </div>
                         </div>
                     </div>

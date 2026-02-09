@@ -26,6 +26,6 @@ export const actions: Actions = {
             },
         });
 
-        throw redirect(303, `/settings/budget/category/${params.id}`);
+        throw redirect(303, `/planning/budget/category/${params.id}`);
     },
 };

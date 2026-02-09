@@ -90,6 +90,6 @@ export const actions: Actions = {
             },
         });
 
-        throw redirect(303, `/settings/budget/expense/${expense.id}`);
+        throw redirect(303, `/planning/budget/expense/${expense.id}`);
     },
 };

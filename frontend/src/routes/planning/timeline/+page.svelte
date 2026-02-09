@@ -7,7 +7,7 @@
     import type { PageData } from "./$types";
 
     const { data }: { data: PageData } = $props();
-    const relativeCrumbs = [{ title: "Timeline", href: "/settings/timeline" }];
+    const relativeCrumbs = [{ title: "Timeline", href: "/planning/timeline" }];
 
     // State for drag and drop
     let items = $state(
@@ -193,8 +193,8 @@
                 Confirmed and Tentative status to keep track of which events are finalized and which are still in
                 planning.">
         <div class="flex flex-row sm:flex-col sm:flex-row items-center justify-center gap-4 mb-8">
-            <CreateObject href="/settings/timeline/new" label="New Event" />
-            <a href="/settings/preview/venue" class="btn btn-accent" target="_blank">Preview Venue Page</a>
+            <CreateObject href="/planning/timeline/new" label="New Event" />
+            <a href="/planning/preview/venue" class="btn btn-accent" target="_blank">Preview Venue Page</a>
         </div>
     </ProtectedPageHeader>
 
@@ -207,7 +207,7 @@
                 <p class="text-base-content/70 mb-6 max-w-md">
                     Create your first timeline event to start planning your wedding day schedule.
                 </p>
-                <a href="/settings/timeline/new" class="btn btn-primary gap-2">
+                <a href="/planning/timeline/new" class="btn btn-primary gap-2">
                     <span class="icon-[lucide--plus] size-5"></span>
                     Create First Event
                 </a>

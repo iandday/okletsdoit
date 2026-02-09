@@ -38,7 +38,7 @@ export const actions = {
                 },
             });
 
-            throw redirect(303, "/settings/faq");
+            throw redirect(303, "/planning/faq");
         } catch (error) {
             if (error instanceof Response || (error as any).status === 303) {
                 throw error;

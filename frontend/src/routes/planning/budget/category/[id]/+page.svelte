@@ -8,8 +8,8 @@
     const { data }: { data: PageData } = $props();
 
     const relativeCrumbs = [
-        { title: "Budget", href: "/settings/budget" },
-        { title: `${data.category.name} Category`, href: `/settings/budget/category/${data.category.id}` },
+        { title: "Budget", href: "/planning/budget" },
+        { title: `${data.category.name} Category`, href: `/planning/budget/category/${data.category.id}` },
     ];
 
     const displayName = data.category.name;
@@ -31,7 +31,7 @@
 <ObjectDetail
     {relativeCrumbs}
     title={displayName}
-    editLink={`/settings/budget/category/${data.category.id}/edit`}
+    editLink={`/planning/budget/category/${data.category.id}/edit`}
     deleteAction="?/delete"
     object={data.category}>
     {#snippet mainSnippet()}
@@ -73,7 +73,7 @@
         </div>
     {/snippet}
     {#snippet mainActionsSnippet()}
-        <CreateObject href="/settings/budget/expense/new" label="Add Expense" />
+        <CreateObject href="/planning/budget/expense/new" label="Add Expense" />
     {/snippet}
     {#snippet extraCardsSnippet()}
         <ObjectChildItems title="Expenses">
@@ -83,7 +83,7 @@
                         <div class="list-card">
                             <div class="list-card-body">
                                 <div class="list-card-title">
-                                    <a class="link link-accent" href={`/settings/budget/expense/${expense.id}`}
+                                    <a class="link link-accent" href={`/planning/budget/expense/${expense.id}`}
                                         >{expense.item}</a>
                                 </div>
 
@@ -123,7 +123,7 @@
             {:else}
                 <div class="text-center py-8">
                     <p class="text-base-content mb-4">No expenses in this category yet.</p>
-                    <CreateObject href="/settings/budget/expense/new" label="Add Expense" />
+                    <CreateObject href="/planning/budget/expense/new" label="Add Expense" />
                 </div>
             {/if}
         </ObjectChildItems>

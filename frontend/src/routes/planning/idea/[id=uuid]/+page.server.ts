@@ -30,6 +30,6 @@ export const actions = {
             return fail(500, { error: "Failed to delete idea" });
         }
 
-        throw redirect(303, "/settings/idea");
+        throw redirect(303, "/planning/idea");
     },
 } satisfies Actions;

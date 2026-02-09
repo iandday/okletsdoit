@@ -8,12 +8,12 @@
     const { data, form }: { data: PageData; form: ActionData } = $props();
 
     const relativeCrumbs = [
-        { title: "Contacts", href: "/settings/contact" },
+        { title: "Contacts", href: "/planning/contact" },
         {
             title: data.contact.name || data.contact.company || "Contact",
-            href: `/settings/contact/${data.contact.id}`,
+            href: `/planning/contact/${data.contact.id}`,
         },
-        { title: "Edit", href: `/settings/contact/${data.contact.id}/edit` },
+        { title: "Edit", href: `/planning/contact/${data.contact.id}/edit` },
     ];
 </script>
 
@@ -129,7 +129,7 @@
             </div>
 
             <div class="flex gap-4 mt-6 justify-end">
-                <a href="/settings/contact/{data.contact.id}" class="btn btn-error">Cancel</a>
+                <a href="/planning/contact/{data.contact.id}" class="btn btn-error">Cancel</a>
                 <button type="submit" class="btn btn-primary gap-2">
                     <Icon name="save" class="size-5" />
                     Save Changes

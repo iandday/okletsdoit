@@ -1,4 +1,4 @@
-<!-- src/routes/settings/guest_list/+page.svelte -->
+<!-- src/routes/planning/guest_list/+page.svelte -->
 <script lang="ts">
     import Stats from "$lib/components/Stats.svelte";
     import CreateObject from "$lib/components/buttons/CreateObject.svelte";
@@ -195,8 +195,8 @@
                     <Stats objects={inviteStats} />
                 </div>
                 <div class="flex flex-row md:flex-col gap-4">
-                    <CreateObject href="/settings/guest_list/new" label="New Guest Group" />
-                    <a href="/settings/guest/all" class="btn btn-accent gap-2">
+                    <CreateObject href="/planning/guest_list/new" label="New Guest Group" />
+                    <a href="/planning/guest/all" class="btn btn-accent gap-2">
                         <span class="icon-[lucide--users] size-5"></span>
                         View All Guests
                     </a>
@@ -231,7 +231,7 @@
                 {@const rsvpProgress = getRsvpProgress(group)}
                 <div
                     class="list-card cursor-pointer"
-                    onclick={() => (window.location.href = `/settings/guest_list/${group.id}`)}>
+                    onclick={() => (window.location.href = `/planning/guest_list/${group.id}`)}>
                     <div class="list-card-body">
                         <div class="flex items-start justify-between gap-2">
                             <h2 class="list-card-title text-lg">{group.name}</h2>
@@ -309,7 +309,7 @@
                             </div>
                         {/if}
                         <div class="card-actions justify-end mt-4">
-                            <ViewDetails href="/settings/guest_list/{group.id}" label="View Details" />
+                            <ViewDetails href="/planning/guest_list/{group.id}" label="View Details" />
                         </div>
                     </div>
                 </div>

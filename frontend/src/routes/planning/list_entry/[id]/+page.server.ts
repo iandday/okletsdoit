@@ -51,7 +51,7 @@ export const actions = {
             return fail(500, { error: "Failed to delete list entry" });
         }
 
-        throw redirect(303, `/settings/list/${entry.listId}`);
+        throw redirect(303, `/planning/list/${entry.listId}`);
     },
     toggleCompleted: async ({ params, locals }) => {
         const api = createApiClient(locals.sessionCookie);

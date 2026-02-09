@@ -9,8 +9,8 @@
     let description = $state("");
 
     const relativeCrumbs = [
-        { title: "Ideas", href: "/settings/idea" },
-        { title: "New", href: "/settings/idea/new" },
+        { title: "Ideas", href: "/planning/idea" },
+        { title: "New", href: "/planning/idea/new" },
     ];
 </script>
 
@@ -65,7 +65,7 @@
                     </div>
 
                     <div class="flex justify-end gap-2 mt-6">
-                        <a href="/settings/idea" class="btn btn-ghost">Cancel</a>
+                        <a href="/planning/idea" class="btn btn-ghost">Cancel</a>
                         <button type="submit" class="btn btn-primary">
                             <span class="icon-[lucide--plus] size-5"></span>
                             Create Idea

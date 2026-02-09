@@ -297,7 +297,7 @@
                                         <td {...attrs} class="px-3 py-2 whitespace-nowrap text-sm">
                                             {#if cell.id === "listId"}
                                                 <a
-                                                    href="/settings/list/{row.original.listId}"
+                                                    href="/planning/list/{row.original.listId}"
                                                     class="link link-accent hover:underline">
                                                     {getListName(row.original.listId)}
                                                 </a>
@@ -344,7 +344,7 @@
                                             {:else if cell.id === "associatedExpenseId"}
                                                 {#if row.original.associatedExpenseId}
                                                     <a
-                                                        href="/settings/expense/{row.original.associatedExpenseId}"
+                                                        href="/planning/expense/{row.original.associatedExpenseId}"
                                                         class="link link-accent hover:underline">
                                                         <span class="icon-[lucide--receipt] size-5"></span>
                                                     </a>
@@ -361,8 +361,8 @@
                                 {/each}
                                 <td class="px-3 py-2 whitespace-nowrap text-sm">
                                     <div class="flex gap-2">
-                                        <ViewDetails href="/settings/list_entry/{row.original.id}" size="sm" />
-                                        <EditObject href="/settings/list_entry/{row.original.id}/edit" size="sm" />
+                                        <ViewDetails href="/planning/list_entry/{row.original.id}" size="sm" />
+                                        <EditObject href="/planning/list_entry/{row.original.id}/edit" size="sm" />
                                     </div>
                                 </td>
                             </tr>

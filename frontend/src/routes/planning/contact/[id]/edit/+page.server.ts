@@ -54,6 +54,6 @@ export const actions = {
             return fail(500, { error: "Failed to update contact" });
         }
 
-        throw redirect(303, `/settings/contact/${contactId}`);
+        throw redirect(303, `/planning/contact/${contactId}`);
     },
 } satisfies Actions;

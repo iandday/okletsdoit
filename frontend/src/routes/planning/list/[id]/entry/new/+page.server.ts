@@ -62,6 +62,6 @@ export const actions = {
             return fail(500, { error: "Failed to create list entry" });
         }
 
-        throw redirect(303, `/settings/list/${listId}`);
+        throw redirect(303, `/planning/list/${listId}`);
     },
 } satisfies Actions;

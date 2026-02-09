@@ -67,6 +67,6 @@ export const actions: Actions = {
             return fail(500, { error: "Failed to update guest" });
         }
 
-        throw redirect(303, `/settings/guest/${guestId}`);
+        throw redirect(303, `/planning/guest/${guestId}`);
     },
 };

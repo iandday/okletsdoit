@@ -6,10 +6,10 @@
     const { data }: { data: PageData } = $props();
 
     const relativeCrumbs = [
-        { title: "Contacts", href: "/settings/contact" },
+        { title: "Contacts", href: "/planning/contact" },
         {
             title: data.contact.name || data.contact.company || "Contact",
-            href: `/settings/contact/${data.contact.id}`,
+            href: `/planning/contact/${data.contact.id}`,
         },
     ];
 
@@ -26,7 +26,7 @@
 <ObjectDetail
     {relativeCrumbs}
     title={displayName}
-    editLink={`/settings/contact/${data.contact.id}/edit`}
+    editLink={`/planning/contact/${data.contact.id}/edit`}
     deleteAction="?/delete"
     object={data.contact}>
     {#snippet mainSnippet()}

@@ -5,8 +5,8 @@
     const { data }: { data: PageData } = $props();
 
     const relativeCrumbs = [
-        { title: "Inspirations", href: "/settings/inspiration" },
-        { title: data.inspiration.name, href: `/settings/inspiration/${data.inspiration.id}` },
+        { title: "Inspirations", href: "/planning/inspiration" },
+        { title: data.inspiration.name, href: `/planning/inspiration/${data.inspiration.id}` },
     ];
 
     function formatDate(dateString: string | Date | null | undefined): string {
@@ -23,7 +23,7 @@
 <ObjectDetail
     {relativeCrumbs}
     title={data.inspiration.name}
-    editLink={`/settings/inspiration/${data.inspiration.id}/edit`}
+    editLink={`/planning/inspiration/${data.inspiration.id}/edit`}
     deleteAction="?/delete"
     object={data.inspiration}>
     {#snippet mainSnippet()}

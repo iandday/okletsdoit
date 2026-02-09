@@ -6,7 +6,7 @@
     import type { PageData } from "./$types";
 
     const { data }: { data: PageData } = $props();
-    const relativeCrumbs = [{ title: "Deadlines", href: "/settings/deadline" }];
+    const relativeCrumbs = [{ title: "Deadlines", href: "/planning/deadline" }];
 </script>
 
 <ProtectedPageShell {relativeCrumbs}>
@@ -14,8 +14,8 @@
     <!-- Header -->
     <div class="flex items-center justify-between mb-8">
         <div>
-            <CreateObject href="/settings/deadline/list/new" label="New List" />
-            <a href="/settings/deadline/all" class="btn btn-primary gap-2">
+            <CreateObject href="/planning/deadline/list/new" label="New List" />
+            <a href="/planning/deadline/all" class="btn btn-primary gap-2">
                 <span class="icon-[lucide--calendar-check] size-5"></span>
                 View All Deadlines</a>
         </div>
@@ -31,7 +31,7 @@
                     Create your first deadline list to start organizing your wedding planning tasks and staying on
                     track.
                 </p>
-                <a href="/settings/deadline/list/new" class="btn btn-primary gap-2">
+                <a href="/planning/deadline/list/new" class="btn btn-primary gap-2">
                     <span class="icon-[lucide--plus] size-5"></span>
                     Create First List
                 </a>
@@ -44,7 +44,7 @@
                 <div class="list-card">
                     <div class="list-card-body">
                         <div class="list-card-title">
-                            <a href="/settings/deadline/list/{list.id}">{list.name}</a>
+                            <a href="/planning/deadline/list/{list.id}">{list.name}</a>
                         </div>
                         <div class="flex flex-row gap-2 mb-4">
                             <div class="badge badge-success">✓ {list.completedCount}</div>

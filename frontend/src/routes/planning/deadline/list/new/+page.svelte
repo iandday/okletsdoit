@@ -6,7 +6,7 @@
     import type { ActionData } from "./$types";
 
     const { form }: { form: ActionData } = $props();
-    const relativeCrumbs = [{ title: "Deadlines", href: "/settings/deadline" }, { title: "New List" }];
+    const relativeCrumbs = [{ title: "Deadlines", href: "/planning/deadline" }, { title: "New List" }];
 </script>
 
 <ProtectedPageShell {relativeCrumbs}>
@@ -56,7 +56,7 @@
             </div>
 
             <div class="flex gap-4 mt-6 justify-end">
-                <a href="/settings/deadline" class="btn btn-error">Cancel</a>
+                <a href="/planning/deadline" class="btn btn-error">Cancel</a>
                 <button type="submit" class="btn btn-primary gap-2">
                     <Icon name="plus" class="size-5" />
                     Create List

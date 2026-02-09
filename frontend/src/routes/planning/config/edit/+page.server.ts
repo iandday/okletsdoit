@@ -86,6 +86,6 @@ export const actions = {
             });
         }
 
-        throw redirect(303, "/settings/config");
+        throw redirect(303, "/planning/config");
     },
 } satisfies Actions;

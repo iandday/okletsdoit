@@ -8,13 +8,13 @@
     const { data }: { data: PageData } = $props();
 
     const relativeCrumbs = [
-        { title: "Deadlines", href: "/settings/deadline" },
-        { title: data.deadlineList.name, href: `/settings/deadline/list/${data.deadlineList.id}` },
+        { title: "Deadlines", href: "/planning/deadline" },
+        { title: data.deadlineList.name, href: `/planning/deadline/list/${data.deadlineList.id}` },
     ];
 
     const status = data.deadlineList.completionPercentage > 0.0;
     const statusText = `${data.deadlineList.completionPercentage}% Complete`;
-    const childCreateLink = `/settings/deadline/list/${data.deadlineList.id}/deadline/new`;
+    const childCreateLink = `/planning/deadline/list/${data.deadlineList.id}/deadline/new`;
     const childCreateLabel = "Add Deadline";
 </script>
 
@@ -26,7 +26,7 @@
     object={data.deadlineList}
     {childCreateLink}
     {childCreateLabel}
-    editLink={`/settings/deadline/list/${data.deadlineList.id}/edit`}>
+    editLink={`/planning/deadline/list/${data.deadlineList.id}/edit`}>
     {#snippet mainSnippet()}
         <div class="flex flex-row justify-between">
             <div>
@@ -44,7 +44,7 @@
         </div>
     {/snippet}
     {#snippet mainActionsSnippet()}
-        <CreateObject href={`/settings/deadline/list/${data.deadlineList.id}/deadline/new`} label="Add Deadline" />
+        <CreateObject href={`/planning/deadline/list/${data.deadlineList.id}/deadline/new`} label="Add Deadline" />
     {/snippet}
     {#snippet extraCardsSnippet()}
         <ObjectChildItems title={"Deadlines"}>
@@ -57,7 +57,7 @@
                             Add deadlines to this list to help you stay on track with your wedding planning tasks.
                         </p>
                         <a
-                            href="/settings/deadline/list/{data.deadlineList.id}/deadline/new"
+                            href="/planning/deadline/list/{data.deadlineList.id}/deadline/new"
                             class="btn btn-primary gap-2">
                             <Icon name="plus" class="size-5" />
                             Add First Deadline
@@ -70,7 +70,7 @@
                         <div class="list-card">
                             <div class="list-card-body">
                                 <div class="list-card-title">
-                                    <a href="/settings/deadline/deadline/{deadline.id}">
+                                    <a href="/planning/deadline/deadline/{deadline.id}">
                                         {deadline.name}
                                     </a>
                                 </div>
