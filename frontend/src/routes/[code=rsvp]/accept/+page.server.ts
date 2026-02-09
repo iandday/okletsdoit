@@ -1,9 +1,10 @@
 // frontend/src/routes/[code=rsvp]/accept/+page.server.ts
-import { api } from "$lib/server/api-client";
+import { createApiClient } from "$lib/server/api-client";
 import { error, fail, redirect } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types";
 
-export const load: PageServerLoad = async ({ params }) => {
+export const load: PageServerLoad = async ({ params, locals }) => {
+    const api = createApiClient(locals.sessionCookie);
     const { code } = params;
     const configData = await api.core.coreApiGetWeddingSettings();
     if (configData.allowRsvp === false) {
@@ -35,7 +36,8 @@ export const load: PageServerLoad = async ({ params }) => {
 };
 
 export const actions: Actions = {
-    default: async ({ request, params }) => {
+    default: async ({ request, params, locals }) => {
+        const api = createApiClient(locals.sessionCookie);
         const { code } = params;
         const configData = await api.core.coreApiGetWeddingSettings();
 

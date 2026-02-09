@@ -105,6 +105,10 @@ input:-webkit-autofill:active {
     @apply text-primary-content;
 }
 
+.config-card-actions {
+    @apply card-actions border-base-300 justify-end px-4 pb-4;
+}
+
 .edit-card {
     @apply card bg-base-200 text-primary-content shadow-md transition-shadow duration-300 hover:shadow-lg;
 }

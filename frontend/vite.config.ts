@@ -11,5 +11,9 @@ export default defineConfig({
                 ? process.env.VITE_ALLOWED_HOSTS.split(",").map((host) => host.trim())
                 : []),
         ],
+        hmr: {
+            host: process.env.VITE_HMR_HOST || "localhost",
+            clientPort: 5173,
+        },
     },
 });

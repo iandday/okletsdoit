@@ -52,13 +52,13 @@
                     href="https://maps.google.com/?q={venueAddressLineOne},{venueCity},{venueState},{venueZip}"
                     target="_blank"
                     rel="noopener noreferrer">
-                    <img src="images/googleMaps.svg" alt="Google Maps" class="h-10 w-10 mr-2" />
+                    <img src="/images/googleMaps.svg" alt="Google Maps" class="h-10 w-10 mr-2" />
                 </a>
                 <a
                     href="https://maps.apple.com/?address={venueAddressLineOne},{venueCity},{venueState},{venueZip}"
                     target="_blank"
                     rel="noopener noreferrer">
-                    <img src="images/appleMaps.png" alt="Apple Maps" class="h-10 w-10 mr-2" />
+                    <img src="/images/appleMaps.png" alt="Apple Maps" class="h-10 w-10 mr-2" />
                 </a>
             </div>
         </div>

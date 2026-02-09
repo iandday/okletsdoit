@@ -11,7 +11,7 @@
 
     let baseCrumbs: iBreadcrumb[] = [
         { title: "Home", href: "/" },
-        { title: "Configuration", href: "/settings" },
+        { title: "Planning", href: "/planning" },
     ];
 
     let crumbs: iBreadcrumb[] = [...baseCrumbs, ...relativeCrumbs];

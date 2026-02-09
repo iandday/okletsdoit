@@ -46,6 +46,10 @@ docs/GuestGroupUpdateSchema.md
 docs/GuestSchema.md
 docs/GuestUpdateSchema.md
 docs/GuestlistApi.md
+docs/IdeaCreateSchema.md
+docs/IdeaFilterSchema.md
+docs/IdeaSchema.md
+docs/IdeaUpdateSchema.md
 docs/Input.md
 docs/InspirationCreateSchema.md
 docs/InspirationFilterSchema.md
@@ -68,6 +72,7 @@ docs/PagedDeadlineSchema.md
 docs/PagedExpenseSchema.md
 docs/PagedGuestGroupSchema.md
 docs/PagedGuestSchema.md
+docs/PagedIdeaSchema.md
 docs/PagedInspirationSchema.md
 docs/PagedListEntrySchema.md
 docs/PagedListSchema.md
@@ -75,6 +80,7 @@ docs/PagedQuestionSchema.md
 docs/PagedRsvpQuestionResponseSchema.md
 docs/PagedRsvpQuestionSchema.md
 docs/PagedRsvpSubmissionSchema.md
+docs/PagedTimelineSchema.md
 docs/PagedTipsSchema.md
 docs/QuestionCreateSchema.md
 docs/QuestionFilterSchema.md
@@ -99,6 +105,10 @@ docs/RsvpSubmissionCreateSchema.md
 docs/RsvpSubmissionFilterSchema.md
 docs/RsvpSubmissionSchema.md
 docs/RsvpSubmissionUpdateSchema.md
+docs/TimelineCreateSchema.md
+docs/TimelineFilterSchema.md
+docs/TimelineSchema.md
+docs/TimelineUpdateSchema.md
 docs/TipsCreateSchema.md
 docs/TipsFilterSchema.md
 docs/TipsSchema.md
@@ -142,6 +152,10 @@ models/GuestGroupSchema.ts
 models/GuestGroupUpdateSchema.ts
 models/GuestSchema.ts
 models/GuestUpdateSchema.ts
+models/IdeaCreateSchema.ts
+models/IdeaFilterSchema.ts
+models/IdeaSchema.ts
+models/IdeaUpdateSchema.ts
 models/Input.ts
 models/InspirationCreateSchema.ts
 models/InspirationFilterSchema.ts
@@ -163,6 +177,7 @@ models/PagedDeadlineSchema.ts
 models/PagedExpenseSchema.ts
 models/PagedGuestGroupSchema.ts
 models/PagedGuestSchema.ts
+models/PagedIdeaSchema.ts
 models/PagedInspirationSchema.ts
 models/PagedListEntrySchema.ts
 models/PagedListSchema.ts
@@ -170,6 +185,7 @@ models/PagedQuestionSchema.ts
 models/PagedRsvpQuestionResponseSchema.ts
 models/PagedRsvpQuestionSchema.ts
 models/PagedRsvpSubmissionSchema.ts
+models/PagedTimelineSchema.ts
 models/PagedTipsSchema.ts
 models/QuestionCreateSchema.ts
 models/QuestionFilterSchema.ts
@@ -194,6 +210,10 @@ models/RsvpSubmissionCreateSchema.ts
 models/RsvpSubmissionFilterSchema.ts
 models/RsvpSubmissionSchema.ts
 models/RsvpSubmissionUpdateSchema.ts
+models/TimelineCreateSchema.ts
+models/TimelineFilterSchema.ts
+models/TimelineSchema.ts
+models/TimelineUpdateSchema.ts
 models/TipsCreateSchema.ts
 models/TipsFilterSchema.ts
 models/TipsSchema.ts

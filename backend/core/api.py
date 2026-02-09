@@ -13,12 +13,14 @@ from ninja.pagination import PageNumberPagination, paginate
 
 from core.auth import multi_auth
 
+from .models import Idea
 from .models import Inspiration
 from .models import Question
 from .models import QuestionCategory
 from .models import QuestionURL
 from .models import RsvpQuestion
 from .models import RsvpQuestionChoice
+from .models import Timeline
 from .models import Tips
 from .models import WeddingSettings
 
@@ -275,6 +277,78 @@ class InspirationCreateSchema(Schema):
 
 class InspirationUpdateSchema(Schema):
     name: Optional[str] = None
+    description: Optional[str] = None
+
+
+class IdeaSchema(Schema):
+    id: UUID
+    name: str
+    slug: str
+    description: Optional[str] = None
+    created_by_id: Optional[UUID] = None
+    created_by_name: Optional[str] = None
+    updated_by_id: Optional[UUID] = None
+    updated_by_name: Optional[str] = None
+    created_at: datetime
+    updated_at: datetime
+
+
+class IdeaFilterSchema(FilterSchema):
+    name: Optional[str] = None
+
+
+class IdeaCreateSchema(Schema):
+    name: str
+    description: Optional[str] = None
+
+
+class IdeaUpdateSchema(Schema):
+    name: Optional[str] = None
+    description: Optional[str] = None
+
+
+# Timeline Schemas
+class TimelineSchema(Schema):
+    id: UUID
+    name: str
+    slug: str
+    start: datetime
+    end: Optional[datetime] = None
+    order: int
+    published: bool
+    confirmed: bool
+    description: Optional[str] = None
+    created_by_id: Optional[UUID] = None
+    created_by_name: Optional[str] = None
+    updated_by_id: Optional[UUID] = None
+    updated_by_name: Optional[str] = None
+    created_at: datetime
+    updated_at: datetime
+
+
+class TimelineFilterSchema(FilterSchema):
+    name: Optional[str] = None
+    published: Optional[bool] = None
+    confirmed: Optional[bool] = None
+
+
+class TimelineCreateSchema(Schema):
+    name: str
+    start: datetime
+    end: Optional[datetime] = None
+    order: Optional[int] = 0
+    published: Optional[bool] = False
+    confirmed: Optional[bool] = False
+    description: Optional[str] = None
+
+
+class TimelineUpdateSchema(Schema):
+    name: Optional[str] = None
+    start: Optional[datetime] = None
+    end: Optional[datetime] = None
+    order: Optional[int] = None
+    published: Optional[bool] = None
+    confirmed: Optional[bool] = None
     description: Optional[str] = None
 
 
@@ -1053,3 +1127,261 @@ def delete_inspiration_image(request, inspiration_id: UUID):
         return {"success": True, "message": "Image deleted successfully"}
 
     return {"success": False, "message": "No image to delete"}
+
+
+# Idea CRUD Endpoints
+@router.get("/ideas", response=List[IdeaSchema])
+@paginate(PageNumberPagination, page_size=50)
+def list_ideas(request, filters: IdeaFilterSchema = Query(...)):  # pyright: ignore[reportCallIssue]
+    """List all ideas (non-deleted)"""
+    q = Q(is_deleted=False)
+    q &= filters.get_filter_expression()
+    ideas = Idea.objects.filter(q).order_by("name")
+
+    return [
+        {
+            "id": idea.id,
+            "name": idea.name,
+            "slug": idea.slug,
+            "description": idea.description,
+            "created_by_id": idea.created_by.id if idea.created_by else None,
+            "created_by_name": idea.created_by.get_full_name() if idea.created_by else None,
+            "updated_by_id": idea.updated_by.id if idea.updated_by else None,
+            "updated_by_name": idea.updated_by.get_full_name() if idea.updated_by else None,
+            "created_at": idea.created_at,
+            "updated_at": idea.updated_at,
+        }
+        for idea in ideas
+    ]
+
+
+@router.get("/ideas/{idea_id}", response=IdeaSchema)
+def get_idea(request, idea_id: UUID):
+    """Get a specific idea by ID"""
+    idea = get_object_or_404(Idea, id=idea_id, is_deleted=False)
+    return {
+        "id": idea.id,
+        "name": idea.name,
+        "slug": idea.slug,
+        "description": idea.description,
+        "created_by_id": idea.created_by.id if idea.created_by else None,
+        "created_by_name": idea.created_by.get_full_name() if idea.created_by else None,
+        "updated_by_id": idea.updated_by.id if idea.updated_by else None,
+        "updated_by_name": idea.updated_by.get_full_name() if idea.updated_by else None,
+        "created_at": idea.created_at,
+        "updated_at": idea.updated_at,
+    }
+
+
+@router.post("/ideas", response=IdeaSchema)
+def create_idea(request, payload: IdeaCreateSchema):
+    """Create a new idea"""
+    data = payload.dict()
+
+    if request.user.is_authenticated:
+        data["created_by"] = request.user
+    else:
+        admin_user = User.objects.filter(is_staff=True, is_active=True).first()
+        if admin_user:
+            data["created_by"] = admin_user
+
+    idea = Idea.objects.create(**data)
+
+    return {
+        "id": idea.id,
+        "name": idea.name,
+        "slug": idea.slug,
+        "description": idea.description,
+        "created_by_id": idea.created_by.id if idea.created_by else None,
+        "created_by_name": idea.created_by.get_full_name() if idea.created_by else None,
+        "updated_by_id": idea.updated_by.id if idea.updated_by else None,
+        "updated_by_name": idea.updated_by.get_full_name() if idea.updated_by else None,
+        "created_at": idea.created_at,
+        "updated_at": idea.updated_at,
+    }
+
+
+@router.put("/ideas/{idea_id}", response=IdeaSchema)
+def update_idea(request, idea_id: UUID, payload: IdeaUpdateSchema):
+    """Update an idea"""
+    idea = get_object_or_404(Idea, id=idea_id, is_deleted=False)
+    data = payload.dict(exclude_unset=True)
+
+    for attr, value in data.items():
+        setattr(idea, attr, value)
+
+    if request.user.is_authenticated:
+        idea.updated_by = request.user
+    else:
+        admin_user = User.objects.filter(is_staff=True, is_active=True).first()
+        if admin_user:
+            idea.updated_by = admin_user
+
+    idea.save()
+
+    return {
+        "id": idea.id,
+        "name": idea.name,
+        "slug": idea.slug,
+        "description": idea.description,
+        "created_by_id": idea.created_by.id if idea.created_by else None,
+        "created_by_name": idea.created_by.get_full_name() if idea.created_by else None,
+        "updated_by_id": idea.updated_by.id if idea.updated_by else None,
+        "updated_by_name": idea.updated_by.get_full_name() if idea.updated_by else None,
+        "created_at": idea.created_at,
+        "updated_at": idea.updated_at,
+    }
+
+
+@router.delete("/ideas/{idea_id}")
+def delete_idea(request, idea_id: UUID):
+    """Soft delete an idea"""
+    idea = get_object_or_404(Idea, id=idea_id, is_deleted=False)
+    idea.is_deleted = True
+    if request.user.is_authenticated:
+        idea.updated_by = request.user
+    else:
+        admin_user = User.objects.filter(is_staff=True, is_active=True).first()
+        if admin_user:
+            idea.updated_by = admin_user
+    idea.save()
+    return {"success": True, "message": "Idea deleted successfully"}
+
+
+# Timeline CRUD Endpoints
+@router.get("/timelines", response=List[TimelineSchema])
+@paginate(PageNumberPagination, page_size=50)
+def list_timelines(request, filters: TimelineFilterSchema = Query(...)):  # pyright: ignore[reportCallIssue]
+    """List all timeline events (non-deleted)"""
+    q = Q(is_deleted=False)
+    q &= filters.get_filter_expression()
+    timelines = Timeline.objects.filter(q).order_by("order", "start")
+
+    return [
+        {
+            "id": timeline.id,
+            "name": timeline.name,
+            "slug": timeline.slug,
+            "start": timeline.start,
+            "end": timeline.end,
+            "order": timeline.order,
+            "published": timeline.published,
+            "confirmed": timeline.confirmed,
+            "description": timeline.description,
+            "created_by_id": timeline.created_by.id if timeline.created_by else None,
+            "created_by_name": timeline.created_by.get_full_name() if timeline.created_by else None,
+            "updated_by_id": timeline.updated_by.id if timeline.updated_by else None,
+            "updated_by_name": timeline.updated_by.get_full_name() if timeline.updated_by else None,
+            "created_at": timeline.created_at,
+            "updated_at": timeline.updated_at,
+        }
+        for timeline in timelines
+    ]
+
+
+@router.get("/timelines/{timeline_id}", response=TimelineSchema)
+def get_timeline(request, timeline_id: UUID):
+    """Get a specific timeline event by ID"""
+    timeline = get_object_or_404(Timeline, id=timeline_id, is_deleted=False)
+    return {
+        "id": timeline.id,
+        "name": timeline.name,
+        "slug": timeline.slug,
+        "start": timeline.start,
+        "end": timeline.end,
+        "order": timeline.order,
+        "published": timeline.published,
+        "confirmed": timeline.confirmed,
+        "description": timeline.description,
+        "created_by_id": timeline.created_by.id if timeline.created_by else None,
+        "created_by_name": timeline.created_by.get_full_name() if timeline.created_by else None,
+        "updated_by_id": timeline.updated_by.id if timeline.updated_by else None,
+        "updated_by_name": timeline.updated_by.get_full_name() if timeline.updated_by else None,
+        "created_at": timeline.created_at,
+        "updated_at": timeline.updated_at,
+    }
+
+
+@router.post("/timelines", response=TimelineSchema)
+def create_timeline(request, payload: TimelineCreateSchema):
+    """Create a new timeline event"""
+    data = payload.dict()
+
+    if request.user.is_authenticated:
+        data["created_by"] = request.user
+    else:
+        admin_user = User.objects.filter(is_staff=True, is_active=True).first()
+        if admin_user:
+            data["created_by"] = admin_user
+
+    timeline = Timeline.objects.create(**data)
+
+    return {
+        "id": timeline.id,
+        "name": timeline.name,
+        "slug": timeline.slug,
+        "start": timeline.start,
+        "end": timeline.end,
+        "order": timeline.order,
+        "published": timeline.published,
+        "confirmed": timeline.confirmed,
+        "description": timeline.description,
+        "created_by_id": timeline.created_by.id if timeline.created_by else None,
+        "created_by_name": timeline.created_by.get_full_name() if timeline.created_by else None,
+        "updated_by_id": timeline.updated_by.id if timeline.updated_by else None,
+        "updated_by_name": timeline.updated_by.get_full_name() if timeline.updated_by else None,
+        "created_at": timeline.created_at,
+        "updated_at": timeline.updated_at,
+    }
+
+
+@router.put("/timelines/{timeline_id}", response=TimelineSchema)
+def update_timeline(request, timeline_id: UUID, payload: TimelineUpdateSchema):
+    """Update a timeline event"""
+    timeline = get_object_or_404(Timeline, id=timeline_id, is_deleted=False)
+    data = payload.dict(exclude_unset=True)
+
+    for attr, value in data.items():
+        setattr(timeline, attr, value)
+
+    if request.user.is_authenticated:
+        timeline.updated_by = request.user
+    else:
+        admin_user = User.objects.filter(is_staff=True, is_active=True).first()
+        if admin_user:
+            timeline.updated_by = admin_user
+
+    timeline.save()
+
+    return {
+        "id": timeline.id,
+        "name": timeline.name,
+        "slug": timeline.slug,
+        "start": timeline.start,
+        "end": timeline.end,
+        "order": timeline.order,
+        "published": timeline.published,
+        "confirmed": timeline.confirmed,
+        "description": timeline.description,
+        "created_by_id": timeline.created_by.id if timeline.created_by else None,
+        "created_by_name": timeline.created_by.get_full_name() if timeline.created_by else None,
+        "updated_by_id": timeline.updated_by.id if timeline.updated_by else None,
+        "updated_by_name": timeline.updated_by.get_full_name() if timeline.updated_by else None,
+        "created_at": timeline.created_at,
+        "updated_at": timeline.updated_at,
+    }
+
+
+@router.delete("/timelines/{timeline_id}")
+def delete_timeline(request, timeline_id: UUID):
+    """Soft delete a timeline event"""
+    timeline = get_object_or_404(Timeline, id=timeline_id, is_deleted=False)
+    timeline.is_deleted = True
+    if request.user.is_authenticated:
+        timeline.updated_by = request.user
+    else:
+        admin_user = User.objects.filter(is_staff=True, is_active=True).first()
+        if admin_user:
+            timeline.updated_by = admin_user
+    timeline.save()
+    return {"success": True, "message": "Timeline event deleted successfully"}

@@ -13,12 +13,17 @@
  */
 import type {
     CategoryContentSchema,
+    IdeaCreateSchema,
+    IdeaSchema,
+    IdeaUpdateSchema,
     InspirationCreateSchema,
     InspirationSchema,
     InspirationUpdateSchema,
+    PagedIdeaSchema,
     PagedInspirationSchema,
     PagedQuestionSchema,
     PagedRsvpQuestionSchema,
+    PagedTimelineSchema,
     PagedTipsSchema,
     QuestionCreateSchema,
     QuestionSchema,
@@ -32,6 +37,9 @@ import type {
     RsvpQuestionCreateSchema,
     RsvpQuestionSchema,
     RsvpQuestionUpdateSchema,
+    TimelineCreateSchema,
+    TimelineSchema,
+    TimelineUpdateSchema,
     TipsCreateSchema,
     TipsSchema,
     TipsUpdateSchema,
@@ -41,18 +49,28 @@ import type {
 import {
     CategoryContentSchemaFromJSON,
     CategoryContentSchemaToJSON,
+    IdeaCreateSchemaFromJSON,
+    IdeaCreateSchemaToJSON,
+    IdeaSchemaFromJSON,
+    IdeaSchemaToJSON,
+    IdeaUpdateSchemaFromJSON,
+    IdeaUpdateSchemaToJSON,
     InspirationCreateSchemaFromJSON,
     InspirationCreateSchemaToJSON,
     InspirationSchemaFromJSON,
     InspirationSchemaToJSON,
     InspirationUpdateSchemaFromJSON,
     InspirationUpdateSchemaToJSON,
+    PagedIdeaSchemaFromJSON,
+    PagedIdeaSchemaToJSON,
     PagedInspirationSchemaFromJSON,
     PagedInspirationSchemaToJSON,
     PagedQuestionSchemaFromJSON,
     PagedQuestionSchemaToJSON,
     PagedRsvpQuestionSchemaFromJSON,
     PagedRsvpQuestionSchemaToJSON,
+    PagedTimelineSchemaFromJSON,
+    PagedTimelineSchemaToJSON,
     PagedTipsSchemaFromJSON,
     PagedTipsSchemaToJSON,
     QuestionCreateSchemaFromJSON,
@@ -79,6 +97,12 @@ import {
     RsvpQuestionSchemaToJSON,
     RsvpQuestionUpdateSchemaFromJSON,
     RsvpQuestionUpdateSchemaToJSON,
+    TimelineCreateSchemaFromJSON,
+    TimelineCreateSchemaToJSON,
+    TimelineSchemaFromJSON,
+    TimelineSchemaToJSON,
+    TimelineUpdateSchemaFromJSON,
+    TimelineUpdateSchemaToJSON,
     TipsCreateSchemaFromJSON,
     TipsCreateSchemaToJSON,
     TipsSchemaFromJSON,
@@ -91,6 +115,10 @@ import {
     WeddingSettingsUpdateSchemaToJSON,
 } from "../models/index";
 import * as runtime from "../runtime";
+
+export interface CoreApiCreateIdeaRequest {
+    ideaCreateSchema: IdeaCreateSchema;
+}
 
 export interface CoreApiCreateInspirationRequest {
     inspirationCreateSchema: InspirationCreateSchema;
@@ -112,8 +140,16 @@ export interface CoreApiCreateRsvpQuestionChoiceRequest {
     rsvpQuestionChoiceCreateSchema: RsvpQuestionChoiceCreateSchema;
 }
 
+export interface CoreApiCreateTimelineRequest {
+    timelineCreateSchema: TimelineCreateSchema;
+}
+
 export interface CoreApiCreateTipRequest {
     tipsCreateSchema: TipsCreateSchema;
+}
+
+export interface CoreApiDeleteIdeaRequest {
+    ideaId: string;
 }
 
 export interface CoreApiDeleteInspirationRequest {
@@ -140,12 +176,20 @@ export interface CoreApiDeleteRsvpQuestionChoiceRequest {
     choiceId: string;
 }
 
+export interface CoreApiDeleteTimelineRequest {
+    timelineId: string;
+}
+
 export interface CoreApiDeleteTipRequest {
     tipId: string;
 }
 
 export interface CoreApiGetCategoriesContentRequest {
     publishedOnly?: boolean;
+}
+
+export interface CoreApiGetIdeaRequest {
+    ideaId: string;
 }
 
 export interface CoreApiGetInspirationRequest {
@@ -168,8 +212,18 @@ export interface CoreApiGetRsvpQuestionChoiceRequest {
     choiceId: string;
 }
 
+export interface CoreApiGetTimelineRequest {
+    timelineId: string;
+}
+
 export interface CoreApiGetTipRequest {
     tipId: string;
+}
+
+export interface CoreApiListIdeasRequest {
+    name?: string | null;
+    page?: number;
+    pageSize?: number | null;
 }
 
 export interface CoreApiListInspirationsRequest {
@@ -196,11 +250,24 @@ export interface CoreApiListRsvpQuestionsRequest {
     pageSize?: number | null;
 }
 
+export interface CoreApiListTimelinesRequest {
+    name?: string | null;
+    published?: boolean | null;
+    confirmed?: boolean | null;
+    page?: number;
+    pageSize?: number | null;
+}
+
 export interface CoreApiListTipsRequest {
     category?: string | null;
     published?: boolean | null;
     page?: number;
     pageSize?: number | null;
+}
+
+export interface CoreApiUpdateIdeaRequest {
+    ideaId: string;
+    ideaUpdateSchema: IdeaUpdateSchema;
 }
 
 export interface CoreApiUpdateInspirationRequest {
@@ -228,6 +295,11 @@ export interface CoreApiUpdateRsvpQuestionChoiceRequest {
     rsvpQuestionChoiceUpdateSchema: RsvpQuestionChoiceUpdateSchema;
 }
 
+export interface CoreApiUpdateTimelineRequest {
+    timelineId: string;
+    timelineUpdateSchema: TimelineUpdateSchema;
+}
+
 export interface CoreApiUpdateTipRequest {
     tipId: string;
     tipsUpdateSchema: TipsUpdateSchema;
@@ -246,6 +318,63 @@ export interface CoreApiUploadInspirationImageRequest {
  *
  */
 export class CoreApi extends runtime.BaseAPI {
+    /**
+     * Create a new idea
+     * Create Idea
+     */
+    async coreApiCreateIdeaRaw(
+        requestParameters: CoreApiCreateIdeaRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<IdeaSchema>> {
+        if (requestParameters["ideaCreateSchema"] == null) {
+            throw new runtime.RequiredError(
+                "ideaCreateSchema",
+                'Required parameter "ideaCreateSchema" was null or undefined when calling coreApiCreateIdea().',
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters["Content-Type"] = "application/json";
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
+        let urlPath = `/api/core/ideas`;
+
+        const response = await this.request(
+            {
+                path: urlPath,
+                method: "POST",
+                headers: headerParameters,
+                query: queryParameters,
+                body: IdeaCreateSchemaToJSON(requestParameters["ideaCreateSchema"]),
+            },
+            initOverrides,
+        );
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => IdeaSchemaFromJSON(jsonValue));
+    }
+
+    /**
+     * Create a new idea
+     * Create Idea
+     */
+    async coreApiCreateIdea(
+        requestParameters: CoreApiCreateIdeaRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<IdeaSchema> {
+        const response = await this.coreApiCreateIdeaRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
     /**
      * Create a new inspiration
      * Create Inspiration
@@ -532,6 +661,63 @@ export class CoreApi extends runtime.BaseAPI {
     }
 
     /**
+     * Create a new timeline event
+     * Create Timeline
+     */
+    async coreApiCreateTimelineRaw(
+        requestParameters: CoreApiCreateTimelineRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<TimelineSchema>> {
+        if (requestParameters["timelineCreateSchema"] == null) {
+            throw new runtime.RequiredError(
+                "timelineCreateSchema",
+                'Required parameter "timelineCreateSchema" was null or undefined when calling coreApiCreateTimeline().',
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters["Content-Type"] = "application/json";
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
+        let urlPath = `/api/core/timelines`;
+
+        const response = await this.request(
+            {
+                path: urlPath,
+                method: "POST",
+                headers: headerParameters,
+                query: queryParameters,
+                body: TimelineCreateSchemaToJSON(requestParameters["timelineCreateSchema"]),
+            },
+            initOverrides,
+        );
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => TimelineSchemaFromJSON(jsonValue));
+    }
+
+    /**
+     * Create a new timeline event
+     * Create Timeline
+     */
+    async coreApiCreateTimeline(
+        requestParameters: CoreApiCreateTimelineRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<TimelineSchema> {
+        const response = await this.coreApiCreateTimelineRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Create a new tip
      * Create Tip
      */
@@ -586,6 +772,60 @@ export class CoreApi extends runtime.BaseAPI {
     ): Promise<TipsSchema> {
         const response = await this.coreApiCreateTipRaw(requestParameters, initOverrides);
         return await response.value();
+    }
+
+    /**
+     * Soft delete an idea
+     * Delete Idea
+     */
+    async coreApiDeleteIdeaRaw(
+        requestParameters: CoreApiDeleteIdeaRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters["ideaId"] == null) {
+            throw new runtime.RequiredError(
+                "ideaId",
+                'Required parameter "ideaId" was null or undefined when calling coreApiDeleteIdea().',
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
+        let urlPath = `/api/core/ideas/{idea_id}`;
+        urlPath = urlPath.replace(`{${"idea_id"}}`, encodeURIComponent(String(requestParameters["ideaId"])));
+
+        const response = await this.request(
+            {
+                path: urlPath,
+                method: "DELETE",
+                headers: headerParameters,
+                query: queryParameters,
+            },
+            initOverrides,
+        );
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Soft delete an idea
+     * Delete Idea
+     */
+    async coreApiDeleteIdea(
+        requestParameters: CoreApiDeleteIdeaRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<void> {
+        await this.coreApiDeleteIdeaRaw(requestParameters, initOverrides);
     }
 
     /**
@@ -919,6 +1159,60 @@ export class CoreApi extends runtime.BaseAPI {
     }
 
     /**
+     * Soft delete a timeline event
+     * Delete Timeline
+     */
+    async coreApiDeleteTimelineRaw(
+        requestParameters: CoreApiDeleteTimelineRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters["timelineId"] == null) {
+            throw new runtime.RequiredError(
+                "timelineId",
+                'Required parameter "timelineId" was null or undefined when calling coreApiDeleteTimeline().',
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
+        let urlPath = `/api/core/timelines/{timeline_id}`;
+        urlPath = urlPath.replace(`{${"timeline_id"}}`, encodeURIComponent(String(requestParameters["timelineId"])));
+
+        const response = await this.request(
+            {
+                path: urlPath,
+                method: "DELETE",
+                headers: headerParameters,
+                query: queryParameters,
+            },
+            initOverrides,
+        );
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Soft delete a timeline event
+     * Delete Timeline
+     */
+    async coreApiDeleteTimeline(
+        requestParameters: CoreApiDeleteTimelineRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<void> {
+        await this.coreApiDeleteTimelineRaw(requestParameters, initOverrides);
+    }
+
+    /**
      * Soft delete a tip
      * Delete Tip
      */
@@ -1020,6 +1314,61 @@ export class CoreApi extends runtime.BaseAPI {
         initOverrides?: RequestInit | runtime.InitOverrideFunction,
     ): Promise<Array<CategoryContentSchema>> {
         const response = await this.coreApiGetCategoriesContentRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get a specific idea by ID
+     * Get Idea
+     */
+    async coreApiGetIdeaRaw(
+        requestParameters: CoreApiGetIdeaRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<IdeaSchema>> {
+        if (requestParameters["ideaId"] == null) {
+            throw new runtime.RequiredError(
+                "ideaId",
+                'Required parameter "ideaId" was null or undefined when calling coreApiGetIdea().',
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
+        let urlPath = `/api/core/ideas/{idea_id}`;
+        urlPath = urlPath.replace(`{${"idea_id"}}`, encodeURIComponent(String(requestParameters["ideaId"])));
+
+        const response = await this.request(
+            {
+                path: urlPath,
+                method: "GET",
+                headers: headerParameters,
+                query: queryParameters,
+            },
+            initOverrides,
+        );
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => IdeaSchemaFromJSON(jsonValue));
+    }
+
+    /**
+     * Get a specific idea by ID
+     * Get Idea
+     */
+    async coreApiGetIdea(
+        requestParameters: CoreApiGetIdeaRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<IdeaSchema> {
+        const response = await this.coreApiGetIdeaRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -1302,6 +1651,61 @@ export class CoreApi extends runtime.BaseAPI {
     }
 
     /**
+     * Get a specific timeline event by ID
+     * Get Timeline
+     */
+    async coreApiGetTimelineRaw(
+        requestParameters: CoreApiGetTimelineRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<TimelineSchema>> {
+        if (requestParameters["timelineId"] == null) {
+            throw new runtime.RequiredError(
+                "timelineId",
+                'Required parameter "timelineId" was null or undefined when calling coreApiGetTimeline().',
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
+        let urlPath = `/api/core/timelines/{timeline_id}`;
+        urlPath = urlPath.replace(`{${"timeline_id"}}`, encodeURIComponent(String(requestParameters["timelineId"])));
+
+        const response = await this.request(
+            {
+                path: urlPath,
+                method: "GET",
+                headers: headerParameters,
+                query: queryParameters,
+            },
+            initOverrides,
+        );
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => TimelineSchemaFromJSON(jsonValue));
+    }
+
+    /**
+     * Get a specific timeline event by ID
+     * Get Timeline
+     */
+    async coreApiGetTimeline(
+        requestParameters: CoreApiGetTimelineRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<TimelineSchema> {
+        const response = await this.coreApiGetTimelineRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Get a specific tip by ID
      * Get Tip
      */
@@ -1398,6 +1802,65 @@ export class CoreApi extends runtime.BaseAPI {
         initOverrides?: RequestInit | runtime.InitOverrideFunction,
     ): Promise<WeddingSettingsSchema> {
         const response = await this.coreApiGetWeddingSettingsRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * List all ideas (non-deleted)
+     * List Ideas
+     */
+    async coreApiListIdeasRaw(
+        requestParameters: CoreApiListIdeasRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<PagedIdeaSchema>> {
+        const queryParameters: any = {};
+
+        if (requestParameters["name"] != null) {
+            queryParameters["name"] = requestParameters["name"];
+        }
+
+        if (requestParameters["page"] != null) {
+            queryParameters["page"] = requestParameters["page"];
+        }
+
+        if (requestParameters["pageSize"] != null) {
+            queryParameters["page_size"] = requestParameters["pageSize"];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
+        let urlPath = `/api/core/ideas`;
+
+        const response = await this.request(
+            {
+                path: urlPath,
+                method: "GET",
+                headers: headerParameters,
+                query: queryParameters,
+            },
+            initOverrides,
+        );
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => PagedIdeaSchemaFromJSON(jsonValue));
+    }
+
+    /**
+     * List all ideas (non-deleted)
+     * List Ideas
+     */
+    async coreApiListIdeas(
+        requestParameters: CoreApiListIdeasRequest = {},
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<PagedIdeaSchema> {
+        const response = await this.coreApiListIdeasRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -1638,6 +2101,73 @@ export class CoreApi extends runtime.BaseAPI {
     }
 
     /**
+     * List all timeline events (non-deleted)
+     * List Timelines
+     */
+    async coreApiListTimelinesRaw(
+        requestParameters: CoreApiListTimelinesRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<PagedTimelineSchema>> {
+        const queryParameters: any = {};
+
+        if (requestParameters["name"] != null) {
+            queryParameters["name"] = requestParameters["name"];
+        }
+
+        if (requestParameters["published"] != null) {
+            queryParameters["published"] = requestParameters["published"];
+        }
+
+        if (requestParameters["confirmed"] != null) {
+            queryParameters["confirmed"] = requestParameters["confirmed"];
+        }
+
+        if (requestParameters["page"] != null) {
+            queryParameters["page"] = requestParameters["page"];
+        }
+
+        if (requestParameters["pageSize"] != null) {
+            queryParameters["page_size"] = requestParameters["pageSize"];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
+        let urlPath = `/api/core/timelines`;
+
+        const response = await this.request(
+            {
+                path: urlPath,
+                method: "GET",
+                headers: headerParameters,
+                query: queryParameters,
+            },
+            initOverrides,
+        );
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => PagedTimelineSchemaFromJSON(jsonValue));
+    }
+
+    /**
+     * List all timeline events (non-deleted)
+     * List Timelines
+     */
+    async coreApiListTimelines(
+        requestParameters: CoreApiListTimelinesRequest = {},
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<PagedTimelineSchema> {
+        const response = await this.coreApiListTimelinesRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * List all tips (non-deleted)
      * List Tips
      */
@@ -1697,6 +2227,71 @@ export class CoreApi extends runtime.BaseAPI {
         initOverrides?: RequestInit | runtime.InitOverrideFunction,
     ): Promise<PagedTipsSchema> {
         const response = await this.coreApiListTipsRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Update an idea
+     * Update Idea
+     */
+    async coreApiUpdateIdeaRaw(
+        requestParameters: CoreApiUpdateIdeaRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<IdeaSchema>> {
+        if (requestParameters["ideaId"] == null) {
+            throw new runtime.RequiredError(
+                "ideaId",
+                'Required parameter "ideaId" was null or undefined when calling coreApiUpdateIdea().',
+            );
+        }
+
+        if (requestParameters["ideaUpdateSchema"] == null) {
+            throw new runtime.RequiredError(
+                "ideaUpdateSchema",
+                'Required parameter "ideaUpdateSchema" was null or undefined when calling coreApiUpdateIdea().',
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters["Content-Type"] = "application/json";
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
+        let urlPath = `/api/core/ideas/{idea_id}`;
+        urlPath = urlPath.replace(`{${"idea_id"}}`, encodeURIComponent(String(requestParameters["ideaId"])));
+
+        const response = await this.request(
+            {
+                path: urlPath,
+                method: "PUT",
+                headers: headerParameters,
+                query: queryParameters,
+                body: IdeaUpdateSchemaToJSON(requestParameters["ideaUpdateSchema"]),
+            },
+            initOverrides,
+        );
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => IdeaSchemaFromJSON(jsonValue));
+    }
+
+    /**
+     * Update an idea
+     * Update Idea
+     */
+    async coreApiUpdateIdea(
+        requestParameters: CoreApiUpdateIdeaRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<IdeaSchema> {
+        const response = await this.coreApiUpdateIdeaRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -2025,6 +2620,71 @@ export class CoreApi extends runtime.BaseAPI {
         initOverrides?: RequestInit | runtime.InitOverrideFunction,
     ): Promise<RsvpQuestionChoiceSchema> {
         const response = await this.coreApiUpdateRsvpQuestionChoiceRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Update a timeline event
+     * Update Timeline
+     */
+    async coreApiUpdateTimelineRaw(
+        requestParameters: CoreApiUpdateTimelineRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<TimelineSchema>> {
+        if (requestParameters["timelineId"] == null) {
+            throw new runtime.RequiredError(
+                "timelineId",
+                'Required parameter "timelineId" was null or undefined when calling coreApiUpdateTimeline().',
+            );
+        }
+
+        if (requestParameters["timelineUpdateSchema"] == null) {
+            throw new runtime.RequiredError(
+                "timelineUpdateSchema",
+                'Required parameter "timelineUpdateSchema" was null or undefined when calling coreApiUpdateTimeline().',
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters["Content-Type"] = "application/json";
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
+        let urlPath = `/api/core/timelines/{timeline_id}`;
+        urlPath = urlPath.replace(`{${"timeline_id"}}`, encodeURIComponent(String(requestParameters["timelineId"])));
+
+        const response = await this.request(
+            {
+                path: urlPath,
+                method: "PUT",
+                headers: headerParameters,
+                query: queryParameters,
+                body: TimelineUpdateSchemaToJSON(requestParameters["timelineUpdateSchema"]),
+            },
+            initOverrides,
+        );
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => TimelineSchemaFromJSON(jsonValue));
+    }
+
+    /**
+     * Update a timeline event
+     * Update Timeline
+     */
+    async coreApiUpdateTimeline(
+        requestParameters: CoreApiUpdateTimelineRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<TimelineSchema> {
+        const response = await this.coreApiUpdateTimelineRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
