@@ -1,37 +1,27 @@
 # Roadmap
 
-## Frontend Migration for Private sections
-- [x] Settings
-- [X] FAQ
-- [X] Deadlines
-  - [X] List View
-  - [x] Delete List and Item
-  - [x] Toggle completion
-  - [x] Disable Django components
-- [X] Guestlist
-- [ ] Timeline
-- [ ] Contacts
-- [ ] Dashboard
-- [ ] Inspiration
-- [ ] Ideas
-- [ ] Lists
-- [ ] Budget
-
 ## New Functionality
-- [ ] Settings
+- [ ] Configuration
     * [ ] Timezone
     * [x] Allow RSVP
     * [x] Show FAQ
     * [ ] Enable RSVP during configured date ranges
-- [ ] Preview
+    * [ ] Require Photo approval before display in the gallery
+    * [ ] Data import/export
+    * [ ] Show hours and minutes in countdown on home page
+    * [ ] Show date in timeline view on venue page
+* [ ] Planning
+  * [ ] Add stats to each section
+  * [ ] Initial setup flow
+- [X] Preview
     * [X] Public venue page
     * [X] Public FAQ page
     * [X] RSVP landing page
     * [X] RSVP accept part one
     * [X] RSVP accept part two
     * [X] RSVP declined 
-- [ ] Settings Page
-  - [ ] Cleanup import function
+- [ ] Guest List
+  - [ ] Add seating assignments
 - [ ] Photo Upload
     * [ ] Upload form (Public)
     * [ ] Gallery (Public)
@@ -40,7 +30,7 @@
     * [X] Notification of upcoming deadlines
     * [ ] Deletion of deadline list and all associated deadlines
 - [ ] Private Documentation
-    * [X] Settings
+    * [X] Configuration
     * [ ] Dashboard
     * [ ] Ideas
     * [ ] Inspiration
@@ -56,34 +46,10 @@
     * [ ] FAQ
     * [ ] RSVP
     * [ ] Photo Gallery
-
-
-
-## Existing Functionality Modifications
-
-### Deadline
-
-- [ ] Deadline List Detail
-    - [ ] Add associated deadlines in deadline list detail
-    - [ ] Delete deadline list
-    - [ ] Pre-populate new deadline form with list value
-  
-
-### User
-
 - [ ] User
-    - [ ] support setting social accounts to `is_staff` and `is_admin`
-  
+  - [ ]  support setting social accounts to `is_staff` and `is_admin`
 
 
 ## Future Enhancements
-
-
-### Configuration Options
-
-* Show date in timeline view on venue page
-* Show hours and minutes in countdown on home page
 * Use django-daisy or unfold for admin?
-* Refactor object import views
-* Initial setup wizard 
-* Require Photo approval before display in the gallery
+

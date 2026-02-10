@@ -2,7 +2,16 @@
  * Server-side API client using the OpenAPI generated client
  * Configured with service token authentication for backend-to-backend communication
  */
-import { Configuration, GuestlistApi, CoreApi, DeadlinesApi, ContactsApi, AttachmentsApi } from "../../../api-client";
+import {
+    Configuration,
+    GuestlistApi,
+    CoreApi,
+    DeadlinesApi,
+    ContactsApi,
+    AttachmentsApi,
+    ListApi,
+    ExpensesApi,
+} from "../../../api-client";
 import type { Middleware } from "../../../api-client/runtime";
 
 const API_BASE_PATH = process.env.BACKEND_API_URL;
@@ -63,18 +72,25 @@ const debugMiddleware: Middleware = {
     },
 };
 
-function createConfig() {
+function createConfig(sessionCookie?: string) {
+    const headers: Record<string, string> = {
+        "X-Service-Token": SERVICE_TOKEN,
+    };
+
+    // Forward session cookie if provided for user context
+    if (sessionCookie) {
+        headers["Cookie"] = `sessionid=${sessionCookie}`;
+    }
+
     return new Configuration({
         basePath: API_BASE_PATH,
-        headers: {
-            "X-Service-Token": SERVICE_TOKEN,
-        },
+        headers,
         middleware: [debugMiddleware],
     });
 }
 
-export function createApiClient() {
-    const config = createConfig();
+export function createApiClient(sessionCookie?: string) {
+    const config = createConfig(sessionCookie);
 
     return {
         guestlist: new GuestlistApi(config),
@@ -82,6 +98,8 @@ export function createApiClient() {
         deadlines: new DeadlinesApi(config),
         contacts: new ContactsApi(config),
         attachments: new AttachmentsApi(config),
+        list: new ListApi(config),
+        expenses: new ExpensesApi(config),
     };
 }
 

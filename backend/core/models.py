@@ -51,6 +51,7 @@ class Timeline(models.Model):
     name = models.CharField(max_length=100)
     start = models.DateTimeField(default=datetime.datetime.now)
     end = models.DateTimeField(null=True, blank=True)
+    order = models.IntegerField(default=0, help_text="Display order for timeline events")
     published = models.BooleanField(default=False, help_text="Indicates if the event is published to the venue page")
     confirmed = models.BooleanField(default=False, help_text="Indicates if the event is confirmed")
     description = models.TextField(blank=True, null=True)
@@ -67,7 +68,7 @@ class Timeline(models.Model):
         return self.name
 
     class Meta:
-        ordering = ["start"]
+        ordering = ["order", "start"]
         verbose_name_plural = "Timeline Events"
         constraints = [models.UniqueConstraint(fields=["name"], name="unique_timeline_event")]
 

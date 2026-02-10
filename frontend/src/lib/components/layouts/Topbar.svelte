@@ -1,7 +1,55 @@
+<script lang="ts" context="module">
+    import type { IMenuItem } from "$lib/components/layouts/TopbarMenuItem.svelte";
+
+    export const protectedMenu: IMenuItem[] = [
+        { title: "Inspiration", href: "/planning/inspiration", icon: "icon-[lucide--lightbulb]" },
+        { title: "Ideas", href: "/planning/idea", icon: "icon-[lucide--brain]" },
+        { title: "Contacts", href: "/planning/contact", icon: "icon-[lucide--book-user]" },
+
+        { title: "Deadlines", href: "/planning/deadline", icon: "icon-[lucide--calendar-check]" },
+        { title: "Lists", href: "/planning/list", icon: "icon-[lucide--check-square]" },
+        { title: "Budget", href: "/planning/budget", icon: "icon-[lucide--dollar-sign]" },
+        { title: "Guest List", href: "/planning/guest_list", icon: "icon-[lucide--users]" },
+        { title: "FAQ", href: "/planning/faq", icon: "icon-[lucide--help-circle]" },
+        { title: "Timeline", href: "/planning/timeline", icon: "icon-[lucide--timer]" },
+        {
+            title: "Configuration",
+            href: "/planning/config",
+            icon: "icon-[lucide--settings]",
+        },
+    ];
+
+    export const previewMenu: IMenuItem[] = [
+        {
+            title: "FAQ",
+            href: "/planning/preview/faq",
+        },
+        {
+            title: "Venue",
+            href: "/planning/preview/venue",
+        },
+        {
+            title: "RSVP Landing",
+            href: "/planning/preview/rsvp/landing",
+        },
+        {
+            title: "RSVP Accept 1",
+            href: "/planning/preview/rsvp/accept",
+        },
+        {
+            title: "RSVP Accept 2",
+            href: "/planning/preview/rsvp/complete?accepted=true",
+        },
+        {
+            title: "RSVP Declined",
+            href: "/planning/preview/rsvp/complete?accepted=false",
+        },
+    ];
+</script>
+
 <script lang="ts">
     import { goto } from "$app/navigation";
     import SidebarMenuItem from "$lib/components/layouts/SidebarMenuItem.svelte";
-    import type { IMenuItem } from "$lib/components/layouts/TopbarMenuItem.svelte";
     import TopbarMenuItem from "$lib/components/layouts/TopbarMenuItem.svelte";
     import { auth } from "$lib/stores/auth";
     import SimpleBar from "simplebar";
@@ -33,91 +81,6 @@
         },
     ];
 
-    const protectedMenu: IMenuItem[] = [
-        { title: "Contacts", href: "/settings/contact", icon: "icon-[lucide--book-user]" },
-        { title: "FAQ", href: "/settings/faq", icon: "icon-[lucide--help-circle]" },
-        { title: "Deadlines", href: "/settings/deadline", icon: "icon-[lucide--calendar-check]" },
-        { title: "Guest List", href: "/settings/guest_list", icon: "icon-[lucide--users]" },
-
-        {
-            title: "Settings",
-            href: "/settings/config",
-            icon: "icon-[lucide--settings]",
-        },
-    ];
-    const previewMenu: IMenuItem[] = [
-        {
-            title: "FAQ",
-            href: "/settings/preview/faq",
-        },
-        {
-            title: "Venue",
-            href: "/settings/preview/venue",
-        },
-        {
-            title: "RSVP Landing",
-            href: "/settings/preview/rsvp/landing",
-        },
-        {
-            title: "RSVP Accept 1",
-            href: "/settings/preview/rsvp/accept",
-        },
-        {
-            title: "RSVP Accept 2",
-            href: "/settings/preview/rsvp/complete?accepted=true",
-        },
-        {
-            title: "RSVP Declined",
-            href: "/settings/preview/rsvp/complete?accepted=false",
-        },
-    ];
-
-    const legacyLinks: IMenuItem[] = [
-        // {
-        //     title: "Dashboard",
-        //     href: "/planning/",
-        // },
-        {
-            title: "Inspiration",
-            href: "/inspiration/",
-        },
-        {
-            title: "Ideas",
-            href: "/idea/",
-        },
-        // {
-        //     title: "Contacts",
-        //     href: "/contacts/",
-        // },
-        {
-            title: "Lists",
-            href: "/lists/",
-        },
-        // {
-        //     title: "Deadlines",
-        //     href: "/deadline/",
-        // },
-        {
-            title: "Budget",
-            href: "/expenses/",
-        },
-        // {
-        //     title: "Guest List",
-        //     href: "/guestlist/",
-        // },
-        {
-            title: "Timeline",
-            href: "/timeline/",
-        },
-        // {
-        //     title: "FAQ",
-        //     href: "/question/",
-        // },
-        // {
-        //     title: "Settings",
-        //     href: "/settings/",
-        // },
-    ];
     let scrollPosition = $state(0);
     let scrollRef: HTMLDivElement;
 
@@ -169,16 +132,25 @@
                     class="dropdown-content bg-base-300 rounded-box z-1 w-44 p-2 text-sm shadow-sm right-0">
                     <ul class="menu w-full p-2">
                         {#if $auth.isAuthenticated}
-                            {#each legacyLinks as item, index (index)}
+                            <li>
+                                <a class="text-primary-content flex items-center gap-2 px-3 py-1.5" href="/planning">
+                                    <span class="icon-[lucide--home] size-4" />
+
+                                    <span>Planning</span>
+                                </a>
+                            </li>
+                            {#each protectedMenu as item, index (index)}
                                 <li>
                                     <a
                                         class="text-primary-content flex items-center gap-2 px-3 py-1.5"
                                         href={item.href}>
+                                        {#if item.icon}
+                                            <span class="{item.icon} size-4" />
+                                        {/if}
                                         <span>{item.title}</span>
                                     </a>
                                 </li>
                             {/each}
-                            <div class="border-t border-base-200 my-2"></div>
                             <li>
                                 <details>
                                     <summary class="text-primary-content flex items-center gap-2 px-3 py-1.5">
@@ -199,24 +171,12 @@
                                     </ul>
                                 </details>
                             </li>
-                            {#each protectedMenu as item, index (index)}
-                                <li>
-                                    <a
-                                        class="text-primary-content flex items-center gap-2 px-3 py-1.5"
-                                        href={item.href}>
-                                        {#if item.icon}
-                                            <span class="{item.icon} size-4" />
-                                        {/if}
-                                        <span>{item.title}</span>
-                                    </a>
-                                </li>
-                            {/each}
                             <div class="border-t border-base-200 my-2"></div>
 
                             <li>
                                 <a
                                     class="text-primary-content flex items-center gap-2 px-3 py-1.5"
-                                    href="/settings/profile">
+                                    href="/planning/profile">
                                     <span class="icon-[lucide--user] size-4" />
                                     <span>Profile</span>
                                 </a>
@@ -224,7 +184,7 @@
                             <li>
                                 <a
                                     class="text-primary-content flex items-center gap-2 px-3 py-1.5"
-                                    href="/settings/account">
+                                    href="/planning/account">
                                     <span class="icon-[lucide--settings] size-4" />
                                     <span>Account</span>
                                 </a>
@@ -232,7 +192,7 @@
                             <li>
                                 <a
                                     class="text-primary-content flex items-center gap-2 px-3 py-1.5"
-                                    href="/settings/notification">
+                                    href="/planning/notification">
                                     <span class="icon-[lucide--bell] size-4" />
                                     <span>Notification</span>
                                 </a>

@@ -4,7 +4,7 @@ Custom authentication classes for Django Ninja API
 
 from ninja.security import APIKeyHeader, SessionAuth
 from django.conf import settings
-from allauth.headless.contrib.ninja.security import x_session_token_auth
+from allauth.headless.contrib.ninja.security import XSessionTokenAuth as AllauthXSessionTokenAuth
 
 
 class ServiceTokenAuth(APIKeyHeader):
@@ -24,8 +24,25 @@ class ServiceTokenAuth(APIKeyHeader):
         return None
 
 
+class XSessionTokenAuth(AllauthXSessionTokenAuth):
+    """
+    X-Session-Token authentication with OpenAPI schema support.
+
+    The allauth XSessionTokenAuth class is missing openapi_in and openapi_name attributes
+    required for OpenAPI schema generation. This subclass adds them.
+
+    Source: allauth/headless/contrib/ninja/security.py only defines openapi_type="apiKey"
+    but OpenAPI generators need openapi_in and openapi_name (see ninja/security/apikey.py)
+    """
+
+    # Required for OpenAPI schema generation
+    openapi_in = "header"
+    openapi_name = "X-Session-Token"
+
+
 # Create reusable auth instances
 service_token_auth = ServiceTokenAuth()
+x_session_token_auth = XSessionTokenAuth()
 
 # Combine multiple authentication methods
 multi_auth = [service_token_auth, SessionAuth(), x_session_token_auth]

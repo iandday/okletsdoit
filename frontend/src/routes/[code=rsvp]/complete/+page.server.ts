@@ -1,9 +1,10 @@
 // frontend/src/routes/[code=rsvp]/complete/+page.server.ts
-import { api } from "$lib/server/api-client";
+import { createApiClient } from "$lib/server/api-client";
 import { error } from "@sveltejs/kit";
 import type { PageServerLoad } from "../$types";
 
-export const load: PageServerLoad = async ({ params, url }) => {
+export const load: PageServerLoad = async ({ params, url, locals }) => {
+    const api = createApiClient(locals.sessionCookie);
     const { code } = params;
     const configData = await api.core.coreApiGetWeddingSettings();
     const accepted = url.searchParams.get("accepted");

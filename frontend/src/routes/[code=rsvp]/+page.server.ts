@@ -1,9 +1,10 @@
-import { api } from "$lib/server/api-client";
+import { createApiClient } from "$lib/server/api-client";
 import { getconfigData } from "$lib/server/config-data";
 import { error, redirect } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 
-export const load: PageServerLoad = async ({ params, url }) => {
+export const load: PageServerLoad = async ({ params, url, locals }) => {
+    const api = createApiClient(locals.sessionCookie);
     const { code } = params;
     const config_data = await getconfigData();
     const accepted = url.searchParams.get("accepted");

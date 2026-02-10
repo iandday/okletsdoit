@@ -56,8 +56,16 @@
     "dependencies": {
         "@iconify-json/lucide": "^1.2.81",
         "@iconify/tailwind4": "^1.2.0",
+        "@tiptap/core": "^3.19.0",
+        "@tiptap/extension-bubble-menu": "^3.19.0",
+        "@tiptap/extension-link": "^3.19.0",
+        "@tiptap/extension-placeholder": "^3.19.0",
+        "@tiptap/pm": "^3.19.0",
+        "@tiptap/starter-kit": "^3.19.0",
+        "chart.js": "^4.4.7",
         "motion": "^12.23.26",
         "simplebar": "^6.3.3",
+        "svelte-dnd-action": "^0.9.69",
         "svelte-headless-table": "^0.18.3",
         "swiper": "^11.2.10"
     }

@@ -1,0 +1,40 @@
+/* TipTap Rich Text Editor Content Styling */
+
+.tiptap-content ul,
+.tiptap-content ol {
+    padding-left: 1.5rem;
+    margin: 0.5rem 0;
+}
+
+.tiptap-content ul {
+    list-style-type: disc;
+}
+
+.tiptap-content ol {
+    list-style-type: decimal;
+}
+
+.tiptap-content li {
+    margin: 0.25rem 0;
+}
+
+.tiptap-content a {
+    color: oklch(var(--p));
+    text-decoration: underline;
+}
+
+.tiptap-content a:hover {
+    color: oklch(var(--pf));
+}
+
+.tiptap-content strong {
+    font-weight: 600;
+}
+
+.tiptap-content em {
+    font-style: italic;
+}
+
+.tiptap-content p {
+    margin: 0.5rem 0;
+}
