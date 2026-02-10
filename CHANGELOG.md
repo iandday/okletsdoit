@@ -1,6 +1,72 @@
 # CHANGELOG
 
 
+## v0.11.0 (2026-02-10)
+
+### Bug Fixes
+
+- **Core**: :ambulance: update lock file
+  ([`c072d02`](https://github.com/iandday/okletsdoit/commit/c072d025c4cd3b3a5024ea7a8f8a209f845581a9))
+
+- :fire: user client session
+  ([`c6ce380`](https://github.com/iandday/okletsdoit/commit/c6ce380eebbed4c3b14012ac98386d4df1ad88bb))
+
+- **GuestList**: :bug: update component
+  ([`4be1401`](https://github.com/iandday/okletsdoit/commit/4be14016350e8acdce00c59ea9f15bb2cca5f947))
+
+- :art: linting
+  ([`6877be2`](https://github.com/iandday/okletsdoit/commit/6877be2143ec679823e89b2b9cb36bd5def089e4))
+
+### Chores
+
+- Sync files from main after release ([#66](https://github.com/iandday/okletsdoit/pull/66),
+  [`dd340e9`](https://github.com/iandday/okletsdoit/commit/dd340e9f9203c8770ad1698d6ee508241a3b7781))
+
+Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
+
+### Code Style
+
+- **List**: :lipstick: update label
+  ([`3dccefc`](https://github.com/iandday/okletsdoit/commit/3dccefcf524791f1517f3dc5bb7ca69714dec387))
+
+- **Expenses**: :lipstick: update layout
+  ([`4a8e31f`](https://github.com/iandday/okletsdoit/commit/4a8e31f822aee45f697949540958c932bba832bd))
+
+### Features
+
+- **Core**: :sparkles: planning hub
+  ([`7c74de3`](https://github.com/iandday/okletsdoit/commit/7c74de363829137876e0d398a0d4fdcfc1bd33b7))
+
+- **Core**: :sparkles: migrate ideas
+  ([`a56b41e`](https://github.com/iandday/okletsdoit/commit/a56b41ee0c73392e1a0f264a718a61fd4c6d5f5b))
+
+- **Core**: :sparkles: migrate ideas to frontend
+  ([`789fca3`](https://github.com/iandday/okletsdoit/commit/789fca340a13150a6b1e77e2828295d37e126cde))
+
+- **Inspiration**: :art: migrate inspiration to the front end
+  ([`2c78ab4`](https://github.com/iandday/okletsdoit/commit/2c78ab4471770898e68dfbfdfe23b968d37fb2cc))
+
+- **List**: :art: normalize tables
+  ([`bc6d78a`](https://github.com/iandday/okletsdoit/commit/bc6d78a0e6e366d1b9b5b97bd81ca876dff28c19))
+
+- **Expenses**: :memo: update nav
+  ([`1b3e4eb`](https://github.com/iandday/okletsdoit/commit/1b3e4eb353dce125d086e4d7d32b2f98c79af840))
+
+- **Expenses**: :sparkles: complete transition
+  ([`740e1ee`](https://github.com/iandday/okletsdoit/commit/740e1ee0d46d5ce8331e79440ef3a2c29bdc9084))
+
+- **Expenses**: :sparkles: initial migration to frontend
+  ([`4847366`](https://github.com/iandday/okletsdoit/commit/4847366d69715f2029b100ac0c219b89cb3d3aa6))
+
+- **List**: :sparkles: migrate to frontend
+  ([`3d5987c`](https://github.com/iandday/okletsdoit/commit/3d5987c0f4e1a5d42ec2c49a73ee54f98951ec5c))
+
+### Refactoring
+
+- **Core**: :zap: refactor planning section
+  ([`fa91439`](https://github.com/iandday/okletsdoit/commit/fa91439511dfbf57973fca1ecc68dc684b574c49))
+
+
 ## v0.10.1 (2026-01-31)
 
 ### Bug Fixes
