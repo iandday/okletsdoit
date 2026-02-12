@@ -1,6 +1,24 @@
 # CHANGELOG
 
 
+## v0.11.1 (2026-02-12)
+
+### Bug Fixes
+
+- :bug: vuln bump
+  ([`044cdd0`](https://github.com/iandday/okletsdoit/commit/044cdd0eb9a457501b82323c34de8618efb79158))
+
+- **List**: :bug: delete list entry
+  ([`faccb38`](https://github.com/iandday/okletsdoit/commit/faccb38957eaf965fa35f127c3b92f0b7011f631))
+
+### Chores
+
+- Sync files from main after release ([#71](https://github.com/iandday/okletsdoit/pull/71),
+  [`a33b2d0`](https://github.com/iandday/okletsdoit/commit/a33b2d0639de743df622522974ee42952236abf1))
+
+Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
+
+
 ## v0.11.0 (2026-02-10)
 
 ### Bug Fixes
