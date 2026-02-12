@@ -1,5 +1,5 @@
 import { createApiClient } from "$lib/server/api-client";
-import { error, redirect } from "@sveltejs/kit";
+import { error, fail, redirect } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async ({ params, locals }) => {
@@ -69,5 +69,24 @@ export const actions: Actions = {
         }
 
         throw redirect(303, "/planning/list");
+    },
+    deleteEntry: async ({ request, locals }) => {
+        const api = createApiClient(locals.sessionCookie);
+        const formData = await request.formData();
+        const entryId = formData.get("value")?.toString();
+
+        if (!entryId) {
+            return fail(400, { error: "Entry ID is required" });
+        }
+
+        try {
+            await api.list.listApiDeleteListEntry({
+                entryId,
+            });
+            return { success: true };
+        } catch (err) {
+            console.error("Failed to delete list entry:", err);
+            return fail(500, { error: "Failed to delete list entry" });
+        }
     },
 };
