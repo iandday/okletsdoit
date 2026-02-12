@@ -12,7 +12,7 @@
         {
             name: "Holiday Inn Express & Suites Lancaster by IHG",
             description: "",
-            url: "hhttps://www.ihg.com/holidayinnexpress/hotels/us/en/lancaster/lncoh/hoteldetail?cm_mmc=GoogleMaps-_-EX-_-US-_-LNCOH",
+            url: "https://www.ihg.com/holidayinnexpress/hotels/us/en/lancaster/lncoh/hoteldetail?cm_mmc=GoogleMaps-_-EX-_-US-_-LNCOH",
             phone: "",
             address: "1861 Riverway Dr, Lancaster, OH 43130",
             type: "hotel",

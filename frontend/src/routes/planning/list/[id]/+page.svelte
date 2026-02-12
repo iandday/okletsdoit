@@ -269,8 +269,8 @@
                                 {/if}
                             </div>
                             <div class="list-card-actions flex gap-2">
-                                <ViewDetails href={`/planning/list_entry/${entry.id}`} label="View Details" />
-                                <EditObject href={`/planning/list_entry/${entry.id}/edit`} label="Edit" />
+                                <ViewDetails href={`/planning/list_entry/${entry.id}`} label="View Details" size="sm" />
+                                <EditObject href={`/planning/list_entry/${entry.id}/edit`} label="Edit" size="sm" />
 
                                 <DeleteObject
                                     action="?/deleteEntry"
