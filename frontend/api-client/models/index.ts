@@ -1,5 +1,9 @@
 /* tslint:disable */
 /* eslint-disable */
+export * from "./AccommodationCreateSchema";
+export * from "./AccommodationFilterSchema";
+export * from "./AccommodationSchema";
+export * from "./AccommodationUpdateSchema";
 export * from "./ActualAmount";
 export * from "./AdditionalPrice";
 export * from "./AdditionalPrice1";
@@ -51,6 +55,7 @@ export * from "./ListEntryUpdateSchema";
 export * from "./ListFilterSchema";
 export * from "./ListSchema";
 export * from "./ListUpdateSchema";
+export * from "./PagedAccommodationSchema";
 export * from "./PagedAttachmentSchema";
 export * from "./PagedCategorySchema";
 export * from "./PagedContactSchema";

@@ -12,6 +12,9 @@
  * Do not edit the class manually.
  */
 import type {
+    AccommodationCreateSchema,
+    AccommodationSchema,
+    AccommodationUpdateSchema,
     CategoryContentSchema,
     IdeaCreateSchema,
     IdeaSchema,
@@ -19,6 +22,7 @@ import type {
     InspirationCreateSchema,
     InspirationSchema,
     InspirationUpdateSchema,
+    PagedAccommodationSchema,
     PagedIdeaSchema,
     PagedInspirationSchema,
     PagedQuestionSchema,
@@ -47,6 +51,12 @@ import type {
     WeddingSettingsUpdateSchema,
 } from "../models/index";
 import {
+    AccommodationCreateSchemaFromJSON,
+    AccommodationCreateSchemaToJSON,
+    AccommodationSchemaFromJSON,
+    AccommodationSchemaToJSON,
+    AccommodationUpdateSchemaFromJSON,
+    AccommodationUpdateSchemaToJSON,
     CategoryContentSchemaFromJSON,
     CategoryContentSchemaToJSON,
     IdeaCreateSchemaFromJSON,
@@ -61,6 +71,8 @@ import {
     InspirationSchemaToJSON,
     InspirationUpdateSchemaFromJSON,
     InspirationUpdateSchemaToJSON,
+    PagedAccommodationSchemaFromJSON,
+    PagedAccommodationSchemaToJSON,
     PagedIdeaSchemaFromJSON,
     PagedIdeaSchemaToJSON,
     PagedInspirationSchemaFromJSON,
@@ -116,6 +128,10 @@ import {
 } from "../models/index";
 import * as runtime from "../runtime";
 
+export interface CoreApiCreateAccommodationRequest {
+    accommodationCreateSchema: AccommodationCreateSchema;
+}
+
 export interface CoreApiCreateIdeaRequest {
     ideaCreateSchema: IdeaCreateSchema;
 }
@@ -146,6 +162,10 @@ export interface CoreApiCreateTimelineRequest {
 
 export interface CoreApiCreateTipRequest {
     tipsCreateSchema: TipsCreateSchema;
+}
+
+export interface CoreApiDeleteAccommodationRequest {
+    accommodationId: string;
 }
 
 export interface CoreApiDeleteIdeaRequest {
@@ -184,6 +204,10 @@ export interface CoreApiDeleteTipRequest {
     tipId: string;
 }
 
+export interface CoreApiGetAccommodationRequest {
+    accommodationId: string;
+}
+
 export interface CoreApiGetCategoriesContentRequest {
     publishedOnly?: boolean;
 }
@@ -218,6 +242,15 @@ export interface CoreApiGetTimelineRequest {
 
 export interface CoreApiGetTipRequest {
     tipId: string;
+}
+
+export interface CoreApiListAccommodationsRequest {
+    name?: string | null;
+    accommodationType?: string | null;
+    city?: string | null;
+    state?: string | null;
+    page?: number;
+    pageSize?: number | null;
 }
 
 export interface CoreApiListIdeasRequest {
@@ -263,6 +296,11 @@ export interface CoreApiListTipsRequest {
     published?: boolean | null;
     page?: number;
     pageSize?: number | null;
+}
+
+export interface CoreApiUpdateAccommodationRequest {
+    accommodationId: string;
+    accommodationUpdateSchema: AccommodationUpdateSchema;
 }
 
 export interface CoreApiUpdateIdeaRequest {
@@ -318,6 +356,63 @@ export interface CoreApiUploadInspirationImageRequest {
  *
  */
 export class CoreApi extends runtime.BaseAPI {
+    /**
+     * Create a new accommodation
+     * Create Accommodation
+     */
+    async coreApiCreateAccommodationRaw(
+        requestParameters: CoreApiCreateAccommodationRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<AccommodationSchema>> {
+        if (requestParameters["accommodationCreateSchema"] == null) {
+            throw new runtime.RequiredError(
+                "accommodationCreateSchema",
+                'Required parameter "accommodationCreateSchema" was null or undefined when calling coreApiCreateAccommodation().',
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters["Content-Type"] = "application/json";
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
+        let urlPath = `/api/core/accommodations`;
+
+        const response = await this.request(
+            {
+                path: urlPath,
+                method: "POST",
+                headers: headerParameters,
+                query: queryParameters,
+                body: AccommodationCreateSchemaToJSON(requestParameters["accommodationCreateSchema"]),
+            },
+            initOverrides,
+        );
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => AccommodationSchemaFromJSON(jsonValue));
+    }
+
+    /**
+     * Create a new accommodation
+     * Create Accommodation
+     */
+    async coreApiCreateAccommodation(
+        requestParameters: CoreApiCreateAccommodationRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<AccommodationSchema> {
+        const response = await this.coreApiCreateAccommodationRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
     /**
      * Create a new idea
      * Create Idea
@@ -772,6 +867,63 @@ export class CoreApi extends runtime.BaseAPI {
     ): Promise<TipsSchema> {
         const response = await this.coreApiCreateTipRaw(requestParameters, initOverrides);
         return await response.value();
+    }
+
+    /**
+     * Soft delete an accommodation
+     * Delete Accommodation
+     */
+    async coreApiDeleteAccommodationRaw(
+        requestParameters: CoreApiDeleteAccommodationRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters["accommodationId"] == null) {
+            throw new runtime.RequiredError(
+                "accommodationId",
+                'Required parameter "accommodationId" was null or undefined when calling coreApiDeleteAccommodation().',
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
+        let urlPath = `/api/core/accommodations/{accommodation_id}`;
+        urlPath = urlPath.replace(
+            `{${"accommodation_id"}}`,
+            encodeURIComponent(String(requestParameters["accommodationId"])),
+        );
+
+        const response = await this.request(
+            {
+                path: urlPath,
+                method: "DELETE",
+                headers: headerParameters,
+                query: queryParameters,
+            },
+            initOverrides,
+        );
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Soft delete an accommodation
+     * Delete Accommodation
+     */
+    async coreApiDeleteAccommodation(
+        requestParameters: CoreApiDeleteAccommodationRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<void> {
+        await this.coreApiDeleteAccommodationRaw(requestParameters, initOverrides);
     }
 
     /**
@@ -1264,6 +1416,64 @@ export class CoreApi extends runtime.BaseAPI {
         initOverrides?: RequestInit | runtime.InitOverrideFunction,
     ): Promise<void> {
         await this.coreApiDeleteTipRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Get a specific accommodation by ID
+     * Get Accommodation
+     */
+    async coreApiGetAccommodationRaw(
+        requestParameters: CoreApiGetAccommodationRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<AccommodationSchema>> {
+        if (requestParameters["accommodationId"] == null) {
+            throw new runtime.RequiredError(
+                "accommodationId",
+                'Required parameter "accommodationId" was null or undefined when calling coreApiGetAccommodation().',
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
+        let urlPath = `/api/core/accommodations/{accommodation_id}`;
+        urlPath = urlPath.replace(
+            `{${"accommodation_id"}}`,
+            encodeURIComponent(String(requestParameters["accommodationId"])),
+        );
+
+        const response = await this.request(
+            {
+                path: urlPath,
+                method: "GET",
+                headers: headerParameters,
+                query: queryParameters,
+            },
+            initOverrides,
+        );
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => AccommodationSchemaFromJSON(jsonValue));
+    }
+
+    /**
+     * Get a specific accommodation by ID
+     * Get Accommodation
+     */
+    async coreApiGetAccommodation(
+        requestParameters: CoreApiGetAccommodationRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<AccommodationSchema> {
+        const response = await this.coreApiGetAccommodationRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
     /**
@@ -1806,6 +2016,77 @@ export class CoreApi extends runtime.BaseAPI {
     }
 
     /**
+     * List all accommodations (non-deleted)
+     * List Accommodations
+     */
+    async coreApiListAccommodationsRaw(
+        requestParameters: CoreApiListAccommodationsRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<PagedAccommodationSchema>> {
+        const queryParameters: any = {};
+
+        if (requestParameters["name"] != null) {
+            queryParameters["name"] = requestParameters["name"];
+        }
+
+        if (requestParameters["accommodationType"] != null) {
+            queryParameters["accommodation_type"] = requestParameters["accommodationType"];
+        }
+
+        if (requestParameters["city"] != null) {
+            queryParameters["city"] = requestParameters["city"];
+        }
+
+        if (requestParameters["state"] != null) {
+            queryParameters["state"] = requestParameters["state"];
+        }
+
+        if (requestParameters["page"] != null) {
+            queryParameters["page"] = requestParameters["page"];
+        }
+
+        if (requestParameters["pageSize"] != null) {
+            queryParameters["page_size"] = requestParameters["pageSize"];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
+        let urlPath = `/api/core/accommodations`;
+
+        const response = await this.request(
+            {
+                path: urlPath,
+                method: "GET",
+                headers: headerParameters,
+                query: queryParameters,
+            },
+            initOverrides,
+        );
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => PagedAccommodationSchemaFromJSON(jsonValue));
+    }
+
+    /**
+     * List all accommodations (non-deleted)
+     * List Accommodations
+     */
+    async coreApiListAccommodations(
+        requestParameters: CoreApiListAccommodationsRequest = {},
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<PagedAccommodationSchema> {
+        const response = await this.coreApiListAccommodationsRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * List all ideas (non-deleted)
      * List Ideas
      */
@@ -2227,6 +2508,74 @@ export class CoreApi extends runtime.BaseAPI {
         initOverrides?: RequestInit | runtime.InitOverrideFunction,
     ): Promise<PagedTipsSchema> {
         const response = await this.coreApiListTipsRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Update an accommodation
+     * Update Accommodation
+     */
+    async coreApiUpdateAccommodationRaw(
+        requestParameters: CoreApiUpdateAccommodationRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<AccommodationSchema>> {
+        if (requestParameters["accommodationId"] == null) {
+            throw new runtime.RequiredError(
+                "accommodationId",
+                'Required parameter "accommodationId" was null or undefined when calling coreApiUpdateAccommodation().',
+            );
+        }
+
+        if (requestParameters["accommodationUpdateSchema"] == null) {
+            throw new runtime.RequiredError(
+                "accommodationUpdateSchema",
+                'Required parameter "accommodationUpdateSchema" was null or undefined when calling coreApiUpdateAccommodation().',
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters["Content-Type"] = "application/json";
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
+        let urlPath = `/api/core/accommodations/{accommodation_id}`;
+        urlPath = urlPath.replace(
+            `{${"accommodation_id"}}`,
+            encodeURIComponent(String(requestParameters["accommodationId"])),
+        );
+
+        const response = await this.request(
+            {
+                path: urlPath,
+                method: "PUT",
+                headers: headerParameters,
+                query: queryParameters,
+                body: AccommodationUpdateSchemaToJSON(requestParameters["accommodationUpdateSchema"]),
+            },
+            initOverrides,
+        );
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => AccommodationSchemaFromJSON(jsonValue));
+    }
+
+    /**
+     * Update an accommodation
+     * Update Accommodation
+     */
+    async coreApiUpdateAccommodation(
+        requestParameters: CoreApiUpdateAccommodationRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<AccommodationSchema> {
+        const response = await this.coreApiUpdateAccommodationRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

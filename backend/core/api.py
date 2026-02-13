@@ -13,6 +13,7 @@ from ninja.pagination import PageNumberPagination, paginate
 
 from core.auth import multi_auth
 
+from .models import Accommodation
 from .models import Idea
 from .models import Inspiration
 from .models import Question
@@ -278,6 +279,60 @@ class InspirationCreateSchema(Schema):
 class InspirationUpdateSchema(Schema):
     name: Optional[str] = None
     description: Optional[str] = None
+
+
+# Accommodation Schemas
+class AccommodationSchema(Schema):
+    id: UUID
+    name: str
+    slug: str
+    description: Optional[str] = None
+    url: Optional[str] = None
+    phone_number: Optional[str] = None
+    address_line_one: Optional[str] = None
+    address_line_two: Optional[str] = None
+    city: Optional[str] = None
+    state: Optional[str] = None
+    zipcode: Optional[str] = None
+    accommodation_type: str
+    order: int
+    created_at: datetime
+    updated_at: datetime
+
+
+class AccommodationFilterSchema(FilterSchema):
+    name: Optional[str] = None
+    accommodation_type: Optional[str] = None
+    city: Optional[str] = None
+    state: Optional[str] = None
+
+
+class AccommodationCreateSchema(Schema):
+    name: str
+    description: Optional[str] = None
+    url: Optional[str] = None
+    phone_number: Optional[str] = None
+    address_line_one: Optional[str] = None
+    address_line_two: Optional[str] = None
+    city: Optional[str] = None
+    state: Optional[str] = None
+    zipcode: Optional[str] = None
+    accommodation_type: Optional[str] = "hotel"
+    order: Optional[int] = 0
+
+
+class AccommodationUpdateSchema(Schema):
+    name: Optional[str] = None
+    description: Optional[str] = None
+    url: Optional[str] = None
+    phone_number: Optional[str] = None
+    address_line_one: Optional[str] = None
+    address_line_two: Optional[str] = None
+    city: Optional[str] = None
+    state: Optional[str] = None
+    zipcode: Optional[str] = None
+    accommodation_type: Optional[str] = None
+    order: Optional[int] = None
 
 
 class IdeaSchema(Schema):
@@ -1385,3 +1440,142 @@ def delete_timeline(request, timeline_id: UUID):
             timeline.updated_by = admin_user
     timeline.save()
     return {"success": True, "message": "Timeline event deleted successfully"}
+
+
+# Accommodation CRUD Endpoints
+@router.get("/accommodations", response=List[AccommodationSchema])
+@paginate(PageNumberPagination, page_size=50)
+def list_accommodations(request, filters: AccommodationFilterSchema = Query(...)):  # pyright: ignore[reportCallIssue]
+    """List all accommodations (non-deleted)"""
+    q = Q(is_deleted=False)
+    q &= filters.get_filter_expression()
+    accommodations = Accommodation.objects.filter(q).order_by("order", "name")
+
+    return [
+        {
+            "id": accommodation.id,
+            "name": accommodation.name,
+            "slug": accommodation.slug,
+            "description": accommodation.description,
+            "url": accommodation.url,
+            "phone_number": accommodation.phone_number,
+            "address_line_one": accommodation.address_line_one,
+            "address_line_two": accommodation.address_line_two,
+            "city": accommodation.city,
+            "state": accommodation.state,
+            "zipcode": accommodation.zipcode,
+            "accommodation_type": accommodation.accommodation_type,
+            "order": accommodation.order,
+            "created_at": accommodation.created_at,
+            "updated_at": accommodation.updated_at,
+        }
+        for accommodation in accommodations
+    ]
+
+
+@router.get("/accommodations/{accommodation_id}", response=AccommodationSchema)
+def get_accommodation(request, accommodation_id: UUID):
+    """Get a specific accommodation by ID"""
+    accommodation = get_object_or_404(Accommodation, id=accommodation_id, is_deleted=False)
+    return {
+        "id": accommodation.id,
+        "name": accommodation.name,
+        "slug": accommodation.slug,
+        "description": accommodation.description,
+        "url": accommodation.url,
+        "phone_number": accommodation.phone_number,
+        "address_line_one": accommodation.address_line_one,
+        "address_line_two": accommodation.address_line_two,
+        "city": accommodation.city,
+        "state": accommodation.state,
+        "zipcode": accommodation.zipcode,
+        "accommodation_type": accommodation.accommodation_type,
+        "order": accommodation.order,
+        "created_at": accommodation.created_at,
+        "updated_at": accommodation.updated_at,
+    }
+
+
+@router.post("/accommodations", response=AccommodationSchema)
+def create_accommodation(request, payload: AccommodationCreateSchema):
+    """Create a new accommodation"""
+    data = payload.dict()
+
+    if request.user.is_authenticated:
+        data["created_by"] = request.user
+    else:
+        admin_user = User.objects.filter(is_staff=True, is_active=True).first()
+        if admin_user:
+            data["created_by"] = admin_user
+
+    accommodation = Accommodation.objects.create(**data)
+
+    return {
+        "id": accommodation.id,
+        "name": accommodation.name,
+        "slug": accommodation.slug,
+        "description": accommodation.description,
+        "url": accommodation.url,
+        "phone_number": accommodation.phone_number,
+        "address_line_one": accommodation.address_line_one,
+        "address_line_two": accommodation.address_line_two,
+        "city": accommodation.city,
+        "state": accommodation.state,
+        "zipcode": accommodation.zipcode,
+        "accommodation_type": accommodation.accommodation_type,
+        "order": accommodation.order,
+        "created_at": accommodation.created_at,
+        "updated_at": accommodation.updated_at,
+    }
+
+
+@router.put("/accommodations/{accommodation_id}", response=AccommodationSchema)
+def update_accommodation(request, accommodation_id: UUID, payload: AccommodationUpdateSchema):
+    """Update an accommodation"""
+    accommodation = get_object_or_404(Accommodation, id=accommodation_id, is_deleted=False)
+    data = payload.dict(exclude_unset=True)
+
+    for attr, value in data.items():
+        setattr(accommodation, attr, value)
+
+    if request.user.is_authenticated:
+        accommodation.updated_by = request.user
+    else:
+        admin_user = User.objects.filter(is_staff=True, is_active=True).first()
+        if admin_user:
+            accommodation.updated_by = admin_user
+
+    accommodation.save()
+
+    return {
+        "id": accommodation.id,
+        "name": accommodation.name,
+        "slug": accommodation.slug,
+        "description": accommodation.description,
+        "url": accommodation.url,
+        "phone_number": accommodation.phone_number,
+        "address_line_one": accommodation.address_line_one,
+        "address_line_two": accommodation.address_line_two,
+        "city": accommodation.city,
+        "state": accommodation.state,
+        "zipcode": accommodation.zipcode,
+        "accommodation_type": accommodation.accommodation_type,
+        "order": accommodation.order,
+        "created_at": accommodation.created_at,
+        "updated_at": accommodation.updated_at,
+    }
+
+
+@router.delete("/accommodations/{accommodation_id}")
+def delete_accommodation(request, accommodation_id: UUID):
+    """Soft delete an accommodation"""
+    accommodation = get_object_or_404(Accommodation, id=accommodation_id, is_deleted=False)
+    accommodation.is_deleted = True
+    if request.user.is_authenticated:
+        accommodation.updated_by = request.user
+    else:
+        admin_user = User.objects.filter(is_staff=True, is_active=True).first()
+        if admin_user:
+            accommodation.updated_by = admin_user
+    accommodation.save()
+    return {"success": True, "message": "Accommodation deleted successfully"}

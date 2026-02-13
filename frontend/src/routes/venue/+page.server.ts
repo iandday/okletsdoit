@@ -7,7 +7,10 @@ export const load: PageServerLoad = async ({ locals }) => {
         published: true,
     });
 
+    const accommodationsResponse = await api.core.coreApiListAccommodations({});
+
     return {
         timelines: timelines.items || [],
+        accommodations: accommodationsResponse.items || [],
     };
 };

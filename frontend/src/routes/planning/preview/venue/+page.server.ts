@@ -9,7 +9,18 @@ export const load: PageServerLoad = async ({ locals }) => {
         published: true,
     });
 
+    // Note: After regenerating the OpenAPI client, this will fetch accommodations
+    // For now, it will return an empty array until the API client is regenerated
+    let accommodations = [];
+    try {
+        const accommodationsResponse = await api.core.coreApiListAccommodations({});
+        accommodations = accommodationsResponse.items || [];
+    } catch (err) {
+        console.log("Accommodations API not yet available - will be available after OpenAPI regeneration");
+    }
+
     return {
         timelines: timelines.items || [],
+        accommodations,
     };
 };

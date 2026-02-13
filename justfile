@@ -1,24 +1,16 @@
 # Set the default shell for commands
+
 set shell := ["bash", "-c"]
 
-
-#----Setup Commands----#
+# ----Setup Commands----#
 setup:
-    @echo "Installing npm dependencies"
-    npm install
     @echo "Installing python depdencies"
     uv sync
 
-
-#----Development commands----#
+# ----Development commands----#
 up:
     @echo "Starting the development environment"
     docker compose -f docker/docker-compose.yml build && docker compose -f docker/docker-compose.yml up
-
-css:
-    @echo "Building CSS with Tailwind and daisyUI 5"
-    npm run build-css
-
 
 makemigrations:
     @echo "Running Django makemigrations..."
@@ -32,10 +24,11 @@ migrate:
 docs:
     uv run --all-groups mkdocs serve
 
-#----Pre-commit commands----#
+# ----Pre-commit commands----#
 lint:
     uv run --group dev ruff check backend
     cd backend && uv run --group dev mypy .
+
 test:
     uv run --group dev pytest
 
@@ -52,9 +45,6 @@ local-scan:
         --vuln-type os,library --severity CRITICAL,HIGH
 
 #----Build commands----#
-css-prod:
-    @echo "Building production CSS"
-    npm run build-css-prod
 
 collectstatic:
     @echo "Collecting static files..."
@@ -64,10 +54,7 @@ superuser:
     @echo "Creating a Django superuser..."
     python manage.py createsuperuser --no-input
 
-
-
-
-#----Production commands----#
+# ----Production commands----#
 build:
     @echo "Building production Docker image (multi-stage)"
     DOCKER_BUILDKIT=1 docker build \

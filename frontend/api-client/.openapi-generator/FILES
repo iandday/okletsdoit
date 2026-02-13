@@ -6,6 +6,10 @@ apis/ExpensesApi.ts
 apis/GuestlistApi.ts
 apis/ListApi.ts
 apis/index.ts
+docs/AccommodationCreateSchema.md
+docs/AccommodationFilterSchema.md
+docs/AccommodationSchema.md
+docs/AccommodationUpdateSchema.md
 docs/ActualAmount.md
 docs/AdditionalPrice.md
 docs/AdditionalPrice1.md
@@ -64,6 +68,7 @@ docs/ListEntryUpdateSchema.md
 docs/ListFilterSchema.md
 docs/ListSchema.md
 docs/ListUpdateSchema.md
+docs/PagedAccommodationSchema.md
 docs/PagedAttachmentSchema.md
 docs/PagedCategorySchema.md
 docs/PagedContactSchema.md
@@ -118,6 +123,10 @@ docs/UnitPrice1.md
 docs/WeddingSettingsSchema.md
 docs/WeddingSettingsUpdateSchema.md
 index.ts
+models/AccommodationCreateSchema.ts
+models/AccommodationFilterSchema.ts
+models/AccommodationSchema.ts
+models/AccommodationUpdateSchema.ts
 models/ActualAmount.ts
 models/AdditionalPrice.ts
 models/AdditionalPrice1.ts
@@ -169,6 +178,7 @@ models/ListEntryUpdateSchema.ts
 models/ListFilterSchema.ts
 models/ListSchema.ts
 models/ListUpdateSchema.ts
+models/PagedAccommodationSchema.ts
 models/PagedAttachmentSchema.ts
 models/PagedCategorySchema.ts
 models/PagedContactSchema.ts

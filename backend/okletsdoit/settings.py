@@ -76,23 +76,17 @@ INSTALLED_APPS = [
     "health_check.contrib.celery_ping",
     "health_check.contrib.redis",
     "widget_tweaks",
-    "slippers",
     "allauth_ui",
     "allauth",
     "allauth.account",
     "allauth.headless",
-    # "allauth.mfa",
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
     "allauth.socialaccount.providers.openid_connect",
     "import_export",  # https://django-import-export.readthedocs.io/en/latest/
     "simple_history",  # https://django-simple-history.readthedocs.io/en/latest/quick_start.html#install
     "csp",
-    "django_cotton",  # https://django-cotton.com/docs/quickstart
-    "crispy_forms",  # https://django-crispy-forms.readthedocs.io/en/latest/
-    "crispy_formset_modal",  # https://blasferna.github.io/django-crispy-formset-modal/installation/
     "extra_views",  # https://django-extra-views.readthedocs.io/en/latest/pages/getting-started.html#installation
-    # "pwa",  # https://django-pwa.readthedocs.io/en/latest/installation.html
     "ninja",
     "core",
     "attachments",
@@ -447,5 +441,5 @@ EMAIL_USE_TLS = env("EMAIL_USE_TLS")
 EMAIL_PORT = env("EMAIL_PORT")
 EMAIL_HOST_USER = env("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
-DEFAULT_FROM_EMAIL = env("EMAIL_HOST_USER")  # Use the same email as the host user
+DEFAULT_FROM_EMAIL = env("EMAIL_HOST_USER")
 EMAIL_URL_BASE = env("EMAIL_URL_BASE")
