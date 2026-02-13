@@ -1,4 +1,5 @@
 <script lang="ts">
+    import Icon from "$lib/components/Icon.svelte";
     import type { AccommodationSchema } from "../../../../api-client";
 
     interface iAccommodationsProps {
@@ -10,13 +11,13 @@
     function getAccommodationTypeIcon(type: string) {
         switch (type) {
             case "hotel":
-                return { icon: "lucide--hotel", label: "Hotel" };
+                return { icon: "hotel", label: "Hotel" };
             case "rental":
-                return { icon: "lucide--home", label: "Rental" };
+                return { icon: "home", label: "Rental" };
             case "campground":
-                return { icon: "lucide--tent", label: "Camping" };
+                return { icon: "tent", label: "Camping" };
             default:
-                return { icon: "lucide--hotel", label: "Hotel" };
+                return { icon: "hotel", label: "Hotel" };
         }
     }
 
@@ -54,7 +55,7 @@
                     <div class="card-body">
                         <div class="flex items-start justify-between mb-2">
                             <div class="badge badge-accent badge-sm rounded-full p-4 m-3">
-                                <span class="icon-[{typeInfo.icon}] size-6 text-accent-content"></span>
+                                <Icon name={typeInfo.icon} class="size-6 text-accent-content" />
                                 {typeInfo.label}
                             </div>
                         </div>
@@ -101,7 +102,7 @@
         </div>
     {:else}
         <div class="text-center py-8 max-w-md mx-auto">
-            <span class="icon-[lucide--hotel] size-12 text-base-content/30 mx-auto block mb-2"></span>
+            <Icon name="hotel" class="size-12 text-base-content mx-auto block mb-2" />
             <p class="text-base-content/70">No accommodations listed yet.</p>
             <p class="text-sm text-base-content/50">Check back soon for lodging options near the venue.</p>
         </div>
