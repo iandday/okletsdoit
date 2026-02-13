@@ -1,6 +1,24 @@
 # CHANGELOG
 
 
+## v0.12.1 (2026-02-13)
+
+### Bug Fixes
+
+- :rocket: remove css build
+  ([`f93d550`](https://github.com/iandday/okletsdoit/commit/f93d55029977f8fff1969662a09ad0c4e7b9dd72))
+
+- **Core**: :ambulance: disable context
+  ([`41c4c97`](https://github.com/iandday/okletsdoit/commit/41c4c971a578a2a7f0d7390a87eda4574ec8c055))
+
+### Chores
+
+- Sync files from main after release ([#75](https://github.com/iandday/okletsdoit/pull/75),
+  [`0996235`](https://github.com/iandday/okletsdoit/commit/0996235ee142fbc3bb8986fbc6248e5b07fb0eb6))
+
+Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
+
+
 ## v0.12.0 (2026-02-13)
 
 ### Chores
