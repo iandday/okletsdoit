@@ -1,6 +1,26 @@
 # CHANGELOG
 
 
+## v0.12.0 (2026-02-13)
+
+### Chores
+
+- Sync files from main after release ([#73](https://github.com/iandday/okletsdoit/pull/73),
+  [`58ee6f7`](https://github.com/iandday/okletsdoit/commit/58ee6f7c1a528ba5622b35b9ae7da27787553040))
+
+Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
+
+### Features
+
+- **Core**: :sparkles: add accommodation
+  ([`752cc54`](https://github.com/iandday/okletsdoit/commit/752cc546852abe281fb08baca147bf12de081cd1))
+
+### Performance Improvements
+
+- :rocket: remove frontend components from django
+  ([`4cec93b`](https://github.com/iandday/okletsdoit/commit/4cec93b6c597d3b4c38c97dd293e74e8bef70d7a))
+
+
 ## v0.11.1 (2026-02-12)
 
 ### Bug Fixes
