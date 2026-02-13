@@ -12,31 +12,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  backend-build-css:
-    runs-on: ubuntu-latest
-    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
-    needs:
-      - backend-lint
-    defaults:
-      run:
-        working-directory: ./backend
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v5
-
-      - name: Install Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Install npm dependencies
-        run: |
-          npm install
-
-      - name: Build CSS
-        run: |
-          npm run build-css-ci
-
   backend-lint:
     runs-on: ubuntu-latest
     if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
