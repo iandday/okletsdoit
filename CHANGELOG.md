@@ -1,6 +1,24 @@
 # CHANGELOG
 
 
+## v0.12.2 (2026-02-13)
+
+### Bug Fixes
+
+- **GuestList**: :ambulance: add missing functions
+  ([`a32bf18`](https://github.com/iandday/okletsdoit/commit/a32bf18eae6390f1cc4b352023b0f15673182854))
+
+- **Core**: :fire: fix icon loading
+  ([`f3cc9eb`](https://github.com/iandday/okletsdoit/commit/f3cc9eb6180e4792abc6bd6c9ee529357413bc28))
+
+### Chores
+
+- Sync files from main after release ([#77](https://github.com/iandday/okletsdoit/pull/77),
+  [`a470c72`](https://github.com/iandday/okletsdoit/commit/a470c72d8eed6949a4b940397224079961879543))
+
+Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
+
+
 ## v0.12.1 (2026-02-13)
 
 ### Bug Fixes
