@@ -4,6 +4,7 @@ All URIs are relative to _http://localhost_
 
 | Method                                                                            | HTTP request                                                  | Description                 |
 | --------------------------------------------------------------------------------- | ------------------------------------------------------------- | --------------------------- |
+| [**coreApiCreateAccommodation**](CoreApi.md#coreapicreateaccommodation)           | **POST** /api/core/accommodations                             | Create Accommodation        |
 | [**coreApiCreateIdea**](CoreApi.md#coreapicreateidea)                             | **POST** /api/core/ideas                                      | Create Idea                 |
 | [**coreApiCreateInspiration**](CoreApi.md#coreapicreateinspiration)               | **POST** /api/core/inspirations                               | Create Inspiration          |
 | [**coreApiCreateQuestion**](CoreApi.md#coreapicreatequestion)                     | **POST** /api/core/questions                                  | Create Question             |
@@ -12,6 +13,7 @@ All URIs are relative to _http://localhost_
 | [**coreApiCreateRsvpQuestionChoice**](CoreApi.md#coreapicreatersvpquestionchoice) | **POST** /api/core/rsvp-question-choices                      | Create Rsvp Question Choice |
 | [**coreApiCreateTimeline**](CoreApi.md#coreapicreatetimeline)                     | **POST** /api/core/timelines                                  | Create Timeline             |
 | [**coreApiCreateTip**](CoreApi.md#coreapicreatetip)                               | **POST** /api/core/tips                                       | Create Tip                  |
+| [**coreApiDeleteAccommodation**](CoreApi.md#coreapideleteaccommodation)           | **DELETE** /api/core/accommodations/{accommodation_id}        | Delete Accommodation        |
 | [**coreApiDeleteIdea**](CoreApi.md#coreapideleteidea)                             | **DELETE** /api/core/ideas/{idea_id}                          | Delete Idea                 |
 | [**coreApiDeleteInspiration**](CoreApi.md#coreapideleteinspiration)               | **DELETE** /api/core/inspirations/{inspiration_id}            | Delete Inspiration          |
 | [**coreApiDeleteInspirationImage**](CoreApi.md#coreapideleteinspirationimage)     | **DELETE** /api/core/inspirations/{inspiration_id}/image      | Delete Inspiration Image    |
@@ -21,6 +23,7 @@ All URIs are relative to _http://localhost_
 | [**coreApiDeleteRsvpQuestionChoice**](CoreApi.md#coreapideletersvpquestionchoice) | **DELETE** /api/core/rsvp-question-choices/{choice_id}        | Delete Rsvp Question Choice |
 | [**coreApiDeleteTimeline**](CoreApi.md#coreapideletetimeline)                     | **DELETE** /api/core/timelines/{timeline_id}                  | Delete Timeline             |
 | [**coreApiDeleteTip**](CoreApi.md#coreapideletetip)                               | **DELETE** /api/core/tips/{tip_id}                            | Delete Tip                  |
+| [**coreApiGetAccommodation**](CoreApi.md#coreapigetaccommodation)                 | **GET** /api/core/accommodations/{accommodation_id}           | Get Accommodation           |
 | [**coreApiGetCategoriesContent**](CoreApi.md#coreapigetcategoriescontent)         | **GET** /api/core/rsvp-categories-content                     | Get Categories Content      |
 | [**coreApiGetIdea**](CoreApi.md#coreapigetidea)                                   | **GET** /api/core/ideas/{idea_id}                             | Get Idea                    |
 | [**coreApiGetInspiration**](CoreApi.md#coreapigetinspiration)                     | **GET** /api/core/inspirations/{inspiration_id}               | Get Inspiration             |
@@ -31,6 +34,7 @@ All URIs are relative to _http://localhost_
 | [**coreApiGetTimeline**](CoreApi.md#coreapigettimeline)                           | **GET** /api/core/timelines/{timeline_id}                     | Get Timeline                |
 | [**coreApiGetTip**](CoreApi.md#coreapigettip)                                     | **GET** /api/core/tips/{tip_id}                               | Get Tip                     |
 | [**coreApiGetWeddingSettings**](CoreApi.md#coreapigetweddingsettings)             | **GET** /api/core/wedding-settings                            | Get Wedding Settings        |
+| [**coreApiListAccommodations**](CoreApi.md#coreapilistaccommodations)             | **GET** /api/core/accommodations                              | List Accommodations         |
 | [**coreApiListIdeas**](CoreApi.md#coreapilistideas)                               | **GET** /api/core/ideas                                       | List Ideas                  |
 | [**coreApiListInspirations**](CoreApi.md#coreapilistinspirations)                 | **GET** /api/core/inspirations                                | List Inspirations           |
 | [**coreApiListQuestionUrls**](CoreApi.md#coreapilistquestionurls)                 | **GET** /api/core/question-urls                               | List Question Urls          |
@@ -38,6 +42,7 @@ All URIs are relative to _http://localhost_
 | [**coreApiListRsvpQuestions**](CoreApi.md#coreapilistrsvpquestions)               | **GET** /api/core/rsvp-questions                              | List Rsvp Questions         |
 | [**coreApiListTimelines**](CoreApi.md#coreapilisttimelines)                       | **GET** /api/core/timelines                                   | List Timelines              |
 | [**coreApiListTips**](CoreApi.md#coreapilisttips)                                 | **GET** /api/core/tips                                        | List Tips                   |
+| [**coreApiUpdateAccommodation**](CoreApi.md#coreapiupdateaccommodation)           | **PUT** /api/core/accommodations/{accommodation_id}           | Update Accommodation        |
 | [**coreApiUpdateIdea**](CoreApi.md#coreapiupdateidea)                             | **PUT** /api/core/ideas/{idea_id}                             | Update Idea                 |
 | [**coreApiUpdateInspiration**](CoreApi.md#coreapiupdateinspiration)               | **PUT** /api/core/inspirations/{inspiration_id}               | Update Inspiration          |
 | [**coreApiUpdateQuestion**](CoreApi.md#coreapiupdatequestion)                     | **PUT** /api/core/questions/{question_id}                     | Update Question             |
@@ -48,6 +53,79 @@ All URIs are relative to _http://localhost_
 | [**coreApiUpdateTip**](CoreApi.md#coreapiupdatetip)                               | **PUT** /api/core/tips/{tip_id}                               | Update Tip                  |
 | [**coreApiUpdateWeddingSettings**](CoreApi.md#coreapiupdateweddingsettings)       | **PUT** /api/core/wedding-settings                            | Update Wedding Settings     |
 | [**coreApiUploadInspirationImage**](CoreApi.md#coreapiuploadinspirationimage)     | **POST** /api/core/inspirations/{inspiration_id}/upload-image | Upload Inspiration Image    |
+
+## coreApiCreateAccommodation
+
+> AccommodationSchema coreApiCreateAccommodation(accommodationCreateSchema)
+
+Create Accommodation
+
+Create a new accommodation
+
+### Example
+
+```ts
+import {
+  Configuration,
+  CoreApi,
+} from '';
+import type { CoreApiCreateAccommodationRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
+
+  const body = {
+    // AccommodationCreateSchema
+    accommodationCreateSchema: ...,
+  } satisfies CoreApiCreateAccommodationRequest;
+
+  try {
+    const data = await api.coreApiCreateAccommodation(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name                          | Type                                                      | Description | Notes |
+| ----------------------------- | --------------------------------------------------------- | ----------- | ----- |
+| **accommodationCreateSchema** | [AccommodationCreateSchema](AccommodationCreateSchema.md) |             |       |
+
+### Return type
+
+[**AccommodationSchema**](AccommodationSchema.md)
+
+### Authorization
+
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
+
+### HTTP request headers
+
+- **Content-Type**: `application/json`
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
 ## coreApiCreateIdea
 
@@ -624,6 +702,79 @@ example().catch(console.error);
 
 - **Content-Type**: `application/json`
 - **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## coreApiDeleteAccommodation
+
+> coreApiDeleteAccommodation(accommodationId)
+
+Delete Accommodation
+
+Soft delete an accommodation
+
+### Example
+
+```ts
+import {
+  Configuration,
+  CoreApi,
+} from '';
+import type { CoreApiDeleteAccommodationRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
+
+  const body = {
+    // string
+    accommodationId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+  } satisfies CoreApiDeleteAccommodationRequest;
+
+  try {
+    const data = await api.coreApiDeleteAccommodation(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name                | Type     | Description | Notes                     |
+| ------------------- | -------- | ----------- | ------------------------- |
+| **accommodationId** | `string` |             | [Defaults to `undefined`] |
+
+### Return type
+
+`void` (Empty response body)
+
+### Authorization
+
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: Not defined
 
 ### HTTP response details
 
@@ -1281,6 +1432,79 @@ example().catch(console.error);
 
 - **Content-Type**: Not defined
 - **Accept**: Not defined
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## coreApiGetAccommodation
+
+> AccommodationSchema coreApiGetAccommodation(accommodationId)
+
+Get Accommodation
+
+Get a specific accommodation by ID
+
+### Example
+
+```ts
+import {
+  Configuration,
+  CoreApi,
+} from '';
+import type { CoreApiGetAccommodationRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
+
+  const body = {
+    // string
+    accommodationId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+  } satisfies CoreApiGetAccommodationRequest;
+
+  try {
+    const data = await api.coreApiGetAccommodation(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name                | Type     | Description | Notes                     |
+| ------------------- | -------- | ----------- | ------------------------- |
+| **accommodationId** | `string` |             | [Defaults to `undefined`] |
+
+### Return type
+
+[**AccommodationSchema**](AccommodationSchema.md)
+
+### Authorization
+
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
 
 ### HTTP response details
 
@@ -2007,6 +2231,91 @@ This endpoint does not need any parameter.
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
+## coreApiListAccommodations
+
+> PagedAccommodationSchema coreApiListAccommodations(name, accommodationType, city, state, page, pageSize)
+
+List Accommodations
+
+List all accommodations (non-deleted)
+
+### Example
+
+```ts
+import { Configuration, CoreApi } from "";
+import type { CoreApiListAccommodationsRequest } from "";
+
+async function example() {
+    console.log("🚀 Testing  SDK...");
+    const config = new Configuration({
+        // To configure API key authorization: SessionAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: ServiceTokenAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: XSessionTokenAuth
+        apiKey: "YOUR API KEY",
+    });
+    const api = new CoreApi(config);
+
+    const body = {
+        // string (optional)
+        name: name_example,
+        // string (optional)
+        accommodationType: accommodationType_example,
+        // string (optional)
+        city: city_example,
+        // string (optional)
+        state: state_example,
+        // number (optional)
+        page: 56,
+        // number (optional)
+        pageSize: 56,
+    } satisfies CoreApiListAccommodationsRequest;
+
+    try {
+        const data = await api.coreApiListAccommodations(body);
+        console.log(data);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name                  | Type     | Description | Notes                                |
+| --------------------- | -------- | ----------- | ------------------------------------ |
+| **name**              | `string` |             | [Optional] [Defaults to `undefined`] |
+| **accommodationType** | `string` |             | [Optional] [Defaults to `undefined`] |
+| **city**              | `string` |             | [Optional] [Defaults to `undefined`] |
+| **state**             | `string` |             | [Optional] [Defaults to `undefined`] |
+| **page**              | `number` |             | [Optional] [Defaults to `1`]         |
+| **pageSize**          | `number` |             | [Optional] [Defaults to `undefined`] |
+
+### Return type
+
+[**PagedAccommodationSchema**](PagedAccommodationSchema.md)
+
+### Authorization
+
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
 ## coreApiListIdeas
 
 > PagedIdeaSchema coreApiListIdeas(name, page, pageSize)
@@ -2541,6 +2850,82 @@ example().catch(console.error);
 ### HTTP request headers
 
 - **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## coreApiUpdateAccommodation
+
+> AccommodationSchema coreApiUpdateAccommodation(accommodationId, accommodationUpdateSchema)
+
+Update Accommodation
+
+Update an accommodation
+
+### Example
+
+```ts
+import {
+  Configuration,
+  CoreApi,
+} from '';
+import type { CoreApiUpdateAccommodationRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new CoreApi(config);
+
+  const body = {
+    // string
+    accommodationId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+    // AccommodationUpdateSchema
+    accommodationUpdateSchema: ...,
+  } satisfies CoreApiUpdateAccommodationRequest;
+
+  try {
+    const data = await api.coreApiUpdateAccommodation(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name                          | Type                                                      | Description | Notes                     |
+| ----------------------------- | --------------------------------------------------------- | ----------- | ------------------------- |
+| **accommodationId**           | `string`                                                  |             | [Defaults to `undefined`] |
+| **accommodationUpdateSchema** | [AccommodationUpdateSchema](AccommodationUpdateSchema.md) |             |                           |
+
+### Return type
+
+[**AccommodationSchema**](AccommodationSchema.md)
+
+### Authorization
+
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
+
+### HTTP request headers
+
+- **Content-Type**: `application/json`
 - **Accept**: `application/json`
 
 ### HTTP response details

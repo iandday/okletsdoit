@@ -8,6 +8,7 @@ from import_export.admin import ImportExportModelAdmin
 from simple_history.admin import SimpleHistoryAdmin
 from django.db import models
 from .models import (
+    Accommodation,
     Idea,
     RsvpQuestion,
     Timeline,
@@ -244,6 +245,61 @@ class InspirationAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
             obj.created_by = request.user
         obj.updated_by = request.user
         super().save_model(request, obj, form, change)
+
+
+class AccommodationAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
+    list_display = ("name", "accommodation_type", "order", "city", "state", "phone_number", "created_by", "created_at")
+    list_filter = ("accommodation_type", "state", "created_at", "updated_at", "is_deleted", "created_by")
+    search_fields = ("name", "slug", "description", "city", "state", "address_line_one")
+    prepopulated_fields = {"slug": ("name",)}
+    readonly_fields = ("id", "created_at", "updated_at")
+
+    fieldsets = (
+        ("Basic Information", {"fields": ("name", "slug", "accommodation_type", "description", "order")}),
+        ("Contact Information", {"fields": ("url", "phone_number")}),
+        (
+            "Address",
+            {
+                "fields": (
+                    "address_line_one",
+                    "address_line_two",
+                    "city",
+                    "state",
+                    "zipcode",
+                )
+            },
+        ),
+        ("Tracking", {"fields": ("created_by", "updated_by", "is_deleted"), "classes": ("collapse",)}),
+        ("Timestamps", {"fields": ("id", "created_at", "updated_at"), "classes": ("collapse",)}),
+    )
+
+    def get_queryset(self, request):
+        """Optimize queryset and exclude deleted accommodations by default"""
+        queryset = super().get_queryset(request)
+        return queryset.select_related("created_by", "updated_by").filter(is_deleted=False)
+
+    def save_model(self, request, obj, form, change):
+        """Auto-set created_by and updated_by fields"""
+        if not change:  # Creating new object
+            obj.created_by = request.user
+        obj.updated_by = request.user
+        super().save_model(request, obj, form, change)
+
+    actions = ["mark_as_deleted", "restore_from_deleted"]
+
+    def mark_as_deleted(self, request, queryset):
+        """Mark selected accommodations as deleted"""
+        updated = queryset.update(is_deleted=True)
+        self.message_user(request, f"{updated} accommodations marked as deleted.")
+
+    mark_as_deleted.short_description = "Mark selected accommodations as deleted"
+
+    def restore_from_deleted(self, request, queryset):
+        """Restore selected accommodations from deleted"""
+        updated = queryset.update(is_deleted=False)
+        self.message_user(request, f"{updated} accommodations restored from deleted.")
+
+    restore_from_deleted.short_description = "Restore selected accommodations from deleted"
 
 
 class QuestionURLInline(admin.TabularInline):
@@ -748,6 +804,7 @@ class DataImportAdminView(admin.AdminSite):
 
 
 custom_admin_site = DataImportAdminView(name="wedding_admin")
+custom_admin_site.register(Accommodation, AccommodationAdmin)
 custom_admin_site.register(Idea, IdeaAdmin)
 custom_admin_site.register(Timeline, TimelineAdmin)
 custom_admin_site.register(Inspiration, InspirationAdmin)

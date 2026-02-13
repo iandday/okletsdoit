@@ -406,3 +406,56 @@ class RsvpQuestionChoice(models.Model):
 
     def __str__(self):
         return self.choice_text
+
+
+class Accommodation(models.Model):
+    class ACCOMMODATION_TYPE_CHOICES(models.TextChoices):
+        HOTEL = "hotel", "Hotel"
+        RENTAL = "rental", "Rental"
+        CAMPGROUND = "campground", "Campground"
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=150)
+    slug = models.SlugField(max_length=250, null=True, blank=True, unique=True)
+    description = models.TextField(blank=True, null=True)
+    url = models.URLField(max_length=500, blank=True, null=True)
+    phone_number = models.CharField(max_length=20, blank=True, null=True)
+    address_line_one = models.CharField(max_length=250, blank=True, null=True)
+    address_line_two = models.CharField(max_length=250, blank=True, null=True)
+    city = models.CharField(max_length=100, blank=True, null=True)
+    state = models.CharField(max_length=100, blank=True, null=True)
+    zipcode = models.CharField(max_length=20, blank=True, null=True)
+    accommodation_type = models.CharField(
+        max_length=50, choices=ACCOMMODATION_TYPE_CHOICES, default=ACCOMMODATION_TYPE_CHOICES.HOTEL
+    )
+    order = models.IntegerField(default=0, help_text="Display order for accommodations")
+    created_by = models.ForeignKey(User, related_name="created_by_accommodation", on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_by = models.ForeignKey(
+        User, related_name="updated_by_accommodation", on_delete=models.CASCADE, null=True, blank=True
+    )
+    updated_at = models.DateTimeField(auto_now=True)
+    is_deleted = models.BooleanField(default=False)
+    history = HistoricalRecords()
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ["order", "name"]
+        verbose_name_plural = "Accommodations"
+        constraints = [models.UniqueConstraint(fields=["name"], name="unique_accommodation")]
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base_slug = slugify(self.name)
+            slug = base_slug
+            counter = 1
+
+            while Accommodation.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+
+            self.slug = slug
+
+        super().save(*args, **kwargs)
