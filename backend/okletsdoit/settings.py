@@ -36,8 +36,10 @@ env = environ.Env(
     AWS_SECRET_ACCESS_KEY=(str, ""),
     AWS_REGION=(str, "us-east-1"),
     ALLOWED_CIDR_NETS=(list, []),
-    NGINX_SERVER_NAME=(str, "dev.internal"),
+    SERVER_NAME=(str, "dev.internal"),
     DJANGO_CORS_ALLOWED_ORIGINS=(list, ["http://localhost:5173", "http://localhost:4173", "dev.internal"]),
+    PERSONALIZED_RSVP_BASE_URL=(str, "dev.internal"),
+    RSVP_URL=(str, "dev.internal/rsvp"),
     EMAIL_BACKEND=(str, "django.core.mail.backends.smtp.EmailBackend"),
     EMAIL_HOST=(str, "smtp.gmail.com"),
     EMAIL_USE_TLS=(bool, True),
@@ -52,6 +54,8 @@ LOCAL_DEV = env("LOCAL_DEV")
 LOCAL_DB = env("LOCAL_DB")
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 ALLOWED_CIDR_NETS = env.list("ALLOWED_CIDR_NETS")
+PERSONALIZED_RSVP_BASE_URL = env("PERSONALIZED_RSVP_BASE_URL")
+RSVP_URL = env("RSVP_URL")
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -95,7 +99,7 @@ INSTALLED_APPS = [
     "contacts",
     "list",
     "deadline",
-    "guestlist",
+    "guestlist.apps.GuestlistConfig",
 ]
 
 if DEBUG:
@@ -266,7 +270,7 @@ SOCIALACCOUNT_PROVIDERS = {
 HEADLESS_ONLY = False
 HEADLESS_SERVE_SPECIFICATION = True
 HEADLESS_FRONTEND_URLS = {
-    "account_confirm_email": f"https://{env('NGINX_SERVER_NAME')}/auth/verify-email/" + "{key}",
+    "account_confirm_email": f"https://{env('SERVER_NAME')}/auth/verify-email/" + "{key}",
 }
 
 # ADMIN

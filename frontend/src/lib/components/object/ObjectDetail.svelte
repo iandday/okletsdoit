@@ -65,7 +65,6 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div class="detail-card" id="main-info">
             <div class="detail-card-body">
-                <div class="detail-card-title">Item Details</div>
                 {@render mainSnippet()}
                 <div class="grid grid-cols-2 gap-4">
                     <div>

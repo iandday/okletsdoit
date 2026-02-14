@@ -1,14 +1,63 @@
 <!-- src/routes/planning/guest_list/+page.svelte -->
 <script lang="ts">
+    import { enhance } from "$app/forms";
     import Stats from "$lib/components/Stats.svelte";
     import CreateObject from "$lib/components/buttons/CreateObject.svelte";
     import ViewDetails from "$lib/components/buttons/ViewDetails.svelte";
     import ProtectedPageHeader from "$lib/components/layouts/ProtectedPageHeader.svelte";
     import ProtectedPageShell from "$lib/components/layouts/ProtectedPageShell.svelte";
-    import type { PageData, iStat } from "./$types";
+    import type { PageData, iStat, ActionData } from "./$types";
 
-    const { data }: { data: PageData } = $props();
+    const { data, form }: { data: PageData; form: ActionData } = $props();
     const relativeCrumbs = [{ title: "Guest List" }];
+
+    let isGeneratingMissing = $state(false);
+    let isRegeneratingAll = $state(false);
+
+    // QR Code Modal State
+    let showQrModal = $state(false);
+    let selectedQrCodeUrl = $state<string | null>(null);
+    let selectedQrCodeName = $state<string>("");
+    let linkCopied = $state(false);
+
+    function openQrModal(url: string, name: string) {
+        selectedQrCodeUrl = url;
+        selectedQrCodeName = name;
+        showQrModal = true;
+    }
+
+    function closeQrModal() {
+        showQrModal = false;
+        selectedQrCodeUrl = null;
+        selectedQrCodeName = "";
+        linkCopied = false;
+    }
+
+    function downloadQrCode() {
+        if (!selectedQrCodeUrl) return;
+        const a = document.createElement("a");
+        a.href = selectedQrCodeUrl;
+        a.download = `qr_code_${selectedQrCodeName.replace(/[^a-z0-9]/gi, "_").toLowerCase()}.png`;
+        a.target = "_blank";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
+
+    async function copyQrLink() {
+        if (!selectedQrCodeUrl) return;
+
+        try {
+            await navigator.clipboard.writeText(selectedQrCodeUrl);
+            linkCopied = true;
+            setTimeout(() => {
+                linkCopied = false;
+            }, 3000);
+        } catch (error) {
+            console.error("Error copying link:", error);
+            alert("Failed to copy link");
+        }
+    }
 
     // Client-side filtering
     let nameFilter = $state("");
@@ -132,7 +181,7 @@
     ];
 </script>
 
-<ProtectedPageShell {relativeCrumbs}>
+<ProtectedPageShell {relativeCrumbs} {form}>
     <ProtectedPageHeader
         title="Guest List"
         description="Manage your wedding guest groups and RSVPs"
@@ -204,6 +253,46 @@
                         <span class="icon-[lucide--download] size-5"></span>
                         Export Address Data
                     </a>
+
+                    <!-- QR Code Generation Actions -->
+                    <div class="divider"></div>
+                    <button
+                        onclick={() => openQrModal(data.configData.rsvpQrCodeUrl as string, "General RSVP")}
+                        class="btn btn-accent gap-2">
+                        <span class="icon-[lucide--qr-code] size-5"></span>
+                        View Universal RSVP QR
+                    </button>
+                    <form
+                        method="POST"
+                        action="?/generateMissingQrCodes"
+                        use:enhance={() => {
+                            isGeneratingMissing = true;
+                            return async ({ update }) => {
+                                await update();
+                                isGeneratingMissing = false;
+                            };
+                        }}>
+                        <button type="submit" class="btn btn-info gap-2 w-full" disabled={isGeneratingMissing}>
+                            <span class="icon-[lucide--qr-code] size-5"></span>
+                            {isGeneratingMissing ? "Generating..." : "Generate Missing QR Codes"}
+                        </button>
+                    </form>
+
+                    <form
+                        method="POST"
+                        action="?/regenerateAllQrCodes"
+                        use:enhance={() => {
+                            isRegeneratingAll = true;
+                            return async ({ update }) => {
+                                await update();
+                                isRegeneratingAll = false;
+                            };
+                        }}>
+                        <button type="submit" class="btn btn-warning gap-2 w-full" disabled={isRegeneratingAll}>
+                            <span class="icon-[lucide--refresh-cw] size-5"></span>
+                            {isRegeneratingAll ? "Regenerating..." : "Regenerate All QR Codes"}
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -308,8 +397,19 @@
                                 {/if}
                             </div>
                         {/if}
-                        <div class="card-actions justify-end mt-4">
-                            <ViewDetails href="/planning/guest_list/{group.id}" label="View Details" />
+                        <div class="card-actions justify-between mt-4">
+                            {#if group.hasQrCode && group.qrCodeUrl}
+                                <button
+                                    onclick={(e) => {
+                                        e.stopPropagation();
+                                        openQrModal(group.qrCodeUrl, group.name);
+                                    }}
+                                    class="btn btn-sm btn-accent gap-1">
+                                    <span class="icon-[lucide--qr-code] size-4"></span>
+                                    QR Code
+                                </button>
+                            {/if}
+                            <ViewDetails href="/planning/guest_list/{group.id}" label="View Details" size="sm" />
                         </div>
                     </div>
                 </div>
@@ -317,3 +417,46 @@
         </div>
     {/if}
 </ProtectedPageShell>
+
+<!-- QR Code Modal -->
+{#if showQrModal}
+    <div class="modal modal-open">
+        <div class="modal-box max-w-md">
+            <h3 class="font-bold text-lg mb-4 text-accent">QR Code - {selectedQrCodeName}</h3>
+
+            {#if selectedQrCodeUrl}
+                <div class="flex justify-center mb-6 bg-white p-4 rounded-lg">
+                    <img
+                        src={selectedQrCodeUrl}
+                        alt="QR Code for {selectedQrCodeName}"
+                        class="w-64 h-64 object-contain" />
+                </div>
+
+                <div class="flex gap-2 justify-center">
+                    <button onclick={downloadQrCode} class="btn btn-accent gap-2">
+                        <span class="icon-[lucide--download] size-5"></span>
+                        Download
+                    </button>
+                    <button onclick={copyQrLink} class="btn btn-secondary gap-2">
+                        <span class="icon-[lucide--copy] size-5"></span>
+                        Copy Link
+                    </button>
+                </div>
+
+                {#if linkCopied}
+                    <div class="flex justify-center mt-4">
+                        <div class="badge badge-success gap-2">
+                            <span class="icon-[lucide--check] size-4"></span>
+                            Link copied to clipboard!
+                        </div>
+                    </div>
+                {/if}
+            {/if}
+
+            <div class="modal-action">
+                <button onclick={closeQrModal} class="btn btn-error">Close</button>
+            </div>
+        </div>
+        <div class="modal-backdrop" onclick={closeQrModal}></div>
+    </div>
+{/if}

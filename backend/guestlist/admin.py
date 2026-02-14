@@ -45,8 +45,34 @@ class RsvpSubmissionAdmin(admin.ModelAdmin):
 
 @admin.register(GuestGroup)
 class GuestGroupAdmin(admin.ModelAdmin):
-    list_display = ("name", "rsvp_code", "group_count", "group_attending_count")
+    list_display = ("name", "rsvp_code", "has_qr_code", "group_count", "group_attending_count")
     search_fields = ("name", "rsvp_code")
+    readonly_fields = ("qr_code_preview", "rsvp_url")
+
+    def has_qr_code(self, obj: GuestGroup):
+        return obj.qr_code is not None
+
+    has_qr_code.boolean = True  # pyright: ignore[reportFunctionMemberAccess]
+    has_qr_code.short_description = "QR Code"  # pyright: ignore[reportFunctionMemberAccess]
+
+    def qr_code_preview(self, obj: GuestGroup):
+        if obj.qr_code:
+            from django.utils.html import format_html
+
+            return format_html(
+                '<img src="{}" style="max-width: 200px; max-height: 200px;" />',
+                f"/api/guestlist/guest-groups/{obj.id}/qr-code",
+            )
+        return "No QR Code"
+
+    qr_code_preview.short_description = "QR Code Preview"  # pyright: ignore[reportFunctionMemberAccess]
+
+    def rsvp_url(self, obj: GuestGroup):
+        from django.conf import settings
+
+        return f"{settings.PERSONALIZED_RSVP_BASE_URL}/{obj.rsvp_code}"
+
+    rsvp_url.short_description = "RSVP URL"  # pyright: ignore[reportFunctionMemberAccess]
 
 
 @admin.register(Guest)

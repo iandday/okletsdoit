@@ -4,7 +4,9 @@ from django_stubs_ext.db.models.manager import RelatedManager
 from simple_history.models import HistoricalRecords
 from django.utils.text import slugify
 from core.models import RsvpQuestion, RsvpQuestionChoice
+from core.utils import generate_qr_code_attachment
 from users.models import User
+from django.conf import settings
 
 
 class GuestGroup(models.Model):
@@ -38,6 +40,14 @@ class GuestGroup(models.Model):
         User, related_name="associated_with_guest_group", on_delete=models.CASCADE, null=True, blank=True
     )
     rsvp_code = models.CharField(max_length=10, null=True, help_text="Unique code for RSVP tracking")
+    qr_code = models.ForeignKey(
+        "attachments.Attachment",
+        related_name="qr_code_guest_group",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        help_text="QR code for RSVP link",
+    )
     created_by = models.ForeignKey(User, related_name="created_by_guest_group", on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_by = models.ForeignKey(
@@ -97,7 +107,24 @@ class GuestGroup(models.Model):
                 rsvp_code = uuid.uuid4().hex[:10].upper()
             self.rsvp_code = rsvp_code
 
+        # Save first to ensure we have a pk for the Attachment
         super().save(*args, **kwargs)
+
+        # Generate QR code if not present
+        if not self.qr_code and self.rsvp_code:
+            rsvp_url = f"{settings.PERSONALIZED_RSVP_BASE_URL}/{self.rsvp_code}"
+            attachment = generate_qr_code_attachment(
+                url=rsvp_url,
+                name=f"QR Code - {self.name}",
+                model_instance=self,
+                uploaded_by=self.created_by,
+                filename=f"qr_code_{self.rsvp_code}.png",
+            )
+
+            # Link to guest group
+            self.qr_code = attachment
+            # Use update to avoid recursion
+            GuestGroup.objects.filter(pk=self.pk).update(qr_code=attachment)
 
 
 class Guest(models.Model):

@@ -162,6 +162,12 @@ export interface WeddingSettingsSchema {
      * @type {string}
      * @memberof WeddingSettingsSchema
      */
+    rsvpDefaultUrl: string;
+    /**
+     *
+     * @type {string}
+     * @memberof WeddingSettingsSchema
+     */
     standardGroupLabel: string;
     /**
      *
@@ -247,6 +253,12 @@ export interface WeddingSettingsSchema {
      * @memberof WeddingSettingsSchema
      */
     venueGalleryDescription: string;
+    /**
+     *
+     * @type {string}
+     * @memberof WeddingSettingsSchema
+     */
+    rsvpQrCodeUrl?: string | null;
 }
 
 /**
@@ -269,6 +281,7 @@ export function instanceOfWeddingSettingsSchema(value: object): value is Wedding
     if (!("rsvpShowVipIntro" in value) || value["rsvpShowVipIntro"] === undefined) return false;
     if (!("rsvpEnableEmailUpdates" in value) || value["rsvpEnableEmailUpdates"] === undefined) return false;
     if (!("rsvpSuccessHeadline" in value) || value["rsvpSuccessHeadline"] === undefined) return false;
+    if (!("rsvpDefaultUrl" in value) || value["rsvpDefaultUrl"] === undefined) return false;
     if (!("standardGroupLabel" in value) || value["standardGroupLabel"] === undefined) return false;
     if (!("vipGroupLabel" in value) || value["vipGroupLabel"] === undefined) return false;
     if (!("accommodationGroupLabel" in value) || value["accommodationGroupLabel"] === undefined) return false;
@@ -317,6 +330,7 @@ export function WeddingSettingsSchemaFromJSONTyped(json: any, ignoreDiscriminato
         rsvpEnableEmailUpdates: json["rsvp_enable_email_updates"],
         rsvpEmailUpdateLabel: json["rsvp_email_update_label"] == null ? undefined : json["rsvp_email_update_label"],
         rsvpSuccessHeadline: json["rsvp_success_headline"],
+        rsvpDefaultUrl: json["rsvp_default_url"],
         standardGroupLabel: json["standard_group_label"],
         vipGroupLabel: json["vip_group_label"],
         accommodationGroupLabel: json["accommodation_group_label"],
@@ -332,6 +346,7 @@ export function WeddingSettingsSchemaFromJSONTyped(json: any, ignoreDiscriminato
         venueParking: json["venue_parking"] == null ? undefined : json["venue_parking"],
         venueGalleryTitle: json["venue_gallery_title"],
         venueGalleryDescription: json["venue_gallery_description"],
+        rsvpQrCodeUrl: json["rsvp_qr_code_url"] == null ? undefined : json["rsvp_qr_code_url"],
     };
 }
 
@@ -376,6 +391,7 @@ export function WeddingSettingsSchemaToJSONTyped(
         rsvp_enable_email_updates: value["rsvpEnableEmailUpdates"],
         rsvp_email_update_label: value["rsvpEmailUpdateLabel"],
         rsvp_success_headline: value["rsvpSuccessHeadline"],
+        rsvp_default_url: value["rsvpDefaultUrl"],
         standard_group_label: value["standardGroupLabel"],
         vip_group_label: value["vipGroupLabel"],
         accommodation_group_label: value["accommodationGroupLabel"],
@@ -391,5 +407,6 @@ export function WeddingSettingsSchemaToJSONTyped(
         venue_parking: value["venueParking"],
         venue_gallery_title: value["venueGalleryTitle"],
         venue_gallery_description: value["venueGalleryDescription"],
+        rsvp_qr_code_url: value["rsvpQrCodeUrl"],
     };
 }

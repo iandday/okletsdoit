@@ -5,7 +5,10 @@ from django.db import models
 from django.utils.text import slugify
 from simple_history.models import HistoricalRecords
 from typing import Any
+from core.utils import generate_qr_code_attachment
 from users.models import User
+from django.conf import settings
+from django.contrib.auth import get_user_model
 
 
 class Idea(models.Model):
@@ -294,6 +297,25 @@ class WeddingSettings(models.Model):
     wedding_date = models.DateField(null=True, blank=True)
     allow_rsvp = models.BooleanField(default=False, help_text="Enable or disable RSVP functionality")
     allow_photos = models.BooleanField(default=False, help_text="Enable or disable Photo Sharing functionality")
+    rsvp_default_url = models.URLField(
+        max_length=500,
+        default=settings.RSVP_URL,
+        help_text="Default URL for RSVP page if not using personalized URLs",
+    )
+    rsvp_qr_code = models.ForeignKey(
+        "attachments.Attachment",
+        related_name="qr_code_wedding_settings",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        help_text="QR code for RSVP start page",
+    )
+    rsvp_qr_code_url = models.URLField(
+        max_length=500,
+        blank=True,
+        null=True,
+        help_text="URL for RSVP start page",
+    )
     rsvp_accept_button = models.TextField(default="Lets' Do This", null=True)
     rsvp_decline_button = models.TextField(default="No Thanks", null=True)
     rsvp_attending_label = models.CharField(max_length=100, default="I'll be there!")
@@ -350,6 +372,19 @@ class WeddingSettings(models.Model):
 
     def save(self, *args, **kwargs):  # type: ignore
         """Save object to the database. All other entries, if any, are removed."""
+
+        # get first admin user to assign as created_by for the attachment
+        User = get_user_model()
+        attachment = generate_qr_code_attachment(
+            url=settings.RSVP_URL,
+            name="RSVP QR Code",
+            model_instance=self,
+            uploaded_by=User.objects.filter(is_admin=True).first(),
+            filename="qr_code_base_rsvp.png",
+        )
+        self.rsvp_qr_code = attachment
+        self.rsvp_qr_code_url = attachment.attachment_file.url if attachment.attachment_file else ""
+
         self.__class__.objects.exclude(id=self.id).delete()
         super().save(*args, **kwargs)
 

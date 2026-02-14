@@ -26,7 +26,6 @@ export const load: PageServerLoad = async ({ params, locals }) => {
             hasMore = (guestsResponse.items?.length || 0) === pageSize;
             page++;
         }
-
         return {
             guestGroup,
             guests,
