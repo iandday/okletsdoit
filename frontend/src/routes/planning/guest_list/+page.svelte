@@ -425,7 +425,7 @@
             <h3 class="font-bold text-lg mb-4 text-accent">QR Code - {selectedQrCodeName}</h3>
 
             {#if selectedQrCodeUrl}
-                <div class="flex justify-center mb-6 bg-white p-4 rounded-lg">
+                <div class="flex justify-center mb-6 p-4 rounded-lg">
                     <img
                         src={selectedQrCodeUrl}
                         alt="QR Code for {selectedQrCodeName}"

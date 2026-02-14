@@ -119,6 +119,7 @@ class GuestGroup(models.Model):
                 model_instance=self,
                 uploaded_by=self.created_by,
                 filename=f"qr_code_{self.rsvp_code}.png",
+                heart_logo=True,  # ❤️ Enable heart logo on QR codes
             )
 
             # Link to guest group
