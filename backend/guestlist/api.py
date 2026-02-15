@@ -52,6 +52,9 @@ class GuestGroupSchema(Schema):
     associated_with_first_name: Optional[str] = None
     associated_with_last_name: Optional[str] = None
     rsvp_code: str
+    rsvp_url: str
+    qr_code_url: Optional[str] = None
+    has_qr_code: bool
     group_count: int
     group_standard: int
     group_vip: int
@@ -61,6 +64,22 @@ class GuestGroupSchema(Schema):
     group_declined_count: int
     created_at: datetime
     updated_at: datetime
+
+    @staticmethod
+    def resolve_rsvp_url(obj):
+        from django.conf import settings
+
+        return f"{settings.PERSONALIZED_RSVP_BASE_URL}/{obj.rsvp_code}"
+
+    @staticmethod
+    def resolve_qr_code_url(obj):
+        if obj.qr_code:
+            return f"/api/guestlist/guest-groups/{obj.id}/qr-code"
+        return None
+
+    @staticmethod
+    def resolve_has_qr_code(obj):
+        return obj.qr_code is not None
 
     @staticmethod
     def resolve_relationship_display(obj):
@@ -661,3 +680,60 @@ def export_address_csv(request):
         )
 
     return response
+
+
+@router.get("/guest-groups/{group_id}/qr-code")
+def get_guest_group_qr_code(request, group_id: UUID):
+    """Get QR code image for a guest group"""
+    from django.http import FileResponse, HttpResponse
+
+    guest_group = get_object_or_404(GuestGroup, id=group_id, is_deleted=False)
+
+    if not guest_group.qr_code:
+        return HttpResponse("QR code not available", status=404)
+
+    # Return the image file directly
+    try:
+        return FileResponse(
+            guest_group.qr_code.attachment_file.open("rb"),
+            content_type="image/png",
+            as_attachment=False,
+            filename=f"qr_code_{guest_group.rsvp_code}.png",
+        )
+    except Exception as e:
+        logger.error(f"Error retrieving QR code for guest group {group_id}: {e}")
+        return HttpResponse("Error retrieving QR code", status=500)
+
+
+class QRCodeTaskSchema(Schema):
+    success: bool
+    message: str
+    task_id: str
+
+
+@router.post("/qr-codes/generate-missing", response=QRCodeTaskSchema)
+def generate_missing_qr_codes(request):
+    """Trigger a Celery task to generate QR codes for guest groups that don't have one"""
+    from guestlist.tasks import generate_missing_qr_codes as generate_task
+
+    task = generate_task.delay()
+
+    return {
+        "success": True,
+        "message": "QR code generation task started",
+        "task_id": task.id,
+    }
+
+
+@router.post("/qr-codes/regenerate-all", response=QRCodeTaskSchema)
+def regenerate_all_qr_codes(request):
+    """Trigger a Celery task to regenerate ALL QR codes for guest groups"""
+    from guestlist.tasks import regenerate_all_qr_codes as regenerate_task
+
+    task = regenerate_task.delay()
+
+    return {
+        "success": True,
+        "message": "QR code regeneration task started",
+        "task_id": task.id,
+    }

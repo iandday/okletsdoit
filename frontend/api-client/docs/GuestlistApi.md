@@ -14,8 +14,10 @@ All URIs are relative to _http://localhost_
 | [**guestlistApiDeleteRsvpResponse**](GuestlistApi.md#guestlistapideletersvpresponse)                               | **DELETE** /api/guestlist/rsvp-responses/{response_id}       | Delete Rsvp Response                  |
 | [**guestlistApiDeleteRsvpSubmission**](GuestlistApi.md#guestlistapideletersvpsubmission)                           | **DELETE** /api/guestlist/rsvp-submissions/{submission_id}   | Delete Rsvp Submission                |
 | [**guestlistApiExportAddressCsv**](GuestlistApi.md#guestlistapiexportaddresscsv)                                   | **GET** /api/guestlist/export_address_csv                    | Export Address Csv                    |
+| [**guestlistApiGenerateMissingQrCodes**](GuestlistApi.md#guestlistapigeneratemissingqrcodes)                       | **POST** /api/guestlist/qr-codes/generate-missing            | Generate Missing Qr Codes             |
 | [**guestlistApiGetGuest**](GuestlistApi.md#guestlistapigetguest)                                                   | **GET** /api/guestlist/guests/{guest_id}                     | Get Guest                             |
 | [**guestlistApiGetGuestGroup**](GuestlistApi.md#guestlistapigetguestgroup)                                         | **GET** /api/guestlist/guest-groups/{group_id}               | Get Guest Group                       |
+| [**guestlistApiGetGuestGroupQrCode**](GuestlistApi.md#guestlistapigetguestgroupqrcode)                             | **GET** /api/guestlist/guest-groups/{group_id}/qr-code       | Get Guest Group Qr Code               |
 | [**guestlistApiGetRsvpAcceptanceQuestions**](GuestlistApi.md#guestlistapigetrsvpacceptancequestions)               | **GET** /api/guestlist/rsvp-acceptance-questions/{rsvp_code} | Get Rsvp Acceptance Questions         |
 | [**guestlistApiGetRsvpAcceptenceQuestionsPreview**](GuestlistApi.md#guestlistapigetrsvpacceptencequestionspreview) | **GET** /api/guestlist/rsvp-acceptance-questions/preview     | Get Rsvp Acceptence Questions Preview |
 | [**guestlistApiGetRsvpResponse**](GuestlistApi.md#guestlistapigetrsvpresponse)                                     | **GET** /api/guestlist/rsvp-responses/{response_id}          | Get Rsvp Response                     |
@@ -24,6 +26,7 @@ All URIs are relative to _http://localhost_
 | [**guestlistApiListGuests**](GuestlistApi.md#guestlistapilistguests)                                               | **GET** /api/guestlist/guests                                | List Guests                           |
 | [**guestlistApiListRsvpResponses**](GuestlistApi.md#guestlistapilistrsvpresponses)                                 | **GET** /api/guestlist/rsvp-responses                        | List Rsvp Responses                   |
 | [**guestlistApiListRsvpSubmissions**](GuestlistApi.md#guestlistapilistrsvpsubmissions)                             | **GET** /api/guestlist/rsvp-submissions                      | List Rsvp Submissions                 |
+| [**guestlistApiRegenerateAllQrCodes**](GuestlistApi.md#guestlistapiregenerateallqrcodes)                           | **POST** /api/guestlist/qr-codes/regenerate-all              | Regenerate All Qr Codes               |
 | [**guestlistApiUpdateGuest**](GuestlistApi.md#guestlistapiupdateguest)                                             | **PUT** /api/guestlist/guests/{guest_id}                     | Update Guest                          |
 | [**guestlistApiUpdateGuestGroup**](GuestlistApi.md#guestlistapiupdateguestgroup)                                   | **PUT** /api/guestlist/guest-groups/{group_id}               | Update Guest Group                    |
 | [**guestlistApiUpdateRsvpResponse**](GuestlistApi.md#guestlistapiupdatersvpresponse)                               | **PUT** /api/guestlist/rsvp-responses/{response_id}          | Update Rsvp Response                  |
@@ -744,6 +747,69 @@ This endpoint does not need any parameter.
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
+## guestlistApiGenerateMissingQrCodes
+
+> QRCodeTaskSchema guestlistApiGenerateMissingQrCodes()
+
+Generate Missing Qr Codes
+
+Trigger a Celery task to generate QR codes for guest groups that don\&#39;t have one
+
+### Example
+
+```ts
+import { Configuration, GuestlistApi } from "";
+import type { GuestlistApiGenerateMissingQrCodesRequest } from "";
+
+async function example() {
+    console.log("🚀 Testing  SDK...");
+    const config = new Configuration({
+        // To configure API key authorization: SessionAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: ServiceTokenAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: XSessionTokenAuth
+        apiKey: "YOUR API KEY",
+    });
+    const api = new GuestlistApi(config);
+
+    try {
+        const data = await api.guestlistApiGenerateMissingQrCodes();
+        console.log(data);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+This endpoint does not need any parameter.
+
+### Return type
+
+[**QRCodeTaskSchema**](QRCodeTaskSchema.md)
+
+### Authorization
+
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
 ## guestlistApiGetGuest
 
 > GuestSchema guestlistApiGetGuest(guestId)
@@ -881,6 +947,79 @@ example().catch(console.error);
 
 - **Content-Type**: Not defined
 - **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## guestlistApiGetGuestGroupQrCode
+
+> guestlistApiGetGuestGroupQrCode(groupId)
+
+Get Guest Group Qr Code
+
+Get QR code image for a guest group
+
+### Example
+
+```ts
+import {
+  Configuration,
+  GuestlistApi,
+} from '';
+import type { GuestlistApiGetGuestGroupQrCodeRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new GuestlistApi(config);
+
+  const body = {
+    // string
+    groupId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+  } satisfies GuestlistApiGetGuestGroupQrCodeRequest;
+
+  try {
+    const data = await api.guestlistApiGetGuestGroupQrCode(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name        | Type     | Description | Notes                     |
+| ----------- | -------- | ----------- | ------------------------- |
+| **groupId** | `string` |             | [Defaults to `undefined`] |
+
+### Return type
+
+`void` (Empty response body)
+
+### Authorization
+
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: Not defined
 
 ### HTTP response details
 
@@ -1485,6 +1624,69 @@ example().catch(console.error);
 ### Return type
 
 [**PagedRsvpSubmissionSchema**](PagedRsvpSubmissionSchema.md)
+
+### Authorization
+
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## guestlistApiRegenerateAllQrCodes
+
+> QRCodeTaskSchema guestlistApiRegenerateAllQrCodes()
+
+Regenerate All Qr Codes
+
+Trigger a Celery task to regenerate ALL QR codes for guest groups
+
+### Example
+
+```ts
+import { Configuration, GuestlistApi } from "";
+import type { GuestlistApiRegenerateAllQrCodesRequest } from "";
+
+async function example() {
+    console.log("🚀 Testing  SDK...");
+    const config = new Configuration({
+        // To configure API key authorization: SessionAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: ServiceTokenAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: XSessionTokenAuth
+        apiKey: "YOUR API KEY",
+    });
+    const api = new GuestlistApi(config);
+
+    try {
+        const data = await api.guestlistApiRegenerateAllQrCodes();
+        console.log(data);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+This endpoint does not need any parameter.
+
+### Return type
+
+[**QRCodeTaskSchema**](QRCodeTaskSchema.md)
 
 ### Authorization
 

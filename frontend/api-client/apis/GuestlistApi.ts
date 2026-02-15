@@ -22,6 +22,7 @@ import type {
     PagedGuestSchema,
     PagedRsvpQuestionResponseSchema,
     PagedRsvpSubmissionSchema,
+    QRCodeTaskSchema,
     RsvpDeclineResponseSchema,
     RsvpQuestionResponseCreateSchema,
     RsvpQuestionResponseSchema,
@@ -51,6 +52,8 @@ import {
     PagedRsvpQuestionResponseSchemaToJSON,
     PagedRsvpSubmissionSchemaFromJSON,
     PagedRsvpSubmissionSchemaToJSON,
+    QRCodeTaskSchemaFromJSON,
+    QRCodeTaskSchemaToJSON,
     RsvpDeclineResponseSchemaFromJSON,
     RsvpDeclineResponseSchemaToJSON,
     RsvpQuestionResponseCreateSchemaFromJSON,
@@ -109,6 +112,10 @@ export interface GuestlistApiGetGuestRequest {
 }
 
 export interface GuestlistApiGetGuestGroupRequest {
+    groupId: string;
+}
+
+export interface GuestlistApiGetGuestGroupQrCodeRequest {
     groupId: string;
 }
 
@@ -723,6 +730,51 @@ export class GuestlistApi extends runtime.BaseAPI {
     }
 
     /**
+     * Trigger a Celery task to generate QR codes for guest groups that don\'t have one
+     * Generate Missing Qr Codes
+     */
+    async guestlistApiGenerateMissingQrCodesRaw(
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<QRCodeTaskSchema>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
+        let urlPath = `/api/guestlist/qr-codes/generate-missing`;
+
+        const response = await this.request(
+            {
+                path: urlPath,
+                method: "POST",
+                headers: headerParameters,
+                query: queryParameters,
+            },
+            initOverrides,
+        );
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => QRCodeTaskSchemaFromJSON(jsonValue));
+    }
+
+    /**
+     * Trigger a Celery task to generate QR codes for guest groups that don\'t have one
+     * Generate Missing Qr Codes
+     */
+    async guestlistApiGenerateMissingQrCodes(
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<QRCodeTaskSchema> {
+        const response = await this.guestlistApiGenerateMissingQrCodesRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Get a specific guest by ID
      * Get Guest
      */
@@ -830,6 +882,60 @@ export class GuestlistApi extends runtime.BaseAPI {
     ): Promise<GuestGroupSchema> {
         const response = await this.guestlistApiGetGuestGroupRaw(requestParameters, initOverrides);
         return await response.value();
+    }
+
+    /**
+     * Get QR code image for a guest group
+     * Get Guest Group Qr Code
+     */
+    async guestlistApiGetGuestGroupQrCodeRaw(
+        requestParameters: GuestlistApiGetGuestGroupQrCodeRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters["groupId"] == null) {
+            throw new runtime.RequiredError(
+                "groupId",
+                'Required parameter "groupId" was null or undefined when calling guestlistApiGetGuestGroupQrCode().',
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
+        let urlPath = `/api/guestlist/guest-groups/{group_id}/qr-code`;
+        urlPath = urlPath.replace(`{${"group_id"}}`, encodeURIComponent(String(requestParameters["groupId"])));
+
+        const response = await this.request(
+            {
+                path: urlPath,
+                method: "GET",
+                headers: headerParameters,
+                query: queryParameters,
+            },
+            initOverrides,
+        );
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Get QR code image for a guest group
+     * Get Guest Group Qr Code
+     */
+    async guestlistApiGetGuestGroupQrCode(
+        requestParameters: GuestlistApiGetGuestGroupQrCodeRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<void> {
+        await this.guestlistApiGetGuestGroupQrCodeRaw(requestParameters, initOverrides);
     }
 
     /**
@@ -1310,6 +1416,51 @@ export class GuestlistApi extends runtime.BaseAPI {
         initOverrides?: RequestInit | runtime.InitOverrideFunction,
     ): Promise<PagedRsvpSubmissionSchema> {
         const response = await this.guestlistApiListRsvpSubmissionsRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Trigger a Celery task to regenerate ALL QR codes for guest groups
+     * Regenerate All Qr Codes
+     */
+    async guestlistApiRegenerateAllQrCodesRaw(
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<QRCodeTaskSchema>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
+        let urlPath = `/api/guestlist/qr-codes/regenerate-all`;
+
+        const response = await this.request(
+            {
+                path: urlPath,
+                method: "POST",
+                headers: headerParameters,
+                query: queryParameters,
+            },
+            initOverrides,
+        );
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => QRCodeTaskSchemaFromJSON(jsonValue));
+    }
+
+    /**
+     * Trigger a Celery task to regenerate ALL QR codes for guest groups
+     * Regenerate All Qr Codes
+     */
+    async guestlistApiRegenerateAllQrCodes(
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<QRCodeTaskSchema> {
+        const response = await this.guestlistApiRegenerateAllQrCodesRaw(initOverrides);
         return await response.value();
     }
 

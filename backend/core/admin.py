@@ -661,7 +661,7 @@ class WeddingSettingsAdmin(SimpleHistoryAdmin):
         (
             "RSVP Dates",
             {
-                "fields": ("rsvp_start_date", "rsvp_end_date"),
+                "fields": ("rsvp_start_date", "rsvp_end_date", "rsvp_default_url", "rsvp_qr_code", "rsvp_qr_code_url"),
                 "classes": ("collapse",),
             },
         ),

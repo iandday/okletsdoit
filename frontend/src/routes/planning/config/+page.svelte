@@ -180,6 +180,12 @@
                                             {formatValue(data.configData["rsvpEndDate"])}
                                         </div>
                                     </div>
+                                    <div class="flex flex-col">
+                                        <div class="config-card-field-name">RSVP URL</div>
+                                        <div class="config-card-field-value">
+                                            {formatValue(data.configData["rsvpDefaultUrl"])}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="divider divider-accent">Landing</div>

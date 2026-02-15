@@ -87,6 +87,7 @@ docs/PagedRsvpQuestionSchema.md
 docs/PagedRsvpSubmissionSchema.md
 docs/PagedTimelineSchema.md
 docs/PagedTipsSchema.md
+docs/QRCodeTaskSchema.md
 docs/QuestionCreateSchema.md
 docs/QuestionFilterSchema.md
 docs/QuestionSchema.md
@@ -197,6 +198,7 @@ models/PagedRsvpQuestionSchema.ts
 models/PagedRsvpSubmissionSchema.ts
 models/PagedTimelineSchema.ts
 models/PagedTipsSchema.ts
+models/QRCodeTaskSchema.ts
 models/QuestionCreateSchema.ts
 models/QuestionFilterSchema.ts
 models/QuestionSchema.ts
