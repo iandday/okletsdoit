@@ -55,6 +55,7 @@ class WeddingSettingsSchema(Schema):
     rsvp_enable_email_updates: bool
     rsvp_email_update_label: Optional[str] = None
     rsvp_success_headline: str
+    rsvp_default_url: str
     standard_group_label: str
     vip_group_label: str
     accommodation_group_label: str
@@ -70,6 +71,7 @@ class WeddingSettingsSchema(Schema):
     venue_parking: Optional[str] = None
     venue_gallery_title: str
     venue_gallery_description: str
+    rsvp_qr_code_url: Optional[str] = None
 
 
 class WeddingSettingsUpdateSchema(Schema):
@@ -96,6 +98,8 @@ class WeddingSettingsUpdateSchema(Schema):
     rsvp_enable_email_updates: Optional[bool] = None
     rsvp_email_update_label: Optional[str] = None
     rsvp_success_headline: Optional[str] = None
+    rsvp_default_url: Optional[str] = None
+    rsvp_qr_code_url: Optional[str] = None
     standard_group_label: Optional[str] = None
     vip_group_label: Optional[str] = None
     accommodation_group_label: Optional[str] = None

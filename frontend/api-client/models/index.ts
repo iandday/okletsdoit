@@ -74,6 +74,7 @@ export * from "./PagedRsvpQuestionSchema";
 export * from "./PagedRsvpSubmissionSchema";
 export * from "./PagedTimelineSchema";
 export * from "./PagedTipsSchema";
+export * from "./QRCodeTaskSchema";
 export * from "./QuestionCreateSchema";
 export * from "./QuestionFilterSchema";
 export * from "./QuestionSchema";

@@ -162,6 +162,18 @@ export interface WeddingSettingsUpdateSchema {
      * @type {string}
      * @memberof WeddingSettingsUpdateSchema
      */
+    rsvpDefaultUrl?: string | null;
+    /**
+     *
+     * @type {string}
+     * @memberof WeddingSettingsUpdateSchema
+     */
+    rsvpQrCodeUrl?: string | null;
+    /**
+     *
+     * @type {string}
+     * @memberof WeddingSettingsUpdateSchema
+     */
     standardGroupLabel?: string | null;
     /**
      *
@@ -295,6 +307,8 @@ export function WeddingSettingsUpdateSchemaFromJSONTyped(
             json["rsvp_enable_email_updates"] == null ? undefined : json["rsvp_enable_email_updates"],
         rsvpEmailUpdateLabel: json["rsvp_email_update_label"] == null ? undefined : json["rsvp_email_update_label"],
         rsvpSuccessHeadline: json["rsvp_success_headline"] == null ? undefined : json["rsvp_success_headline"],
+        rsvpDefaultUrl: json["rsvp_default_url"] == null ? undefined : json["rsvp_default_url"],
+        rsvpQrCodeUrl: json["rsvp_qr_code_url"] == null ? undefined : json["rsvp_qr_code_url"],
         standardGroupLabel: json["standard_group_label"] == null ? undefined : json["standard_group_label"],
         vipGroupLabel: json["vip_group_label"] == null ? undefined : json["vip_group_label"],
         accommodationGroupLabel:
@@ -356,6 +370,8 @@ export function WeddingSettingsUpdateSchemaToJSONTyped(
         rsvp_enable_email_updates: value["rsvpEnableEmailUpdates"],
         rsvp_email_update_label: value["rsvpEmailUpdateLabel"],
         rsvp_success_headline: value["rsvpSuccessHeadline"],
+        rsvp_default_url: value["rsvpDefaultUrl"],
+        rsvp_qr_code_url: value["rsvpQrCodeUrl"],
         standard_group_label: value["standardGroupLabel"],
         vip_group_label: value["vipGroupLabel"],
         accommodation_group_label: value["accommodationGroupLabel"],

@@ -3,6 +3,7 @@ from __future__ import annotations
 from django.core.management.base import BaseCommand
 from core.models import RsvpQuestion, RsvpQuestionChoice, WeddingSettings
 from django.contrib.auth import get_user_model
+from django.conf import settings
 
 
 class Command(BaseCommand):
@@ -16,11 +17,11 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         # create default wedding settings if none exist
         if not WeddingSettings.objects.first():
-            settings = WeddingSettings.objects.create(wedding_date=None)
+            w_settings = WeddingSettings.objects.create(wedding_date=None)
         else:
-            settings = WeddingSettings.objects.first()
+            w_settings = WeddingSettings.objects.first()
 
-        if settings and (not settings.default_data_loaded or options["force"]):
+        if w_settings and (not w_settings.default_data_loaded or options["force"]):
             # find first admin user to assign as created_by
             User = get_user_model()
             admin_user = User.objects.filter(is_admin=True).first()
@@ -69,8 +70,11 @@ class Command(BaseCommand):
                             created_by=admin_user,
                         )
 
-            settings.default_data_loaded = True
-            settings.save()
+            w_settings.default_data_loaded = True
+            w_settings.rsvp_default_url = settings.RSVP_URL
+            w_settings.save()
             self.stdout.write(self.style.SUCCESS("Default wedding settings data loaded."))
-        else:
+        elif w_settings:
+            w_settings.rsvp_default_url = settings.RSVP_URL
+            w_settings.save()
             self.stdout.write("Default wedding settings data already loaded. Use --force to reload.")

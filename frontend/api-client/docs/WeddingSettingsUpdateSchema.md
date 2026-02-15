@@ -27,6 +27,8 @@
 | `rsvpEnableEmailUpdates`     | boolean |
 | `rsvpEmailUpdateLabel`       | string  |
 | `rsvpSuccessHeadline`        | string  |
+| `rsvpDefaultUrl`             | string  |
+| `rsvpQrCodeUrl`              | string  |
 | `standardGroupLabel`         | string  |
 | `vipGroupLabel`              | string  |
 | `accommodationGroupLabel`    | string  |
@@ -73,6 +75,8 @@ const example = {
     rsvpEnableEmailUpdates: null,
     rsvpEmailUpdateLabel: null,
     rsvpSuccessHeadline: null,
+    rsvpDefaultUrl: null,
+    rsvpQrCodeUrl: null,
     standardGroupLabel: null,
     vipGroupLabel: null,
     accommodationGroupLabel: null,

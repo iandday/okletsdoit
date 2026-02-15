@@ -27,6 +27,7 @@
 | `rsvpEnableEmailUpdates`     | boolean |
 | `rsvpEmailUpdateLabel`       | string  |
 | `rsvpSuccessHeadline`        | string  |
+| `rsvpDefaultUrl`             | string  |
 | `standardGroupLabel`         | string  |
 | `vipGroupLabel`              | string  |
 | `accommodationGroupLabel`    | string  |
@@ -42,6 +43,7 @@
 | `venueParking`               | string  |
 | `venueGalleryTitle`          | string  |
 | `venueGalleryDescription`    | string  |
+| `rsvpQrCodeUrl`              | string  |
 
 ## Example
 
@@ -73,6 +75,7 @@ const example = {
     rsvpEnableEmailUpdates: null,
     rsvpEmailUpdateLabel: null,
     rsvpSuccessHeadline: null,
+    rsvpDefaultUrl: null,
     standardGroupLabel: null,
     vipGroupLabel: null,
     accommodationGroupLabel: null,
@@ -88,6 +91,7 @@ const example = {
     venueParking: null,
     venueGalleryTitle: null,
     venueGalleryDescription: null,
+    rsvpQrCodeUrl: null,
 } satisfies WeddingSettingsSchema;
 
 console.log(example);

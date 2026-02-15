@@ -141,6 +141,24 @@ export interface GuestGroupSchema {
     rsvpCode: string;
     /**
      *
+     * @type {string}
+     * @memberof GuestGroupSchema
+     */
+    rsvpUrl: string;
+    /**
+     *
+     * @type {string}
+     * @memberof GuestGroupSchema
+     */
+    qrCodeUrl?: string | null;
+    /**
+     *
+     * @type {boolean}
+     * @memberof GuestGroupSchema
+     */
+    hasQrCode: boolean;
+    /**
+     *
      * @type {number}
      * @memberof GuestGroupSchema
      */
@@ -215,6 +233,8 @@ export function instanceOfGuestGroupSchema(value: object): value is GuestGroupSc
     if (!("priority" in value) || value["priority"] === undefined) return false;
     if (!("priorityDisplay" in value) || value["priorityDisplay"] === undefined) return false;
     if (!("rsvpCode" in value) || value["rsvpCode"] === undefined) return false;
+    if (!("rsvpUrl" in value) || value["rsvpUrl"] === undefined) return false;
+    if (!("hasQrCode" in value) || value["hasQrCode"] === undefined) return false;
     if (!("groupCount" in value) || value["groupCount"] === undefined) return false;
     if (!("groupStandard" in value) || value["groupStandard"] === undefined) return false;
     if (!("groupVip" in value) || value["groupVip"] === undefined) return false;
@@ -258,6 +278,9 @@ export function GuestGroupSchemaFromJSONTyped(json: any, ignoreDiscriminator: bo
         associatedWithLastName:
             json["associated_with_last_name"] == null ? undefined : json["associated_with_last_name"],
         rsvpCode: json["rsvp_code"],
+        rsvpUrl: json["rsvp_url"],
+        qrCodeUrl: json["qr_code_url"] == null ? undefined : json["qr_code_url"],
+        hasQrCode: json["has_qr_code"],
         groupCount: json["group_count"],
         groupStandard: json["group_standard"],
         groupVip: json["group_vip"],
@@ -303,6 +326,9 @@ export function GuestGroupSchemaToJSONTyped(
         associated_with_first_name: value["associatedWithFirstName"],
         associated_with_last_name: value["associatedWithLastName"],
         rsvp_code: value["rsvpCode"],
+        rsvp_url: value["rsvpUrl"],
+        qr_code_url: value["qrCodeUrl"],
+        has_qr_code: value["hasQrCode"],
         group_count: value["groupCount"],
         group_standard: value["groupStandard"],
         group_vip: value["groupVip"],

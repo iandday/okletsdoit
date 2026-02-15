@@ -8,6 +8,8 @@ from django.db.models.query import QuerySet
 from django.utils.text import slugify
 from simple_history.models import HistoricalRecords
 from users.models import User
+from django.db.models.signals import pre_delete
+from django.dispatch import receiver
 
 
 def attachment_upload_path(instance, filename: str) -> str:
@@ -98,3 +100,8 @@ class Attachment(models.Model):
         if old_path != new_path:
             new_path.parent.mkdir(parents=True, exist_ok=True)
             old_path.rename(new_path)
+
+
+@receiver(pre_delete, sender=Attachment)
+def delete_document_file(sender, instance, **kwargs):
+    instance.attachment_file.delete(save=False)
