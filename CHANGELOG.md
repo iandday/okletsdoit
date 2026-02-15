@@ -1,6 +1,27 @@
 # CHANGELOG
 
 
+## v0.13.0 (2026-02-15)
+
+### Chores
+
+- Sync files from main after release ([#79](https://github.com/iandday/okletsdoit/pull/79),
+  [`71ca2cf`](https://github.com/iandday/okletsdoit/commit/71ca2cf40783eb17ac29f44fad9e186afe5902c3))
+
+Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
+
+### Features
+
+- **GuestList**: Update QR functionality
+  ([`3695416`](https://github.com/iandday/okletsdoit/commit/3695416243181335ff3d4f2953ea5a0a7494549b))
+
+- **Core**: :art: update qr code
+  ([`8cfebb5`](https://github.com/iandday/okletsdoit/commit/8cfebb57213819b765619c2f1a954e088cb358d1))
+
+- **GuestList**: :sparkles: add rsvp qr code
+  ([`9dcf14d`](https://github.com/iandday/okletsdoit/commit/9dcf14d2c5a2f299b16e8c574a103679019aef29))
+
+
 ## v0.12.2 (2026-02-13)
 
 ### Bug Fixes
