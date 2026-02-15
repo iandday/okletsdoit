@@ -42,6 +42,7 @@ All URIs are relative to _http://localhost_
 | [**coreApiListRsvpQuestions**](CoreApi.md#coreapilistrsvpquestions)               | **GET** /api/core/rsvp-questions                              | List Rsvp Questions         |
 | [**coreApiListTimelines**](CoreApi.md#coreapilisttimelines)                       | **GET** /api/core/timelines                                   | List Timelines              |
 | [**coreApiListTips**](CoreApi.md#coreapilisttips)                                 | **GET** /api/core/tips                                        | List Tips                   |
+| [**coreApiTriggerSendUpdateEmail**](CoreApi.md#coreapitriggersendupdateemail)     | **POST** /api/core/send-update-email                          | Trigger Send Update Email   |
 | [**coreApiUpdateAccommodation**](CoreApi.md#coreapiupdateaccommodation)           | **PUT** /api/core/accommodations/{accommodation_id}           | Update Accommodation        |
 | [**coreApiUpdateIdea**](CoreApi.md#coreapiupdateidea)                             | **PUT** /api/core/ideas/{idea_id}                             | Update Idea                 |
 | [**coreApiUpdateInspiration**](CoreApi.md#coreapiupdateinspiration)               | **PUT** /api/core/inspirations/{inspiration_id}               | Update Inspiration          |
@@ -2842,6 +2843,69 @@ example().catch(console.error);
 ### Return type
 
 [**PagedTipsSchema**](PagedTipsSchema.md)
+
+### Authorization
+
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## coreApiTriggerSendUpdateEmail
+
+> EmailTaskSchema coreApiTriggerSendUpdateEmail()
+
+Trigger Send Update Email
+
+Trigger a Celery task to send wedding planning update email
+
+### Example
+
+```ts
+import { Configuration, CoreApi } from "";
+import type { CoreApiTriggerSendUpdateEmailRequest } from "";
+
+async function example() {
+    console.log("🚀 Testing  SDK...");
+    const config = new Configuration({
+        // To configure API key authorization: SessionAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: ServiceTokenAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: XSessionTokenAuth
+        apiKey: "YOUR API KEY",
+    });
+    const api = new CoreApi(config);
+
+    try {
+        const data = await api.coreApiTriggerSendUpdateEmail();
+        console.log(data);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+This endpoint does not need any parameter.
+
+### Return type
+
+[**EmailTaskSchema**](EmailTaskSchema.md)
 
 ### Authorization
 

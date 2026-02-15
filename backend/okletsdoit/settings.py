@@ -37,7 +37,10 @@ env = environ.Env(
     AWS_REGION=(str, "us-east-1"),
     ALLOWED_CIDR_NETS=(list, []),
     SERVER_NAME=(str, "dev.internal"),
-    DJANGO_CORS_ALLOWED_ORIGINS=(list, ["http://localhost:5173", "http://localhost:4173", "dev.internal"]),
+    DJANGO_CORS_ALLOWED_ORIGINS=(
+        list,
+        ["http://localhost:5173", "http://localhost:4173", "http://dev.internal", "https://dev.internal"],
+    ),
     PERSONALIZED_RSVP_BASE_URL=(str, "dev.internal"),
     RSVP_URL=(str, "dev.internal/rsvp"),
     EMAIL_BACKEND=(str, "django.core.mail.backends.smtp.EmailBackend"),
@@ -92,7 +95,7 @@ INSTALLED_APPS = [
     "csp",
     "extra_views",  # https://django-extra-views.readthedocs.io/en/latest/pages/getting-started.html#installation
     "ninja",
-    "core",
+    "core.apps.CoreConfig",
     "attachments",
     "users",
     "expenses",

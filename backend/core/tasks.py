@@ -23,3 +23,24 @@ def run_management_command(command_name, *args, **kwargs):
     finally:
         out.close()
         err.close()
+
+
+@shared_task
+def send_update_email():
+    """
+    Celery task to send wedding planning update email to users with email notifications enabled.
+    """
+    out = io.StringIO()
+    err = io.StringIO()
+    try:
+        call_command("send_update_email", stdout=out, stderr=err)
+        result = out.getvalue()
+        error = err.getvalue()
+        if error:
+            return {"success": False, "error": error, "output": result}
+        return {"success": True, "output": result}
+    except Exception as e:
+        return {"success": False, "error": str(e)}
+    finally:
+        out.close()
+        err.close()

@@ -1583,3 +1583,23 @@ def delete_accommodation(request, accommodation_id: UUID):
             accommodation.updated_by = admin_user
     accommodation.save()
     return {"success": True, "message": "Accommodation deleted successfully"}
+
+
+class EmailTaskSchema(Schema):
+    success: bool
+    message: str
+    task_id: str
+
+
+@router.post("/send-update-email", response=EmailTaskSchema)
+def trigger_send_update_email(request):
+    """Trigger a Celery task to send wedding planning update email"""
+    from core.tasks import send_update_email as send_email_task
+
+    task = send_email_task.delay()
+
+    return {
+        "success": True,
+        "message": "Update email task started",
+        "task_id": task.id,
+    }
