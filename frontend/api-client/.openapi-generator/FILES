@@ -36,6 +36,7 @@ docs/DeadlineListUpdateSchema.md
 docs/DeadlineSchema.md
 docs/DeadlineUpdateSchema.md
 docs/DeadlinesApi.md
+docs/EmailTaskSchema.md
 docs/EstimatedAmount.md
 docs/ExpenseCreateSchema.md
 docs/ExpenseFilterSchema.md
@@ -150,6 +151,7 @@ models/DeadlineListSchema.ts
 models/DeadlineListUpdateSchema.ts
 models/DeadlineSchema.ts
 models/DeadlineUpdateSchema.ts
+models/EmailTaskSchema.ts
 models/EstimatedAmount.ts
 models/ExpenseCreateSchema.ts
 models/ExpenseFilterSchema.ts

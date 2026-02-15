@@ -7,6 +7,22 @@ from django.http import HttpResponse
 from import_export.admin import ImportExportModelAdmin
 from simple_history.admin import SimpleHistoryAdmin
 from django.db import models
+from django_celery_beat.models import (
+    PeriodicTask,
+    IntervalSchedule,
+    CrontabSchedule,
+    SolarSchedule,
+    ClockedSchedule,
+)
+from django_celery_beat.admin import (
+    PeriodicTaskAdmin,
+    IntervalScheduleAdmin,
+    CrontabScheduleAdmin,
+    SolarScheduleAdmin,
+    ClockedScheduleAdmin,
+)
+from django_celery_results.models import TaskResult, GroupResult
+from django_celery_results.admin import TaskResultAdmin, GroupResultAdmin
 from .models import (
     Accommodation,
     Idea,
@@ -812,7 +828,18 @@ custom_admin_site.register(RsvpQuestion, RsvpQuestionAdmin)
 custom_admin_site.register(RsvpQuestionChoice, RsvpQuestionChoiceAdmin)
 custom_admin_site.register(WeddingSettings, WeddingSettingsAdmin)
 custom_admin_site.register(Question, QuestionAdmin)
-custom_admin_site.register(QuestionCategory, QuestionCategoryAdmin)
+# Celery Beat - Periodic Tasks
+custom_admin_site.register(PeriodicTask, PeriodicTaskAdmin)
+custom_admin_site.register(IntervalSchedule, IntervalScheduleAdmin)
+custom_admin_site.register(CrontabSchedule, CrontabScheduleAdmin)
+custom_admin_site.register(SolarSchedule, SolarScheduleAdmin)
+custom_admin_site.register(ClockedSchedule, ClockedScheduleAdmin)
+
+# Celery Results - Task Results
+custom_admin_site.register(TaskResult, TaskResultAdmin)
+custom_admin_site.register(GroupResult, GroupResultAdmin)
+
+# stom_admin_site.register(QuestionCategory, QuestionCategoryAdmin)
 custom_admin_site.register(QuestionURL, QuestionURLAdmin)
 custom_admin_site.register(Tips, TipsAdmin)
 

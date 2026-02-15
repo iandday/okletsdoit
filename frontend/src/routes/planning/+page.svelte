@@ -1,10 +1,15 @@
 <script lang="ts">
+    import { enhance } from "$app/forms";
     import { goto } from "$app/navigation";
     import ProtectedPageHeader from "$lib/components/layouts/ProtectedPageHeader.svelte";
     import ProtectedPageShell from "$lib/components/layouts/ProtectedPageShell.svelte";
     import { previewMenu, protectedMenu } from "$lib/components/layouts/Topbar.svelte";
+    import type { ActionData } from "./$types";
+
+    const { form }: { form: ActionData } = $props();
 
     let activeTab = $state(0);
+    let isSendingEmail = $state(false);
 
     const descriptions: Record<string, string> = {
         Contacts: "Manage your wedding contacts, vendors, guests, and important people.",
@@ -92,22 +97,43 @@
                 </div>
             </div>
         {/if}
+        <div class="mt-12">
+            <div class="detail-card">
+                <div class="detail-card-body">
+                    <div class="detail-card-title">
+                        <span class="icon-[lucide--bell] size-6"></span>
+                        Actions
+                    </div>
+                    <p></p>
+                    <form
+                        method="POST"
+                        action="?/sendUpdateEmail"
+                        use:enhance={() => {
+                            isSendingEmail = true;
+                            return async ({ update }) => {
+                                await update();
+                                isSendingEmail = false;
+                            };
+                        }}>
+                        <button type="submit" disabled={isSendingEmail} class="btn btn-accent gap-2">
+                            <span class="icon-[lucide--send] size-5"></span>
+                            {isSendingEmail ? "Sending..." : "Send Update Email"}
+                        </button>
+                    </form>
+
+                    {#if form?.success}
+                        <div class="alert alert-success mt-4">
+                            <span class="icon-[lucide--check-circle] size-5"></span>
+                            <span>{form.message} (Task ID: {form.taskId})</span>
+                        </div>
+                    {:else if form?.error}
+                        <div class="alert alert-error mt-4">
+                            <span class="icon-[lucide--alert-circle] size-5"></span>
+                            <span>{form.error}</span>
+                        </div>
+                    {/if}
+                </div>
+            </div>
+        </div>
     </div>
 </ProtectedPageShell>
-
-<style>
-    @keyframes fade-in {
-        from {
-            opacity: 0;
-            transform: translateY(10px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    .animate-fade-in {
-        animation: fade-in 0.3s ease-out;
-    }
-</style>

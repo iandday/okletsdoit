@@ -16,6 +16,7 @@ import type {
     AccommodationSchema,
     AccommodationUpdateSchema,
     CategoryContentSchema,
+    EmailTaskSchema,
     IdeaCreateSchema,
     IdeaSchema,
     IdeaUpdateSchema,
@@ -59,6 +60,8 @@ import {
     AccommodationUpdateSchemaToJSON,
     CategoryContentSchemaFromJSON,
     CategoryContentSchemaToJSON,
+    EmailTaskSchemaFromJSON,
+    EmailTaskSchemaToJSON,
     IdeaCreateSchemaFromJSON,
     IdeaCreateSchemaToJSON,
     IdeaSchemaFromJSON,
@@ -2508,6 +2511,51 @@ export class CoreApi extends runtime.BaseAPI {
         initOverrides?: RequestInit | runtime.InitOverrideFunction,
     ): Promise<PagedTipsSchema> {
         const response = await this.coreApiListTipsRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Trigger a Celery task to send wedding planning update email
+     * Trigger Send Update Email
+     */
+    async coreApiTriggerSendUpdateEmailRaw(
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<EmailTaskSchema>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
+        let urlPath = `/api/core/send-update-email`;
+
+        const response = await this.request(
+            {
+                path: urlPath,
+                method: "POST",
+                headers: headerParameters,
+                query: queryParameters,
+            },
+            initOverrides,
+        );
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => EmailTaskSchemaFromJSON(jsonValue));
+    }
+
+    /**
+     * Trigger a Celery task to send wedding planning update email
+     * Trigger Send Update Email
+     */
+    async coreApiTriggerSendUpdateEmail(
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<EmailTaskSchema> {
+        const response = await this.coreApiTriggerSendUpdateEmailRaw(initOverrides);
         return await response.value();
     }
 
