@@ -1,6 +1,26 @@
 # CHANGELOG
 
 
+## v0.14.0 (2026-02-15)
+
+### Bug Fixes
+
+- Linting
+  ([`0f67ed3`](https://github.com/iandday/okletsdoit/commit/0f67ed37d556dd283ec4922f6a78cb8ecf2a5e44))
+
+### Chores
+
+- Sync files from main after release ([#81](https://github.com/iandday/okletsdoit/pull/81),
+  [`076430c`](https://github.com/iandday/okletsdoit/commit/076430c97948ee7cd2bd3063d3aaec9338315f62))
+
+Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
+
+### Features
+
+- **Core**: :zap: trigger update email
+  ([`b319f3c`](https://github.com/iandday/okletsdoit/commit/b319f3cb68abb087369de882d656f2f8c7a82ac8))
+
+
 ## v0.13.0 (2026-02-15)
 
 ### Chores
