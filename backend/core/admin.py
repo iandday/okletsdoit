@@ -32,7 +32,6 @@ from .models import (
     RsvpQuestionChoice,
     WeddingSettings,
     Question,
-    QuestionCategory,
     QuestionURL,
     Tips,
 )
