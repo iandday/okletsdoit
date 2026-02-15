@@ -57,7 +57,7 @@ def generate_qr_code_attachment(
     model_instance: models.Model,
     uploaded_by: User,
     filename: str,
-    heart_logo: bool = True,
+    heart_logo: bool = False,
 ) -> Attachment:
     """
     Generate a QR code for the given URL and save it as an Attachment.
@@ -68,7 +68,7 @@ def generate_qr_code_attachment(
         model_instance: The model instance to attach the QR code to
         uploaded_by: The user creating the attachment
         filename: The filename for the QR code image (e.g., "qr_code_ABC123.png")
-        heart_logo: If True, adds a red heart logo to the center (default: True)
+        heart_logo: If True, adds a red heart logo to the center (default: False)
 
     Returns:
         The created Attachment instance
@@ -88,18 +88,12 @@ def generate_qr_code_attachment(
         # Generate base QR code image
         qr.save(buffer, kind="png", scale=10, border=1, dark="black", light="white")
         buffer.seek(0)
-
-        # Load as PIL Image
         img = Image.open(buffer).convert("RGBA")
 
         # Create heart logo (50% of QR code - maximum safe size with high error correction)
         logo_size = int(img.size[0] * 0.5)
         heart = create_heart_logo(logo_size)
-
-        # Calculate position to center the logo
         logo_pos = ((img.size[0] - logo_size) // 2, (img.size[1] - logo_size) // 2)
-
-        # Paste heart directly onto QR code
         img.paste(heart, logo_pos, heart)
 
         # Save final image
@@ -107,7 +101,6 @@ def generate_qr_code_attachment(
         img.convert("RGB").save(buffer, format="PNG")
         buffer.seek(0)
     else:
-        # Simple QR code without logo
         qr.save(buffer, kind="png", scale=10, border=1, dark="black", light="white")
         buffer.seek(0)
 

@@ -381,7 +381,7 @@ class WeddingSettings(models.Model):
             model_instance=self,
             uploaded_by=User.objects.filter(is_admin=True).first(),
             filename="qr_code_base_rsvp.png",
-            heart_logo=True,  # ❤️ Enable heart logo on QR codes
+            heart_logo=False,
         )
         self.rsvp_qr_code = attachment
         self.rsvp_qr_code_url = attachment.attachment_file.url if attachment.attachment_file else ""

@@ -243,7 +243,7 @@
                     <Stats objects={guestStats} />
                     <Stats objects={inviteStats} />
                 </div>
-                <div class="flex flex-row md:flex-col gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-2 justify-items-center" id="action-buttons">
                     <CreateObject href="/planning/guest_list/new" label="New Guest Group" />
                     <a href="/planning/guest/all" class="btn btn-accent gap-2">
                         <span class="icon-[lucide--users] size-5"></span>
@@ -251,11 +251,11 @@
                     </a>
                     <a href="/api/guestlist/export_address_csv" class="btn btn-secondary gap-2">
                         <span class="icon-[lucide--download] size-5"></span>
-                        Export Address Data
+                        Export Data
                     </a>
 
                     <!-- QR Code Generation Actions -->
-                    <div class="divider"></div>
+
                     <button
                         onclick={() => openQrModal(data.configData.rsvpQrCodeUrl as string, "General RSVP")}
                         class="btn btn-accent gap-2">

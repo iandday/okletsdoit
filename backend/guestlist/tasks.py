@@ -1,6 +1,7 @@
 from celery import shared_task
 from django.core.management import call_command
 import io
+from core.models import WeddingSettings
 
 
 @shared_task
@@ -37,6 +38,9 @@ def regenerate_all_qr_codes():
         error = err.getvalue()
         if error:
             return {"success": False, "error": error, "output": result}
+        w_settings = WeddingSettings.objects.first()
+        if w_settings:
+            w_settings.save()  # Update timestamp to trigger qr code regeneration
         return {"success": True, "output": result}
     except Exception as e:
         return {"success": False, "error": str(e)}

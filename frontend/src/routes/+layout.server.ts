@@ -9,7 +9,6 @@ export const load: LayoutServerLoad = async () => {
     if (!configData) {
         throw redirect(302, "/");
     }
-    console.log(configData.rsvpQrCodeUrl);
     return {
         configData,
     };
