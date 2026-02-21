@@ -1,6 +1,26 @@
 # CHANGELOG
 
 
+## v0.16.0 (2026-02-21)
+
+### Bug Fixes
+
+- Linting
+  ([`ea9b40f`](https://github.com/iandday/okletsdoit/commit/ea9b40fc36561bbe06cfe0ac6d01f84fe17f25c3))
+
+### Chores
+
+- Sync files from main after release ([#85](https://github.com/iandday/okletsdoit/pull/85),
+  [`e0b6277`](https://github.com/iandday/okletsdoit/commit/e0b62779c9d0f3db6b44a11346160e5597112195))
+
+Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
+
+### Features
+
+- **Core**: :art: update landing page
+  ([`4881a40`](https://github.com/iandday/okletsdoit/commit/4881a40adb6c2895b5104a4a1c3e7455849c47bb))
+
+
 ## v0.15.0 (2026-02-21)
 
 ### Chores
