@@ -1,28 +1,17 @@
 <script lang="ts">
     import { enhance } from "$app/forms";
     import { goto } from "$app/navigation";
+    import Stats from "$lib/components/Stats.svelte";
     import ProtectedPageHeader from "$lib/components/layouts/ProtectedPageHeader.svelte";
     import ProtectedPageShell from "$lib/components/layouts/ProtectedPageShell.svelte";
     import { previewMenu, protectedMenu } from "$lib/components/layouts/Topbar.svelte";
-    import type { ActionData } from "./$types";
+    import { formatCurrency } from "$lib/utils/formatters";
+    import type { ActionData, PageData } from "./$types";
 
-    const { form }: { form: ActionData } = $props();
+    const { data, form }: { data: PageData; form: ActionData } = $props();
 
     let activeTab = $state(0);
     let isSendingEmail = $state(false);
-
-    const descriptions: Record<string, string> = {
-        Contacts: "Manage your wedding contacts, vendors, guests, and important people.",
-        FAQ: "Create and organize frequently asked questions for your wedding website.",
-        Deadlines: "Track important dates and milestones leading up to your big day.",
-        Lists: "Organize tasks, checklists, and to-do items for your wedding planning.",
-        Budget: "Monitor expenses, set budgets, and track spending across all wedding categories.",
-        "Guest List": "Manage your guest list, RSVPs, meal preferences, and seating arrangements.",
-        Inspiration: "Save and organize inspiration photos, ideas, and references for your wedding.",
-        Ideas: "Brainstorm and capture creative ideas for your wedding celebration.",
-        Timeline: "Create and visualize your wedding day timeline and schedule.",
-        Settings: "Configure your wedding website settings, theme, and preferences.",
-    };
 </script>
 
 <ProtectedPageShell relativeCrumbs={[]}>
@@ -32,8 +21,8 @@
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <!-- Tabs Navigation -->
-        <div class="bg-base-300 py-2 px-4 mb-6 overflow-x-auto">
-            <div class="flex gap-2 min-w-max justify-between">
+        <div class="bg-base-300 py-2 px-4 mb-6">
+            <div class="flex gap-2 flex-col lg:flex-row min-w-max justify-between">
                 {#each protectedMenu as item, index (item.title)}
                     <button
                         onclick={() => (activeTab = index)}
@@ -55,10 +44,30 @@
                     <div class="config-card animate-fade-in">
                         <div class="config-card-body">
                             <div class="config-card-title">{item.title}</div>
+
                             <p>
-                                {descriptions[item.title] ||
-                                    `Manage your ${item.title.toLowerCase()} for your wedding.`}
+                                {item.description || `Manage your ${item.title.toLowerCase()} for your wedding.`}
                             </p>
+                            {#if item.href == "/planning/budget"}
+                                <div class="flex justify-around items-center">
+                                    <Stats
+                                        size="sm"
+                                        class="justify-center flex flex-col sm:flex-row gap-4"
+                                        align="center"
+                                        objects={[
+                                            {
+                                                title: "Estimated",
+                                                value: formatCurrency(data.budgetEstimated),
+                                                description: "Total Budget",
+                                            },
+                                            {
+                                                title: "Spent",
+                                                value: formatCurrency(data.budgetActual),
+                                                description: "Total Spent",
+                                            },
+                                        ]} />
+                                </div>
+                            {/if}
                         </div>
                         <div class="config-card-actions">
                             <button onclick={() => goto(item.href)} class="btn btn-accent btn-lg gap-2">

@@ -10,6 +10,7 @@
         isSection?: boolean;
         anchorProps?: object;
         isNew?: boolean;
+        description?: string;
     } & IMenuItemBadges;
 </script>
 
