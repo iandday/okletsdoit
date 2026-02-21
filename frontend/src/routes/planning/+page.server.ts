@@ -3,7 +3,6 @@ import { error } from "@sveltejs/kit";
 import type { Actions } from "./$types";
 import type { PageServerLoad } from "./$types";
 
-
 export const load: PageServerLoad = async ({ locals }) => {
     const api = createApiClient(locals.sessionCookie);
     try {
@@ -29,9 +28,6 @@ export const load: PageServerLoad = async ({ locals }) => {
             page++;
         }
 
-
-
-
         const budgetEstimated = expenses.reduce((sum, e) => sum + Number(e.estimatedAmount || 0), 0);
         const budgetActual = expenses.reduce((sum, e) => sum + Number(e.actualAmount || 0), 0);
 
@@ -44,7 +40,6 @@ export const load: PageServerLoad = async ({ locals }) => {
         throw error(500, "Failed to load budget data");
     }
 };
-
 
 export const actions: Actions = {
     sendUpdateEmail: async ({ locals }) => {
