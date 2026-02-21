@@ -8,6 +8,10 @@ const config = {
         adapter: adapter({
             out: "build",
         }),
+        alias: {
+            "$api-client": "./api-client",
+            "$api-client/*": "./api-client/*",
+        },
     },
     compilerOptions: {
         // disable all warnings coming from node_modules and all accessibility warnings

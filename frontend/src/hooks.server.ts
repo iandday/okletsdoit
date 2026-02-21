@@ -5,7 +5,7 @@ import type { Handle } from "@sveltejs/kit";
 const API_URL = env.BACKEND_API_URL;
 
 // Routes that require authentication
-const protectedRoutes: string[] = ["/planning"];
+const protectedRoutes: string[] = ["/planning", "/export", "/admin"];
 
 export const handle: Handle = async ({ event, resolve }) => {
     const { url, cookies } = event;

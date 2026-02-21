@@ -14,6 +14,8 @@ All URIs are relative to _http://localhost_
 | [**guestlistApiDeleteRsvpResponse**](GuestlistApi.md#guestlistapideletersvpresponse)                               | **DELETE** /api/guestlist/rsvp-responses/{response_id}       | Delete Rsvp Response                  |
 | [**guestlistApiDeleteRsvpSubmission**](GuestlistApi.md#guestlistapideletersvpsubmission)                           | **DELETE** /api/guestlist/rsvp-submissions/{submission_id}   | Delete Rsvp Submission                |
 | [**guestlistApiExportAddressCsv**](GuestlistApi.md#guestlistapiexportaddresscsv)                                   | **GET** /api/guestlist/export_address_csv                    | Export Address Csv                    |
+| [**guestlistApiExportGuestData**](GuestlistApi.md#guestlistapiexportguestdata)                                     | **GET** /api/guestlist/export_guest_data                     | Export Guest Data                     |
+| [**guestlistApiExportGuestGroupData**](GuestlistApi.md#guestlistapiexportguestgroupdata)                           | **GET** /api/guestlist/export_guest_group_data               | Export Guest Group Data               |
 | [**guestlistApiGenerateMissingQrCodes**](GuestlistApi.md#guestlistapigeneratemissingqrcodes)                       | **POST** /api/guestlist/qr-codes/generate-missing            | Generate Missing Qr Codes             |
 | [**guestlistApiGetGuest**](GuestlistApi.md#guestlistapigetguest)                                                   | **GET** /api/guestlist/guests/{guest_id}                     | Get Guest                             |
 | [**guestlistApiGetGuestGroup**](GuestlistApi.md#guestlistapigetguestgroup)                                         | **GET** /api/guestlist/guest-groups/{group_id}               | Get Guest Group                       |
@@ -744,6 +746,152 @@ This endpoint does not need any parameter.
 | Status code | Description | Response headers |
 | ----------- | ----------- | ---------------- |
 | **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## guestlistApiExportGuestData
+
+> Blob guestlistApiExportGuestData(format, fields)
+
+Export Guest Data
+
+Export guest data as CSV or Excel file using django-import-export. Query parameters: - format: \&#39;csv\&#39; or \&#39;xlsx\&#39; (default: \&#39;csv\&#39;) - fields: Comma-separated list of field names to include (default: all fields) Available fields are dynamically derived from GuestResource.
+
+### Example
+
+```ts
+import { Configuration, GuestlistApi } from "";
+import type { GuestlistApiExportGuestDataRequest } from "";
+
+async function example() {
+    console.log("🚀 Testing  SDK...");
+    const config = new Configuration({
+        // To configure API key authorization: SessionAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: ServiceTokenAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: XSessionTokenAuth
+        apiKey: "YOUR API KEY",
+    });
+    const api = new GuestlistApi(config);
+
+    const body = {
+        // string (optional)
+        format: format_example,
+        // string (optional)
+        fields: fields_example,
+    } satisfies GuestlistApiExportGuestDataRequest;
+
+    try {
+        const data = await api.guestlistApiExportGuestData(body);
+        console.log(data);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name       | Type     | Description | Notes                                    |
+| ---------- | -------- | ----------- | ---------------------------------------- |
+| **format** | `string` |             | [Optional] [Defaults to `&#39;csv&#39;`] |
+| **fields** | `string` |             | [Optional] [Defaults to `undefined`]     |
+
+### Return type
+
+**Blob**
+
+### Authorization
+
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `text/csv`, `application/vnd.openxmlformats-officedocument.spreadsheetml.sheet`
+
+### HTTP response details
+
+| Status code | Description                  | Response headers |
+| ----------- | ---------------------------- | ---------------- |
+| **200**     | File download (CSV or Excel) | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## guestlistApiExportGuestGroupData
+
+> Blob guestlistApiExportGuestGroupData(format, fields)
+
+Export Guest Group Data
+
+Export guest group data as CSV or Excel file using django-import-export. Query parameters: - format: \&#39;csv\&#39; or \&#39;xlsx\&#39; (default: \&#39;csv\&#39;) - fields: Comma-separated list of field names to include (default: all fields) Available fields are dynamically derived from GuestGroupResource.
+
+### Example
+
+```ts
+import { Configuration, GuestlistApi } from "";
+import type { GuestlistApiExportGuestGroupDataRequest } from "";
+
+async function example() {
+    console.log("🚀 Testing  SDK...");
+    const config = new Configuration({
+        // To configure API key authorization: SessionAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: ServiceTokenAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: XSessionTokenAuth
+        apiKey: "YOUR API KEY",
+    });
+    const api = new GuestlistApi(config);
+
+    const body = {
+        // string (optional)
+        format: format_example,
+        // string (optional)
+        fields: fields_example,
+    } satisfies GuestlistApiExportGuestGroupDataRequest;
+
+    try {
+        const data = await api.guestlistApiExportGuestGroupData(body);
+        console.log(data);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name       | Type     | Description | Notes                                    |
+| ---------- | -------- | ----------- | ---------------------------------------- |
+| **format** | `string` |             | [Optional] [Defaults to `&#39;csv&#39;`] |
+| **fields** | `string` |             | [Optional] [Defaults to `undefined`]     |
+
+### Return type
+
+**Blob**
+
+### Authorization
+
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `text/csv`, `application/vnd.openxmlformats-officedocument.spreadsheetml.sheet`
+
+### HTTP response details
+
+| Status code | Description                  | Response headers |
+| ----------- | ---------------------------- | ---------------- |
+| **200**     | File download (CSV or Excel) | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 

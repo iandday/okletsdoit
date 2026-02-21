@@ -1,8 +1,12 @@
 <script lang="ts">
+    import { enhance } from "$app/forms";
     import ProtectedPageHeader from "$lib/components/layouts/ProtectedPageHeader.svelte";
     import ProtectedPageShell from "$lib/components/layouts/ProtectedPageShell.svelte";
+    import type { PageData, ActionData } from "./$types";
 
-    const { data } = $props();
+    let isRegeneratingAll = $state(false);
+    const { data, form }: { data: PageData; form: ActionData } = $props();
+    const relativeCrumbs = [{ title: "Configuration" }];
 
     const formatValue = (value: null | boolean | Date | string | number | undefined): string => {
         if (value === null || value === undefined) {
@@ -39,13 +43,11 @@
             ],
         },
     };
-
-    const relativeCrumbs = [{ title: "Configuration" }];
 </script>
 
 <div>
-    <ProtectedPageShell {relativeCrumbs}>
-        <ProtectedPageHeader title="Configuration" editLink="/planning/config/edit" editText="Edit Settings" />
+    <ProtectedPageShell {relativeCrumbs} {form} section="admin">
+        <ProtectedPageHeader title="Configuration" editLink="/admin/config/edit" editText="Edit Settings" />
 
         {#if data.configData}
             <!-- Tabs -->
@@ -416,6 +418,39 @@
                         <div class="card-actions justify-center mt-4">
                             <a href="/planning/preview/venue" class="btn btn-accent mr-4 mb-4" target="_blank"
                                 >Preview Venue Page</a>
+                        </div>
+                    </div>
+                </div>
+                <input
+                    type="radio"
+                    name="settings_tabs"
+                    role="tab"
+                    class="tab checked:tab-active checked:bg-primary checked:text-primary-content"
+                    aria-label="Maintenance" />
+                <div role="tabpanel" class="tab-content bg-base-200 border border-base-300 rounded-box p-6 mt-2">
+                    <div class="config-card">
+                        <div class="config-card-body">
+                            <div class="config-card-title text-xl mb-4">Maintenance</div>
+                            <div class="grid grid-cols-1 gap-4 mt-4">
+                                <form
+                                    method="POST"
+                                    action="?/regenerateAllQrCodes"
+                                    use:enhance={() => {
+                                        isRegeneratingAll = true;
+                                        return async ({ update }) => {
+                                            await update();
+                                            isRegeneratingAll = false;
+                                        };
+                                    }}>
+                                    <button
+                                        type="submit"
+                                        class="btn btn-warning gap-2 w-full"
+                                        disabled={isRegeneratingAll}>
+                                        <span class="icon-[lucide--refresh-cw] size-5"></span>
+                                        {isRegeneratingAll ? "Regenerating..." : "Regenerate QR Codes"}
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>

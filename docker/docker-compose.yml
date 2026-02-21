@@ -72,7 +72,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.django-server.entrypoints=web-secure"
-      - "traefik.http.routers.django-server.rule=Host(`dev.internal`) && (PathPrefix(`/admin`) || PathPrefix(`/static`) || PathPrefix(`/media`) || PathPrefix(`/api`) || PathPrefix(`/accounts`) || PathPrefix(`/_allauth`))"
+      - "traefik.http.routers.django-server.rule=Host(`dev.internal`) && (PathPrefix(`/be_admin`) || PathPrefix(`/static`) || PathPrefix(`/media`) || PathPrefix(`/api`) || PathPrefix(`/accounts`) || PathPrefix(`/_allauth`))"
       - "traefik.http.routers.django-server.tls=true"
       - "traefik.http.services.django-server.loadbalancer.server.port=8000"
       - "traefik.http.middlewares.file-upload.buffering.maxRequestBodyBytes=1073741824"

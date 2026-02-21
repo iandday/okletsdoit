@@ -12,13 +12,12 @@
         { title: "Guest List", href: "/planning/guest_list", icon: "icon-[lucide--users]" },
         { title: "FAQ", href: "/planning/faq", icon: "icon-[lucide--help-circle]" },
         { title: "Timeline", href: "/planning/timeline", icon: "icon-[lucide--timer]" },
-        {
-            title: "Configuration",
-            href: "/planning/config",
-            icon: "icon-[lucide--settings]",
-        },
     ];
 
+    export const adminMenu: IMenuItem[] = [
+        { title: "Configuration", href: "/admin/config", icon: "icon-[lucide--settings]" },
+        { title: "Data Export", href: "/admin/data_export", icon: "icon-[lucide--database]" },
+    ];
     export const previewMenu: IMenuItem[] = [
         {
             title: "FAQ",
@@ -172,7 +171,27 @@
                                 </details>
                             </li>
                             <div class="border-t border-base-200 my-2"></div>
-
+                            <li>
+                                <details>
+                                    <summary class="text-primary-content flex items-center gap-2 px-3 py-1.5">
+                                        <span class="icon-[lucide--settings] size-4" />
+                                        <span>Administration</span>
+                                    </summary>
+                                    <ul>
+                                        {#each adminMenu as item, index (index)}
+                                            <li>
+                                                <a
+                                                    class="text-primary-content flex items-center gap-2 px-3 py-1.5"
+                                                    href={item.href}>
+                                                    <span class="{item.icon} size-4" />
+                                                    <span>{item.title}</span>
+                                                </a>
+                                            </li>
+                                        {/each}
+                                    </ul>
+                                </details>
+                            </li>
+                            <div class="border-t border-base-200 my-2"></div>
                             <li>
                                 <a
                                     class="text-primary-content flex items-center gap-2 px-3 py-1.5"
