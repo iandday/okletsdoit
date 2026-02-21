@@ -1,6 +1,21 @@
 # CHANGELOG
 
 
+## v0.15.0 (2026-02-21)
+
+### Chores
+
+- Sync files from main after release ([#83](https://github.com/iandday/okletsdoit/pull/83),
+  [`5d73313`](https://github.com/iandday/okletsdoit/commit/5d733139c0fb23350ae965666e3819899332254c))
+
+Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
+
+### Features
+
+- **GuestList**: :sparkles: data export via csv and excel
+  ([`5fdb148`](https://github.com/iandday/okletsdoit/commit/5fdb148bb5717bbb0d0976b3b17366c20a43d544))
+
+
 ## v0.14.0 (2026-02-15)
 
 ### Bug Fixes
