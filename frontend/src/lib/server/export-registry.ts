@@ -1,7 +1,5 @@
 /**
- * Export Registry
  * Maps resource types to their corresponding api-client export methods
- * Add new export types here to make them available to ExportData component
  */
 import { api } from "$lib/server/api-client";
 

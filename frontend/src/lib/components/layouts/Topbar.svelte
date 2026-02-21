@@ -2,21 +2,73 @@
     import type { IMenuItem } from "$lib/components/layouts/TopbarMenuItem.svelte";
 
     export const protectedMenu: IMenuItem[] = [
-        { title: "Inspiration", href: "/planning/inspiration", icon: "icon-[lucide--lightbulb]" },
-        { title: "Ideas", href: "/planning/idea", icon: "icon-[lucide--brain]" },
-        { title: "Contacts", href: "/planning/contact", icon: "icon-[lucide--book-user]" },
+        {
+            title: "Inspiration",
+            href: "/planning/inspiration",
+            icon: "icon-[lucide--lightbulb]",
+            description: "Save and organize inspiration photos, ideas, and references for your wedding.",
+        },
+        {
+            title: "Ideas",
+            href: "/planning/idea",
+            icon: "icon-[lucide--brain]",
+            description: "Brainstorm and capture creative ideas for your wedding celebration.",
+        },
+        // {
+        //     title: "Settings",
+        //     href: "/planning/settings",
+        //     icon: "icon-[lucide--settings]",
+        //     description:
+        //         "Configure your wedding website settings, theme, and preferences. Customize your experience to make it truly yours.",
+        // },
+        {
+            title: "Contacts",
+            href: "/planning/contact",
+            icon: "icon-[lucide--book-user]",
+            description: "Manage your wedding contacts and vendors",
+        },
 
-        { title: "Deadlines", href: "/planning/deadline", icon: "icon-[lucide--calendar-check]" },
-        { title: "Lists", href: "/planning/list", icon: "icon-[lucide--check-square]" },
-        { title: "Budget", href: "/planning/budget", icon: "icon-[lucide--dollar-sign]" },
-        { title: "Guest List", href: "/planning/guest_list", icon: "icon-[lucide--users]" },
-        { title: "FAQ", href: "/planning/faq", icon: "icon-[lucide--help-circle]" },
-        { title: "Timeline", href: "/planning/timeline", icon: "icon-[lucide--timer]" },
+        {
+            title: "Deadlines",
+            href: "/planning/deadline",
+            icon: "icon-[lucide--calendar-check]",
+            description: "Track important dates and milestones leading up to your big day.",
+        },
+        {
+            title: "Lists",
+            href: "/planning/list",
+            icon: "icon-[lucide--check-square]",
+            description: "Organize tasks, checklists, and to-do items for your wedding planning.",
+        },
+        {
+            title: "Budget",
+            href: "/planning/budget",
+            icon: "icon-[lucide--dollar-sign]",
+            description: "Monitor expenses, set budgets, and track spending across all wedding categories.",
+        },
+        {
+            title: "Guest List",
+            href: "/planning/guest_list",
+            icon: "icon-[lucide--users]",
+            description: "Manage your guest list, RSVPs, meal preferences, and seating arrangements.",
+        },
+        {
+            title: "FAQ",
+            href: "/planning/faq",
+            icon: "icon-[lucide--help-circle]",
+            description: "Create and organize frequently asked questions for your wedding website.",
+        },
+        {
+            title: "Timeline",
+            href: "/planning/timeline",
+            icon: "icon-[lucide--timer]",
+            description: "Create and visualize your wedding day timeline and schedule.",
+        },
     ];
 
     export const adminMenu: IMenuItem[] = [
         { title: "Configuration", href: "/admin/config", icon: "icon-[lucide--settings]" },
-        { title: "Data Export", href: "/admin/data_export", icon: "icon-[lucide--database]" },
+        { title: "Data Export", href: "/admin/export", icon: "icon-[lucide--database]" },
     ];
     export const previewMenu: IMenuItem[] = [
         {

@@ -5,6 +5,7 @@
     import PieChart from "$lib/components/charts/PieChart.svelte";
     import ProtectedPageHeader from "$lib/components/layouts/ProtectedPageHeader.svelte";
     import ProtectedPageShell from "$lib/components/layouts/ProtectedPageShell.svelte";
+    import { formatCurrency } from "$lib/utils/formatters";
     import { createTable, Subscribe, Render, createRender } from "svelte-headless-table";
     import { addSortBy } from "svelte-headless-table/plugins";
     import { readable } from "svelte/store";
@@ -13,13 +14,6 @@
     const { data }: { data: PageData } = $props();
 
     const relativeCrumbs = [{ title: "Budget", href: "/planning/budget" }];
-
-    function formatCurrency(amount: number): string {
-        return new Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: "USD",
-        }).format(amount);
-    }
 
     const table = createTable(readable(data.categoryBreakdown), {
         sort: addSortBy(),

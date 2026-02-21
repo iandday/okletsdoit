@@ -28,8 +28,7 @@
                                 <h3 class="font-semibold text-lg">Export Guests</h3>
                             </div>
                             <p class="text-sm opacity-80 mb-4">
-                                Export all guest information including names, RSVP status, dietary preferences, and
-                                associated group details.
+                                Export all guest information including names, RSVP status, and associated group details.
                             </p>
                             <div class="flex gap-2">
                                 <ExportData
@@ -104,22 +103,6 @@
                             </button>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Export Information -->
-        <div class="mt-6">
-            <div class="alert alert-info">
-                <span class="icon-[lucide--info] size-5"></span>
-                <div>
-                    <h4 class="font-semibold">Export Information</h4>
-                    <ul class="text-sm list-disc list-inside mt-1">
-                        <li>CSV exports are compatible with most spreadsheet applications</li>
-                        <li>Excel exports preserve formatting and include all data types</li>
-                        <li>Boolean values are displayed as "Yes" or "No" for readability</li>
-                        <li>Only non-deleted records are included in exports</li>
-                    </ul>
                 </div>
             </div>
         </div>
