@@ -11,8 +11,8 @@ import {
     AttachmentsApi,
     ListApi,
     ExpensesApi,
-} from "../../../api-client";
-import type { Middleware } from "../../../api-client/runtime";
+} from "$api-client";
+import type { Middleware } from "$api-client/runtime";
 
 const API_BASE_PATH = process.env.BACKEND_API_URL;
 const SERVICE_TOKEN = process.env.SERVICE_TOKEN || "";

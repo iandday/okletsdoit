@@ -107,6 +107,16 @@ export interface GuestlistApiDeleteRsvpSubmissionRequest {
     submissionId: string;
 }
 
+export interface GuestlistApiExportGuestDataRequest {
+    format?: string;
+    fields?: string | null;
+}
+
+export interface GuestlistApiExportGuestGroupDataRequest {
+    format?: string;
+    fields?: string | null;
+}
+
 export interface GuestlistApiGetGuestRequest {
     guestId: string;
 }
@@ -727,6 +737,116 @@ export class GuestlistApi extends runtime.BaseAPI {
      */
     async guestlistApiExportAddressCsv(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.guestlistApiExportAddressCsvRaw(initOverrides);
+    }
+
+    /**
+     * Export guest data as CSV or Excel file using django-import-export.  Query parameters: - format: \'csv\' or \'xlsx\' (default: \'csv\') - fields: Comma-separated list of field names to include (default: all fields)  Available fields are dynamically derived from GuestResource.
+     * Export Guest Data
+     */
+    async guestlistApiExportGuestDataRaw(
+        requestParameters: GuestlistApiExportGuestDataRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<Blob>> {
+        const queryParameters: any = {};
+
+        if (requestParameters["format"] != null) {
+            queryParameters["format"] = requestParameters["format"];
+        }
+
+        if (requestParameters["fields"] != null) {
+            queryParameters["fields"] = requestParameters["fields"];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
+        let urlPath = `/api/guestlist/export_guest_data`;
+
+        const response = await this.request(
+            {
+                path: urlPath,
+                method: "GET",
+                headers: headerParameters,
+                query: queryParameters,
+            },
+            initOverrides,
+        );
+
+        return new runtime.BlobApiResponse(response);
+    }
+
+    /**
+     * Export guest data as CSV or Excel file using django-import-export.  Query parameters: - format: \'csv\' or \'xlsx\' (default: \'csv\') - fields: Comma-separated list of field names to include (default: all fields)  Available fields are dynamically derived from GuestResource.
+     * Export Guest Data
+     */
+    async guestlistApiExportGuestData(
+        requestParameters: GuestlistApiExportGuestDataRequest = {},
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<Blob> {
+        const response = await this.guestlistApiExportGuestDataRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Export guest group data as CSV or Excel file using django-import-export.  Query parameters: - format: \'csv\' or \'xlsx\' (default: \'csv\') - fields: Comma-separated list of field names to include (default: all fields)  Available fields are dynamically derived from GuestGroupResource.
+     * Export Guest Group Data
+     */
+    async guestlistApiExportGuestGroupDataRaw(
+        requestParameters: GuestlistApiExportGuestGroupDataRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<Blob>> {
+        const queryParameters: any = {};
+
+        if (requestParameters["format"] != null) {
+            queryParameters["format"] = requestParameters["format"];
+        }
+
+        if (requestParameters["fields"] != null) {
+            queryParameters["fields"] = requestParameters["fields"];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
+        let urlPath = `/api/guestlist/export_guest_group_data`;
+
+        const response = await this.request(
+            {
+                path: urlPath,
+                method: "GET",
+                headers: headerParameters,
+                query: queryParameters,
+            },
+            initOverrides,
+        );
+
+        return new runtime.BlobApiResponse(response);
+    }
+
+    /**
+     * Export guest group data as CSV or Excel file using django-import-export.  Query parameters: - format: \'csv\' or \'xlsx\' (default: \'csv\') - fields: Comma-separated list of field names to include (default: all fields)  Available fields are dynamically derived from GuestGroupResource.
+     * Export Guest Group Data
+     */
+    async guestlistApiExportGuestGroupData(
+        requestParameters: GuestlistApiExportGuestGroupDataRequest = {},
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<Blob> {
+        const response = await this.guestlistApiExportGuestGroupDataRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
     /**

@@ -10,6 +10,13 @@
     * [ ] Data import/export
     * [ ] Show hours and minutes in countdown on home page
     * [ ] Show date in timeline view on venue page
+* [ ] Data Export
+  * [X] Guest Group Details
+  * [X] Guest Details
+  * [ ] Budget
+  * [ ] Lists
+  * [ ] Ideas
+  * [ ] 
 * [ ] Planning
   * [ ] Add stats to each section
   * [ ] Initial setup flow

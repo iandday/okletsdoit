@@ -1,8 +1,8 @@
 <!-- src/routes/planning/guest_list/+page.svelte -->
 <script lang="ts">
-    import { enhance } from "$app/forms";
     import Stats from "$lib/components/Stats.svelte";
     import CreateObject from "$lib/components/buttons/CreateObject.svelte";
+    import ExportData from "$lib/components/buttons/ExportData.svelte";
     import ViewDetails from "$lib/components/buttons/ViewDetails.svelte";
     import ProtectedPageHeader from "$lib/components/layouts/ProtectedPageHeader.svelte";
     import ProtectedPageShell from "$lib/components/layouts/ProtectedPageShell.svelte";
@@ -10,9 +10,6 @@
 
     const { data, form }: { data: PageData; form: ActionData } = $props();
     const relativeCrumbs = [{ title: "Guest List" }];
-
-    let isGeneratingMissing = $state(false);
-    let isRegeneratingAll = $state(false);
 
     // QR Code Modal State
     let showQrModal = $state(false);
@@ -240,59 +237,48 @@
                     </div>
                 </div>
                 <div class="flex flex-col items-center gap-6" id="stats-overview">
-                    <Stats objects={guestStats} />
-                    <Stats objects={inviteStats} />
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-2 justify-items-center" id="action-buttons">
-                    <CreateObject href="/planning/guest_list/new" label="New Guest Group" />
-                    <a href="/planning/guest/all" class="btn btn-accent gap-2">
-                        <span class="icon-[lucide--users] size-5"></span>
-                        View All Guests
-                    </a>
-                    <a href="/api/guestlist/export_address_csv" class="btn btn-secondary gap-2">
-                        <span class="icon-[lucide--download] size-5"></span>
-                        Export Data
-                    </a>
+                    <div class="join join-vertical lg:join-horizontal" id="action-buttons">
+                        <a href="/planning/guest/all" class="btn btn-accent gap-2">
+                            <span class="icon-[lucide--users] size-5"></span>
+                            View All Guests
+                        </a>
+                        <CreateObject href="/planning/guest_list/new" label="New Guest Group" />
 
-                    <!-- QR Code Generation Actions -->
-
-                    <button
-                        onclick={() => openQrModal(data.configData.rsvpQrCodeUrl as string, "General RSVP")}
-                        class="btn btn-accent gap-2">
-                        <span class="icon-[lucide--qr-code] size-5"></span>
-                        View Universal RSVP QR
-                    </button>
-                    <form
-                        method="POST"
-                        action="?/generateMissingQrCodes"
-                        use:enhance={() => {
-                            isGeneratingMissing = true;
-                            return async ({ update }) => {
-                                await update();
-                                isGeneratingMissing = false;
-                            };
-                        }}>
-                        <button type="submit" class="btn btn-info gap-2 w-full" disabled={isGeneratingMissing}>
+                        <button
+                            onclick={() => openQrModal(data.configData.rsvpQrCodeUrl as string, "General RSVP")}
+                            class="btn btn-accent gap-2">
                             <span class="icon-[lucide--qr-code] size-5"></span>
-                            {isGeneratingMissing ? "Generating..." : "Generate Missing QR Codes"}
+                            View Universal RSVP QR
                         </button>
-                    </form>
-
-                    <form
-                        method="POST"
-                        action="?/regenerateAllQrCodes"
-                        use:enhance={() => {
-                            isRegeneratingAll = true;
-                            return async ({ update }) => {
-                                await update();
-                                isRegeneratingAll = false;
-                            };
-                        }}>
-                        <button type="submit" class="btn btn-warning gap-2 w-full" disabled={isRegeneratingAll}>
-                            <span class="icon-[lucide--refresh-cw] size-5"></span>
-                            {isRegeneratingAll ? "Regenerating..." : "Regenerate All QR Codes"}
-                        </button>
-                    </form>
+                    </div>
+                    <div class="join join-vertical lg:join-horizontal" id="action-buttons">
+                        <ExportData
+                            resourceType="guest_group"
+                            label="Export Guest Group (CSV)"
+                            format="csv"
+                            fileName="guest_groups.csv" />
+                        <ExportData
+                            resourceType="guest_group"
+                            label="Export Guest Group (Excel)"
+                            format="xlsx"
+                            fileName="guest_groups.xlsx" />
+                    </div>
+                    <div class="join join-vertical lg:join-horizontal" id="action-buttons">
+                        <ExportData
+                            resourceType="guest"
+                            label="Export Guest (CSV)"
+                            format="csv"
+                            fileName="guests.csv" />
+                        <ExportData
+                            resourceType="guest"
+                            label="Export Guest (Excel)"
+                            format="xlsx"
+                            fileName="guests.xlsx" />
+                    </div>
+                    <div class="flex flex-col md:flex-row gap-6 w-full justify-center">
+                        <Stats objects={guestStats} />
+                        <Stats objects={inviteStats} />
+                    </div>
                 </div>
             </div>
         </div>

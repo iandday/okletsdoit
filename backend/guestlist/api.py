@@ -1,14 +1,18 @@
+import csv
 import logging
 from datetime import datetime
 from typing import List
 from typing import Optional
-from uuid import UUID, uuid4
+from uuid import UUID
+from uuid import uuid4
 
 from core.auth import multi_auth
 from django.contrib.auth import get_user_model
 from django.db import transaction
 from django.db.models import Q
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
+from import_export.formats import base_formats
 from ninja import FilterSchema
 from ninja import Query
 from ninja import Router
@@ -22,6 +26,8 @@ from .models import GuestGroup
 from .models import RsvpQuestion
 from .models import RsvpQuestionResponse
 from .models import RsvpSubmission
+from .resources import GuestGroupResource
+from .resources import GuestResource
 
 router = Router(tags=["Guestlist"], auth=multi_auth)
 
@@ -663,21 +669,192 @@ def delete_rsvp_response(request, response_id: UUID):
 
 @router.get("/export_address_csv")
 def export_address_csv(request):
-    import csv
-    from django.http import HttpResponse
-
     guest_groups = GuestGroup.objects.filter(is_deleted=False)
 
     response = HttpResponse(content_type="text/csv")
     response["Content-Disposition"] = 'attachment; filename="guest_addresses.csv"'
 
     writer = csv.writer(response)
-    writer.writerow(["Name", "Address", "Address2", "City", "State", "Zip", "Email"])
+    writer.writerow(["Name", "Address", "Address2", "City", "State", "Zip", "Email", "RSVP Code"])
 
     for group in guest_groups:
         writer.writerow(
-            [group.address_name, group.address, group.address_two, group.city, group.state, group.zip_code, group.email]
+            [
+                group.address_name,
+                group.address,
+                group.address_two,
+                group.city,
+                group.state,
+                group.zip_code,
+                group.email,
+                group.rsvp_code,
+            ]
         )
+
+    return response
+
+
+@router.get(
+    "/export_guest_data",
+    response=None,
+    openapi_extra={
+        "responses": {
+            200: {
+                "description": "File download (CSV or Excel)",
+                "content": {
+                    "text/csv": {"schema": {"type": "string", "format": "binary"}},
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": {
+                        "schema": {"type": "string", "format": "binary"}
+                    },
+                },
+            }
+        }
+    },
+)
+def export_guest_data(request, format: str = "csv", fields: Optional[str] = None):
+    """
+    Export guest data as CSV or Excel file using django-import-export.
+
+    Query parameters:
+    - format: 'csv' or 'xlsx' (default: 'csv')
+    - fields: Comma-separated list of field names to include (default: all fields)
+
+    Available fields are dynamically derived from GuestResource.
+    """
+
+    # Validate format
+    format_lower = format.lower()
+    if format_lower == "excel":
+        format_lower = "xlsx"
+
+    if format_lower not in ["csv", "xlsx"]:
+        raise HttpError(400, "Invalid format. Use 'csv' or 'excel'")
+
+    # Get the resource and queryset
+    resource = GuestResource()
+    queryset = resource.get_queryset()
+
+    # Get all available fields from resource
+    available_fields = list(resource.fields.keys())
+
+    # Parse and validate requested fields
+    if fields:
+        requested_fields = [f.strip() for f in fields.split(",")]
+        selected_fields = [f for f in requested_fields if f in available_fields]
+        if not selected_fields:
+            raise HttpError(400, "No valid fields specified")
+    else:
+        selected_fields = available_fields
+
+    # Preserve original export order, but filter to selected fields
+    original_order = list(GuestResource.Meta.export_order)
+    filtered_order = [f for f in original_order if f in selected_fields]
+
+    # Create a custom resource with only selected fields
+    class CustomGuestResource(GuestResource):
+        class Meta(GuestResource.Meta):
+            fields = selected_fields
+            export_order = filtered_order
+
+    custom_resource = CustomGuestResource()
+
+    # Get the appropriate format
+    export_data = custom_resource.export(queryset, request=request)
+
+    if format_lower == "csv":
+        format_instance = base_formats.CSV()
+        csv_data = format_instance.export_data(export_data)
+        response = HttpResponse(csv_data, content_type="text/csv")
+        response["Content-Disposition"] = 'attachment; filename="guest_data.csv"'
+    else:  # xlsx
+        format_instance = base_formats.XLSX()
+        xlsx_bytes = format_instance.export_data(export_data)
+        response = HttpResponse(
+            xlsx_bytes, content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
+        response["Content-Disposition"] = 'attachment; filename="guest_data.xlsx"'
+
+    return response
+
+
+@router.get(
+    "/export_guest_group_data",
+    response=None,
+    openapi_extra={
+        "responses": {
+            200: {
+                "description": "File download (CSV or Excel)",
+                "content": {
+                    "text/csv": {"schema": {"type": "string", "format": "binary"}},
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": {
+                        "schema": {"type": "string", "format": "binary"}
+                    },
+                },
+            }
+        }
+    },
+)
+def export_guest_group_data(request, format: str = "csv", fields: Optional[str] = None):
+    """
+    Export guest group data as CSV or Excel file using django-import-export.
+
+    Query parameters:
+    - format: 'csv' or 'xlsx' (default: 'csv')
+    - fields: Comma-separated list of field names to include (default: all fields)
+
+    Available fields are dynamically derived from GuestGroupResource.
+    """
+    # Validate format
+    format_lower = format.lower()
+    if format_lower == "excel":
+        format_lower = "xlsx"
+
+    if format_lower not in ["csv", "xlsx"]:
+        raise HttpError(400, "Invalid format. Use 'csv' or 'excel'")
+
+    # Get the resource and queryset
+    resource = GuestGroupResource()
+    queryset = resource.get_queryset()
+
+    # Get all available fields from resource
+    available_fields = list(resource.fields.keys())
+
+    # Parse and validate requested fields
+    if fields:
+        requested_fields = [f.strip() for f in fields.split(",")]
+        selected_fields = [f for f in requested_fields if f in available_fields]
+        if not selected_fields:
+            raise HttpError(400, "No valid fields specified")
+    else:
+        selected_fields = available_fields
+
+    # Preserve original export order, but filter to selected fields
+    original_order = list(GuestGroupResource.Meta.export_order)
+    filtered_order = [f for f in original_order if f in selected_fields]
+
+    # Create a custom resource with only selected fields
+    class CustomGuestGroupResource(GuestGroupResource):
+        class Meta(GuestGroupResource.Meta):
+            fields = selected_fields
+            export_order = filtered_order
+
+    custom_resource = CustomGuestGroupResource()
+
+    # Get the appropriate format
+    export_data = custom_resource.export(queryset, request=request)
+
+    if format_lower == "csv":
+        format_instance = base_formats.CSV()
+        csv_data = format_instance.export_data(export_data)
+        response = HttpResponse(csv_data, content_type="text/csv")
+        response["Content-Disposition"] = 'attachment; filename="guest_group_data.csv"'
+    else:  # xlsx
+        format_instance = base_formats.XLSX()
+        xlsx_bytes = format_instance.export_data(export_data)
+        response = HttpResponse(
+            xlsx_bytes, content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
+        response["Content-Disposition"] = 'attachment; filename="guest_group_data.xlsx"'
 
     return response
 
@@ -685,7 +862,8 @@ def export_address_csv(request):
 @router.get("/guest-groups/{group_id}/qr-code")
 def get_guest_group_qr_code(request, group_id: UUID):
     """Get QR code image for a guest group"""
-    from django.http import FileResponse, HttpResponse
+    from django.http import FileResponse
+    from django.http import HttpResponse
 
     guest_group = get_object_or_404(GuestGroup, id=group_id, is_deleted=False)
 

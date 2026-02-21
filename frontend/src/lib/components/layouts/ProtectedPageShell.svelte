@@ -7,15 +7,17 @@
     type iProtectedPageShellProps = {
         relativeCrumbs: iBreadcrumb[] | [];
         form?: { success?: boolean; error?: string; message?: string } | null;
+        section?: "planning" | "admin";
         children?: import("svelte").Snippet;
     };
-    const { relativeCrumbs, form, children }: iProtectedPageShellProps = $props();
+    const { relativeCrumbs, form, section = "planning", children }: iProtectedPageShellProps = $props();
 
-    let baseCrumbs: iBreadcrumb[] = [
-        { title: "Home", href: "/" },
-        { title: "Planning", href: "/planning" },
-    ];
-
+    let baseCrumbs: iBreadcrumb[] = [{ title: "Home", href: "/" }];
+    if (section === "admin") {
+        baseCrumbs.push({ title: "Admin", href: "/admin" });
+    } else {
+        baseCrumbs.push({ title: "Planning", href: "/planning" });
+    }
     let crumbs: iBreadcrumb[] = [...baseCrumbs, ...relativeCrumbs];
 
     // Toast notification state

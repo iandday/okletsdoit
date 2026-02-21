@@ -1,4 +1,5 @@
 <script lang="ts">
+    import ExportData from "$lib/components/buttons/ExportData.svelte";
     import ProtectedPageHeader from "$lib/components/layouts/ProtectedPageHeader.svelte";
     import ProtectedPageShell from "$lib/components/layouts/ProtectedPageShell.svelte";
     import { createTable, Subscribe, Render } from "svelte-headless-table";
@@ -100,10 +101,15 @@
 </script>
 
 <ProtectedPageShell {relativeCrumbs}>
-    <ProtectedPageHeader title="All Guests" description="View and manage all individual guests"></ProtectedPageHeader>
+    <ProtectedPageHeader
+        title="All Guests"
+        description="View and manage all individual guests.  Clicking on any column header will sort the table.">
+        <ExportData resourceType="guest" label="Export CSV" format="csv" fileName="guests.csv" />
+        <ExportData resourceType="guest" label="Export Excel" format="xlsx" fileName="guests.xlsx" />
+    </ProtectedPageHeader>
 
-    <table {...$tableAttrs} class="table table-zebra table-pin-rows bg-base-200 w-full">
-        <thead>
+    <table {...$tableAttrs} class="associated-table">
+        <thead class="associated-table-header">
             {#each $headerRows as headerRow, headerRowIndex (headerRowIndex)}
                 <Subscribe rowAttrs={headerRow.attrs()}>
                     <tr>
@@ -138,7 +144,7 @@
                                 <td>
                                     {#if cell.column.id === "actions"}
                                         {@const guest = row.original}
-                                        <a href="/planning/guest/{guest.id}" class="btn btn-ghost btn-sm">
+                                        <a href="/planning/guest/{guest.id}" class="btn btn-secondary btn-sm">
                                             <span class="icon-[lucide--eye] size-4"></span>
                                             View
                                         </a>
@@ -168,7 +174,7 @@
 
     <!-- Pagination Controls -->
     <div class="flex items-center justify-between mt-6 gap-4 flex-wrap">
-        <div class="text-sm text-base-content/70">
+        <div class="text-sm text-base-content">
             Showing {$pageRows.length} of {data.guests.length} guests
             {#if $pageCount > 1}
                 (Page {$pageIndex + 1} of {$pageCount})
@@ -181,7 +187,7 @@
                 <label for="page-size" class="text-sm">Rows per page:</label>
                 <select
                     id="page-size"
-                    class="select select-bordered select-sm"
+                    class="associated-table-pg-size-select"
                     value={$pageSize}
                     onchange={(e) => pageSize.set(Number(e.currentTarget.value))}>
                     <option value={10}>10</option>
@@ -194,14 +200,14 @@
             <!-- Page Navigation -->
             <div class="join">
                 <button
-                    class="join-item btn btn-sm"
+                    class="associated-table-nav-btn"
                     disabled={!$hasPreviousPage}
                     onclick={() => pageIndex.update((i) => i - 1)}>
                     <span class="icon-[lucide--chevron-left] size-4"></span>
                     Previous
                 </button>
                 <button
-                    class="join-item btn btn-sm"
+                    class="associated-table-nav-btn"
                     disabled={!$hasNextPage}
                     onclick={() => pageIndex.update((i) => i + 1)}>
                     Next

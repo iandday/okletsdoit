@@ -256,6 +256,14 @@ input:-webkit-autofill:active {
     @apply font-bold text-blue-500;
 }
 
+.associated-table-nav-btn {
+    @apply join-item btn btn-sm text-primary-content;
+}
+
+.associated-table-pg-size-select {
+    @apply select select-sm text-primary-content bg-base-100 border-base-300;
+}
+
 /* end table listing items from associated models */
 
 .table-filter-card {
