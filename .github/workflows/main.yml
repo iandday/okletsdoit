@@ -85,28 +85,16 @@ jobs:
       - name: Update uv.lock
         run: uv lock
 
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v7
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "chore: sync files from main after release"
-          branch: sync-release-${{ needs.release.outputs.version }}
-          delete-branch: true
-          title: "chore: sync files from main (v${{ needs.release.outputs.version }})"
-          body: |
-            Automated PR to sync all changed files from main after release v${{ needs.release.outputs.version }}
-            
-            This PR updates the develop branch with all changes from the main branch release.
-          labels: dependencies,automated
-          base: develop
-
-      - name: Enable auto-merge
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Commit and push to develop
         run: |
-          PR_NUMBER=$(gh pr list --head sync-release-${{ needs.release.outputs.version }} --json number --jq '.[0].number')
-          if [ -n "$PR_NUMBER" ]; then
-            gh pr merge $PR_NUMBER --auto --squash
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: sync files from main (v${{ needs.release.outputs.version }})"
+            git push origin HEAD:develop
           fi
 
 
