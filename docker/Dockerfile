@@ -8,8 +8,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 RUN apt-get update \
     && apt-get upgrade -y \
     && apt-get install -y --no-install-recommends \
-    openssl=3.5.4-1~deb13u2 \
-    libssl3t64=3.5.4-1~deb13u2 \
+    openssl \
+    libssl3t64 \
     python3-dev \
     libffi-dev \
     postgresql-client-17 \
@@ -66,8 +66,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 RUN apt-get update \
     && apt-get upgrade -y \
     && apt-get install -y --no-install-recommends \
-    openssl=3.5.4-1~deb13u2 \
-    libssl3t64=3.5.4-1~deb13u2 \
+    openssl \
+    libssl3t64 \
     python3-dev \
     libffi-dev \
     postgresql-client-17 \
@@ -101,8 +101,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 RUN apt-get update \
     && apt-get upgrade -y \
     && apt-get install -y --no-install-recommends \
-    openssl=3.5.4-1~deb13u2 \
-    libssl3t64=3.5.4-1~deb13u2 \
+    openssl \
+    libssl3t64 \
     postgresql-client-17 \
     libpq5 \
     libsqlite3-0 \

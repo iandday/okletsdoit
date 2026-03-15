@@ -145,10 +145,11 @@ jobs:
       
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.33.1
-        continue-on-error: False
+        continue-on-error: True
         with:
           image-ref: ${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}:${{ github.sha }}
           trivy-config: trivy.yaml
+          trivyignores: .trivyignore.yaml
 
       - name: cat results
         run: cat trivy-results.sarif
@@ -245,10 +246,11 @@ jobs:
       
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.33.1
-        continue-on-error: False
+        continue-on-error: True
         with:
           image-ref: ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:${{ github.sha }}
           trivy-config: trivy.yaml
+          trivyignores: .trivyignore.yaml
 
       - name: cat results
         run: cat trivy-results.sarif

@@ -80,7 +80,7 @@ class GuestGroupSchema(Schema):
     @staticmethod
     def resolve_qr_code_url(obj):
         if obj.qr_code:
-            return f"/api/guestlist/guest-groups/{obj.id}/qr-code"
+            return obj.qr_code.attachment_file.url
         return None
 
     @staticmethod
@@ -274,6 +274,7 @@ def list_guest_groups(request, filters: GuestGroupFilterSchema = Query(...)):  #
 @router.get("/guest-groups/{group_id}", response=GuestGroupSchema)
 def get_guest_group(request, group_id: UUID):
     """Get a specific guest group by ID"""
+
     return get_object_or_404(GuestGroup, id=group_id, is_deleted=False)
 
 
