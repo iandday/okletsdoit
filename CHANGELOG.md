@@ -1,6 +1,35 @@
 # CHANGELOG
 
 
+## v0.16.1 (2026-03-15)
+
+### Bug Fixes
+
+- Add trivy ignore
+  ([`864976e`](https://github.com/iandday/okletsdoit/commit/864976e4697c60825f2d7b1a112351cb49292245))
+
+- **GuestList**: Fix qr code url generation
+  ([`820e528`](https://github.com/iandday/okletsdoit/commit/820e528e20830f3fec18b4fb32c45a257af54cb4))
+
+### Build System
+
+- Update trivy config
+  ([`a7f8cfc`](https://github.com/iandday/okletsdoit/commit/a7f8cfce8f30137fcd6d246e4332e1c99fb89df7))
+
+- :bug: update versions
+  ([`eefd14d`](https://github.com/iandday/okletsdoit/commit/eefd14d3181cdc386f4faa4618a2e11f71799716))
+
+- :ambulance: update vulnerable packages
+  ([`87d518d`](https://github.com/iandday/okletsdoit/commit/87d518db7902458268e17230014b7fb59282fdec))
+
+### Chores
+
+- Sync files from main after release ([#87](https://github.com/iandday/okletsdoit/pull/87),
+  [`725cd0c`](https://github.com/iandday/okletsdoit/commit/725cd0cbeb976041f1e27b2db1f3ac8f6647a634))
+
+Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
+
+
 ## v0.16.0 (2026-02-21)
 
 ### Bug Fixes
