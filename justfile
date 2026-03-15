@@ -42,7 +42,16 @@ local-scan:
         -v "$(pwd)/.trivyignore.yaml:/work/.trivyignore.yaml" \
         -w /work \
         aquasec/trivy image okletsdoit:test --ignore-unfixed \
-        --vuln-type os,library --severity CRITICAL,HIGH
+        --pkg-types os,library --severity CRITICAL,HIGH
+
+local-scan-frontend:
+    @echo "Scanning local Docker image for vulnerabilities..."
+    docker build -f docker/Dockerfile-Frontend --target production -t okletsdoit-frontend:test .
+    docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+        -v "$(pwd)/.trivyignore.yaml:/work/.trivyignore.yaml" \
+        -w /work \
+        aquasec/trivy image okletsdoit-frontend:test --ignore-unfixed \
+        --pkg-types os,library --severity CRITICAL,HIGH
 
 #----Build commands----#
 
