@@ -371,20 +371,24 @@ class WeddingSettings(models.Model):
         verbose_name_plural = "Wedding Settings"
 
     def save(self, *args, **kwargs):  # type: ignore
-        """Save object to the database. All other entries, if any, are removed."""
-
-        # get first admin user to assign as created_by for the attachment
         User = get_user_model()
-        attachment = generate_qr_code_attachment(
-            url=settings.RSVP_URL,
-            name="RSVP QR Code",
-            model_instance=self,
-            uploaded_by=User.objects.filter(is_admin=True).first(),
-            filename="qr_code_base_rsvp.png",
-            heart_logo=False,
-        )
-        self.rsvp_qr_code = attachment
+        admin_user = User.objects.filter(is_admin=True).first()
+        if not admin_user:
+            raise ValueError("No admin user found. Please create an admin user before saving WeddingSettings.")
+        if not self.rsvp_qr_code:
+            attachment = generate_qr_code_attachment(
+                url=settings.RSVP_URL,
+                name="RSVP QR Code",
+                model_instance=self,
+                uploaded_by=admin_user,
+                filename="qr_code_base_rsvp.png",
+                heart_logo=False,
+            )
+            self.rsvp_qr_code = attachment
+        else:
+            attachment = self.rsvp_qr_code
         self.rsvp_qr_code_url = attachment.attachment_file.url if attachment.attachment_file else ""
+        print(attachment.attachment_file.url if attachment.attachment_file else "No attachment file URL")
 
         self.__class__.objects.exclude(id=self.id).delete()
         super().save(*args, **kwargs)
@@ -393,6 +397,8 @@ class WeddingSettings(models.Model):
     def load(cls) -> Any:
         """Load the model instance."""
         obj, _ = cls.objects.get_or_create(id=1)
+
+        # get universal rsvp qr code attachment
         return obj
 
 
