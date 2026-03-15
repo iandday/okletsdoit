@@ -149,8 +149,7 @@ jobs:
         with:
           image-ref: ${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}:${{ github.sha }}
           trivy-config: trivy.yaml
-          vuln-type: 'os,library'
-          severity: 'CRITICAL,HIGH'
+          trivyignores: .trivyignore.yaml
 
       - name: cat results
         run: cat trivy-results.sarif
@@ -251,8 +250,7 @@ jobs:
         with:
           image-ref: ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:${{ github.sha }}
           trivy-config: trivy.yaml
-          vuln-type: 'os,library'
-          severity: 'CRITICAL,HIGH'
+          trivyignores: .trivyignore.yaml
 
       - name: cat results
         run: cat trivy-results.sarif
