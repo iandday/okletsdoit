@@ -117,7 +117,7 @@
 
     function getRsvpProgress(group: any): number {
         if (group.groupInvitedCount === 0) return 0;
-        return Math.round((group.groupAttendingCount / group.groupInvitedCount) * 100);
+        return Math.round((group.groupAttendingCount + group.groupDeclinedCount) / group.groupInvitedCount * 100);
     }
 
     // Derive priority styling dynamically based on relative values
@@ -174,6 +174,12 @@
             value: filteredGuestGroups.reduce((sum, group) => sum + group.groupAttendingCount, 0),
             description: `of ${data.guestGroups.reduce((sum, group) => sum + group.groupAttendingCount, 0)} total`,
             icon: "check-circle",
+        },
+                {
+            title: "Declined",
+            value: filteredGuestGroups.reduce((sum, group) => sum + group.groupDeclinedCount, 0),
+            description: `of ${data.guestGroups.reduce((sum, group) => sum + group.groupDeclinedCount, 0)} total`,
+            icon: "x-circle",
         },
     ];
 </script>
@@ -341,7 +347,7 @@
                             <div class="flex items-center justify-between text-sm">
                                 <span class="font-semibold">RSVP Progress</span>
                                 <span>
-                                    {group.groupAttendingCount} / {group.groupInvitedCount}
+                                    {group.groupAttendingCount + group.groupDeclinedCount} / {group.groupInvitedCount}
                                 </span>
                             </div>
 

@@ -248,9 +248,9 @@
                             <div class="detail-card-title">Guest Statistics</div>
                             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                                 <div>
-                                    <div class="detail-card-field-name">Total Guests</div>
-                                    <div class="detail-card-field-value text-2xl font-bold">
-                                        {data.guestGroup.groupCount}
+                                    <div class="detail-card-field-name">Invited</div>
+                                    <div class="detail-card-field-value text-2xl font-bold text-info">
+                                        {data.guestGroup.groupInvitedCount}
                                     </div>
                                 </div>
                                 {#if data.guestGroup.groupStandard > 0}
@@ -262,14 +262,14 @@
                                     </div>
                                 {/if}
 
-                                {#if data.guestGroup.groupVip > 0}
+                                {#if data.configData?.rsvpShowVipIntro}
                                     <div>
                                         <div class="detail-card-field-name">{data.configData?.vipGroupLabel}</div>
                                         <div class="detail-card-field-value text-xl">{data.guestGroup.groupVip}</div>
                                     </div>
                                 {/if}
-
-                                {#if data.guestGroup.groupOvernight > 0}
+                                {#if data.configData?.rsvpShowAccommodationIntro}
+                        
                                     <div>
                                         <div class="detail-card-field-name">
                                             {data.configData?.accommodationGroupLabel}
@@ -281,26 +281,38 @@
                                 {/if}
                             </div>
                             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                <div>
-                                    <div class="detail-card-field-name">Invited</div>
-                                    <div class="detail-card-field-value text-2xl font-bold text-info">
-                                        {data.guestGroup.groupInvitedCount}
-                                    </div>
-                                </div>
 
+  
+                            </div>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                                 <div>
                                     <div class="detail-card-field-name">Attending</div>
                                     <div class="detail-card-field-value text-2xl font-bold text-success">
                                         {data.guestGroup.groupAttendingCount}
                                     </div>
                                 </div>
-
-                                <div>
+                                                              <div>
                                     <div class="detail-card-field-name">Declined</div>
                                     <div class="detail-card-field-value text-2xl font-bold text-error">
                                         {data.guestGroup.groupDeclinedCount}
                                     </div>
                                 </div>
+                                {#if data.configData?.rsvpShowVipIntro}
+                                <div>
+                                    <div class="detail-card-field-name">{data.configData?.vipGroupLabel}</div>
+                                    <div class="detail-card-field-value text-2xl font-bold text-success">
+                                        {data.guestGroup.groupVip}
+                                    </div>
+                                </div>
+                                {/if}
+                                {#if data.configData?.rsvpShowAccommodationIntro}
+                                <div>
+                                    <div class="detail-card-field-name">{data.configData?.accommodationGroupLabel}</div>
+                                    <div class="detail-card-field-value text-2xl font-bold text-success">
+                                        {data.guestGroup.groupOvernight}
+                                    </div>
+                                </div>
+                                {/if}
                             </div>
                         </div>
                     </div>
