@@ -76,7 +76,6 @@ export const load: PageServerLoad = async ({ locals }) => {
             page++;
         }
 
-
         return {
             budgetEstimated,
             budgetActual,
