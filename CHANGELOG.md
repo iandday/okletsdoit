@@ -1,7 +1,93 @@
 # CHANGELOG
 
 
+## v0.17.0 (2026-03-29)
+
+### Bug Fixes
+
+- **GuestList**: :bug: fix declined count logic
+  ([`675f6eb`](https://github.com/iandday/okletsdoit/commit/675f6eb6acf587a46cb82673667c604fbb41c413))
+
+- **Core**: :bug: fix save method for first record
+  ([`e21ca5d`](https://github.com/iandday/okletsdoit/commit/e21ca5dd542950d8860a81fef8e3eecb0f59803f))
+
+### Code Style
+
+- Linting
+  ([`1c920dc`](https://github.com/iandday/okletsdoit/commit/1c920dcc0a8c43e31c0ec9cb0c26f926044febf2))
+
+### Continuous Integration
+
+- **CI**: :zap: bump trivy version
+  ([`c390d58`](https://github.com/iandday/okletsdoit/commit/c390d584750c200e7ccafb3b0fa8a21b8a58c867))
+
+- **CI**: :zap: fix dev update
+  ([`bb5744a`](https://github.com/iandday/okletsdoit/commit/bb5744a9fa4c79e1dfcbcd5bd19f513abefb758c))
+
+- :ambulance: pin trivy actions
+  ([`f0d98de`](https://github.com/iandday/okletsdoit/commit/f0d98de3e7548b52f6a3606f3a6071a15c8d0e19))
+
+### Features
+
+- **Deadline**: :sparkles: add to planning dashboard
+  ([`1fe8a51`](https://github.com/iandday/okletsdoit/commit/1fe8a51eb7f2ba18c513ed3d1e92a2c4e2532a47))
+
+- **GuestList**: Extract guestListStats
+  ([`8f5283f`](https://github.com/iandday/okletsdoit/commit/8f5283feefe217b5fa32b41721e7bb1874bbc61c))
+
+
 ## v0.16.1 (2026-03-15)
+
+
+## v0.16.0 (2026-02-21)
+
+
+## v0.15.0 (2026-02-21)
+
+
+## v0.14.0 (2026-02-15)
+
+
+## v0.13.0 (2026-02-15)
+
+
+## v0.12.2 (2026-02-13)
+
+
+## v0.12.1 (2026-02-13)
+
+
+## v0.12.0 (2026-02-13)
+
+
+## v0.11.1 (2026-02-12)
+
+
+## v0.11.0 (2026-02-10)
+
+
+## v0.10.1 (2026-01-31)
+
+
+## v0.10.0 (2026-01-31)
+
+
+## v0.9.0 (2026-01-25)
+
+
+## v0.8.0 (2026-01-25)
+
+
+## v0.7.0 (2026-01-14)
+
+
+## v0.6.1 (2026-01-04)
+
+
+## v0.6.0 (2026-01-04)
+
+
+## v0.5.0 (2026-01-01)
 
 ### Bug Fixes
 
@@ -11,104 +97,11 @@
 - **GuestList**: Fix qr code url generation
   ([`820e528`](https://github.com/iandday/okletsdoit/commit/820e528e20830f3fec18b4fb32c45a257af54cb4))
 
-### Build System
-
-- Update trivy config
-  ([`a7f8cfc`](https://github.com/iandday/okletsdoit/commit/a7f8cfce8f30137fcd6d246e4332e1c99fb89df7))
-
-- :bug: update versions
-  ([`eefd14d`](https://github.com/iandday/okletsdoit/commit/eefd14d3181cdc386f4faa4618a2e11f71799716))
-
-- :ambulance: update vulnerable packages
-  ([`87d518d`](https://github.com/iandday/okletsdoit/commit/87d518db7902458268e17230014b7fb59282fdec))
-
-### Chores
-
-- Sync files from main after release ([#87](https://github.com/iandday/okletsdoit/pull/87),
-  [`725cd0c`](https://github.com/iandday/okletsdoit/commit/725cd0cbeb976041f1e27b2db1f3ac8f6647a634))
-
-Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
-
-
-## v0.16.0 (2026-02-21)
-
-### Bug Fixes
-
 - Linting
   ([`ea9b40f`](https://github.com/iandday/okletsdoit/commit/ea9b40fc36561bbe06cfe0ac6d01f84fe17f25c3))
 
-### Chores
-
-- Sync files from main after release ([#85](https://github.com/iandday/okletsdoit/pull/85),
-  [`e0b6277`](https://github.com/iandday/okletsdoit/commit/e0b62779c9d0f3db6b44a11346160e5597112195))
-
-Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
-
-### Features
-
-- **Core**: :art: update landing page
-  ([`4881a40`](https://github.com/iandday/okletsdoit/commit/4881a40adb6c2895b5104a4a1c3e7455849c47bb))
-
-
-## v0.15.0 (2026-02-21)
-
-### Chores
-
-- Sync files from main after release ([#83](https://github.com/iandday/okletsdoit/pull/83),
-  [`5d73313`](https://github.com/iandday/okletsdoit/commit/5d733139c0fb23350ae965666e3819899332254c))
-
-Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
-
-### Features
-
-- **GuestList**: :sparkles: data export via csv and excel
-  ([`5fdb148`](https://github.com/iandday/okletsdoit/commit/5fdb148bb5717bbb0d0976b3b17366c20a43d544))
-
-
-## v0.14.0 (2026-02-15)
-
-### Bug Fixes
-
 - Linting
   ([`0f67ed3`](https://github.com/iandday/okletsdoit/commit/0f67ed37d556dd283ec4922f6a78cb8ecf2a5e44))
-
-### Chores
-
-- Sync files from main after release ([#81](https://github.com/iandday/okletsdoit/pull/81),
-  [`076430c`](https://github.com/iandday/okletsdoit/commit/076430c97948ee7cd2bd3063d3aaec9338315f62))
-
-Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
-
-### Features
-
-- **Core**: :zap: trigger update email
-  ([`b319f3c`](https://github.com/iandday/okletsdoit/commit/b319f3cb68abb087369de882d656f2f8c7a82ac8))
-
-
-## v0.13.0 (2026-02-15)
-
-### Chores
-
-- Sync files from main after release ([#79](https://github.com/iandday/okletsdoit/pull/79),
-  [`71ca2cf`](https://github.com/iandday/okletsdoit/commit/71ca2cf40783eb17ac29f44fad9e186afe5902c3))
-
-Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
-
-### Features
-
-- **GuestList**: Update QR functionality
-  ([`3695416`](https://github.com/iandday/okletsdoit/commit/3695416243181335ff3d4f2953ea5a0a7494549b))
-
-- **Core**: :art: update qr code
-  ([`8cfebb5`](https://github.com/iandday/okletsdoit/commit/8cfebb57213819b765619c2f1a954e088cb358d1))
-
-- **GuestList**: :sparkles: add rsvp qr code
-  ([`9dcf14d`](https://github.com/iandday/okletsdoit/commit/9dcf14d2c5a2f299b16e8c574a103679019aef29))
-
-
-## v0.12.2 (2026-02-13)
-
-### Bug Fixes
 
 - **GuestList**: :ambulance: add missing functions
   ([`a32bf18`](https://github.com/iandday/okletsdoit/commit/a32bf18eae6390f1cc4b352023b0f15673182854))
@@ -116,73 +109,17 @@ Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
 - **Core**: :fire: fix icon loading
   ([`f3cc9eb`](https://github.com/iandday/okletsdoit/commit/f3cc9eb6180e4792abc6bd6c9ee529357413bc28))
 
-### Chores
-
-- Sync files from main after release ([#77](https://github.com/iandday/okletsdoit/pull/77),
-  [`a470c72`](https://github.com/iandday/okletsdoit/commit/a470c72d8eed6949a4b940397224079961879543))
-
-Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
-
-
-## v0.12.1 (2026-02-13)
-
-### Bug Fixes
-
 - :rocket: remove css build
   ([`f93d550`](https://github.com/iandday/okletsdoit/commit/f93d55029977f8fff1969662a09ad0c4e7b9dd72))
 
 - **Core**: :ambulance: disable context
   ([`41c4c97`](https://github.com/iandday/okletsdoit/commit/41c4c971a578a2a7f0d7390a87eda4574ec8c055))
 
-### Chores
-
-- Sync files from main after release ([#75](https://github.com/iandday/okletsdoit/pull/75),
-  [`0996235`](https://github.com/iandday/okletsdoit/commit/0996235ee142fbc3bb8986fbc6248e5b07fb0eb6))
-
-Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
-
-
-## v0.12.0 (2026-02-13)
-
-### Chores
-
-- Sync files from main after release ([#73](https://github.com/iandday/okletsdoit/pull/73),
-  [`58ee6f7`](https://github.com/iandday/okletsdoit/commit/58ee6f7c1a528ba5622b35b9ae7da27787553040))
-
-Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
-
-### Features
-
-- **Core**: :sparkles: add accommodation
-  ([`752cc54`](https://github.com/iandday/okletsdoit/commit/752cc546852abe281fb08baca147bf12de081cd1))
-
-### Performance Improvements
-
-- :rocket: remove frontend components from django
-  ([`4cec93b`](https://github.com/iandday/okletsdoit/commit/4cec93b6c597d3b4c38c97dd293e74e8bef70d7a))
-
-
-## v0.11.1 (2026-02-12)
-
-### Bug Fixes
-
 - :bug: vuln bump
   ([`044cdd0`](https://github.com/iandday/okletsdoit/commit/044cdd0eb9a457501b82323c34de8618efb79158))
 
 - **List**: :bug: delete list entry
   ([`faccb38`](https://github.com/iandday/okletsdoit/commit/faccb38957eaf965fa35f127c3b92f0b7011f631))
-
-### Chores
-
-- Sync files from main after release ([#71](https://github.com/iandday/okletsdoit/pull/71),
-  [`a33b2d0`](https://github.com/iandday/okletsdoit/commit/a33b2d0639de743df622522974ee42952236abf1))
-
-Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
-
-
-## v0.11.0 (2026-02-10)
-
-### Bug Fixes
 
 - **Core**: :ambulance: update lock file
   ([`c072d02`](https://github.com/iandday/okletsdoit/commit/c072d025c4cd3b3a5024ea7a8f8a209f845581a9))
@@ -196,74 +133,8 @@ Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
 - :art: linting
   ([`6877be2`](https://github.com/iandday/okletsdoit/commit/6877be2143ec679823e89b2b9cb36bd5def089e4))
 
-### Chores
-
-- Sync files from main after release ([#66](https://github.com/iandday/okletsdoit/pull/66),
-  [`dd340e9`](https://github.com/iandday/okletsdoit/commit/dd340e9f9203c8770ad1698d6ee508241a3b7781))
-
-Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
-
-### Code Style
-
-- **List**: :lipstick: update label
-  ([`3dccefc`](https://github.com/iandday/okletsdoit/commit/3dccefcf524791f1517f3dc5bb7ca69714dec387))
-
-- **Expenses**: :lipstick: update layout
-  ([`4a8e31f`](https://github.com/iandday/okletsdoit/commit/4a8e31f822aee45f697949540958c932bba832bd))
-
-### Features
-
-- **Core**: :sparkles: planning hub
-  ([`7c74de3`](https://github.com/iandday/okletsdoit/commit/7c74de363829137876e0d398a0d4fdcfc1bd33b7))
-
-- **Core**: :sparkles: migrate ideas
-  ([`a56b41e`](https://github.com/iandday/okletsdoit/commit/a56b41ee0c73392e1a0f264a718a61fd4c6d5f5b))
-
-- **Core**: :sparkles: migrate ideas to frontend
-  ([`789fca3`](https://github.com/iandday/okletsdoit/commit/789fca340a13150a6b1e77e2828295d37e126cde))
-
-- **Inspiration**: :art: migrate inspiration to the front end
-  ([`2c78ab4`](https://github.com/iandday/okletsdoit/commit/2c78ab4471770898e68dfbfdfe23b968d37fb2cc))
-
-- **List**: :art: normalize tables
-  ([`bc6d78a`](https://github.com/iandday/okletsdoit/commit/bc6d78a0e6e366d1b9b5b97bd81ca876dff28c19))
-
-- **Expenses**: :memo: update nav
-  ([`1b3e4eb`](https://github.com/iandday/okletsdoit/commit/1b3e4eb353dce125d086e4d7d32b2f98c79af840))
-
-- **Expenses**: :sparkles: complete transition
-  ([`740e1ee`](https://github.com/iandday/okletsdoit/commit/740e1ee0d46d5ce8331e79440ef3a2c29bdc9084))
-
-- **Expenses**: :sparkles: initial migration to frontend
-  ([`4847366`](https://github.com/iandday/okletsdoit/commit/4847366d69715f2029b100ac0c219b89cb3d3aa6))
-
-- **List**: :sparkles: migrate to frontend
-  ([`3d5987c`](https://github.com/iandday/okletsdoit/commit/3d5987c0f4e1a5d42ec2c49a73ee54f98951ec5c))
-
-### Refactoring
-
-- **Core**: :zap: refactor planning section
-  ([`fa91439`](https://github.com/iandday/okletsdoit/commit/fa91439511dfbf57973fca1ecc68dc684b574c49))
-
-
-## v0.10.1 (2026-01-31)
-
-### Bug Fixes
-
 - :ambulance: enable deprecated apps
   ([`7d4da1c`](https://github.com/iandday/okletsdoit/commit/7d4da1c080215f1a586d253645a13912bca220fa))
-
-### Chores
-
-- Sync files from main after release ([#64](https://github.com/iandday/okletsdoit/pull/64),
-  [`00f843a`](https://github.com/iandday/okletsdoit/commit/00f843aa367fe9b2388820c93210dc12e2978b6f))
-
-Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
-
-
-## v0.10.0 (2026-01-31)
-
-### Bug Fixes
 
 - :ambulance: restore scanning
   ([`b71bd7e`](https://github.com/iandday/okletsdoit/commit/b71bd7e833bc06918b9d47fb023ef829072973ac))
@@ -286,47 +157,8 @@ Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
 - :ambulance: increase upload size
   ([`185657c`](https://github.com/iandday/okletsdoit/commit/185657c8a4f3a9f5e6a80eaece52c756e0321ca5))
 
-### Chores
-
-- Sync files from main after release ([#62](https://github.com/iandday/okletsdoit/pull/62),
-  [`4368606`](https://github.com/iandday/okletsdoit/commit/4368606217887318c28c3145766861c0827d1dbd))
-
-Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
-
-### Continuous Integration
-
-- :ambulance: testing trivy
-  ([`0aae1a2`](https://github.com/iandday/okletsdoit/commit/0aae1a2fa4ae10bc15f20b4ada7d2897c8de01e4))
-
-### Features
-
-- **GuestList**: :art: transition guestlist to frontend
-  ([`70fe776`](https://github.com/iandday/okletsdoit/commit/70fe776a86323b8adaab8dd949ea38aa02c7b2e6))
-
-
-## v0.9.0 (2026-01-25)
-
-### Bug Fixes
-
 - **Core**: :bug: fix venue preview
   ([`42994ad`](https://github.com/iandday/okletsdoit/commit/42994adee2e12d2f290e7478c9d6964dcbd203f7))
-
-### Chores
-
-- Sync files from main after release ([#60](https://github.com/iandday/okletsdoit/pull/60),
-  [`dc0a525`](https://github.com/iandday/okletsdoit/commit/dc0a52522c3d165d980989ab0b0c361f178363ad))
-
-Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
-
-### Features
-
-- Update uv during build
-  ([`b06babd`](https://github.com/iandday/okletsdoit/commit/b06babd511a767d44f84de71f81f853ec165b669))
-
-
-## v0.8.0 (2026-01-25)
-
-### Bug Fixes
 
 - :art: linting
   ([`5d2bc9e`](https://github.com/iandday/okletsdoit/commit/5d2bc9ee7e3d199df92f30cb7f18eca8ab8ed7ea))
@@ -340,41 +172,6 @@ Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
 - **Contacts**: Update file name display
   ([`939a721`](https://github.com/iandday/okletsdoit/commit/939a7211524f3e7de79facea68eedb02befc5920))
 
-### Chores
-
-- Sync files from main after release ([#57](https://github.com/iandday/okletsdoit/pull/57),
-  [`dd3a9d2`](https://github.com/iandday/okletsdoit/commit/dd3a9d285e4e35f236f8bce29cadc2e61f2cebf8))
-
-Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
-
-### Features
-
-- **Core**: :zap: refactor venue page
-  ([`f67199a`](https://github.com/iandday/okletsdoit/commit/f67199a1d4abd21dab14664e738ef1b25ee0a055))
-
-- **Core**: :art: use venue data from backend
-  ([`4ba8275`](https://github.com/iandday/okletsdoit/commit/4ba8275e0cb490aa7bb806f7367d71c3d0773118))
-
-- **Core**: :art: refactor landing page
-  ([`becb4f8`](https://github.com/iandday/okletsdoit/commit/becb4f868f55931990d08de5559231a3f3e21c3b))
-
-- **Deadline**: :zap: restore full table
-  ([`15eee6e`](https://github.com/iandday/okletsdoit/commit/15eee6e7b0bf7d3c140cd8d5395a376683345e35))
-
-- **Core**: :ambulance: show/hide venue
-  ([`3b85350`](https://github.com/iandday/okletsdoit/commit/3b85350acad2147e51a36a3ae1239c0c40ca1943))
-
-- **GuestList**: :sparkles: initial feature
-  ([`4d332fa`](https://github.com/iandday/okletsdoit/commit/4d332fa38f305a0ba2d37a7c0e1ece5688ce9858))
-
-- **GuestList**: :art: guest list detail page
-  ([`f6df9a9`](https://github.com/iandday/okletsdoit/commit/f6df9a9e9a996edff87c433283ea21b7f640fa7a))
-
-
-## v0.7.0 (2026-01-14)
-
-### Bug Fixes
-
 - **Core**: Cleanup nav
   ([`e6b1322`](https://github.com/iandday/okletsdoit/commit/e6b13220ab6cfec5d21dc3e4f607685dfd79a6ce))
 
@@ -384,46 +181,8 @@ Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
 - **Core**: :ambulance: fix email selection
   ([`1d90bfc`](https://github.com/iandday/okletsdoit/commit/1d90bfc4d2df3b25c309a803a5ef19573014a6ac))
 
-### Build System
-
-- :rocket: version bump
-  ([`3e1a4cd`](https://github.com/iandday/okletsdoit/commit/3e1a4cdfc34452092bb435d9045cc5fe83704afe))
-
-### Chores
-
-- Sync files from main after release ([#53](https://github.com/iandday/okletsdoit/pull/53),
-  [`99be00d`](https://github.com/iandday/okletsdoit/commit/99be00d264e6cbbb01d4ca8259be1013af10adf3))
-
-Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
-
-### Code Style
-
-- **Core**: :art: style update
-  ([`5ddde4d`](https://github.com/iandday/okletsdoit/commit/5ddde4d9b793e11d6da0a0e3321e6c02a1754eef))
-
-### Features
-
-- **Contacts**: :lipstick: migrate contacts to frontend
-  ([`92e4dce`](https://github.com/iandday/okletsdoit/commit/92e4dceb5b1391c23940b502c5931c8c0c0438fb))
-
-- **Core**: :art: finish protectedpageheader transition
-  ([`ecdc9ab`](https://github.com/iandday/okletsdoit/commit/ecdc9ab67c686c0cd8181958d89f2d0c0b650412))
-
-- **Core**: :art: add ProtectedPageHeader
-  ([`cd92de2`](https://github.com/iandday/okletsdoit/commit/cd92de29ad7ff12f71a6dfd3d9265f3b59fa3fa4))
-
-
-## v0.6.1 (2026-01-04)
-
-### Bug Fixes
-
 - **CI**: Fix build again
   ([`0394676`](https://github.com/iandday/okletsdoit/commit/039467676950ddc1988a565cf365997333daafb7))
-
-
-## v0.6.0 (2026-01-04)
-
-### Bug Fixes
 
 - **CI**: :bug: build part two
   ([`02bf609`](https://github.com/iandday/okletsdoit/commit/02bf60998b2b64237d18771e46e5bca2f5cba171))
@@ -436,29 +195,6 @@ Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
 
 - **GuestList**: :art: minor UI changes
   ([`147deac`](https://github.com/iandday/okletsdoit/commit/147deacaca91bc509f0f203040ac80cf123c8b09))
-
-### Chores
-
-- Sync files from main after release
-  ([`2f4824d`](https://github.com/iandday/okletsdoit/commit/2f4824d098eb82325f03e3037347cb61a7823e8d))
-
-### Continuous Integration
-
-- :rocket: update auto-pr
-  ([`954713b`](https://github.com/iandday/okletsdoit/commit/954713b2259bfd749b4c17a7f281bc393a906f35))
-
-### Features
-
-- **Deadline**: :sparkles: finish deadlines in frontend
-  ([`dd991f0`](https://github.com/iandday/okletsdoit/commit/dd991f0cd9f56d625e05d6496f31aeb0adfa865e))
-
-- **GuestList**: :lipstick: initial move to frontend
-  ([`2b8f34b`](https://github.com/iandday/okletsdoit/commit/2b8f34b1aa450a06a7c6b7a772ae869e6a6b8dc6))
-
-
-## v0.5.0 (2026-01-01)
-
-### Bug Fixes
 
 - **GuestList**: :memo: fix layout
   ([`6efed0a`](https://github.com/iandday/okletsdoit/commit/6efed0adaf37aff66656cedf4ad84132a5e89157))
@@ -513,13 +249,119 @@ Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
 
 ### Build System
 
+- Update trivy config
+  ([`a7f8cfc`](https://github.com/iandday/okletsdoit/commit/a7f8cfce8f30137fcd6d246e4332e1c99fb89df7))
+
+- :bug: update versions
+  ([`eefd14d`](https://github.com/iandday/okletsdoit/commit/eefd14d3181cdc386f4faa4618a2e11f71799716))
+
+- :ambulance: update vulnerable packages
+  ([`87d518d`](https://github.com/iandday/okletsdoit/commit/87d518db7902458268e17230014b7fb59282fdec))
+
+- :rocket: version bump
+  ([`3e1a4cd`](https://github.com/iandday/okletsdoit/commit/3e1a4cdfc34452092bb435d9045cc5fe83704afe))
+
 - :rocket: working directories
   ([`bc122f8`](https://github.com/iandday/okletsdoit/commit/bc122f83e073c785a3e7f2521be959170be7d530))
 
 - :zap: refactor into monorepo
   ([`20914c8`](https://github.com/iandday/okletsdoit/commit/20914c80538f178f1736c64aa947fb71a0d10aa2))
 
+### Chores
+
+- Sync files from main after release ([#89](https://github.com/iandday/okletsdoit/pull/89),
+  [`bad55a0`](https://github.com/iandday/okletsdoit/commit/bad55a001ccab06e2fc16768f8ee8d76676dc2ec))
+
+Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
+
+- Sync files from main after release ([#87](https://github.com/iandday/okletsdoit/pull/87),
+  [`725cd0c`](https://github.com/iandday/okletsdoit/commit/725cd0cbeb976041f1e27b2db1f3ac8f6647a634))
+
+Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
+
+- Sync files from main after release ([#85](https://github.com/iandday/okletsdoit/pull/85),
+  [`e0b6277`](https://github.com/iandday/okletsdoit/commit/e0b62779c9d0f3db6b44a11346160e5597112195))
+
+Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
+
+- Sync files from main after release ([#83](https://github.com/iandday/okletsdoit/pull/83),
+  [`5d73313`](https://github.com/iandday/okletsdoit/commit/5d733139c0fb23350ae965666e3819899332254c))
+
+Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
+
+- Sync files from main after release ([#81](https://github.com/iandday/okletsdoit/pull/81),
+  [`076430c`](https://github.com/iandday/okletsdoit/commit/076430c97948ee7cd2bd3063d3aaec9338315f62))
+
+Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
+
+- Sync files from main after release ([#79](https://github.com/iandday/okletsdoit/pull/79),
+  [`71ca2cf`](https://github.com/iandday/okletsdoit/commit/71ca2cf40783eb17ac29f44fad9e186afe5902c3))
+
+Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
+
+- Sync files from main after release ([#77](https://github.com/iandday/okletsdoit/pull/77),
+  [`a470c72`](https://github.com/iandday/okletsdoit/commit/a470c72d8eed6949a4b940397224079961879543))
+
+Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
+
+- Sync files from main after release ([#75](https://github.com/iandday/okletsdoit/pull/75),
+  [`0996235`](https://github.com/iandday/okletsdoit/commit/0996235ee142fbc3bb8986fbc6248e5b07fb0eb6))
+
+Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
+
+- Sync files from main after release ([#73](https://github.com/iandday/okletsdoit/pull/73),
+  [`58ee6f7`](https://github.com/iandday/okletsdoit/commit/58ee6f7c1a528ba5622b35b9ae7da27787553040))
+
+Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
+
+- Sync files from main after release ([#71](https://github.com/iandday/okletsdoit/pull/71),
+  [`a33b2d0`](https://github.com/iandday/okletsdoit/commit/a33b2d0639de743df622522974ee42952236abf1))
+
+Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
+
+- Sync files from main after release ([#66](https://github.com/iandday/okletsdoit/pull/66),
+  [`dd340e9`](https://github.com/iandday/okletsdoit/commit/dd340e9f9203c8770ad1698d6ee508241a3b7781))
+
+Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
+
+- Sync files from main after release ([#64](https://github.com/iandday/okletsdoit/pull/64),
+  [`00f843a`](https://github.com/iandday/okletsdoit/commit/00f843aa367fe9b2388820c93210dc12e2978b6f))
+
+Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
+
+- Sync files from main after release ([#62](https://github.com/iandday/okletsdoit/pull/62),
+  [`4368606`](https://github.com/iandday/okletsdoit/commit/4368606217887318c28c3145766861c0827d1dbd))
+
+Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
+
+- Sync files from main after release ([#60](https://github.com/iandday/okletsdoit/pull/60),
+  [`dc0a525`](https://github.com/iandday/okletsdoit/commit/dc0a52522c3d165d980989ab0b0c361f178363ad))
+
+Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
+
+- Sync files from main after release ([#57](https://github.com/iandday/okletsdoit/pull/57),
+  [`dd3a9d2`](https://github.com/iandday/okletsdoit/commit/dd3a9d285e4e35f236f8bce29cadc2e61f2cebf8))
+
+Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
+
+- Sync files from main after release ([#53](https://github.com/iandday/okletsdoit/pull/53),
+  [`99be00d`](https://github.com/iandday/okletsdoit/commit/99be00d264e6cbbb01d4ca8259be1013af10adf3))
+
+Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
+
+- Sync files from main after release
+  ([`2f4824d`](https://github.com/iandday/okletsdoit/commit/2f4824d098eb82325f03e3037347cb61a7823e8d))
+
 ### Code Style
+
+- **List**: :lipstick: update label
+  ([`3dccefc`](https://github.com/iandday/okletsdoit/commit/3dccefcf524791f1517f3dc5bb7ca69714dec387))
+
+- **Expenses**: :lipstick: update layout
+  ([`4a8e31f`](https://github.com/iandday/okletsdoit/commit/4a8e31f822aee45f697949540958c932bba832bd))
+
+- **Core**: :art: style update
+  ([`5ddde4d`](https://github.com/iandday/okletsdoit/commit/5ddde4d9b793e11d6da0a0e3321e6c02a1754eef))
 
 - **Core**: :art: linting
   ([`2efb7b3`](https://github.com/iandday/okletsdoit/commit/2efb7b35bb61680951a0d8fcf3df9b02a8db2b6a))
@@ -531,6 +373,12 @@ Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
   ([`0e3ad13`](https://github.com/iandday/okletsdoit/commit/0e3ad131311c122b466a1a8a70d54e1578b3e8b1))
 
 ### Continuous Integration
+
+- :ambulance: testing trivy
+  ([`0aae1a2`](https://github.com/iandday/okletsdoit/commit/0aae1a2fa4ae10bc15f20b4ada7d2897c8de01e4))
+
+- :rocket: update auto-pr
+  ([`954713b`](https://github.com/iandday/okletsdoit/commit/954713b2259bfd749b4c17a7f281bc393a906f35))
 
 - :rocket: update main branch build
   ([`709595b`](https://github.com/iandday/okletsdoit/commit/709595b9c39dee565080c3bb8078df6376792b5b))
@@ -547,6 +395,96 @@ Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
   ([`affb591`](https://github.com/iandday/okletsdoit/commit/affb5916d6debc9bc2f2d5c7521aae949522672b))
 
 ### Features
+
+- **Core**: :art: update landing page
+  ([`4881a40`](https://github.com/iandday/okletsdoit/commit/4881a40adb6c2895b5104a4a1c3e7455849c47bb))
+
+- **GuestList**: :sparkles: data export via csv and excel
+  ([`5fdb148`](https://github.com/iandday/okletsdoit/commit/5fdb148bb5717bbb0d0976b3b17366c20a43d544))
+
+- **Core**: :zap: trigger update email
+  ([`b319f3c`](https://github.com/iandday/okletsdoit/commit/b319f3cb68abb087369de882d656f2f8c7a82ac8))
+
+- **GuestList**: Update QR functionality
+  ([`3695416`](https://github.com/iandday/okletsdoit/commit/3695416243181335ff3d4f2953ea5a0a7494549b))
+
+- **Core**: :art: update qr code
+  ([`8cfebb5`](https://github.com/iandday/okletsdoit/commit/8cfebb57213819b765619c2f1a954e088cb358d1))
+
+- **GuestList**: :sparkles: add rsvp qr code
+  ([`9dcf14d`](https://github.com/iandday/okletsdoit/commit/9dcf14d2c5a2f299b16e8c574a103679019aef29))
+
+- **Core**: :sparkles: add accommodation
+  ([`752cc54`](https://github.com/iandday/okletsdoit/commit/752cc546852abe281fb08baca147bf12de081cd1))
+
+- **Core**: :sparkles: planning hub
+  ([`7c74de3`](https://github.com/iandday/okletsdoit/commit/7c74de363829137876e0d398a0d4fdcfc1bd33b7))
+
+- **Core**: :sparkles: migrate ideas
+  ([`a56b41e`](https://github.com/iandday/okletsdoit/commit/a56b41ee0c73392e1a0f264a718a61fd4c6d5f5b))
+
+- **Core**: :sparkles: migrate ideas to frontend
+  ([`789fca3`](https://github.com/iandday/okletsdoit/commit/789fca340a13150a6b1e77e2828295d37e126cde))
+
+- **Inspiration**: :art: migrate inspiration to the front end
+  ([`2c78ab4`](https://github.com/iandday/okletsdoit/commit/2c78ab4471770898e68dfbfdfe23b968d37fb2cc))
+
+- **List**: :art: normalize tables
+  ([`bc6d78a`](https://github.com/iandday/okletsdoit/commit/bc6d78a0e6e366d1b9b5b97bd81ca876dff28c19))
+
+- **Expenses**: :memo: update nav
+  ([`1b3e4eb`](https://github.com/iandday/okletsdoit/commit/1b3e4eb353dce125d086e4d7d32b2f98c79af840))
+
+- **Expenses**: :sparkles: complete transition
+  ([`740e1ee`](https://github.com/iandday/okletsdoit/commit/740e1ee0d46d5ce8331e79440ef3a2c29bdc9084))
+
+- **Expenses**: :sparkles: initial migration to frontend
+  ([`4847366`](https://github.com/iandday/okletsdoit/commit/4847366d69715f2029b100ac0c219b89cb3d3aa6))
+
+- **List**: :sparkles: migrate to frontend
+  ([`3d5987c`](https://github.com/iandday/okletsdoit/commit/3d5987c0f4e1a5d42ec2c49a73ee54f98951ec5c))
+
+- **GuestList**: :art: transition guestlist to frontend
+  ([`70fe776`](https://github.com/iandday/okletsdoit/commit/70fe776a86323b8adaab8dd949ea38aa02c7b2e6))
+
+- Update uv during build
+  ([`b06babd`](https://github.com/iandday/okletsdoit/commit/b06babd511a767d44f84de71f81f853ec165b669))
+
+- **Core**: :zap: refactor venue page
+  ([`f67199a`](https://github.com/iandday/okletsdoit/commit/f67199a1d4abd21dab14664e738ef1b25ee0a055))
+
+- **Core**: :art: use venue data from backend
+  ([`4ba8275`](https://github.com/iandday/okletsdoit/commit/4ba8275e0cb490aa7bb806f7367d71c3d0773118))
+
+- **Core**: :art: refactor landing page
+  ([`becb4f8`](https://github.com/iandday/okletsdoit/commit/becb4f868f55931990d08de5559231a3f3e21c3b))
+
+- **Deadline**: :zap: restore full table
+  ([`15eee6e`](https://github.com/iandday/okletsdoit/commit/15eee6e7b0bf7d3c140cd8d5395a376683345e35))
+
+- **Core**: :ambulance: show/hide venue
+  ([`3b85350`](https://github.com/iandday/okletsdoit/commit/3b85350acad2147e51a36a3ae1239c0c40ca1943))
+
+- **GuestList**: :sparkles: initial feature
+  ([`4d332fa`](https://github.com/iandday/okletsdoit/commit/4d332fa38f305a0ba2d37a7c0e1ece5688ce9858))
+
+- **GuestList**: :art: guest list detail page
+  ([`f6df9a9`](https://github.com/iandday/okletsdoit/commit/f6df9a9e9a996edff87c433283ea21b7f640fa7a))
+
+- **Contacts**: :lipstick: migrate contacts to frontend
+  ([`92e4dce`](https://github.com/iandday/okletsdoit/commit/92e4dceb5b1391c23940b502c5931c8c0c0438fb))
+
+- **Core**: :art: finish protectedpageheader transition
+  ([`ecdc9ab`](https://github.com/iandday/okletsdoit/commit/ecdc9ab67c686c0cd8181958d89f2d0c0b650412))
+
+- **Core**: :art: add ProtectedPageHeader
+  ([`cd92de2`](https://github.com/iandday/okletsdoit/commit/cd92de29ad7ff12f71a6dfd3d9265f3b59fa3fa4))
+
+- **Deadline**: :sparkles: finish deadlines in frontend
+  ([`dd991f0`](https://github.com/iandday/okletsdoit/commit/dd991f0cd9f56d625e05d6496f31aeb0adfa865e))
+
+- **GuestList**: :lipstick: initial move to frontend
+  ([`2b8f34b`](https://github.com/iandday/okletsdoit/commit/2b8f34b1aa450a06a7c6b7a772ae869e6a6b8dc6))
 
 - **Core**: :sparkles: migrate FAQ to frontend
   ([`6ad6707`](https://github.com/iandday/okletsdoit/commit/6ad67076110e38ebf59abf31f2c82d02d5836be1))
@@ -614,7 +552,15 @@ Co-authored-by: iandday <13158780+iandday@users.noreply.github.com>
 - **CI**: :rocket: update lockfile
   ([`f9c1fc7`](https://github.com/iandday/okletsdoit/commit/f9c1fc70730ffce635a4d9caaa5a9ddccae8ee84))
 
+### Performance Improvements
+
+- :rocket: remove frontend components from django
+  ([`4cec93b`](https://github.com/iandday/okletsdoit/commit/4cec93b6c597d3b4c38c97dd293e74e8bef70d7a))
+
 ### Refactoring
+
+- **Core**: :zap: refactor planning section
+  ([`fa91439`](https://github.com/iandday/okletsdoit/commit/fa91439511dfbf57973fca1ecc68dc684b574c49))
 
 - :zap: remove extra logging
   ([`ade0503`](https://github.com/iandday/okletsdoit/commit/ade050329e9744a457e85c9ecbd43cc8d747a8a5))
