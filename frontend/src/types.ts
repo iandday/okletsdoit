@@ -21,4 +21,5 @@ export type IStat = {
     value: string | number;
     description?: string;
     icon?: string;
+    href?: string;
 };

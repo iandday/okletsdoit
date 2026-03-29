@@ -1,10 +1,11 @@
 <script lang="ts">
+    import ListStats from "$lib/components/ListStats.svelte";
     import Stats from "$lib/components/Stats.svelte";
     import CreateObject from "$lib/components/buttons/CreateObject.svelte";
     import ViewDetails from "$lib/components/buttons/ViewDetails.svelte";
     import ProtectedPageHeader from "$lib/components/layouts/ProtectedPageHeader.svelte";
     import ProtectedPageShell from "$lib/components/layouts/ProtectedPageShell.svelte";
-    import type { PageData, iStat } from "./$types";
+    import type { PageData } from "./$types";
 
     const { data }: { data: PageData } = $props();
     const relativeCrumbs = [{ title: "Lists" }];
@@ -53,35 +54,6 @@
         if (percentage >= 50) return "progress-warning";
         return "progress-info";
     }
-
-    const listStats: iStat[] = [
-        {
-            title: "Total Lists",
-            value: filteredLists.length,
-            description: `of ${data.count} total`,
-            icon: "list",
-        },
-        {
-            title: "Total Entries",
-            value: filteredLists.reduce((sum, list) => sum + list.totalEntries, 0),
-            description: `across all lists`,
-            icon: "check-square",
-        },
-    ];
-    const completionStats: iStat[] = [
-        {
-            title: "Completed",
-            value: filteredLists.reduce((sum, list) => sum + list.completedEntries, 0),
-            description: `items finished`,
-            icon: "check-circle",
-        },
-        {
-            title: "Pending",
-            value: filteredLists.reduce((sum, list) => sum + list.pendingEntries, 0),
-            description: `items remaining`,
-            icon: "circle",
-        },
-    ];
 </script>
 
 <ProtectedPageShell {relativeCrumbs}>
@@ -145,8 +117,7 @@
             </div>
 
             <div class="flex flex-col gap-4 items-center">
-                <Stats objects={listStats} />
-                <Stats objects={completionStats} />
+                <ListStats lists={filteredLists} />
                 <div class="flex flex-row gap-4">
                     <CreateObject href="/planning/guest_list/new" label="New List" />
                     <a href="/planning/list_entry" class="btn btn-accent gap-2">

@@ -1,6 +1,8 @@
 <script lang="ts">
     import { enhance } from "$app/forms";
     import { goto } from "$app/navigation";
+    import GuestListStats from "$lib/components/GuestListStats.svelte";
+    import ListStats from "$lib/components/ListStats.svelte";
     import Stats from "$lib/components/Stats.svelte";
     import ProtectedPageHeader from "$lib/components/layouts/ProtectedPageHeader.svelte";
     import ProtectedPageShell from "$lib/components/layouts/ProtectedPageShell.svelte";
@@ -23,7 +25,7 @@
         <!-- Tabs Navigation -->
         <div class="bg-base-300 py-2 px-4 mb-6">
             <div class="flex gap-2 flex-col lg:flex-row min-w-max justify-between">
-                {#each protectedMenu as item, index (item.title)}
+                {#each protectedMenu as item: IMenuItem, index (item.title)}
                     <button
                         onclick={() => (activeTab = index)}
                         class="btn btn-sm rounded-lg transition-all duration-200 {activeTab === index
@@ -39,7 +41,7 @@
 
         <!-- Tab Content -->
         <div class="grid grid-cols-1 gap-6">
-            {#each protectedMenu as item, index (item.title)}
+            {#each protectedMenu as item: IMenuItem, index (item.title)}
                 {#if activeTab === index}
                     <div class="config-card animate-fade-in">
                         <div class="config-card-body">
@@ -66,6 +68,48 @@
                                                 description: "Total Spent",
                                             },
                                         ]} />
+                                </div>
+                            {/if}
+                            {#if item.href == "/planning/list"}
+                                <div class="flex justify-around items-center">
+                                    <ListStats lists={data.lists} />
+                                </div>
+                            {/if}
+                            {#if item.href == "/planning/deadline"}
+                                <div class="flex justify-around items-center">
+                                    <Stats
+                                        align="center"
+                                        objects={[
+                                            {
+                                                title: "Total",
+                                                value: data.deadlineStats.totalDeadlines,
+                                                description: "All Deadlines",
+                                                href: "/planning/deadline/all",
+                                            },
+                                            {
+                                                title: "Pending",
+                                                value: data.deadlineStats.pendingDeadlines,
+                                                description: "Pending Deadlines",
+                                                href: "/planning/deadline/all?pending=true",
+                                            },
+                                            {
+                                                title: "Completed",
+                                                value: data.deadlineStats.completedDeadlines,
+                                                description: "Completed Deadlines",
+                                                href: "/planning/deadline/all?completed=true",
+                                            },
+                                            {
+                                                title: "Overdue",
+                                                value: data.deadlineStats.overdueDeadlines,
+                                                description: "Overdue Deadlines",
+                                                href: "/planning/deadline/all?overdue=true",
+                                            },
+                                        ]} />
+                                </div>
+                            {/if}
+                            {#if item.href == "/planning/guest_list"}
+                                <div class="flex justify-around items-center">
+                                    <GuestListStats guestGroups={data.guestGroups} />
                                 </div>
                             {/if}
                         </div>
@@ -95,7 +139,7 @@
                             before making them live.
                         </p>
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                            {#each previewMenu as preview, index (preview.title)}
+                            {#each previewMenu as preview: IMenuItem, index (preview.title)}
                                 <a href={preview.href} class="btn btn-secondary gap-2 justify-center" target="_blank">
                                     <span class="icon-[lucide--external-link] size-4"></span>
                                     {preview.title}

@@ -1,5 +1,6 @@
 <!-- src/routes/planning/guest_list/+page.svelte -->
 <script lang="ts">
+    import GuestListStats from "$lib/components/GuestListStats.svelte";
     import Stats from "$lib/components/Stats.svelte";
     import CreateObject from "$lib/components/buttons/CreateObject.svelte";
     import ExportData from "$lib/components/buttons/ExportData.svelte";
@@ -117,7 +118,7 @@
 
     function getRsvpProgress(group: any): number {
         if (group.groupInvitedCount === 0) return 0;
-        return Math.round((group.groupAttendingCount / group.groupInvitedCount) * 100);
+        return Math.round(((group.groupAttendingCount + group.groupDeclinedCount) / group.groupInvitedCount) * 100);
     }
 
     // Derive priority styling dynamically based on relative values
@@ -147,35 +148,6 @@
         if (relativePosition >= 0.33) return "badge-warning"; // Medium priority
         return "badge-info"; // Low priority
     }
-
-    const guestStats: iStat[] = [
-        {
-            title: "Guest Groups",
-            value: filteredGuestGroups.length,
-            description: `of ${data.count} total`,
-            icon: "users",
-        },
-        {
-            title: "Guests",
-            value: filteredGuestGroups.reduce((sum, group) => sum + group.groupCount, 0),
-            description: `of ${data.guestGroups.reduce((sum, group) => sum + group.groupCount, 0)} total`,
-            icon: "user",
-        },
-    ];
-    const inviteStats: iStat[] = [
-        {
-            title: "Invited",
-            value: filteredGuestGroups.reduce((sum, group) => sum + group.groupInvitedCount, 0),
-            description: `of ${data.guestGroups.reduce((sum, group) => sum + group.groupInvitedCount, 0)} total`,
-            icon: "mail",
-        },
-        {
-            title: "Attending",
-            value: filteredGuestGroups.reduce((sum, group) => sum + group.groupAttendingCount, 0),
-            description: `of ${data.guestGroups.reduce((sum, group) => sum + group.groupAttendingCount, 0)} total`,
-            icon: "check-circle",
-        },
-    ];
 </script>
 
 <ProtectedPageShell {relativeCrumbs} {form}>
@@ -276,8 +248,7 @@
                             fileName="guests.xlsx" />
                     </div>
                     <div class="flex flex-col md:flex-row gap-6 w-full justify-center">
-                        <Stats objects={guestStats} />
-                        <Stats objects={inviteStats} />
+                        <GuestListStats guestGroups={filteredGuestGroups} />
                     </div>
                 </div>
             </div>
@@ -341,7 +312,7 @@
                             <div class="flex items-center justify-between text-sm">
                                 <span class="font-semibold">RSVP Progress</span>
                                 <span>
-                                    {group.groupAttendingCount} / {group.groupInvitedCount}
+                                    {group.groupAttendingCount + group.groupDeclinedCount} / {group.groupInvitedCount}
                                 </span>
                             </div>
 

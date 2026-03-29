@@ -16,9 +16,8 @@
   * [ ] Budget
   * [ ] Lists
   * [ ] Ideas
-  * [ ] 
-* [ ] Planning
-  * [ ] Add stats to each section
+* [ ] Planning Hub
+  * [X] Add stats to each section
   * [ ] Initial setup flow
 - [X] Preview
     * [X] Public venue page

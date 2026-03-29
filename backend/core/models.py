@@ -2,13 +2,13 @@ import datetime
 import uuid
 
 from django.db import models
+from django.db import transaction
 from django.utils.text import slugify
 from simple_history.models import HistoricalRecords
 from typing import Any
 from core.utils import generate_qr_code_attachment
 from users.models import User
 from django.conf import settings
-from django.contrib.auth import get_user_model
 
 
 class Idea(models.Model):
@@ -371,27 +371,31 @@ class WeddingSettings(models.Model):
         verbose_name_plural = "Wedding Settings"
 
     def save(self, *args, **kwargs):  # type: ignore
-        User = get_user_model()
         admin_user = User.objects.filter(is_admin=True).first()
         if not admin_user:
             raise ValueError("No admin user found. Please create an admin user before saving WeddingSettings.")
-        if not self.rsvp_qr_code:
-            attachment = generate_qr_code_attachment(
-                url=settings.RSVP_URL,
-                name="RSVP QR Code",
-                model_instance=self,
-                uploaded_by=admin_user,
-                filename="qr_code_base_rsvp.png",
-                heart_logo=False,
-            )
-            self.rsvp_qr_code = attachment
-        else:
-            attachment = self.rsvp_qr_code
-        self.rsvp_qr_code_url = attachment.attachment_file.url if attachment.attachment_file else ""
-        print(attachment.attachment_file.url if attachment.attachment_file else "No attachment file URL")
 
-        self.__class__.objects.exclude(id=self.id).delete()
-        super().save(*args, **kwargs)
+        with transaction.atomic():
+            super().save(*args, **kwargs)
+            self.__class__.objects.exclude(id=self.id).delete()
+
+            attachment = self.rsvp_qr_code
+            if not attachment:
+                attachment = generate_qr_code_attachment(
+                    url=settings.RSVP_URL,
+                    name="RSVP QR Code",
+                    model_instance=self,
+                    uploaded_by=admin_user,
+                    filename="qr_code_base_rsvp.png",
+                    heart_logo=False,
+                )
+                self.rsvp_qr_code = attachment
+
+            self.rsvp_qr_code_url = attachment.attachment_file.url if attachment.attachment_file else ""
+            self.__class__.objects.filter(pk=self.pk).update(
+                rsvp_qr_code=self.rsvp_qr_code,
+                rsvp_qr_code_url=self.rsvp_qr_code_url,
+            )
 
     @classmethod
     def load(cls) -> Any:

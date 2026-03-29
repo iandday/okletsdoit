@@ -10,6 +10,7 @@ All URIs are relative to _http://localhost_
 | [**deadlineApiDeleteDeadlineList**](DeadlinesApi.md#deadlineapideletedeadlinelist)         | **DELETE** /api/deadline/deadline-lists/{list_id}              | Delete Deadline List     |
 | [**deadlineApiGetDeadline**](DeadlinesApi.md#deadlineapigetdeadline)                       | **GET** /api/deadline/deadlines/{deadline_id}                  | Get Deadline             |
 | [**deadlineApiGetDeadlineList**](DeadlinesApi.md#deadlineapigetdeadlinelist)               | **GET** /api/deadline/deadline-lists/{list_id}                 | Get Deadline List        |
+| [**deadlineApiGetDeadlineStats**](DeadlinesApi.md#deadlineapigetdeadlinestats)             | **GET** /api/deadline/deadlines/stats                          | Get Deadline Stats       |
 | [**deadlineApiListDeadlineLists**](DeadlinesApi.md#deadlineapilistdeadlinelists)           | **GET** /api/deadline/deadline-lists                           | List Deadline Lists      |
 | [**deadlineApiListDeadlines**](DeadlinesApi.md#deadlineapilistdeadlines)                   | **GET** /api/deadline/deadlines                                | List Deadlines           |
 | [**deadlineApiToggleDeadlineComplete**](DeadlinesApi.md#deadlineapitoggledeadlinecomplete) | **POST** /api/deadline/deadlines/{deadline_id}/toggle_complete | Toggle Deadline Complete |
@@ -436,6 +437,69 @@ example().catch(console.error);
 ### Return type
 
 [**DeadlineListSchema**](DeadlineListSchema.md)
+
+### Authorization
+
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## deadlineApiGetDeadlineStats
+
+> DeadLineStatsSchema deadlineApiGetDeadlineStats()
+
+Get Deadline Stats
+
+Get statistics for deadlines
+
+### Example
+
+```ts
+import { Configuration, DeadlinesApi } from "";
+import type { DeadlineApiGetDeadlineStatsRequest } from "";
+
+async function example() {
+    console.log("🚀 Testing  SDK...");
+    const config = new Configuration({
+        // To configure API key authorization: SessionAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: ServiceTokenAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: XSessionTokenAuth
+        apiKey: "YOUR API KEY",
+    });
+    const api = new DeadlinesApi(config);
+
+    try {
+        const data = await api.deadlineApiGetDeadlineStats();
+        console.log(data);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+This endpoint does not need any parameter.
+
+### Return type
+
+[**DeadLineStatsSchema**](DeadLineStatsSchema.md)
 
 ### Authorization
 
