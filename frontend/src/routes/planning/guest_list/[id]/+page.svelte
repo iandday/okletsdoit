@@ -269,7 +269,6 @@
                                     </div>
                                 {/if}
                                 {#if data.configData?.rsvpShowAccommodationIntro}
-                        
                                     <div>
                                         <div class="detail-card-field-name">
                                             {data.configData?.accommodationGroupLabel}
@@ -280,10 +279,7 @@
                                     </div>
                                 {/if}
                             </div>
-                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-
-  
-                            </div>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
                             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                                 <div>
                                     <div class="detail-card-field-name">Attending</div>
@@ -291,27 +287,29 @@
                                         {data.guestGroup.groupAttendingCount}
                                     </div>
                                 </div>
-                                                              <div>
+                                <div>
                                     <div class="detail-card-field-name">Declined</div>
                                     <div class="detail-card-field-value text-2xl font-bold text-error">
                                         {data.guestGroup.groupDeclinedCount}
                                     </div>
                                 </div>
                                 {#if data.configData?.rsvpShowVipIntro}
-                                <div>
-                                    <div class="detail-card-field-name">{data.configData?.vipGroupLabel}</div>
-                                    <div class="detail-card-field-value text-2xl font-bold text-success">
-                                        {data.guestGroup.groupVip}
+                                    <div>
+                                        <div class="detail-card-field-name">{data.configData?.vipGroupLabel}</div>
+                                        <div class="detail-card-field-value text-2xl font-bold text-success">
+                                            {data.guestGroup.groupVip}
+                                        </div>
                                     </div>
-                                </div>
                                 {/if}
                                 {#if data.configData?.rsvpShowAccommodationIntro}
-                                <div>
-                                    <div class="detail-card-field-name">{data.configData?.accommodationGroupLabel}</div>
-                                    <div class="detail-card-field-value text-2xl font-bold text-success">
-                                        {data.guestGroup.groupOvernight}
+                                    <div>
+                                        <div class="detail-card-field-name">
+                                            {data.configData?.accommodationGroupLabel}
+                                        </div>
+                                        <div class="detail-card-field-value text-2xl font-bold text-success">
+                                            {data.guestGroup.groupOvernight}
+                                        </div>
                                     </div>
-                                </div>
                                 {/if}
                             </div>
                         </div>

@@ -1,14 +1,15 @@
 <script lang="ts">
     import { enhance } from "$app/forms";
     import { goto } from "$app/navigation";
+    import GuestListStats from "$lib/components/GuestListStats.svelte";
+    import ListStats from "$lib/components/ListStats.svelte";
     import Stats from "$lib/components/Stats.svelte";
     import ProtectedPageHeader from "$lib/components/layouts/ProtectedPageHeader.svelte";
     import ProtectedPageShell from "$lib/components/layouts/ProtectedPageShell.svelte";
     import { previewMenu, protectedMenu } from "$lib/components/layouts/Topbar.svelte";
     import { formatCurrency } from "$lib/utils/formatters";
     import type { ActionData, PageData } from "./$types";
-    import type { IMenuItem } from "$lib/components/layouts/TopbarMenuItem.svelte";
-    import GuestListStats from "$lib/components/GuestListStats.svelte";
+
     const { data, form }: { data: PageData; form: ActionData } = $props();
 
     let activeTab = $state(0);
@@ -69,11 +70,46 @@
                                         ]} />
                                 </div>
                             {/if}
+                            {#if item.href == "/planning/list"}
+                                <div class="flex justify-around items-center">
+                                    <ListStats lists={data.lists} />
+                                </div>
+                            {/if}
+                            {#if item.href == "/planning/deadline"}
+                                <div class="flex justify-around items-center">
+                                    <Stats
+                                        align="center"
+                                        objects={[
+                                            {
+                                                title: "Total",
+                                                value: data.deadlineStats.totalDeadlines,
+                                                description: "All Deadlines",
+                                                href: "/planning/deadline/all",
+                                            },
+                                            {
+                                                title: "Pending",
+                                                value: data.deadlineStats.pendingDeadlines,
+                                                description: "Pending Deadlines",
+                                                href: "/planning/deadline/all?pending=true",
+                                            },
+                                            {
+                                                title: "Completed",
+                                                value: data.deadlineStats.completedDeadlines,
+                                                description: "Completed Deadlines",
+                                                href: "/planning/deadline/all?completed=true",
+                                            },
+                                            {
+                                                title: "Overdue",
+                                                value: data.deadlineStats.overdueDeadlines,
+                                                description: "Overdue Deadlines",
+                                                href: "/planning/deadline/all?overdue=true",
+                                            },
+                                        ]} />
+                                </div>
+                            {/if}
                             {#if item.href == "/planning/guest_list"}
                                 <div class="flex justify-around items-center">
-                                <GuestListStats
-                                    guestGroups={data.guestGroups} />
-
+                                    <GuestListStats guestGroups={data.guestGroups} />
                                 </div>
                             {/if}
                         </div>

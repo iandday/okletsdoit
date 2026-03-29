@@ -22,6 +22,7 @@
          * Additional CSS classes to apply to the container
          */
         class?: string;
+        href?: string;
     }
 
     let { objects, layout = "horizontal", size = "md", align = "left", class: className = "" }: StatsProps = $props();
@@ -43,7 +44,10 @@
 
 <div class="stats shadow mt-8 {layoutClass} {sizeClasses[size]} {className}">
     {#each objects as obj, index (index)}
-        <div class="stat bg-accent border-accent-content/20 text-accent-content {alignClass}">
+        <svelte:element
+            this={obj.href ? "a" : "div"}
+            href={obj.href}
+            class="stat bg-accent border-accent-content/20 text-accent-content {alignClass}">
             {#if obj.icon}
                 <div class="stat-figure text-primary">
                     <span
@@ -61,6 +65,6 @@
             {#if obj.description}
                 <div class="stat-desc text-accent-content">{obj.description}</div>
             {/if}
-        </div>
+        </svelte:element>
     {/each}
 </div>

@@ -12,6 +12,7 @@
  * Do not edit the class manually.
  */
 import type {
+    DeadLineStatsSchema,
     DeadlineCreateSchema,
     DeadlineListCreateSchema,
     DeadlineListSchema,
@@ -22,6 +23,8 @@ import type {
     PagedDeadlineSchema,
 } from "../models/index";
 import {
+    DeadLineStatsSchemaFromJSON,
+    DeadLineStatsSchemaToJSON,
     DeadlineCreateSchemaFromJSON,
     DeadlineCreateSchemaToJSON,
     DeadlineListCreateSchemaFromJSON,
@@ -427,6 +430,51 @@ export class DeadlinesApi extends runtime.BaseAPI {
         initOverrides?: RequestInit | runtime.InitOverrideFunction,
     ): Promise<DeadlineListSchema> {
         const response = await this.deadlineApiGetDeadlineListRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get statistics for deadlines
+     * Get Deadline Stats
+     */
+    async deadlineApiGetDeadlineStatsRaw(
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<DeadLineStatsSchema>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
+        let urlPath = `/api/deadline/deadlines/stats`;
+
+        const response = await this.request(
+            {
+                path: urlPath,
+                method: "GET",
+                headers: headerParameters,
+                query: queryParameters,
+            },
+            initOverrides,
+        );
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => DeadLineStatsSchemaFromJSON(jsonValue));
+    }
+
+    /**
+     * Get statistics for deadlines
+     * Get Deadline Stats
+     */
+    async deadlineApiGetDeadlineStats(
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<DeadLineStatsSchema> {
+        const response = await this.deadlineApiGetDeadlineStatsRaw(initOverrides);
         return await response.value();
     }
 

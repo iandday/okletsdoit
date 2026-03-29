@@ -78,6 +78,7 @@ services:
       - "traefik.http.middlewares.file-upload.buffering.maxRequestBodyBytes=1073741824"
       - "traefik.http.middlewares.file-upload.buffering.memRequestBodyBytes=107374182"
       - "traefik.http.routers.django-server.middlewares=file-upload"
+      - "traefik.http.routers.django-server.priority=35"
   beats:
     build:
       context: ..

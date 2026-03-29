@@ -48,7 +48,6 @@ class DeadlineListCreateSchema(Schema):
 class DeadlineListUpdateSchema(Schema):
     name: Optional[str] = None
 
-
 class DeadlineSchema(Schema):
     id: UUID
     name: str
@@ -98,6 +97,11 @@ class DeadlineUpdateSchema(Schema):
     completed: Optional[bool] = None
     completed_note: Optional[str] = None
 
+class DeadLineStatsSchema(Schema):
+    overdue_deadlines: int
+    total_deadlines:  int
+    pending_deadlines:  int
+    completed_deadlines:  int
 
 # DeadlineList CRUD Endpoints
 @router.get("/deadline-lists", response=List[DeadlineListSchema])
@@ -235,8 +239,13 @@ def list_deadlines(request, filters: DeadlineFilterSchema = Query(...)):  # pyri
     """List all deadlines (non-deleted) with optional filtering"""
     q = Q(is_deleted=False)
 
-    # Apply standard filter schema fields
-    q &= filters.get_filter_expression()
+    # Apply standard filter fields explicitly; search and overdue are handled below.
+    if filters.deadline_list_id is not None:
+        q &= Q(deadline_list_id=filters.deadline_list_id)
+    if filters.completed is not None:
+        q &= Q(completed=filters.completed)
+    if filters.assigned_to_id is not None:
+        q &= Q(assigned_to_id=filters.assigned_to_id)
 
     # Apply search filter if provided
     if filters.search:
@@ -279,6 +288,22 @@ def list_deadlines(request, filters: DeadlineFilterSchema = Query(...)):  # pyri
         }
         for deadline in deadlines
     ]
+
+
+@router.get("/deadlines/stats", response=DeadLineStatsSchema)
+def get_deadline_stats(request):
+    """Get statistics for deadlines"""
+    total_deadlines = Deadline.objects.filter(is_deleted=False).count()
+    overdue_deadlines = Deadline.objects.filter(is_deleted=False, completed=False, due_date__lt=date.today()).count()
+    pending_deadlines = Deadline.objects.filter(is_deleted=False, completed=False).count()
+    completed_deadlines = Deadline.objects.filter(is_deleted=False, completed=True).count()
+
+    return {
+        "total_deadlines": total_deadlines,
+        "overdue_deadlines": overdue_deadlines,
+        "pending_deadlines": pending_deadlines,
+        "completed_deadlines": completed_deadlines,
+    }
 
 
 @router.get("/deadlines/{deadline_id}", response=DeadlineSchema)

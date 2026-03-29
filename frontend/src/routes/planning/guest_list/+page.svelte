@@ -1,8 +1,8 @@
 <!-- src/routes/planning/guest_list/+page.svelte -->
 <script lang="ts">
+    import GuestListStats from "$lib/components/GuestListStats.svelte";
     import Stats from "$lib/components/Stats.svelte";
     import CreateObject from "$lib/components/buttons/CreateObject.svelte";
-    import GuestListStats from "$lib/components/GuestListStats.svelte";
     import ExportData from "$lib/components/buttons/ExportData.svelte";
     import ViewDetails from "$lib/components/buttons/ViewDetails.svelte";
     import ProtectedPageHeader from "$lib/components/layouts/ProtectedPageHeader.svelte";
@@ -118,7 +118,7 @@
 
     function getRsvpProgress(group: any): number {
         if (group.groupInvitedCount === 0) return 0;
-        return Math.round((group.groupAttendingCount + group.groupDeclinedCount) / group.groupInvitedCount * 100);
+        return Math.round(((group.groupAttendingCount + group.groupDeclinedCount) / group.groupInvitedCount) * 100);
     }
 
     // Derive priority styling dynamically based on relative values
