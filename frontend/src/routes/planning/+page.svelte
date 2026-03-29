@@ -7,7 +7,8 @@
     import { previewMenu, protectedMenu } from "$lib/components/layouts/Topbar.svelte";
     import { formatCurrency } from "$lib/utils/formatters";
     import type { ActionData, PageData } from "./$types";
-
+    import type { IMenuItem } from "$lib/components/layouts/TopbarMenuItem.svelte";
+    import GuestListStats from "$lib/components/GuestListStats.svelte";
     const { data, form }: { data: PageData; form: ActionData } = $props();
 
     let activeTab = $state(0);
@@ -23,7 +24,7 @@
         <!-- Tabs Navigation -->
         <div class="bg-base-300 py-2 px-4 mb-6">
             <div class="flex gap-2 flex-col lg:flex-row min-w-max justify-between">
-                {#each protectedMenu as item, index (item.title)}
+                {#each protectedMenu as item: IMenuItem, index (item.title)}
                     <button
                         onclick={() => (activeTab = index)}
                         class="btn btn-sm rounded-lg transition-all duration-200 {activeTab === index
@@ -39,7 +40,7 @@
 
         <!-- Tab Content -->
         <div class="grid grid-cols-1 gap-6">
-            {#each protectedMenu as item, index (item.title)}
+            {#each protectedMenu as item: IMenuItem, index (item.title)}
                 {#if activeTab === index}
                     <div class="config-card animate-fade-in">
                         <div class="config-card-body">
@@ -66,6 +67,13 @@
                                                 description: "Total Spent",
                                             },
                                         ]} />
+                                </div>
+                            {/if}
+                            {#if item.href == "/planning/guest_list"}
+                                <div class="flex justify-around items-center">
+                                <GuestListStats
+                                    guestGroups={data.guestGroups} />
+
                                 </div>
                             {/if}
                         </div>
@@ -95,7 +103,7 @@
                             before making them live.
                         </p>
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                            {#each previewMenu as preview, index (preview.title)}
+                            {#each previewMenu as preview: IMenuItem, index (preview.title)}
                                 <a href={preview.href} class="btn btn-secondary gap-2 justify-center" target="_blank">
                                     <span class="icon-[lucide--external-link] size-4"></span>
                                     {preview.title}

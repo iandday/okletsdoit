@@ -2,6 +2,7 @@
 <script lang="ts">
     import Stats from "$lib/components/Stats.svelte";
     import CreateObject from "$lib/components/buttons/CreateObject.svelte";
+    import GuestListStats from "$lib/components/GuestListStats.svelte";
     import ExportData from "$lib/components/buttons/ExportData.svelte";
     import ViewDetails from "$lib/components/buttons/ViewDetails.svelte";
     import ProtectedPageHeader from "$lib/components/layouts/ProtectedPageHeader.svelte";
@@ -147,41 +148,6 @@
         if (relativePosition >= 0.33) return "badge-warning"; // Medium priority
         return "badge-info"; // Low priority
     }
-
-    const guestStats: iStat[] = [
-        {
-            title: "Guest Groups",
-            value: filteredGuestGroups.length,
-            description: `of ${data.count} total`,
-            icon: "users",
-        },
-        {
-            title: "Guests",
-            value: filteredGuestGroups.reduce((sum, group) => sum + group.groupCount, 0),
-            description: `of ${data.guestGroups.reduce((sum, group) => sum + group.groupCount, 0)} total`,
-            icon: "user",
-        },
-    ];
-    const inviteStats: iStat[] = [
-        {
-            title: "Invited",
-            value: filteredGuestGroups.reduce((sum, group) => sum + group.groupInvitedCount, 0),
-            description: `of ${data.guestGroups.reduce((sum, group) => sum + group.groupInvitedCount, 0)} total`,
-            icon: "mail",
-        },
-        {
-            title: "Attending",
-            value: filteredGuestGroups.reduce((sum, group) => sum + group.groupAttendingCount, 0),
-            description: `of ${data.guestGroups.reduce((sum, group) => sum + group.groupAttendingCount, 0)} total`,
-            icon: "check-circle",
-        },
-                {
-            title: "Declined",
-            value: filteredGuestGroups.reduce((sum, group) => sum + group.groupDeclinedCount, 0),
-            description: `of ${data.guestGroups.reduce((sum, group) => sum + group.groupDeclinedCount, 0)} total`,
-            icon: "x-circle",
-        },
-    ];
 </script>
 
 <ProtectedPageShell {relativeCrumbs} {form}>
@@ -282,8 +248,7 @@
                             fileName="guests.xlsx" />
                     </div>
                     <div class="flex flex-col md:flex-row gap-6 w-full justify-center">
-                        <Stats objects={guestStats} />
-                        <Stats objects={inviteStats} />
+                        <GuestListStats guestGroups={filteredGuestGroups} />
                     </div>
                 </div>
             </div>

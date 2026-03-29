@@ -6,6 +6,11 @@ import type { PageServerLoad } from "./$types";
 export const load: PageServerLoad = async ({ locals }) => {
     const api = createApiClient(locals.sessionCookie);
     try {
+        // Load guest groups
+        const guestGroupsResponse = await api.guestlist.guestlistApiListGuestGroups({
+        });
+        const guestGroups = guestGroupsResponse.items || [];
+
         // Load all categories
         const categories = [];
         let page = 1;
@@ -34,6 +39,7 @@ export const load: PageServerLoad = async ({ locals }) => {
         return {
             budgetEstimated,
             budgetActual,
+            guestGroups
         };
     } catch (err) {
         console.error("Error loading budget data:", err);
