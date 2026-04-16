@@ -57,6 +57,12 @@ export interface AttachmentSchema {
     fileUrl: string;
     /**
      *
+     * @type {string}
+     * @memberof AttachmentSchema
+     */
+    downloadUrl: string;
+    /**
+     *
      * @type {number}
      * @memberof AttachmentSchema
      */
@@ -124,6 +130,7 @@ export function instanceOfAttachmentSchema(value: object): value is AttachmentSc
     if (!("id" in value) || value["id"] === undefined) return false;
     if (!("filename" in value) || value["filename"] === undefined) return false;
     if (!("fileUrl" in value) || value["fileUrl"] === undefined) return false;
+    if (!("downloadUrl" in value) || value["downloadUrl"] === undefined) return false;
     if (!("contentTypeId" in value) || value["contentTypeId"] === undefined) return false;
     if (!("contentTypeAppLabel" in value) || value["contentTypeAppLabel"] === undefined) return false;
     if (!("contentTypeModel" in value) || value["contentTypeModel"] === undefined) return false;
@@ -148,6 +155,7 @@ export function AttachmentSchemaFromJSONTyped(json: any, ignoreDiscriminator: bo
         description: json["description"] == null ? undefined : json["description"],
         filename: json["filename"],
         fileUrl: json["file_url"],
+        downloadUrl: json["download_url"],
         contentTypeId: json["content_type_id"],
         contentTypeAppLabel: json["content_type_app_label"],
         contentTypeModel: json["content_type_model"],
@@ -180,6 +188,7 @@ export function AttachmentSchemaToJSONTyped(
         description: value["description"],
         filename: value["filename"],
         file_url: value["fileUrl"],
+        download_url: value["downloadUrl"],
         content_type_id: value["contentTypeId"],
         content_type_app_label: value["contentTypeAppLabel"],
         content_type_model: value["contentTypeModel"],

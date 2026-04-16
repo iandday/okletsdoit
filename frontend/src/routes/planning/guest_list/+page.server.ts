@@ -3,6 +3,7 @@ import type { Actions, PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async ({ locals }) => {
     const api = createApiClient(locals.sessionCookie);
+    const stats = await api.guestlist.guestlistApiGetRsvpStats();
     try {
         // Fetch all pages of guest groups
         let allGuestGroups: any[] = [];
@@ -32,12 +33,14 @@ export const load: PageServerLoad = async ({ locals }) => {
         return {
             guestGroups: allGuestGroups,
             count: totalCount,
+            stats: stats,
         };
     } catch (error) {
         console.error("Error loading guest groups:", error);
         return {
             guestGroups: [],
             count: 0,
+            stats: stats,
         };
     }
 };

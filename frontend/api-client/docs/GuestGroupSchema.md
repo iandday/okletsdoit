@@ -2,40 +2,42 @@
 
 ## Properties
 
-| Name                      | Type    |
-| ------------------------- | ------- |
-| `id`                      | string  |
-| `slug`                    | string  |
-| `name`                    | string  |
-| `addressName`             | string  |
-| `notes`                   | string  |
-| `email`                   | string  |
-| `phone`                   | string  |
-| `address`                 | string  |
-| `addressTwo`              | string  |
-| `city`                    | string  |
-| `state`                   | string  |
-| `zipCode`                 | string  |
-| `relationship`            | string  |
-| `relationshipDisplay`     | string  |
-| `priority`                | number  |
-| `priorityDisplay`         | string  |
-| `associatedWithId`        | string  |
-| `associatedWithFirstName` | string  |
-| `associatedWithLastName`  | string  |
-| `rsvpCode`                | string  |
-| `rsvpUrl`                 | string  |
-| `qrCodeUrl`               | string  |
-| `hasQrCode`               | boolean |
-| `groupCount`              | number  |
-| `groupStandard`           | number  |
-| `groupVip`                | number  |
-| `groupOvernight`          | number  |
-| `groupInvitedCount`       | number  |
-| `groupAttendingCount`     | number  |
-| `groupDeclinedCount`      | number  |
-| `createdAt`               | Date    |
-| `updatedAt`               | Date    |
+| Name                          | Type    |
+| ----------------------------- | ------- |
+| `id`                          | string  |
+| `slug`                        | string  |
+| `name`                        | string  |
+| `addressName`                 | string  |
+| `notes`                       | string  |
+| `email`                       | string  |
+| `phone`                       | string  |
+| `address`                     | string  |
+| `addressTwo`                  | string  |
+| `city`                        | string  |
+| `state`                       | string  |
+| `zipCode`                     | string  |
+| `relationship`                | string  |
+| `relationshipDisplay`         | string  |
+| `priority`                    | number  |
+| `priorityDisplay`             | string  |
+| `associatedWithId`            | string  |
+| `associatedWithFirstName`     | string  |
+| `associatedWithLastName`      | string  |
+| `rsvpCode`                    | string  |
+| `rsvpUrl`                     | string  |
+| `qrCodeUrl`                   | string  |
+| `hasQrCode`                   | boolean |
+| `groupCount`                  | number  |
+| `groupStandard`               | number  |
+| `groupVip`                    | number  |
+| `groupOvernight`              | number  |
+| `groupInvitedCount`           | number  |
+| `groupAttendingCount`         | number  |
+| `groupDeclinedCount`          | number  |
+| `groupVipAcceptedCount`       | number  |
+| `groupOvernightAcceptedCount` | number  |
+| `createdAt`                   | Date    |
+| `updatedAt`                   | Date    |
 
 ## Example
 
@@ -74,6 +76,8 @@ const example = {
     groupInvitedCount: null,
     groupAttendingCount: null,
     groupDeclinedCount: null,
+    groupVipAcceptedCount: null,
+    groupOvernightAcceptedCount: null,
     createdAt: null,
     updatedAt: null,
 } satisfies GuestGroupSchema;

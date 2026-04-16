@@ -109,6 +109,7 @@ docs/RsvpQuestionResponseSchema.md
 docs/RsvpQuestionResponseUpdateSchema.md
 docs/RsvpQuestionSchema.md
 docs/RsvpQuestionUpdateSchema.md
+docs/RsvpStatsSchema.md
 docs/RsvpSubmissionCreateSchema.md
 docs/RsvpSubmissionFilterSchema.md
 docs/RsvpSubmissionSchema.md
@@ -222,6 +223,7 @@ models/RsvpQuestionResponseSchema.ts
 models/RsvpQuestionResponseUpdateSchema.ts
 models/RsvpQuestionSchema.ts
 models/RsvpQuestionUpdateSchema.ts
+models/RsvpStatsSchema.ts
 models/RsvpSubmissionCreateSchema.ts
 models/RsvpSubmissionFilterSchema.ts
 models/RsvpSubmissionSchema.ts

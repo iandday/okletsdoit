@@ -96,6 +96,7 @@ export * from "./RsvpQuestionResponseSchema";
 export * from "./RsvpQuestionResponseUpdateSchema";
 export * from "./RsvpQuestionSchema";
 export * from "./RsvpQuestionUpdateSchema";
+export * from "./RsvpStatsSchema";
 export * from "./RsvpSubmissionCreateSchema";
 export * from "./RsvpSubmissionFilterSchema";
 export * from "./RsvpSubmissionSchema";

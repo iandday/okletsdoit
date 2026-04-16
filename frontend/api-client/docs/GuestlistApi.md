@@ -23,6 +23,7 @@ All URIs are relative to _http://localhost_
 | [**guestlistApiGetRsvpAcceptanceQuestions**](GuestlistApi.md#guestlistapigetrsvpacceptancequestions)               | **GET** /api/guestlist/rsvp-acceptance-questions/{rsvp_code} | Get Rsvp Acceptance Questions         |
 | [**guestlistApiGetRsvpAcceptenceQuestionsPreview**](GuestlistApi.md#guestlistapigetrsvpacceptencequestionspreview) | **GET** /api/guestlist/rsvp-acceptance-questions/preview     | Get Rsvp Acceptence Questions Preview |
 | [**guestlistApiGetRsvpResponse**](GuestlistApi.md#guestlistapigetrsvpresponse)                                     | **GET** /api/guestlist/rsvp-responses/{response_id}          | Get Rsvp Response                     |
+| [**guestlistApiGetRsvpStats**](GuestlistApi.md#guestlistapigetrsvpstats)                                           | **GET** /api/guestlist/rsvp-stats                            | Get Rsvp Stats                        |
 | [**guestlistApiGetRsvpSubmission**](GuestlistApi.md#guestlistapigetrsvpsubmission)                                 | **GET** /api/guestlist/rsvp-submissions/{submission_id}      | Get Rsvp Submission                   |
 | [**guestlistApiListGuestGroups**](GuestlistApi.md#guestlistapilistguestgroups)                                     | **GET** /api/guestlist/guest-groups                          | List Guest Groups                     |
 | [**guestlistApiListGuests**](GuestlistApi.md#guestlistapilistguests)                                               | **GET** /api/guestlist/guests                                | List Guests                           |
@@ -1365,6 +1366,69 @@ example().catch(console.error);
 ### Return type
 
 [**RsvpQuestionResponseSchema**](RsvpQuestionResponseSchema.md)
+
+### Authorization
+
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## guestlistApiGetRsvpStats
+
+> RsvpStatsSchema guestlistApiGetRsvpStats()
+
+Get Rsvp Stats
+
+Get RSVP statistics
+
+### Example
+
+```ts
+import { Configuration, GuestlistApi } from "";
+import type { GuestlistApiGetRsvpStatsRequest } from "";
+
+async function example() {
+    console.log("🚀 Testing  SDK...");
+    const config = new Configuration({
+        // To configure API key authorization: SessionAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: ServiceTokenAuth
+        apiKey: "YOUR API KEY",
+        // To configure API key authorization: XSessionTokenAuth
+        apiKey: "YOUR API KEY",
+    });
+    const api = new GuestlistApi(config);
+
+    try {
+        const data = await api.guestlistApiGetRsvpStats();
+        console.log(data);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+This endpoint does not need any parameter.
+
+### Return type
+
+[**RsvpStatsSchema**](RsvpStatsSchema.md)
 
 ### Authorization
 

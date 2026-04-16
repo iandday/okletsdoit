@@ -63,6 +63,18 @@ export interface RsvpSubmissionSchema {
     acceptVipCount: number;
     /**
      *
+     * @type {number}
+     * @memberof RsvpSubmissionSchema
+     */
+    declineCount: number;
+    /**
+     *
+     * @type {boolean}
+     * @memberof RsvpSubmissionSchema
+     */
+    accepted: boolean;
+    /**
+     *
      * @type {Date}
      * @memberof RsvpSubmissionSchema
      */
@@ -86,6 +98,8 @@ export function instanceOfRsvpSubmissionSchema(value: object): value is RsvpSubm
     if (!("notes" in value) || value["notes"] === undefined) return false;
     if (!("acceptAccommodationCount" in value) || value["acceptAccommodationCount"] === undefined) return false;
     if (!("acceptVipCount" in value) || value["acceptVipCount"] === undefined) return false;
+    if (!("declineCount" in value) || value["declineCount"] === undefined) return false;
+    if (!("accepted" in value) || value["accepted"] === undefined) return false;
     if (!("createdAt" in value) || value["createdAt"] === undefined) return false;
     if (!("updatedAt" in value) || value["updatedAt"] === undefined) return false;
     return true;
@@ -107,6 +121,8 @@ export function RsvpSubmissionSchemaFromJSONTyped(json: any, ignoreDiscriminator
         notes: json["notes"],
         acceptAccommodationCount: json["accept_accommodation_count"],
         acceptVipCount: json["accept_vip_count"],
+        declineCount: json["decline_count"],
+        accepted: json["accepted"],
         createdAt: new Date(json["created_at"]),
         updatedAt: new Date(json["updated_at"]),
     };
@@ -132,6 +148,8 @@ export function RsvpSubmissionSchemaToJSONTyped(
         notes: value["notes"],
         accept_accommodation_count: value["acceptAccommodationCount"],
         accept_vip_count: value["acceptVipCount"],
+        decline_count: value["declineCount"],
+        accepted: value["accepted"],
         created_at: value["createdAt"].toISOString(),
         updated_at: value["updatedAt"].toISOString(),
     };

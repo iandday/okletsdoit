@@ -445,6 +445,7 @@ def list_questions(request, filters: QuestionFilterSchema = Query(...)):  # pyri
             "id": question.id,
             "category": question.category.name if question.category else "General",
             "question": question.question,
+            "question_type": question.question_type,
             "slug": question.slug,
             "answer": question.answer,
             "order": question.order,

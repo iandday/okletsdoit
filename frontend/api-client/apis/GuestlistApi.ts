@@ -27,6 +27,7 @@ import type {
     RsvpQuestionResponseCreateSchema,
     RsvpQuestionResponseSchema,
     RsvpQuestionResponseUpdateSchema,
+    RsvpStatsSchema,
     RsvpSubmissionCreateSchema,
     RsvpSubmissionSchema,
     RsvpSubmissionUpdateSchema,
@@ -62,6 +63,8 @@ import {
     RsvpQuestionResponseSchemaToJSON,
     RsvpQuestionResponseUpdateSchemaFromJSON,
     RsvpQuestionResponseUpdateSchemaToJSON,
+    RsvpStatsSchemaFromJSON,
+    RsvpStatsSchemaToJSON,
     RsvpSubmissionCreateSchemaFromJSON,
     RsvpSubmissionCreateSchemaToJSON,
     RsvpSubmissionSchemaFromJSON,
@@ -1210,6 +1213,51 @@ export class GuestlistApi extends runtime.BaseAPI {
         initOverrides?: RequestInit | runtime.InitOverrideFunction,
     ): Promise<RsvpQuestionResponseSchema> {
         const response = await this.guestlistApiGetRsvpResponseRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get RSVP statistics
+     * Get Rsvp Stats
+     */
+    async guestlistApiGetRsvpStatsRaw(
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<RsvpStatsSchema>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
+        let urlPath = `/api/guestlist/rsvp-stats`;
+
+        const response = await this.request(
+            {
+                path: urlPath,
+                method: "GET",
+                headers: headerParameters,
+                query: queryParameters,
+            },
+            initOverrides,
+        );
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => RsvpStatsSchemaFromJSON(jsonValue));
+    }
+
+    /**
+     * Get RSVP statistics
+     * Get Rsvp Stats
+     */
+    async guestlistApiGetRsvpStats(
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<RsvpStatsSchema> {
+        const response = await this.guestlistApiGetRsvpStatsRaw(initOverrides);
         return await response.value();
     }
 

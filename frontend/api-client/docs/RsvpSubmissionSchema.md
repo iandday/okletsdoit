@@ -11,6 +11,8 @@
 | `notes`                    | string  |
 | `acceptAccommodationCount` | number  |
 | `acceptVipCount`           | number  |
+| `declineCount`             | number  |
+| `accepted`                 | boolean |
 | `createdAt`                | Date    |
 | `updatedAt`                | Date    |
 
@@ -28,6 +30,8 @@ const example = {
     notes: null,
     acceptAccommodationCount: null,
     acceptVipCount: null,
+    declineCount: null,
+    accepted: null,
     createdAt: null,
     updatedAt: null,
 } satisfies RsvpSubmissionSchema;

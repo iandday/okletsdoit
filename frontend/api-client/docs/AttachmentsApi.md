@@ -2,13 +2,14 @@
 
 All URIs are relative to _http://localhost_
 
-| Method                                                                                 | HTTP request                                            | Description       |
-| -------------------------------------------------------------------------------------- | ------------------------------------------------------- | ----------------- |
-| [**attachmentsApiCreateAttachment**](AttachmentsApi.md#attachmentsapicreateattachment) | **POST** /api/attachments/attachments                   | Create Attachment |
-| [**attachmentsApiDeleteAttachment**](AttachmentsApi.md#attachmentsapideleteattachment) | **DELETE** /api/attachments/attachments/{attachment_id} | Delete Attachment |
-| [**attachmentsApiGetAttachment**](AttachmentsApi.md#attachmentsapigetattachment)       | **GET** /api/attachments/attachments/{attachment_id}    | Get Attachment    |
-| [**attachmentsApiListAttachments**](AttachmentsApi.md#attachmentsapilistattachments)   | **GET** /api/attachments/attachments                    | List Attachments  |
-| [**attachmentsApiUpdateAttachment**](AttachmentsApi.md#attachmentsapiupdateattachment) | **PUT** /api/attachments/attachments/{attachment_id}    | Update Attachment |
+| Method                                                                                     | HTTP request                                                  | Description         |
+| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------- | ------------------- |
+| [**attachmentsApiCreateAttachment**](AttachmentsApi.md#attachmentsapicreateattachment)     | **POST** /api/attachments/attachments                         | Create Attachment   |
+| [**attachmentsApiDeleteAttachment**](AttachmentsApi.md#attachmentsapideleteattachment)     | **DELETE** /api/attachments/attachments/{attachment_id}       | Delete Attachment   |
+| [**attachmentsApiDownloadAttachment**](AttachmentsApi.md#attachmentsapidownloadattachment) | **GET** /api/attachments/attachments/{attachment_id}/download | Download Attachment |
+| [**attachmentsApiGetAttachment**](AttachmentsApi.md#attachmentsapigetattachment)           | **GET** /api/attachments/attachments/{attachment_id}          | Get Attachment      |
+| [**attachmentsApiListAttachments**](AttachmentsApi.md#attachmentsapilistattachments)       | **GET** /api/attachments/attachments                          | List Attachments    |
+| [**attachmentsApiUpdateAttachment**](AttachmentsApi.md#attachmentsapiupdateattachment)     | **PUT** /api/attachments/attachments/{attachment_id}          | Update Attachment   |
 
 ## attachmentsApiCreateAttachment
 
@@ -134,6 +135,79 @@ async function example() {
 
   try {
     const data = await api.attachmentsApiDeleteAttachment(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name             | Type     | Description | Notes                     |
+| ---------------- | -------- | ----------- | ------------------------- |
+| **attachmentId** | `string` |             | [Defaults to `undefined`] |
+
+### Return type
+
+`void` (Empty response body)
+
+### Authorization
+
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: Not defined
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## attachmentsApiDownloadAttachment
+
+> attachmentsApiDownloadAttachment(attachmentId)
+
+Download Attachment
+
+Redirect to a freshly generated storage URL for an attachment.
+
+### Example
+
+```ts
+import {
+  Configuration,
+  AttachmentsApi,
+} from '';
+import type { AttachmentsApiDownloadAttachmentRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new AttachmentsApi(config);
+
+  const body = {
+    // string
+    attachmentId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+  } satisfies AttachmentsApiDownloadAttachmentRequest;
+
+  try {
+    const data = await api.attachmentsApiDownloadAttachment(body);
     console.log(data);
   } catch (error) {
     console.error(error);

@@ -1,13 +1,14 @@
 <!-- src/routes/planning/guest_list/+page.svelte -->
 <script lang="ts">
     import GuestListStats from "$lib/components/GuestListStats.svelte";
+    import InviteStats from "$lib/components/InviteStats.svelte";
     import Stats from "$lib/components/Stats.svelte";
     import CreateObject from "$lib/components/buttons/CreateObject.svelte";
     import ExportData from "$lib/components/buttons/ExportData.svelte";
     import ViewDetails from "$lib/components/buttons/ViewDetails.svelte";
     import ProtectedPageHeader from "$lib/components/layouts/ProtectedPageHeader.svelte";
     import ProtectedPageShell from "$lib/components/layouts/ProtectedPageShell.svelte";
-    import type { PageData, iStat, ActionData } from "./$types";
+    import type { PageData, ActionData } from "./$types";
 
     const { data, form }: { data: PageData; form: ActionData } = $props();
     const relativeCrumbs = [{ title: "Guest List" }];
@@ -209,51 +210,81 @@
                     </div>
                 </div>
                 <div class="flex flex-col items-center gap-6" id="stats-overview">
-                    <div class="join join-vertical lg:join-horizontal" id="action-buttons">
-                        <a href="/planning/guest/all" class="btn btn-accent gap-2">
-                            <span class="icon-[lucide--users] size-5"></span>
-                            View All Guests
-                        </a>
-                        <CreateObject href="/planning/guest_list/new" label="New Guest Group" />
-
-                        <button
-                            onclick={() => openQrModal(data.configData.rsvpQrCodeUrl as string, "General RSVP")}
-                            class="btn btn-accent gap-2">
-                            <span class="icon-[lucide--qr-code] size-5"></span>
-                            View Universal RSVP QR
-                        </button>
-                    </div>
-                    <div class="join join-vertical lg:join-horizontal" id="action-buttons">
-                        <ExportData
-                            resourceType="guest_group"
-                            label="Export Guest Group (CSV)"
-                            format="csv"
-                            fileName="guest_groups.csv" />
-                        <ExportData
-                            resourceType="guest_group"
-                            label="Export Guest Group (Excel)"
-                            format="xlsx"
-                            fileName="guest_groups.xlsx" />
-                    </div>
-                    <div class="join join-vertical lg:join-horizontal" id="action-buttons">
-                        <ExportData
-                            resourceType="guest"
-                            label="Export Guest (CSV)"
-                            format="csv"
-                            fileName="guests.csv" />
-                        <ExportData
-                            resourceType="guest"
-                            label="Export Guest (Excel)"
-                            format="xlsx"
-                            fileName="guests.xlsx" />
-                    </div>
-                    <div class="flex flex-col md:flex-row gap-6 w-full justify-center">
-                        <GuestListStats guestGroups={filteredGuestGroups} />
+                    <div class="flex flex-col gap-6 w-full justify-center">
+                        <GuestListStats guestGroups={data.guestGroups} />
+                        <InviteStats rsvpStats={data.stats} layout="horizontal" />
+                        <div class="flex flex-row gap-4" id="action-buttons">
+                            <CreateObject href="/planning/guest_list/new" label="New Guest Group" />
+                            <div class="dropdown" id="view-buttons">
+                                <div tabindex="0" role="button" class="btn btn-secondary text-secondary-content gap-2">
+                                    <span class="icon-[lucide--eye] size-5"></span>
+                                    View
+                                    <span class="icon-[lucide--chevron-down] size-4"></span>
+                                </div>
+                                <div
+                                    tabindex="0"
+                                    class="dropdown-content bg-base-100 rounded-box z-[1] w-72 p-3 shadow-lg border border-base-300">
+                                    <div class="flex flex-col gap-2">
+                                        <a href="/planning/guest_list/rsvp" class="btn btn-accent gap-2">
+                                            <span class="icon-[lucide--mail-open] size-5"></span>
+                                            RSVP Responses
+                                        </a>
+                                        <a href="/planning/guest/all" class="btn btn-accent gap-2">
+                                            <span class="icon-[lucide--users] size-5"></span>
+                                            All Guests
+                                        </a>
+                                        <button
+                                            onclick={() =>
+                                                openQrModal(data.configData.rsvpQrCodeUrl as string, "General RSVP")}
+                                            class="btn btn-accent gap-2">
+                                            <span class="icon-[lucide--qr-code] size-5"></span>
+                                            Universal RSVP QR
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dropdown" id="export-buttons">
+                                <div tabindex="0" role="button" class="btn btn-secondary text-secondary-content gap-2">
+                                    <span class="icon-[lucide--download] size-5"></span>
+                                    Export
+                                    <span class="icon-[lucide--chevron-down] size-4"></span>
+                                </div>
+                                <div
+                                    tabindex="0"
+                                    class="dropdown-content bg-base-100 rounded-box z-[1] w-72 p-3 shadow-lg border border-base-300">
+                                    <div class="flex flex-col gap-2">
+                                        <ExportData
+                                            resourceType="guest_group"
+                                            label="Export Guest Group (CSV)"
+                                            format="csv"
+                                            fileName="guest_groups.csv"
+                                            size="sm" />
+                                        <ExportData
+                                            resourceType="guest_group"
+                                            label="Export Guest Group (Excel)"
+                                            format="xlsx"
+                                            fileName="guest_groups.xlsx"
+                                            size="sm" />
+                                        <ExportData
+                                            resourceType="guest"
+                                            label="Export Guest (CSV)"
+                                            format="csv"
+                                            fileName="guests.csv"
+                                            size="sm" />
+                                        <ExportData
+                                            resourceType="guest"
+                                            label="Export Guest (Excel)"
+                                            format="xlsx"
+                                            fileName="guests.xlsx"
+                                            size="sm" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </ProtectedPageHeader>
+        </div></ProtectedPageHeader>
 
     {#if data.guestGroups.length === 0}
         <div class="alert">
@@ -373,47 +404,45 @@
             {/each}
         </div>
     {/if}
-</ProtectedPageShell>
+    {#if showQrModal}
+        <div class="modal modal-open">
+            <div class="modal-box max-w-md">
+                <h3 class="font-bold text-lg mb-4 text-accent">QR Code - {selectedQrCodeName}</h3>
 
-<!-- QR Code Modal -->
-{#if showQrModal}
-    <div class="modal modal-open">
-        <div class="modal-box max-w-md">
-            <h3 class="font-bold text-lg mb-4 text-accent">QR Code - {selectedQrCodeName}</h3>
-
-            {#if selectedQrCodeUrl}
-                <div class="flex justify-center mb-6 p-4 rounded-lg">
-                    <img
-                        src={selectedQrCodeUrl}
-                        alt="QR Code for {selectedQrCodeName}"
-                        class="w-64 h-64 object-contain" />
-                </div>
-
-                <div class="flex gap-2 justify-center">
-                    <button onclick={downloadQrCode} class="btn btn-accent gap-2">
-                        <span class="icon-[lucide--download] size-5"></span>
-                        Download
-                    </button>
-                    <button onclick={copyQrLink} class="btn btn-secondary gap-2">
-                        <span class="icon-[lucide--copy] size-5"></span>
-                        Copy Link
-                    </button>
-                </div>
-
-                {#if linkCopied}
-                    <div class="flex justify-center mt-4">
-                        <div class="badge badge-success gap-2">
-                            <span class="icon-[lucide--check] size-4"></span>
-                            Link copied to clipboard!
-                        </div>
+                {#if selectedQrCodeUrl}
+                    <div class="flex justify-center mb-6 p-4 rounded-lg">
+                        <img
+                            src={selectedQrCodeUrl}
+                            alt="QR Code for {selectedQrCodeName}"
+                            class="w-64 h-64 object-contain" />
                     </div>
-                {/if}
-            {/if}
 
-            <div class="modal-action">
-                <button onclick={closeQrModal} class="btn btn-error">Close</button>
+                    <div class="flex gap-2 justify-center">
+                        <button onclick={downloadQrCode} class="btn btn-accent gap-2">
+                            <span class="icon-[lucide--download] size-5"></span>
+                            Download
+                        </button>
+                        <button onclick={copyQrLink} class="btn btn-secondary gap-2">
+                            <span class="icon-[lucide--copy] size-5"></span>
+                            Copy Link
+                        </button>
+                    </div>
+
+                    {#if linkCopied}
+                        <div class="flex justify-center mt-4">
+                            <div class="badge badge-success gap-2">
+                                <span class="icon-[lucide--check] size-4"></span>
+                                Link copied to clipboard!
+                            </div>
+                        </div>
+                    {/if}
+                {/if}
+
+                <div class="modal-action">
+                    <button onclick={closeQrModal} class="btn btn-error">Close</button>
+                </div>
             </div>
+            <div class="modal-backdrop" onclick={closeQrModal}></div>
         </div>
-        <div class="modal-backdrop" onclick={closeQrModal}></div>
-    </div>
-{/if}
+    {/if}
+</ProtectedPageShell>

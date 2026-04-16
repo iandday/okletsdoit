@@ -5,6 +5,7 @@ import type { PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async ({ locals }) => {
     const api = createApiClient(locals.sessionCookie);
+    const stats = await api.guestlist.guestlistApiGetRsvpStats();
     try {
         const pageSize = 100;
 
@@ -82,6 +83,7 @@ export const load: PageServerLoad = async ({ locals }) => {
             guestGroups,
             deadlineStats,
             lists,
+            stats,
         };
     } catch (err) {
         console.error("Error loading budget data:", err);

@@ -23,6 +23,10 @@
               })
             : data.contacts,
     );
+
+    function getAttachmentDownloadUrl(attachment: { fileUrl?: string }) {
+        return (attachment as { downloadUrl?: string }).downloadUrl || attachment.fileUrl || "";
+    }
 </script>
 
 <ProtectedPageShell {relativeCrumbs}>
@@ -145,7 +149,7 @@
                                     }}>
                                     <option value="">Select attachment to view...</option>
                                     {#each contact.attachments as attachment (attachment.id)}
-                                        <option value={attachment.fileUrl}>
+                                        <option value={getAttachmentDownloadUrl(attachment)}>
                                             {attachment.name || attachment.filename}
                                             {#if attachment.description}
                                                 - {attachment.description}{/if}

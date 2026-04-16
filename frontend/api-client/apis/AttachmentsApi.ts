@@ -35,6 +35,10 @@ export interface AttachmentsApiDeleteAttachmentRequest {
     attachmentId: string;
 }
 
+export interface AttachmentsApiDownloadAttachmentRequest {
+    attachmentId: string;
+}
+
 export interface AttachmentsApiGetAttachmentRequest {
     attachmentId: string;
 }
@@ -225,6 +229,63 @@ export class AttachmentsApi extends runtime.BaseAPI {
         initOverrides?: RequestInit | runtime.InitOverrideFunction,
     ): Promise<void> {
         await this.attachmentsApiDeleteAttachmentRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Redirect to a freshly generated storage URL for an attachment.
+     * Download Attachment
+     */
+    async attachmentsApiDownloadAttachmentRaw(
+        requestParameters: AttachmentsApiDownloadAttachmentRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters["attachmentId"] == null) {
+            throw new runtime.RequiredError(
+                "attachmentId",
+                'Required parameter "attachmentId" was null or undefined when calling attachmentsApiDownloadAttachment().',
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
+        let urlPath = `/api/attachments/attachments/{attachment_id}/download`;
+        urlPath = urlPath.replace(
+            `{${"attachment_id"}}`,
+            encodeURIComponent(String(requestParameters["attachmentId"])),
+        );
+
+        const response = await this.request(
+            {
+                path: urlPath,
+                method: "GET",
+                headers: headerParameters,
+                query: queryParameters,
+            },
+            initOverrides,
+        );
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Redirect to a freshly generated storage URL for an attachment.
+     * Download Attachment
+     */
+    async attachmentsApiDownloadAttachment(
+        requestParameters: AttachmentsApiDownloadAttachmentRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<void> {
+        await this.attachmentsApiDownloadAttachmentRaw(requestParameters, initOverrides);
     }
 
     /**
