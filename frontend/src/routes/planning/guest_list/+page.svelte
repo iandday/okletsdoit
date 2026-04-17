@@ -2,6 +2,7 @@
 <script lang="ts">
     import GuestListStats from "$lib/components/GuestListStats.svelte";
     import InviteStats from "$lib/components/InviteStats.svelte";
+    import RsvpStats from "$lib/components/RsvpStats.svelte";
     import Stats from "$lib/components/Stats.svelte";
     import CreateObject from "$lib/components/buttons/CreateObject.svelte";
     import ExportData from "$lib/components/buttons/ExportData.svelte";
@@ -209,11 +210,15 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex flex-col items-center gap-6" id="stats-overview">
-                    <div class="flex flex-col gap-6 w-full justify-center">
-                        <GuestListStats guestGroups={data.guestGroups} />
-                        <InviteStats rsvpStats={data.stats} layout="horizontal" />
-                        <div class="flex flex-row gap-4" id="action-buttons">
+                <div class="flex flex-col gap-6" id="stats">
+                    <div class="justify-center items-center" id="stats-overview-top">
+                        <GuestListStats guestGroups={data.guestGroups} layout="vertical" />
+                    </div>
+
+                    <div class="flex flex-col lg:flex-row gap-6 w-full justify-center">
+                        <InviteStats rsvpStats={data.stats} layout="vertical" />
+                        <RsvpStats rsvpStats={data.stats} layout="vertical" />
+                        <div class="flex flex-col justify-center items-center w-full gap-4" id="action-buttons">
                             <CreateObject href="/planning/guest_list/new" label="New Guest Group" />
                             <div class="dropdown" id="view-buttons">
                                 <div tabindex="0" role="button" class="btn btn-secondary text-secondary-content gap-2">

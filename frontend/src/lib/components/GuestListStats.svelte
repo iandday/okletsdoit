@@ -5,8 +5,9 @@
 
     interface GuestListStatsProps {
         guestGroups: GuestGroupSchema[];
+        layout?: "horizontal" | "vertical";
     }
-    const { guestGroups }: GuestListStatsProps = $props();
+    const { guestGroups, layout = "horizontal" }: GuestListStatsProps = $props();
 
     const guestStats = $derived([
         {
@@ -24,6 +25,6 @@
     ]);
 </script>
 
-<div class="flex flex-col md:flex-row gap-6 w-full justify-center">
+<div class={`flex ${layout === "vertical" ? "flex-col" : "flex-row"} gap-6 justify-center`}>
     <Stats objects={guestStats} />
 </div>

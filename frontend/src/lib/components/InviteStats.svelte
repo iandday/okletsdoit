@@ -22,6 +22,6 @@
     ]);
 </script>
 
-<div class="flex {layout === 'horizontal' ? 'flex-row' : 'flex-col'} gap-6 w-full justify-center">
+<div class="flex {layout === 'horizontal' ? 'flex-row' : 'flex-col'} gap-6 justify-center">
     <Stats objects={inviteStats} {layout} />
 </div>

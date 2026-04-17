@@ -140,12 +140,12 @@
                         <input type="checkbox" />
                         <div class="collapse-title font-semibold flex items-center gap-3">
                             <span>{question.questionText}</span>
-                            <span class="badge badge-ghost badge-sm ml-auto mr-6">{question.answers.length}</span>
+                            <span class="badge badge-accent ml-auto mr-6">{question.answers.length}</span>
                         </div>
                         <div class="collapse-content">
                             <div class="overflow-x-auto">
-                                <table class="table table-sm w-full">
-                                    <thead>
+                                <table class="associated-table table-sm w-full">
+                                    <thead class="associated-table-header">
                                         <tr>
                                             <th>Guest Group</th>
                                             <th>Answer</th>

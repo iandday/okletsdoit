@@ -30,7 +30,7 @@ nav:
       - FAQ: public/faq.md
       - RSVP: public/rsvp.md
   - Private:
-      - Dashboard: private/dashboard.md
+      - Dashboard: private/hub.md
       - Giuest List: private/guestlist.md
       - Settings: private/settings.md
   - Development:
