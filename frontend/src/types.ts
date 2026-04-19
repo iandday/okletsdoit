@@ -23,3 +23,11 @@ export type IStat = {
     icon?: string;
     href?: string;
 };
+
+export type IRadialProgressStat = {
+    title: string;
+    value: string | number;
+    description?: string;
+    icon?: string;
+    href?: string;
+};

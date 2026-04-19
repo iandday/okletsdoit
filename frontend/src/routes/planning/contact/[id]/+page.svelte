@@ -21,6 +21,10 @@
 
     let showUploadForm = $state(false);
     let uploadingFile = $state(false);
+
+    function getAttachmentDownloadUrl(attachment: { fileUrl?: string }) {
+        return (attachment as { downloadUrl?: string }).downloadUrl || attachment.fileUrl || "";
+    }
 </script>
 
 <ObjectDetail
@@ -211,7 +215,7 @@
                                 </div>
                                 <div class="flex gap-1">
                                     <a
-                                        href={attachment.fileUrl}
+                                        href={getAttachmentDownloadUrl(attachment)}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         class="btn btn-xs btn-ghost"

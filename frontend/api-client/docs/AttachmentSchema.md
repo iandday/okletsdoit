@@ -10,6 +10,7 @@
 | `description`         | string |
 | `filename`            | string |
 | `fileUrl`             | string |
+| `downloadUrl`         | string |
 | `contentTypeId`       | number |
 | `contentTypeAppLabel` | string |
 | `contentTypeModel`    | string |
@@ -34,6 +35,7 @@ const example = {
     description: null,
     filename: null,
     fileUrl: null,
+    downloadUrl: null,
     contentTypeId: null,
     contentTypeAppLabel: null,
     contentTypeModel: null,

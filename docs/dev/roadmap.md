@@ -10,6 +10,7 @@
     * [ ] Data import/export
     * [ ] Show hours and minutes in countdown on home page
     * [ ] Show date in timeline view on venue page
+    * [ ] Toggle each functionality
 * [ ] Data Export
   * [X] Guest Group Details
   * [X] Guest Details

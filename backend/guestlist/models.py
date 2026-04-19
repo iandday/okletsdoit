@@ -83,11 +83,25 @@ class GuestGroup(models.Model):
 
     @property
     def group_attending_count(self):
-        return self.guests.filter(is_attending=True, is_deleted=False).count()
+        return self.guests.filter(is_attending=True, is_invited=True, responded=True, is_deleted=False).count()
 
     @property
     def group_declined_count(self):
-        return self.guests.filter(is_attending=False, responded=True, is_deleted=False).count()
+        return self.guests.filter(is_attending=False, is_invited=True, responded=True, is_deleted=False).count()
+
+    @property
+    def group_responded_count(self):
+        return self.guests.filter(responded=True, is_invited=True, is_deleted=False).count()
+
+    @property
+    def group_vip_accepted_count(self):
+        return self.guests.filter(vip=True, accept_vip=True, is_invited=True, responded=True, is_deleted=False).count()
+
+    @property
+    def group_overnight_accepted_count(self):
+        return self.guests.filter(
+            accommodation=True, accept_accommodation=True, is_invited=True, responded=True, is_deleted=False
+        ).count()
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -179,6 +193,7 @@ class RsvpSubmission(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     email_updates = models.BooleanField(default=False)
     email_address = models.EmailField(blank=True)
+    accepted = models.BooleanField(default=False)
     notes = models.TextField(blank=True)
     history = HistoricalRecords()
 
@@ -189,6 +204,10 @@ class RsvpSubmission(models.Model):
     @property
     def accept_vip_count(self):
         return self.guest_group.guests.filter(responded=True, accept_vip=True, is_deleted=False).count()
+
+    @property
+    def decline_count(self):
+        return self.guest_group.guests.filter(responded=True, is_attending=False, is_deleted=False).count()
 
     class Meta:
         unique_together = ("guest_group",)

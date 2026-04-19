@@ -201,6 +201,18 @@ export interface GuestGroupSchema {
     groupDeclinedCount: number;
     /**
      *
+     * @type {number}
+     * @memberof GuestGroupSchema
+     */
+    groupVipAcceptedCount: number;
+    /**
+     *
+     * @type {number}
+     * @memberof GuestGroupSchema
+     */
+    groupOvernightAcceptedCount: number;
+    /**
+     *
      * @type {Date}
      * @memberof GuestGroupSchema
      */
@@ -242,6 +254,8 @@ export function instanceOfGuestGroupSchema(value: object): value is GuestGroupSc
     if (!("groupInvitedCount" in value) || value["groupInvitedCount"] === undefined) return false;
     if (!("groupAttendingCount" in value) || value["groupAttendingCount"] === undefined) return false;
     if (!("groupDeclinedCount" in value) || value["groupDeclinedCount"] === undefined) return false;
+    if (!("groupVipAcceptedCount" in value) || value["groupVipAcceptedCount"] === undefined) return false;
+    if (!("groupOvernightAcceptedCount" in value) || value["groupOvernightAcceptedCount"] === undefined) return false;
     if (!("createdAt" in value) || value["createdAt"] === undefined) return false;
     if (!("updatedAt" in value) || value["updatedAt"] === undefined) return false;
     return true;
@@ -288,6 +302,8 @@ export function GuestGroupSchemaFromJSONTyped(json: any, ignoreDiscriminator: bo
         groupInvitedCount: json["group_invited_count"],
         groupAttendingCount: json["group_attending_count"],
         groupDeclinedCount: json["group_declined_count"],
+        groupVipAcceptedCount: json["group_vip_accepted_count"],
+        groupOvernightAcceptedCount: json["group_overnight_accepted_count"],
         createdAt: new Date(json["created_at"]),
         updatedAt: new Date(json["updated_at"]),
     };
@@ -336,6 +352,8 @@ export function GuestGroupSchemaToJSONTyped(
         group_invited_count: value["groupInvitedCount"],
         group_attending_count: value["groupAttendingCount"],
         group_declined_count: value["groupDeclinedCount"],
+        group_vip_accepted_count: value["groupVipAcceptedCount"],
+        group_overnight_accepted_count: value["groupOvernightAcceptedCount"],
         created_at: value["createdAt"].toISOString(),
         updated_at: value["updatedAt"].toISOString(),
     };

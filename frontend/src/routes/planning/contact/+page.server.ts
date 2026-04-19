@@ -8,13 +8,17 @@ export const load: PageServerLoad = async ({ locals }) => {
     // For each contact, fetch their attachments
     const contactsWithAttachments = await Promise.all(
         (contacts.items || []).map(async (contact) => {
-            const attachments = await api.attachments.attachmentsApiListAttachments({
+            const attachmentsResponse = await api.attachments.attachmentsApiListAttachments({
                 objectId: contact.id,
             });
+            const attachments = (attachmentsResponse.items || []).map((attachment) => ({
+                ...attachment,
+                downloadUrl: attachment.downloadUrl,
+            }));
 
             return {
                 ...contact,
-                attachments: attachments.items || [],
+                attachments,
             };
         }),
     );

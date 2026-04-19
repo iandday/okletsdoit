@@ -310,12 +310,6 @@ class WeddingSettings(models.Model):
         blank=True,
         help_text="QR code for RSVP start page",
     )
-    rsvp_qr_code_url = models.URLField(
-        max_length=500,
-        blank=True,
-        null=True,
-        help_text="URL for RSVP start page",
-    )
     rsvp_accept_button = models.TextField(default="Lets' Do This", null=True)
     rsvp_decline_button = models.TextField(default="No Thanks", null=True)
     rsvp_attending_label = models.CharField(max_length=100, default="I'll be there!")
@@ -364,6 +358,12 @@ class WeddingSettings(models.Model):
     )
     history = HistoricalRecords()
 
+    @property
+    def rsvp_qr_code_url(self):
+        if self.rsvp_qr_code and self.rsvp_qr_code.attachment_file:
+            return self.rsvp_qr_code.attachment_file.url
+        return None
+
     def __str__(self):
         return "Wedding Settings"
 
@@ -391,10 +391,8 @@ class WeddingSettings(models.Model):
                 )
                 self.rsvp_qr_code = attachment
 
-            self.rsvp_qr_code_url = attachment.attachment_file.url if attachment.attachment_file else ""
             self.__class__.objects.filter(pk=self.pk).update(
                 rsvp_qr_code=self.rsvp_qr_code,
-                rsvp_qr_code_url=self.rsvp_qr_code_url,
             )
 
     @classmethod

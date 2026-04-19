@@ -6,6 +6,8 @@ from uuid import UUID
 from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
+from django.http import Http404
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from ninja import FilterSchema
 from ninja import Query
@@ -32,6 +34,7 @@ class AttachmentSchema(Schema):
     description: Optional[str] = None
     filename: str
     file_url: str
+    download_url: str
     content_type_id: int
     content_type_app_label: str
     content_type_model: str
@@ -63,6 +66,28 @@ class AttachmentUpdateSchema(Schema):
     description: Optional[str] = None
 
 
+def _serialize_attachment(attachment: Attachment):
+    return {
+        "id": attachment.id,
+        "name": attachment.name,
+        "slug": attachment.slug,
+        "description": attachment.description,
+        "filename": attachment.filename,
+        "file_url": attachment.attachment_file.url if attachment.attachment_file else "",
+        "download_url": f"/api/attachments/attachments/{attachment.id}/download/",
+        "content_type_id": attachment.content_type.id,
+        "content_type_app_label": attachment.content_type.app_label,
+        "content_type_model": attachment.content_type.model,
+        "object_id": attachment.object_id,
+        "uploaded_by_id": attachment.uploaded_by.id if attachment.uploaded_by else None,
+        "uploaded_by_name": attachment.uploaded_by.get_full_name() if attachment.uploaded_by else None,
+        "updated_by_id": attachment.updated_by.id if attachment.updated_by else None,
+        "updated_by_name": attachment.updated_by.get_full_name() if attachment.updated_by else None,
+        "uploaded_at": attachment.uploaded_at,
+        "updated_at": attachment.updated_at,
+    }
+
+
 # Attachment CRUD Endpoints
 @router.get("/attachments", response=List[AttachmentSchema])
 @paginate(PageNumberPagination, page_size=50)
@@ -81,51 +106,24 @@ def list_attachments(request, filters: AttachmentFilterSchema = Query(...)):  # 
         .order_by("-uploaded_at")
     )
 
-    return [
-        {
-            "id": attachment.id,
-            "name": attachment.name,
-            "slug": attachment.slug,
-            "description": attachment.description,
-            "filename": attachment.filename,
-            "file_url": attachment.attachment_file.url if attachment.attachment_file else "",
-            "content_type_id": attachment.content_type.id,
-            "content_type_app_label": attachment.content_type.app_label,
-            "content_type_model": attachment.content_type.model,
-            "object_id": attachment.object_id,
-            "uploaded_by_id": attachment.uploaded_by.id if attachment.uploaded_by else None,
-            "uploaded_by_name": attachment.uploaded_by.get_full_name() if attachment.uploaded_by else None,
-            "updated_by_id": attachment.updated_by.id if attachment.updated_by else None,
-            "updated_by_name": attachment.updated_by.get_full_name() if attachment.updated_by else None,
-            "uploaded_at": attachment.uploaded_at,
-            "updated_at": attachment.updated_at,
-        }
-        for attachment in attachments
-    ]
+    return [_serialize_attachment(attachment) for attachment in attachments]
 
 
 @router.get("/attachments/{attachment_id}", response=AttachmentSchema)
 def get_attachment(request, attachment_id: UUID):
     """Get a specific attachment by ID"""
     attachment = get_object_or_404(Attachment, id=attachment_id, is_deleted=False)
-    return {
-        "id": attachment.id,
-        "name": attachment.name,
-        "slug": attachment.slug,
-        "description": attachment.description,
-        "filename": attachment.filename,
-        "file_url": attachment.attachment_file.url if attachment.attachment_file else "",
-        "content_type_id": attachment.content_type.id,
-        "content_type_app_label": attachment.content_type.app_label,
-        "content_type_model": attachment.content_type.model,
-        "object_id": attachment.object_id,
-        "uploaded_by_id": attachment.uploaded_by.id if attachment.uploaded_by else None,
-        "uploaded_by_name": attachment.uploaded_by.get_full_name() if attachment.uploaded_by else None,
-        "updated_by_id": attachment.updated_by.id if attachment.updated_by else None,
-        "updated_by_name": attachment.updated_by.get_full_name() if attachment.updated_by else None,
-        "uploaded_at": attachment.uploaded_at,
-        "updated_at": attachment.updated_at,
-    }
+    return _serialize_attachment(attachment)
+
+
+@router.get("/attachments/{attachment_id}/download")
+def download_attachment(request, attachment_id: UUID):
+    """Redirect to a freshly generated storage URL for an attachment."""
+    attachment = get_object_or_404(Attachment, id=attachment_id, is_deleted=False)
+    if not attachment.attachment_file:
+        raise Http404("Attachment file not found")
+
+    return HttpResponseRedirect(attachment.attachment_file.url)
 
 
 @router.post("/attachments", response=AttachmentSchema)
@@ -164,24 +162,7 @@ def create_attachment(
 
     attachment = Attachment.objects.create(**data)
 
-    return {
-        "id": attachment.id,
-        "name": attachment.name,
-        "slug": attachment.slug,
-        "description": attachment.description,
-        "filename": attachment.filename,
-        "file_url": attachment.attachment_file.url if attachment.attachment_file else "",
-        "content_type_id": attachment.content_type.id,
-        "content_type_app_label": attachment.content_type.app_label,
-        "content_type_model": attachment.content_type.model,
-        "object_id": attachment.object_id,
-        "uploaded_by_id": attachment.uploaded_by.id if attachment.uploaded_by else None,
-        "uploaded_by_name": attachment.uploaded_by.get_full_name() if attachment.uploaded_by else None,
-        "updated_by_id": attachment.updated_by.id if attachment.updated_by else None,
-        "updated_by_name": attachment.updated_by.get_full_name() if attachment.updated_by else None,
-        "uploaded_at": attachment.uploaded_at,
-        "updated_at": attachment.updated_at,
-    }
+    return _serialize_attachment(attachment)
 
 
 @router.put("/attachments/{attachment_id}", response=AttachmentSchema)
@@ -202,24 +183,7 @@ def update_attachment(request, attachment_id: UUID, payload: AttachmentUpdateSch
 
     attachment.save()
 
-    return {
-        "id": attachment.id,
-        "name": attachment.name,
-        "slug": attachment.slug,
-        "description": attachment.description,
-        "filename": attachment.filename,
-        "file_url": attachment.attachment_file.url if attachment.attachment_file else "",
-        "content_type_id": attachment.content_type.id,
-        "content_type_app_label": attachment.content_type.app_label,
-        "content_type_model": attachment.content_type.model,
-        "object_id": attachment.object_id,
-        "uploaded_by_id": attachment.uploaded_by.id if attachment.uploaded_by else None,
-        "uploaded_by_name": attachment.uploaded_by.get_full_name() if attachment.uploaded_by else None,
-        "updated_by_id": attachment.updated_by.id if attachment.updated_by else None,
-        "updated_by_name": attachment.updated_by.get_full_name() if attachment.updated_by else None,
-        "uploaded_at": attachment.uploaded_at,
-        "updated_at": attachment.updated_at,
-    }
+    return _serialize_attachment(attachment)
 
 
 @router.delete("/attachments/{attachment_id}")

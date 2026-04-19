@@ -8,6 +8,7 @@
 | `emailUpdates` | boolean |
 | `emailAddress` | string  |
 | `notes`        | string  |
+| `accepted`     | boolean |
 
 ## Example
 
@@ -20,6 +21,7 @@ const example = {
     emailUpdates: null,
     emailAddress: null,
     notes: null,
+    accepted: null,
 } satisfies RsvpSubmissionCreateSchema;
 
 console.log(example);

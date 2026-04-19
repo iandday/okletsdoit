@@ -43,6 +43,12 @@ export interface RsvpSubmissionCreateSchema {
      * @memberof RsvpSubmissionCreateSchema
      */
     notes?: string | null;
+    /**
+     *
+     * @type {boolean}
+     * @memberof RsvpSubmissionCreateSchema
+     */
+    accepted?: boolean | null;
 }
 
 /**
@@ -69,6 +75,7 @@ export function RsvpSubmissionCreateSchemaFromJSONTyped(
         emailUpdates: json["email_updates"] == null ? undefined : json["email_updates"],
         emailAddress: json["email_address"] == null ? undefined : json["email_address"],
         notes: json["notes"] == null ? undefined : json["notes"],
+        accepted: json["accepted"] == null ? undefined : json["accepted"],
     };
 }
 
@@ -89,5 +96,6 @@ export function RsvpSubmissionCreateSchemaToJSONTyped(
         email_updates: value["emailUpdates"],
         email_address: value["emailAddress"],
         notes: value["notes"],
+        accepted: value["accepted"],
     };
 }

@@ -2,7 +2,9 @@
     import { enhance } from "$app/forms";
     import { goto } from "$app/navigation";
     import GuestListStats from "$lib/components/GuestListStats.svelte";
+    import InviteStats from "$lib/components/InviteStats.svelte";
     import ListStats from "$lib/components/ListStats.svelte";
+    import RsvpStats from "$lib/components/RsvpStats.svelte";
     import Stats from "$lib/components/Stats.svelte";
     import ProtectedPageHeader from "$lib/components/layouts/ProtectedPageHeader.svelte";
     import ProtectedPageShell from "$lib/components/layouts/ProtectedPageShell.svelte";
@@ -108,8 +110,10 @@
                                 </div>
                             {/if}
                             {#if item.href == "/planning/guest_list"}
-                                <div class="flex justify-around items-center">
+                                <div class="flex flex-col lg:flex-row justify-around items-center">
                                     <GuestListStats guestGroups={data.guestGroups} />
+                                    <InviteStats rsvpStats={data.stats} layout="horizontal" />
+                                    <RsvpStats rsvpStats={data.stats} layout="horizontal" />
                                 </div>
                             {/if}
                         </div>

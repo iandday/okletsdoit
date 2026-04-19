@@ -9,6 +9,7 @@ from uuid import uuid4
 from core.auth import multi_auth
 from django.contrib.auth import get_user_model
 from django.db import transaction
+
 from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
@@ -68,6 +69,8 @@ class GuestGroupSchema(Schema):
     group_invited_count: int
     group_attending_count: int
     group_declined_count: int
+    group_vip_accepted_count: int
+    group_overnight_accepted_count: int
     created_at: datetime
     updated_at: datetime
 
@@ -205,6 +208,8 @@ class RsvpSubmissionSchema(Schema):
     notes: str
     accept_accommodation_count: int
     accept_vip_count: int
+    decline_count: int
+    accepted: bool
     created_at: datetime
     updated_at: datetime
 
@@ -218,6 +223,7 @@ class RsvpSubmissionCreateSchema(Schema):
     email_updates: Optional[bool] = False
     email_address: Optional[str] = ""
     notes: Optional[str] = ""
+    accepted: Optional[bool] = False
 
 
 class RsvpSubmissionUpdateSchema(Schema):
@@ -243,6 +249,60 @@ class RsvpQuestionResponseSchema(Schema):
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
 
+    @staticmethod
+    def resolve_question_text(obj):
+        question_text = getattr(obj, "question_text", None)
+        if question_text is not None:
+            return question_text
+        question = getattr(obj, "question", None)
+        if question is not None:
+            return question.text
+        if isinstance(obj, dict):
+            return obj.get("question_text")
+        return None
+
+    @staticmethod
+    def resolve_question_type(obj):
+        question_type = getattr(obj, "question_type", None)
+        if question_type is not None:
+            return question_type
+        question = getattr(obj, "question", None)
+        if question is not None:
+            return question.question_type
+        if isinstance(obj, dict):
+            return obj.get("question_type")
+        return None
+
+    @staticmethod
+    def resolve_question_order(obj):
+        question_order = getattr(obj, "question_order", None)
+        if question_order is not None:
+            return question_order
+        question = getattr(obj, "question", None)
+        if question is not None:
+            return question.order
+        if isinstance(obj, dict):
+            return obj.get("question_order")
+        return None
+
+    @staticmethod
+    def resolve_response_choices(obj):
+        response_choices = getattr(obj, "response_choices", None)
+        if response_choices is not None:
+            if isinstance(response_choices, list):
+                return response_choices
+            if hasattr(response_choices, "all"):
+                return [{"id": choice.id, "text": choice.choice_text} for choice in response_choices.all()]
+        if isinstance(obj, dict):
+            return obj.get("response_choices")
+        return None
+
+
+class QRCodeTaskSchema(Schema):
+    success: bool
+    message: str
+    task_id: str
+
 
 class RsvpQuestionResponseCreateSchema(Schema):
     submission_id: UUID
@@ -259,6 +319,18 @@ class RsvpQuestionResponseUpdateSchema(Schema):
 class RsvpDeclineResponseSchema(Schema):
     success: bool
     message: str
+
+
+class RsvpStatsSchema(Schema):
+    groups_invited: int
+    groups_accepted: int
+    groups_declined: int
+    total_invited: int
+    total_attending: int
+    total_declined: int
+    total_accommodation: int
+    total_vip_accepted: int
+    total_standard_accepted: int
 
 
 # GuestGroup CRUD Endpoints
@@ -415,7 +487,7 @@ def delete_guest(request, guest_id: UUID):
 @paginate(PageNumberPagination, page_size=50)
 def list_rsvp_submissions(request, filters: RsvpSubmissionFilterSchema = Query(...)):  # pyright: ignore[reportCallIssue]
     """List all RSVP submissions"""
-    q = Q(is_deleted=False)
+    q = Q(guest_group__is_deleted=False)
     q &= filters.get_filter_expression()
     return RsvpSubmission.objects.filter(q).order_by("-created_at")
 
@@ -514,45 +586,55 @@ def get_rsvp_acceptence_questions_preview(request):
 @router.get("/rsvp-acceptance-questions/{rsvp_code}", response=List[RsvpQuestionResponseSchema])
 def get_rsvp_acceptance_questions(request, rsvp_code: str):
     """Get or create RSVP acceptance questions for a guest group"""
-    try:
-        guest_group = GuestGroup.objects.get(rsvp_code=rsvp_code, is_deleted=False)
-    except GuestGroup.DoesNotExist:
-        raise HttpError(404, "Invalid RSVP code")
+    guest_group = get_object_or_404(GuestGroup, rsvp_code=rsvp_code, is_deleted=False)
+    submission, _ = RsvpSubmission.objects.get_or_create(guest_group=guest_group)
 
-    rsvp_submission, created = RsvpSubmission.objects.get_or_create(guest_group=guest_group)
-    for question in RsvpQuestion.objects.filter(is_deleted=False, published=True).order_by("order"):
-        RsvpQuestionResponse.objects.update_or_create(
-            submission=rsvp_submission,
-            question=question,
+    questions = list(
+        RsvpQuestion.objects.filter(is_deleted=False, published=True)
+        .order_by("order")
+        .only("id", "text", "question_type", "order")
+    )
+    question_ids = [question.id for question in questions]
+
+    if question_ids:
+        existing_question_ids = set(
+            RsvpQuestionResponse.objects.filter(
+                submission=submission,
+                question_id__in=question_ids,
+            ).values_list("question_id", flat=True)
         )
-    question_queryset = (
-        RsvpQuestionResponse.objects.filter(submission=rsvp_submission, question__published=True)
+        missing_responses = [
+            RsvpQuestionResponse(submission=submission, question=question)
+            for question in questions
+            if question.id not in existing_question_ids
+        ]
+        if missing_responses:
+            RsvpQuestionResponse.objects.bulk_create(missing_responses)
+
+    responses = (
+        RsvpQuestionResponse.objects.filter(submission=submission, question_id__in=question_ids)
         .select_related("question")
         .prefetch_related("response_choices")
         .order_by("question__order")
     )
 
-    # Build response with question details
-    result = []
-    for response in question_queryset:
-        # Get response choices with id and text
-        response_choices = [{"id": choice.id, "text": choice.choice_text} for choice in response.response_choices.all()]
-
-        result.append(
-            {
-                "id": response.id,
-                "submission_id": response.submission.id,
-                "question_id": response.question.id,
-                "question_text": response.question.text,
-                "question_type": response.question.question_type,
-                "question_order": response.question.order,
-                "response_text": response.response_text,
-                "response_choices": response_choices,
-                "created_at": response.created_at,
-                "updated_at": response.updated_at,
-            }
-        )
-    return result
+    return [
+        {
+            "id": response.id,
+            "submission_id": response.submission.id,
+            "question_id": response.question.id,
+            "question_text": response.question.text,
+            "question_type": response.question.question_type,
+            "question_order": response.question.order,
+            "response_text": response.response_text,
+            "response_choices": [
+                {"id": choice.id, "text": choice.choice_text} for choice in response.response_choices.all()
+            ],
+            "created_at": response.created_at,
+            "updated_at": response.updated_at,
+        }
+        for response in responses
+    ]
 
 
 # RsvpQuestionResponse CRUD Endpoints
@@ -560,7 +642,11 @@ def get_rsvp_acceptance_questions(request, rsvp_code: str):
 @paginate(PageNumberPagination, page_size=50)
 def list_rsvp_responses(request, submission_id: Optional[UUID] = None):
     """List all RSVP question responses, optionally filtered by submission"""
-    queryset = RsvpQuestionResponse.objects.filter(is_deleted=False)
+    queryset = (
+        RsvpQuestionResponse.objects.filter(is_deleted=False)
+        .select_related("question")
+        .prefetch_related("response_choices")
+    )
     if submission_id:
         queryset = queryset.filter(submission_id=submission_id)
     return queryset.order_by("-created_at")
@@ -884,12 +970,6 @@ def get_guest_group_qr_code(request, group_id: UUID):
         return HttpResponse("Error retrieving QR code", status=500)
 
 
-class QRCodeTaskSchema(Schema):
-    success: bool
-    message: str
-    task_id: str
-
-
 @router.post("/qr-codes/generate-missing", response=QRCodeTaskSchema)
 def generate_missing_qr_codes(request):
     """Trigger a Celery task to generate QR codes for guest groups that don't have one"""
@@ -915,4 +995,58 @@ def regenerate_all_qr_codes(request):
         "success": True,
         "message": "QR code regeneration task started",
         "task_id": task.id,
+    }
+
+
+@router.get("/rsvp-stats", response=RsvpStatsSchema)
+def get_rsvp_stats(request):
+    """Get RSVP statistics"""
+
+    groups_invited = (
+        GuestGroup.objects.filter(is_deleted=False, guests__is_deleted=False, guests__is_invited=True)
+        .distinct()
+        .count()
+    )
+    groups_accepted = (
+        GuestGroup.objects.filter(
+            is_deleted=False,
+            guests__is_deleted=False,
+            guests__is_invited=True,
+            guests__responded=True,
+            guests__is_attending=True,
+        )
+        .distinct()
+        .count()
+    )
+    groups_declined = (
+        GuestGroup.objects.filter(
+            is_deleted=False,
+            guests__is_deleted=False,
+            guests__is_invited=True,
+            guests__responded=True,
+            guests__is_attending=False,
+        )
+        .distinct()
+        .count()
+    )
+    total_invited = Guest.objects.filter(is_invited=True, is_deleted=False).count()
+    total_attending = Guest.objects.filter(is_invited=True, responded=True, is_attending=True, is_deleted=False).count()
+    total_declined = Guest.objects.filter(is_invited=True, responded=True, is_attending=False, is_deleted=False).count()
+    total_accommodation = Guest.objects.filter(
+        is_invited=True, responded=True, is_attending=True, accept_accommodation=True, is_deleted=False
+    ).count()
+    total_vip_accepted = Guest.objects.filter(
+        is_invited=True, responded=True, is_attending=True, accept_vip=True, is_deleted=False
+    ).count()
+
+    return {
+        "groups_invited": groups_invited,
+        "groups_accepted": groups_accepted,
+        "groups_declined": groups_declined,
+        "total_invited": total_invited,
+        "total_attending": total_attending,
+        "total_declined": total_declined,
+        "total_accommodation": total_accommodation,
+        "total_vip_accepted": total_vip_accepted,
+        "total_standard_accepted": total_attending - total_vip_accepted,
     }
