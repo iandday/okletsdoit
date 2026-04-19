@@ -1,6 +1,22 @@
 # CHANGELOG
 
 
+## v0.18.0 (2026-04-19)
+
+### Chores
+
+- Sync files from main (v0.17.0)
+  ([`69217cf`](https://github.com/iandday/okletsdoit/commit/69217cfda7dfabeb050c7ca797f7e96cf5183b75))
+
+### Features
+
+- Update planning dashboard and enhance guest list stats layout
+  ([`d4dce23`](https://github.com/iandday/okletsdoit/commit/d4dce233060cc127ff2b206bf33c3034f75df7c9))
+
+- **GuestList**: :sparkles: add RSVP data
+  ([`c6cdd4e`](https://github.com/iandday/okletsdoit/commit/c6cdd4edefff49ef0d0a2fdb30e9787b366c014c))
+
+
 ## v0.17.0 (2026-03-29)
 
 ### Bug Fixes
