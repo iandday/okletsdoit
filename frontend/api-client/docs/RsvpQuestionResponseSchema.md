@@ -12,6 +12,7 @@
 | `questionOrder`   | number                                                       |
 | `responseText`    | string                                                       |
 | `responseChoices` | [Array&lt;ResponseChoiceSchema&gt;](ResponseChoiceSchema.md) |
+| `possibleChoices` | [Array&lt;ResponseChoiceSchema&gt;](ResponseChoiceSchema.md) |
 | `createdAt`       | Date                                                         |
 | `updatedAt`       | Date                                                         |
 
@@ -30,6 +31,7 @@ const example = {
     questionOrder: null,
     responseText: null,
     responseChoices: null,
+    possibleChoices: null,
     createdAt: null,
     updatedAt: null,
 } satisfies RsvpQuestionResponseSchema;

@@ -76,6 +76,12 @@ export interface RsvpQuestionResponseSchema {
     responseChoices?: Array<ResponseChoiceSchema> | null;
     /**
      *
+     * @type {Array<ResponseChoiceSchema>}
+     * @memberof RsvpQuestionResponseSchema
+     */
+    possibleChoices?: Array<ResponseChoiceSchema> | null;
+    /**
+     *
      * @type {Date}
      * @memberof RsvpQuestionResponseSchema
      */
@@ -122,6 +128,10 @@ export function RsvpQuestionResponseSchemaFromJSONTyped(
             json["response_choices"] == null
                 ? undefined
                 : (json["response_choices"] as Array<any>).map(ResponseChoiceSchemaFromJSON),
+        possibleChoices:
+            json["possible_choices"] == null
+                ? undefined
+                : (json["possible_choices"] as Array<any>).map(ResponseChoiceSchemaFromJSON),
         createdAt: json["created_at"] == null ? undefined : new Date(json["created_at"]),
         updatedAt: json["updated_at"] == null ? undefined : new Date(json["updated_at"]),
     };
@@ -151,6 +161,10 @@ export function RsvpQuestionResponseSchemaToJSONTyped(
             value["responseChoices"] == null
                 ? undefined
                 : (value["responseChoices"] as Array<any>).map(ResponseChoiceSchemaToJSON),
+        possible_choices:
+            value["possibleChoices"] == null
+                ? undefined
+                : (value["possibleChoices"] as Array<any>).map(ResponseChoiceSchemaToJSON),
         created_at: value["createdAt"] == null ? value["createdAt"] : value["createdAt"].toISOString(),
         updated_at: value["updatedAt"] == null ? value["updatedAt"] : value["updatedAt"].toISOString(),
     };

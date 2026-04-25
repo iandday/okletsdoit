@@ -96,8 +96,6 @@ export const actions: Actions = {
                 const questionType = formData.get(`question_${id}_type`)?.toString();
                 const responseText = formData.get(`question_${id}_response_text`)?.toString();
 
-                // For now, only text responses are handled
-                // TODO: Extend to handle other question types as needed
                 if (questionType === "text") {
                     await api.guestlist.guestlistApiUpdateRsvpResponse({
                         responseId: id,
@@ -106,8 +104,29 @@ export const actions: Actions = {
                         },
                     });
                 }
+                if (questionType === "multiple_choice") {
+                    const selectedChoiceIds = formData
+                        .getAll(`question_${id}_response_choice_ids`)
+                        .map((choiceId) => choiceId.toString())
+                        .filter((choiceId) => choiceId.length > 0);
+
+                    await api.guestlist.guestlistApiUpdateRsvpResponse({
+                        responseId: id,
+                        rsvpQuestionResponseUpdateSchema: {
+                            responseChoiceIds: selectedChoiceIds,
+                        },
+                    });
+                }
+                if (questionType === "yes_no") {
+                    const yesNoResponse = formData.get(`question_${id}_response_yes_no`)?.toString();
+                    await api.guestlist.guestlistApiUpdateRsvpResponse({
+                        responseId: id,
+                        rsvpQuestionResponseUpdateSchema: {
+                            responseText: yesNoResponse || null,
+                        },
+                    });
+                }
             }
-            throw redirect(303, `/${code}/complete?accepted=true`);
         } catch (err) {
             // Re-throw redirects and other Response objects immediately
             if (err instanceof Response || (err && typeof err === "object" && "status" in err && "location" in err)) {
@@ -119,5 +138,7 @@ export const actions: Actions = {
                 guests: guestUpdates,
             });
         }
+
+        throw redirect(303, `/${code}/complete?accepted=true`);
     },
 };
