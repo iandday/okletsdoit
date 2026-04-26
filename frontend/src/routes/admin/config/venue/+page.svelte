@@ -65,7 +65,10 @@
             {#if data.configData?.venueParking}
                 <div>
                     <div class="config-card-field-name">Parking Information</div>
-                    <div class="config-card-field-value">{@html data.configData?.venueParking ?? "Not set"}</div>
+                    <div class="config-card-field-value">
+                        <!-- eslint-disable-next-line svelte/no-at-html-tags set by site admin -->
+                        {@html data.configData?.venueParking ?? "Not set"}
+                    </div>
                 </div>
             {/if}
         </div>

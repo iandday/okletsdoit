@@ -74,11 +74,17 @@
         <div class="grid grid-cols-1 gap-4">
             <div>
                 <div class="config-card-field-name">Accept Introduction Text</div>
-                <div class="config-card-field-value">{@html data.configData?.rsvpAcceptIntro ?? "Not set"}</div>
+                <div class="config-card-field-value">
+                    <!-- eslint-disable-next-line svelte/no-at-html-tags set by site admin -->
+                    {@html data.configData?.rsvpAcceptIntro ?? "Not set"}
+                </div>
             </div>
             <div>
                 <div class="config-card-field-name">Attending Checkbox Label</div>
-                <div class="config-card-field-value">{@html data.configData?.rsvpAttendingLabel ?? "Not set"}</div>
+                <div class="config-card-field-value">
+                    <!-- eslint-disable-next-line svelte/no-at-html-tags set by site admin -->
+                    {@html data.configData?.rsvpAttendingLabel ?? "Not set"}
+                </div>
             </div>
             {#if data.configData?.rsvpShowAccommodationIntro}
                 <div>
@@ -86,6 +92,7 @@
                         {data.configData?.accommodationGroupLabel} Introduction Text
                     </div>
                     <div class="config-card-field-value">
+                        <!-- eslint-disable-next-line svelte/no-at-html-tags set by site admin -->
                         {@html data.configData?.rsvpAccommodationIntro ?? "Not set"}
                     </div>
                 </div>
@@ -97,7 +104,10 @@
             {#if data.configData?.rsvpShowVipIntro}
                 <div>
                     <div class="config-card-field-name">{data.configData?.vipGroupLabel} Introduction Text</div>
-                    <div class="config-card-field-value">{@html data.configData?.rsvpVipIntro ?? "Not set"}</div>
+                    <div class="config-card-field-value">
+                        <!-- eslint-disable-next-line svelte/no-at-html-tags set by site admin -->
+                        {@html data.configData?.rsvpVipIntro ?? "Not set"}
+                    </div>
                 </div>
                 <div>
                     <div class="config-card-field-name">{data.configData?.vipGroupLabel} Checkbox Label</div>
