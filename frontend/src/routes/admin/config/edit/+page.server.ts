@@ -86,6 +86,6 @@ export const actions = {
             });
         }
 
-        throw redirect(303, "/admin/config");
+        throw redirect(303, "/admin/config/general");
     },
 } satisfies Actions;

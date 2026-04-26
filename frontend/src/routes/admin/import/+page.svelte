@@ -3,7 +3,7 @@
     import ProtectedPageShell from "$lib/components/layouts/ProtectedPageShell.svelte";
 </script>
 
-<ProtectedPageShell relativeCrumbs={[{ label: "Administration", href: "/admin" }]}>
+<ProtectedPageShell section="admin" relativeCrumbs={[{ label: "Administration", href: "/admin" }]}>
     <ProtectedPageHeader
         title="Data Import"
         description="Import guest lists, contacts, and other data from external sources." />

@@ -1,11 +1,11 @@
 <script lang="ts">
-    import { enhance } from "$app/forms";
     import type {
         GuestSchema,
         GuestGroupSchema,
         RsvpQuestionResponseSchema,
         WeddingSettingsUpdateSchema,
-    } from "../../../api-client";
+    } from "$api-client";
+    import { enhance } from "$app/forms";
     import type { ActionData } from "../../../routes/[code=rsvp]/accept/$types";
 
     interface Props {
@@ -238,7 +238,82 @@
                                                 placeholder="Your response...">{question.responseText || ""}</textarea>
                                         </div>
                                     </label>
-                                    <!--TODO: Add support for multiple choice, yes/no, single select-->
+                                {/if}
+                                {#if question.questionType === "yes_no"}
+                                    <div class="form-control py-4">
+                                        <input type="hidden" name="question_response_id" value={question.id} />
+                                        <input type="hidden" name="question_{question.id}_type" value="yes_no" />
+                                        <div class="grid grid-cols-1 gap-2">
+                                            <div class="edit-card-field-name">
+                                                <span class="edit-card-field-name">{question.questionText}</span>
+                                            </div>
+                                            <div class="flex flex-row items-center gap-6">
+                                                <label
+                                                    class="label justify-start gap-3 {preview
+                                                        ? 'cursor-not-allowed'
+                                                        : 'cursor-pointer'}">
+                                                    <input
+                                                        type="radio"
+                                                        name="question_{question.id}_response_yes_no"
+                                                        class="radio radio-accent {preview
+                                                            ? 'pointer-events-none'
+                                                            : ''}"
+                                                        value="yes"
+                                                        checked={question.responseText === "yes"} />
+                                                    <span class="label-text text-primary-content">Yes</span>
+                                                </label>
+                                                <label
+                                                    class="label justify-start gap-3 {preview
+                                                        ? 'cursor-not-allowed'
+                                                        : 'cursor-pointer'}">
+                                                    <input
+                                                        type="radio"
+                                                        name="question_{question.id}_response_yes_no"
+                                                        class="radio radio-accent {preview
+                                                            ? 'pointer-events-none'
+                                                            : ''}"
+                                                        value="no"
+                                                        checked={question.responseText === "no"} />
+                                                    <span class="label-text text-primary-content">No</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {/if}
+                                {#if question.questionType === "multiple_choice"}
+                                    <div class="form-control py-4">
+                                        <input type="hidden" name="question_response_id" value={question.id} />
+                                        <input
+                                            type="hidden"
+                                            name="question_{question.id}_type"
+                                            value="multiple_choice" />
+                                        <div class="grid grid-cols-1 gap-2">
+                                            <div class="edit-card-field-name">
+                                                <span class="edit-card-field-name">{question.questionText}</span>
+                                            </div>
+                                            <div class="flex flex-col lg:flex-row items-start gap-3">
+                                                {#each question.possibleChoices as pChoice, cIndex (pChoice.id)}
+                                                    <label
+                                                        class="label justify-start gap-3 {preview
+                                                            ? 'cursor-not-allowed'
+                                                            : 'cursor-pointer'}">
+                                                        <input
+                                                            type="checkbox"
+                                                            name="question_{question.id}_response_choice_ids"
+                                                            class="checkbox checkbox-accent {preview
+                                                                ? 'pointer-events-none'
+                                                                : ''}"
+                                                            value={pChoice.id}
+                                                            checked={question.responseChoices?.some(
+                                                                (choice: { id: string }) => choice.id === pChoice.id,
+                                                            )} />
+                                                        <span class="label-text text-primary-content"
+                                                            >{pChoice.text}</span>
+                                                    </label>
+                                                {/each}
+                                            </div>
+                                        </div>
+                                    </div>
                                 {/if}
                             {/each}
                         {/if}

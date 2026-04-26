@@ -24,7 +24,7 @@ from ninja.pagination import paginate
 
 from .models import Guest
 from .models import GuestGroup
-from .models import RsvpQuestion
+from core.models import RsvpQuestion
 from .models import RsvpQuestionResponse
 from .models import RsvpSubmission
 from .resources import GuestGroupResource
@@ -246,6 +246,7 @@ class RsvpQuestionResponseSchema(Schema):
     question_order: int
     response_text: Optional[str] = None
     response_choices: Optional[List[ResponseChoiceSchema]] = None
+    possible_choices: Optional[List[ResponseChoiceSchema]] = None
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
 
@@ -295,6 +296,18 @@ class RsvpQuestionResponseSchema(Schema):
                 return [{"id": choice.id, "text": choice.choice_text} for choice in response_choices.all()]
         if isinstance(obj, dict):
             return obj.get("response_choices")
+        return None
+
+    @staticmethod
+    def resolve_possible_choices(obj):
+        possible_choices = getattr(obj, "possible_choices", None)
+        if possible_choices is not None:
+            if isinstance(possible_choices, list):
+                return possible_choices
+            if hasattr(possible_choices, "all"):
+                return [{"id": choice.id, "text": choice.choice_text} for choice in possible_choices.all()]
+        if isinstance(obj, dict):
+            return obj.get("possible_choices")
         return None
 
 
@@ -576,6 +589,9 @@ def get_rsvp_acceptence_questions_preview(request):
                 "response_choices": [
                     {"id": choice.id, "text": choice.choice_text} for choice in question.choices.all()
                 ],
+                "possible_choices": [
+                    {"id": choice.id, "text": choice.choice_text} for choice in question.choices.all()
+                ],
                 "created_at": None,
                 "updated_at": None,
             }
@@ -617,7 +633,6 @@ def get_rsvp_acceptance_questions(request, rsvp_code: str):
         .prefetch_related("response_choices")
         .order_by("question__order")
     )
-
     return [
         {
             "id": response.id,
@@ -629,6 +644,9 @@ def get_rsvp_acceptance_questions(request, rsvp_code: str):
             "response_text": response.response_text,
             "response_choices": [
                 {"id": choice.id, "text": choice.choice_text} for choice in response.response_choices.all()
+            ],
+            "possible_choices": [
+                {"id": choice.id, "text": choice.choice_text} for choice in response.question.choices.all()
             ],
             "created_at": response.created_at,
             "updated_at": response.updated_at,

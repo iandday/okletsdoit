@@ -67,7 +67,7 @@
     ];
 
     export const adminMenu: IMenuItem[] = [
-        { title: "Configuration", href: "/admin/config", icon: "icon-[lucide--settings]" },
+        { title: "Configuration", href: "/admin/config/general", icon: "icon-[lucide--settings]" },
         { title: "Data Export", href: "/admin/export", icon: "icon-[lucide--database]" },
     ];
     export const previewMenu: IMenuItem[] = [

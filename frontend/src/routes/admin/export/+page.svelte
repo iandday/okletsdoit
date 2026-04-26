@@ -4,7 +4,7 @@
     import ProtectedPageShell from "$lib/components/layouts/ProtectedPageShell.svelte";
 </script>
 
-<ProtectedPageShell relativeCrumbs={[{ label: "Administration", href: "/admin" }]}>
+<ProtectedPageShell section="admin" relativeCrumbs={[{ label: "Administration", href: "/admin" }]}>
     <ProtectedPageHeader title="Data Export" description="Export your data for backup, analysis, or external use." />
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
