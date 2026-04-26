@@ -1,12 +1,9 @@
 <script lang="ts">
     import { enhance } from "$app/forms";
-    import ProtectedPageHeader from "$lib/components/layouts/ProtectedPageHeader.svelte";
-    import ProtectedPageShell from "$lib/components/layouts/ProtectedPageShell.svelte";
-    import type { WeddingSettingsUpdateSchema } from "../../../api-client";
 
     const { data, form } = $props();
 
-    let formData = $state<WeddingSettingsUpdateSchema>({
+    let formData = $state<any>({
         weddingDate: data.configData?.weddingDate || null,
         allowRsvp: data.configData?.allowRsvp ?? false,
         showVenue: data.configData?.showVenue ?? false,
@@ -54,17 +51,28 @@
     };
 
     const generalFields = [
-        { name: "allowPhotos", type: "checkbox" },
-        { name: "showFaq", type: "checkbox" },
-        { name: "showVenue", type: "checkbox" },
-        { name: "weddingDate", type: "date" },
+        { name: "allowPhotos", displayName: "Allow Photos", type: "checkbox" },
+        { name: "showFaq", displayName: "Show Public FAQ Page", type: "checkbox" },
+        { name: "showVenue", displayName: "Show Public Venue Page", type: "checkbox" },
+        { name: "weddingDate", displayName: "Wedding Date", type: "date" },
     ];
-
-    const relativeCrumbs = [{ title: "Configuration", href: "/planning/config" }, { title: "Edit" }];
 </script>
 
-<ProtectedPageShell {relativeCrumbs}>
-    <ProtectedPageHeader title="Edit Wedding Configuration" cancelLink="/planning/config" cancelText="Cancel" />
+<div class="space-y-4">
+    <div class="flex items-center justify-end">
+        <a href="/admin/config" class="btn btn-primary btn-sm">Back to Overview</a>
+    </div>
+
+    <div class="config-card">
+        <div class="config-card-body py-3">
+            <div class="flex flex-wrap gap-2">
+                <a href="#general-section" class="btn btn-accent btn-sm">General</a>
+                <a href="#guestlist-section" class="btn btn-accent btn-sm">Guest List</a>
+                <a href="#rsvp-section" class="btn btn-accent btn-sm">RSVP</a>
+                <a href="#venue-section" class="btn btn-accent btn-sm">Venue</a>
+            </div>
+        </div>
+    </div>
 
     {#if form?.error}
         <div class="alert alert-error mb-4">
@@ -101,7 +109,7 @@
                         {#each generalFields as field, index (index)}
                             <div class="form-control w-full">
                                 <label class="edit-card-field-name" for={field.name}>
-                                    <span>{formatLabel(field.name)}</span>
+                                    <span>{field.displayName}</span>
                                 </label>
                                 {#if field.type === "checkbox"}
                                     <input
@@ -109,21 +117,21 @@
                                         name={field.name}
                                         id={field.name}
                                         class="edit-card-field-toggle"
-                                        checked={formData[field.name as keyof WeddingSettingsUpdateSchema]} />
+                                        checked={Boolean(formData[field.name])} />
                                 {:else if field.type === "date"}
                                     <input
                                         type="date"
                                         name={field.name}
                                         id={field.name}
                                         class="edit-card-field-date"
-                                        value={formData[field.name as keyof WeddingSettingsUpdateSchema] || ""} />
+                                        value={formData[field.name] || ""} />
                                 {:else}
                                     <input
                                         type="text"
                                         name={field.name}
                                         id={field.name}
                                         class="edit-card-field-input"
-                                        value={formData[field.name as keyof WeddingSettingsUpdateSchema] || ""} />
+                                        value={formData[field.name] || ""} />
                                 {/if}
                             </div>
                         {/each}
@@ -565,7 +573,7 @@
         </div>
 
         <div class="flex gap-4 mt-6 justify-end">
-            <a href="/planning/config" class="btn btn-error">Cancel</a>
+            <a href="/admin/config" class="btn btn-error">Cancel</a>
             <button type="submit" class="btn btn-primary" disabled={submitting}>
                 {#if submitting}
                     <span class="loading loading-spinner"></span>
@@ -576,4 +584,4 @@
             </button>
         </div>
     </form>
-</ProtectedPageShell>
+</div>

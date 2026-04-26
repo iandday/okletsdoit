@@ -24,7 +24,7 @@ from ninja.pagination import paginate
 
 from .models import Guest
 from .models import GuestGroup
-from .models import RsvpQuestion
+from core.models import RsvpQuestion
 from .models import RsvpQuestionResponse
 from .models import RsvpSubmission
 from .resources import GuestGroupResource
@@ -587,6 +587,9 @@ def get_rsvp_acceptence_questions_preview(request):
                 "question_order": question.order,
                 "response_text": None,
                 "response_choices": [
+                    {"id": choice.id, "text": choice.choice_text} for choice in question.choices.all()
+                ],
+                "possible_choices": [
                     {"id": choice.id, "text": choice.choice_text} for choice in question.choices.all()
                 ],
                 "created_at": None,

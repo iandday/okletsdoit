@@ -45,6 +45,7 @@ export const load: PageServerLoad = async ({ locals }) => {
             id: question.id,
             questionText: question.questionText,
             questionType: question.questionType,
+            possibleChoices: question.possibleChoices,
             responseText: "",
             submissionId: "preview-submission-1",
         })) || [];

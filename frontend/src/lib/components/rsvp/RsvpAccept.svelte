@@ -238,7 +238,6 @@
                                                 placeholder="Your response...">{question.responseText || ""}</textarea>
                                         </div>
                                     </label>
-                                    <!--TODO: Add support for multiple choice, yes/no, single select-->
                                 {/if}
                                 {#if question.questionType === "yes_no"}
                                     <div class="form-control py-4">
