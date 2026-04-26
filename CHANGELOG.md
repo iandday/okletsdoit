@@ -1,6 +1,45 @@
 # CHANGELOG
 
 
+## v0.19.0 (2026-04-26)
+
+### Bug Fixes
+
+- **Core**: More linting
+  ([`2241b2e`](https://github.com/iandday/okletsdoit/commit/2241b2edd4f4484d535891ffca55739ec71bef40))
+
+Co-authored-by: Copilot <copilot@github.com>
+
+- **Core**: Linting
+  ([`3e474d1`](https://github.com/iandday/okletsdoit/commit/3e474d11fc3f4554d473b8974ffcc2200a504d4c))
+
+### Chores
+
+- Sync files from main (v0.18.0)
+  ([`6bd2c04`](https://github.com/iandday/okletsdoit/commit/6bd2c04323be25f1610448cc05226866603941f6))
+
+### Features
+
+- Add general, guest list, maintenance, RSVP questions, RSVP, and venue configuration pages
+  ([`f49c67a`](https://github.com/iandday/okletsdoit/commit/f49c67a4c7f86e0c23f532438354ca90bebf35ee))
+
+- Implemented general configuration page with display of settings. - Created guest list
+  configuration page with options for accommodation and VIP classifications. - Added maintenance
+  page for regenerating QR codes. - Developed RSVP questions management page with CRUD operations
+  for different question types. - Introduced RSVP configuration page detailing RSVP process stages
+  and settings. - Added venue configuration page for venue details and gallery information. -
+  Updated data export and import pages to include section context. - Enhanced RSVP accept page
+  server logic to include possible choices for questions.
+
+Co-authored-by: Copilot <copilot@github.com>
+
+- **RsvpQuestionResponse**: Add possibleChoices and enhance response handling for multiple choice
+  and yes/no questions
+  ([`2c8f7ec`](https://github.com/iandday/okletsdoit/commit/2c8f7ecb878cd9a5a74ff9484a928e460702d0f4))
+
+Co-authored-by: Copilot <copilot@github.com>
+
+
 ## v0.18.0 (2026-04-19)
 
 ### Chores
