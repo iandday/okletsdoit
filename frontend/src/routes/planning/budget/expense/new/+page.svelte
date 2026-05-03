@@ -3,7 +3,6 @@
     import Icon from "$lib/components/Icon.svelte";
     import ProtectedPageHeader from "$lib/components/layouts/ProtectedPageHeader.svelte";
     import ProtectedPageShell from "$lib/components/layouts/ProtectedPageShell.svelte";
-    import { idText } from "typescript";
     import type { ActionData, PageData } from "./$types";
 
     const { form, data }: { form: ActionData; data: PageData } = $props();
