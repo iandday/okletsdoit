@@ -1,6 +1,19 @@
 # CHANGELOG
 
 
+## v0.19.1 (2026-05-03)
+
+### Bug Fixes
+
+- Remove unused import from new expense page
+  ([`1d176c9`](https://github.com/iandday/okletsdoit/commit/1d176c901e7e4d5bf1b5987e66b3839becd0a215))
+
+### Chores
+
+- Sync files from main (v0.19.0)
+  ([`3ec4bc1`](https://github.com/iandday/okletsdoit/commit/3ec4bc1028a0ffb327089833e6f49a5095577442))
+
+
 ## v0.19.0 (2026-04-26)
 
 ### Bug Fixes
