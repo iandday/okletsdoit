@@ -150,7 +150,8 @@ jobs:
           image-ref: ${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}:${{ github.sha }}
           trivy-config: trivy.yaml
 
-      - name: cat results
+      - name: Show Trivy results
+        if: always()
         run: cat trivy-results.sarif
 
       - name: Upload Trivy scan results to GitHub Security tab
@@ -250,7 +251,8 @@ jobs:
           image-ref: ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:${{ github.sha }}
           trivy-config: trivy.yaml
 
-      - name: cat results
+      - name: Show Trivy results
+        if: always()
         run: cat trivy-results.sarif
 
       - name: Upload Trivy scan results to GitHub Security tab
