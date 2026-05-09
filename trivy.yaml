@@ -3,7 +3,7 @@ exit-code: 1
 severity:
   - CRITICAL
   - HIGH
-ignorefile: .trivyignore.yaml
+ignorefile: .trivyignore
 output: trivy-results.sarif
 vulnerability:
   ignore-unfixed: true
