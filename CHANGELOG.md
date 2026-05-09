@@ -1,6 +1,22 @@
 # CHANGELOG
 
 
+## v0.19.2 (2026-05-09)
+
+### Bug Fixes
+
+- Remove unused trivy ignore file parameter from CI/CD workflow
+  ([`2e2c247`](https://github.com/iandday/okletsdoit/commit/2e2c24761a2deb878ed75a00ff5376c995042686))
+
+- Update Trivy configuration to use correct ignore file and remove unused parameter
+  ([`3e12a42`](https://github.com/iandday/okletsdoit/commit/3e12a423067e55f917c3ac7aff08aed605e8600a))
+
+### Chores
+
+- Sync files from main (v0.19.1)
+  ([`864fecf`](https://github.com/iandday/okletsdoit/commit/864fecf257c7c218dd24d4a3209d8fa85a078fd0))
+
+
 ## v0.19.1 (2026-05-03)
 
 ### Bug Fixes
