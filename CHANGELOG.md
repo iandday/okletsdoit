@@ -1,6 +1,19 @@
 # CHANGELOG
 
 
+## v0.19.3 (2026-05-09)
+
+### Bug Fixes
+
+- Add step to show Trivy scan results in CI/CD workflow
+  ([`e8c7120`](https://github.com/iandday/okletsdoit/commit/e8c71204bdb4c57395361fd44d00a2cbecf6aba6))
+
+### Chores
+
+- Sync files from main (v0.19.2)
+  ([`5870c47`](https://github.com/iandday/okletsdoit/commit/5870c472439c287a7edec4987657fe93bb71029d))
+
+
 ## v0.19.2 (2026-05-09)
 
 ### Bug Fixes
