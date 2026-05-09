@@ -213,7 +213,6 @@ jobs:
         with:
           image-ref: ${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}:${{ github.sha }}
           trivy-config: trivy.yaml
-          trivyignores: .trivyignore.yaml
 
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v4
