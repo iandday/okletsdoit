@@ -1,6 +1,19 @@
 # CHANGELOG
 
 
+## v0.19.4 (2026-05-10)
+
+### Bug Fixes
+
+- **Core**: :bug: package updates
+  ([`02897a5`](https://github.com/iandday/okletsdoit/commit/02897a57ed2a6aff7605a7d4d9d2098c0443a084))
+
+### Chores
+
+- Sync files from main (v0.19.3)
+  ([`3d15118`](https://github.com/iandday/okletsdoit/commit/3d15118614b2df6eed7becdda2b0617a06b5cbaa))
+
+
 ## v0.19.3 (2026-05-09)
 
 ### Bug Fixes
