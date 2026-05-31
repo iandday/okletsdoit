@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { enhance } from "$app/forms";
     import Icon from "$lib/components/Icon.svelte";
     import CreateObject from "$lib/components/buttons/CreateObject.svelte";
     import ObjectChildItems from "$lib/components/object/ObjectChildItems.svelte";
@@ -16,6 +17,7 @@
     const statusText = `${data.deadlineList.completionPercentage}% Complete`;
     const childCreateLink = `/planning/deadline/list/${data.deadlineList.id}/deadline/new`;
     const childCreateLabel = "Add Deadline";
+    let deleting = $state(false);
 </script>
 
 <ObjectDetail
@@ -45,6 +47,30 @@
     {/snippet}
     {#snippet mainActionsSnippet()}
         <CreateObject href={`/planning/deadline/list/${data.deadlineList.id}/deadline/new`} label="Add Deadline" />
+        <form
+            method="POST"
+            action="?/delete"
+            use:enhance={() => {
+                deleting = true;
+
+                return async ({ update }) => {
+                    await update();
+                    deleting = false;
+                };
+            }}
+            onsubmit={(e) => {
+                if (
+                    !confirm(
+                        "Are you sure you want to delete this deadline list and all associated deadlines? This action cannot be undone.",
+                    )
+                ) {
+                    e.preventDefault();
+                }
+            }}>
+            <button type="submit" class="btn btn-error" disabled={deleting} aria-busy={deleting}>
+                {deleting ? "Deleting..." : "Delete List and Deadlines"}
+            </button>
+        </form>
     {/snippet}
     {#snippet extraCardsSnippet()}
         <ObjectChildItems title={"Deadlines"}>

@@ -2,6 +2,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
+from health_check.views import HealthCheckView
 from .api import api
 
 app_name = "okletsdoit"
@@ -11,7 +12,7 @@ urlpatterns = [
     path("be_admin/", admin.site.urls),
     path("accounts/", include("allauth.urls")),
     path("_allauth/", include("allauth.headless.urls")),
-    path("health/", include("health_check.urls")),
+    path("health/", HealthCheckView.as_view(), name="health_check"),
     path("api/", api.urls),
 ]
 

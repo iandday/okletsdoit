@@ -40,7 +40,7 @@ local-scan:
     docker build -f docker/Dockerfile --target production -t okletsdoit:test .
     docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
         -v "$(pwd)/trivy.yaml:/work/trivy.yaml" \
-        -v "$(pwd)/.trivyignore.yaml:/work/.trivyignore.yaml" \
+        -v "$(pwd)/.trivyignore:/work/.trivyignore" \
         -w /work \
         aquasec/trivy image okletsdoit:test --config /work/trivy.yaml
 
@@ -49,7 +49,7 @@ local-scan-frontend:
     docker build -f docker/Dockerfile-Frontend --target production -t okletsdoit-frontend:test .
     docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
         -v "$(pwd)/trivy.yaml:/work/trivy.yaml" \
-        -v "$(pwd)/.trivyignore.yaml:/work/.trivyignore.yaml" \
+        -v "$(pwd)/.trivyignore:/work/.trivyignore" \
         -w /work \
         aquasec/trivy image okletsdoit-frontend:test --config /work/trivy.yaml
 
