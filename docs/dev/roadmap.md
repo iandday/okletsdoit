@@ -35,7 +35,7 @@
     * [ ] Photo approval (Private)
 - [X] Deadlines
     * [X] Notification of upcoming deadlines
-    * [ ] Deletion of deadline list and all associated deadlines
+    * [X] Deletion of deadline list and all associated deadlines
 - [ ] Private Documentation
     * [X] Configuration
     * [ ] Dashboard
