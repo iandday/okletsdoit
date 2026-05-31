@@ -1,6 +1,27 @@
 # CHANGELOG
 
 
+## v0.20.0 (2026-05-31)
+
+### Bug Fixes
+
+- **CI**: :zap: remove pinned package
+  ([`0b4b6ee`](https://github.com/iandday/okletsdoit/commit/0b4b6ee63b19e736af99a95f96071c1bf6185b4e))
+
+- **Core**: :bug: fix django health settings
+  ([`f3d6435`](https://github.com/iandday/okletsdoit/commit/f3d643540630126067f510a55d04dfd6f0eef19a))
+
+### Chores
+
+- Sync files from main (v0.19.4)
+  ([`6df7ede`](https://github.com/iandday/okletsdoit/commit/6df7edec7dd1844537afe8603be3de4bf012d577))
+
+### Features
+
+- **Deadline**: :sparkles: delete list and tasks
+  ([`76dcdc6`](https://github.com/iandday/okletsdoit/commit/76dcdc641f86ec8a06f0d26c22b7220671821114))
+
+
 ## v0.19.4 (2026-05-10)
 
 ### Bug Fixes
