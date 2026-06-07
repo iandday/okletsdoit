@@ -21,6 +21,13 @@ export const load: PageServerLoad = async ({ params, locals }) => {
         const guests = await api.guestlist.guestlistApiListGuests({
             groupId: guestGroup.id,
         });
+        // sort guests so that plus ones are listed after the primary guest
+        guests.items.sort((a, b) => {
+            if (a.plusOne === b.plusOne) {
+                return 0;
+            }
+            return a.plusOne ? 1 : -1;
+        });
         const rsvpQuestions = await api.guestlist.guestlistApiGetRsvpAcceptanceQuestions({ rsvpCode: code });
         return {
             guestData: guestGroup,
@@ -41,6 +48,22 @@ export const actions: Actions = {
         const { code } = params;
         const configData = await api.core.coreApiGetWeddingSettings();
 
+        const groupData = await api.guestlist.guestlistApiListGuestGroups({
+            rsvpCode: code,
+        });
+
+        if (!groupData.items || groupData.items.length !== 1) {
+            return fail(404, {
+                error: "Unable to locate RSVP information",
+            });
+        }
+
+        const guestGroup = groupData.items[0];
+        const guests = await api.guestlist.guestlistApiListGuests({
+            groupId: guestGroup.id,
+        });
+        const guestById = new Map(guests.items.map((guest) => [guest.id, guest]));
+
         const formData = await request.formData();
         const submissionId = formData.get("submission_id")?.toString();
 
@@ -49,15 +72,26 @@ export const actions: Actions = {
 
         for (const guestId of guestIds) {
             const id = guestId.toString();
+            const sourceGuest = guestById.get(id);
+
+            if (!sourceGuest) {
+                continue;
+            }
+
             const isAttending = formData.get(`guest_${id}_is_attending`) === "true";
             const acceptAccommodation = formData.get(`guest_${id}_accept_accommodation`) === "true";
             const acceptVip = formData.get(`guest_${id}_accept_vip`) === "true";
+            const firstName = formData.get(`guest_${id}_first_name`)?.toString().trim();
+            const lastName = formData.get(`guest_${id}_last_name`)?.toString().trim();
 
             guestUpdates.push({
                 id,
                 isAttending,
                 acceptAccommodation,
                 acceptVip,
+                plusOne: sourceGuest.plusOne,
+                firstName,
+                lastName,
                 responded: true,
             });
         }
@@ -68,6 +102,8 @@ export const actions: Actions = {
                 await api.guestlist.guestlistApiUpdateGuest({
                     guestId: guestUpdate.id,
                     guestUpdateSchema: {
+                        firstName: guestUpdate.plusOne ? guestUpdate.firstName || undefined : undefined,
+                        lastName: guestUpdate.plusOne ? guestUpdate.lastName || undefined : undefined,
                         isAttending: guestUpdate.isAttending,
                         acceptAccommodation: guestUpdate.acceptAccommodation,
                         acceptVip: guestUpdate.acceptVip,
