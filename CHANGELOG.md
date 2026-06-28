@@ -1,6 +1,24 @@
 # CHANGELOG
 
 
+## v0.21.0 (2026-06-28)
+
+### Bug Fixes
+
+- **List**: :bug: restore list entry image
+  ([`695fc15`](https://github.com/iandday/okletsdoit/commit/695fc159c936d9c6e1d1402b859a784342e8f9e2))
+
+### Chores
+
+- Sync files from main (v0.20.0)
+  ([`a1e9f43`](https://github.com/iandday/okletsdoit/commit/a1e9f43e688ef0a1cd2a426becfa38c737bef886))
+
+### Features
+
+- **RSVP**: Add support for plus one guests in RSVP form and sorting
+  ([`585edcb`](https://github.com/iandday/okletsdoit/commit/585edcbf63b1b5c97d40eb5561e0051e6bc2efa3))
+
+
 ## v0.20.0 (2026-05-31)
 
 ### Bug Fixes
