@@ -36,6 +36,7 @@ export const load: PageServerLoad = async ({ locals }) => {
             accommodation: true,
             vip: true,
             responded: false,
+            plusOne: true,
         },
     ];
 

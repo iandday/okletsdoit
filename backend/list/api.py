@@ -7,6 +7,7 @@ from decimal import Decimal
 
 from core.auth import multi_auth
 from django.contrib.auth import get_user_model
+from ninja.files import UploadedFile
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from ninja import FilterSchema
@@ -129,6 +130,11 @@ class ListEntryUpdateSchema(Schema):
     unit_price: Optional[Decimal] = None
     additional_price: Optional[Decimal] = None
     url: Optional[str] = None
+
+
+class DeleteImageResponseSchema(Schema):
+    success: bool
+    message: str
 
 
 # List CRUD Endpoints
@@ -307,3 +313,43 @@ def toggle_purchased(request, entry_id: UUID):
             entry.updated_by = admin_user
     entry.save()
     return entry
+
+
+@router.post("/list-entries/{entry_id}/upload-image", response=ListEntrySchema)
+def upload_image(request, entry_id: UUID, image: UploadedFile):
+    """Upload an image for a list entry"""
+    entry = get_object_or_404(ListEntry, id=entry_id, is_deleted=False)
+    image = request.FILES.get("image")
+    if image:
+        entry.image = image
+        if request.user.is_authenticated:
+            entry.updated_by = request.user
+        else:
+            # Use first admin user for service token requests
+            admin_user = User.objects.filter(is_staff=True, is_active=True).first()
+            if admin_user:
+                entry.updated_by = admin_user
+        entry.save()
+    return entry
+
+
+@router.delete("/list-entries/{entry_id}/delete-image", response=DeleteImageResponseSchema)
+def delete_image(request, entry_id: UUID):
+    """Delete the image for a list entry"""
+    entry = get_object_or_404(ListEntry, id=entry_id, is_deleted=False)
+
+    if entry.image:
+        entry.image.delete(save=False)
+        entry.image = None
+
+        if request.user.is_authenticated:
+            entry.updated_by = request.user
+        else:
+            admin_user = User.objects.filter(is_staff=True, is_active=True).first()
+            if admin_user:
+                entry.updated_by = admin_user
+
+        entry.save()
+        return {"success": True, "message": "Image deleted successfully"}
+
+    return {"success": False, "message": "No image to delete"}

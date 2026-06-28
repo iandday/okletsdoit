@@ -38,6 +38,7 @@
             id: guest.id,
             firstName: guest.firstName,
             lastName: guest.lastName,
+            plusOne: guest.plusOne,
             isAttending: guest.isAttending,
             acceptAccommodation: guest.acceptAccommodation,
             acceptVip: guest.acceptVip,
@@ -106,11 +107,42 @@
                     <div class="edit-card">
                         <div class="edit-card-body">
                             <h3 class="edit-card-title text-xl pb-2">
-                                {guest.firstName}
-                                {guest.lastName}
+                                {guest.plusOne ? "Plus One" : `${guest.firstName} ${guest.lastName}`}
                             </h3>
 
                             <input type="hidden" name="guest_id" value={guest.id} />
+
+                            {#if guest.plusOne}
+                                <div class="grid grid-cols-1 gap-3 mb-4">
+                                    <label class="form-control">
+                                        <div class="label">
+                                            <span class="label-text text-primary-content">First Name</span>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            name="guest_{guest.id}_first_name"
+                                            class="input input-bordered {preview
+                                                ? 'cursor-not-allowed pointer-events-none'
+                                                : ''}"
+                                            bind:value={guest.firstName}
+                                            placeholder="First name" />
+                                    </label>
+
+                                    <label class="form-control">
+                                        <div class="label">
+                                            <span class="label-text text-primary-content">Last Name</span>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            name="guest_{guest.id}_last_name"
+                                            class="input input-bordered {preview
+                                                ? 'cursor-not-allowed pointer-events-none'
+                                                : ''}"
+                                            bind:value={guest.lastName}
+                                            placeholder="Last name" />
+                                    </label>
+                                </div>
+                            {/if}
 
                             <div class="form-control">
                                 <label

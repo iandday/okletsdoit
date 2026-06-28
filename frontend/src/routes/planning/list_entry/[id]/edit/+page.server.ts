@@ -29,7 +29,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 };
 
 export const actions = {
-    default: async ({ request, params, locals }) => {
+    saveAndReturn: async ({ request, params, locals }) => {
         const api = createApiClient(locals.sessionCookie);
         const entryId = params.id;
         const formData = await request.formData();
@@ -68,7 +68,38 @@ export const actions = {
             console.error("Failed to update list entry:", err);
             return fail(500, { error: "Failed to update list entry" });
         }
-
         throw redirect(303, `/planning/list_entry/${entryId}`);
+    },
+
+    uploadImage: async ({ request, params, locals }) => {
+        const api = createApiClient(locals.sessionCookie);
+        const entryId = params.id;
+        const formData = await request.formData();
+        const image = formData.get("image") as File;
+        if (image && image.size > 0) {
+            try {
+                await api.list.listApiUploadImage({
+                    entryId: entryId,
+                    image: image,
+                });
+                return { success: true, imageUploaded: true };
+            } catch (error) {
+                console.error("Error uploading image:", error);
+                return fail(500, { error: "Failed to upload image" });
+            }
+        }
+    },
+
+    deleteImage: async ({ params, locals }) => {
+        const api = createApiClient(locals.sessionCookie);
+        try {
+            await api.list.listApiDeleteImage({
+                entryId: params.id,
+            });
+            return { success: true, imageDeleted: true };
+        } catch (error) {
+            console.error("Error deleting image:", error);
+            return fail(500, { error: "Failed to delete image" });
+        }
     },
 } satisfies Actions;

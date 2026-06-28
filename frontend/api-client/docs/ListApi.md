@@ -6,6 +6,7 @@ All URIs are relative to _http://localhost_
 | --------------------------------------------------------------- | ------------------------------------------------------------ | ----------------- |
 | [**listApiCreateList**](ListApi.md#listapicreatelist)           | **POST** /api/lists/lists                                    | Create List       |
 | [**listApiCreateListEntry**](ListApi.md#listapicreatelistentry) | **POST** /api/lists/list-entries                             | Create List Entry |
+| [**listApiDeleteImage**](ListApi.md#listapideleteimage)         | **DELETE** /api/lists/list-entries/{entry_id}/delete-image   | Delete Image      |
 | [**listApiDeleteList**](ListApi.md#listapideletelist)           | **DELETE** /api/lists/lists/{list_id}                        | Delete List       |
 | [**listApiDeleteListEntry**](ListApi.md#listapideletelistentry) | **DELETE** /api/lists/list-entries/{entry_id}                | Delete List Entry |
 | [**listApiGetList**](ListApi.md#listapigetlist)                 | **GET** /api/lists/lists/{list_id}                           | Get List          |
@@ -16,6 +17,7 @@ All URIs are relative to _http://localhost_
 | [**listApiTogglePurchased**](ListApi.md#listapitogglepurchased) | **POST** /api/lists/list-entries/{entry_id}/toggle-purchased | Toggle Purchased  |
 | [**listApiUpdateList**](ListApi.md#listapiupdatelist)           | **PUT** /api/lists/lists/{list_id}                           | Update List       |
 | [**listApiUpdateListEntry**](ListApi.md#listapiupdatelistentry) | **PUT** /api/lists/list-entries/{entry_id}                   | Update List Entry |
+| [**listApiUploadImage**](ListApi.md#listapiuploadimage)         | **POST** /api/lists/list-entries/{entry_id}/upload-image     | Upload Image      |
 
 ## listApiCreateList
 
@@ -153,6 +155,79 @@ example().catch(console.error);
 ### HTTP request headers
 
 - **Content-Type**: `application/json`
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## listApiDeleteImage
+
+> DeleteImageResponseSchema listApiDeleteImage(entryId)
+
+Delete Image
+
+Delete the image for a list entry
+
+### Example
+
+```ts
+import {
+  Configuration,
+  ListApi,
+} from '';
+import type { ListApiDeleteImageRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new ListApi(config);
+
+  const body = {
+    // string
+    entryId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+  } satisfies ListApiDeleteImageRequest;
+
+  try {
+    const data = await api.listApiDeleteImage(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name        | Type     | Description | Notes                     |
+| ----------- | -------- | ----------- | ------------------------- |
+| **entryId** | `string` |             | [Defaults to `undefined`] |
+
+### Return type
+
+[**DeleteImageResponseSchema**](DeleteImageResponseSchema.md)
+
+### Authorization
+
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
 - **Accept**: `application/json`
 
 ### HTTP response details
@@ -913,6 +988,82 @@ example().catch(console.error);
 ### HTTP request headers
 
 - **Content-Type**: `application/json`
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+## listApiUploadImage
+
+> ListEntrySchema listApiUploadImage(entryId, image)
+
+Upload Image
+
+Upload an image for a list entry
+
+### Example
+
+```ts
+import {
+  Configuration,
+  ListApi,
+} from '';
+import type { ListApiUploadImageRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const config = new Configuration({
+    // To configure API key authorization: SessionAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: ServiceTokenAuth
+    apiKey: "YOUR API KEY",
+    // To configure API key authorization: XSessionTokenAuth
+    apiKey: "YOUR API KEY",
+  });
+  const api = new ListApi(config);
+
+  const body = {
+    // string
+    entryId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+    // Blob
+    image: BINARY_DATA_HERE,
+  } satisfies ListApiUploadImageRequest;
+
+  try {
+    const data = await api.listApiUploadImage(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name        | Type     | Description | Notes                     |
+| ----------- | -------- | ----------- | ------------------------- |
+| **entryId** | `string` |             | [Defaults to `undefined`] |
+| **image**   | `Blob`   |             | [Defaults to `undefined`] |
+
+### Return type
+
+[**ListEntrySchema**](ListEntrySchema.md)
+
+### Authorization
+
+[SessionAuth](../README.md#SessionAuth), [ServiceTokenAuth](../README.md#ServiceTokenAuth), [XSessionTokenAuth](../README.md#XSessionTokenAuth)
+
+### HTTP request headers
+
+- **Content-Type**: `multipart/form-data`
 - **Accept**: `application/json`
 
 ### HTTP response details

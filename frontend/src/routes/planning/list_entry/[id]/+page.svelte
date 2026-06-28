@@ -157,6 +157,11 @@
                     </div>
                 </div>
             {/if}
+            {#if data.entry.image}
+                <div class="detail-card-field-value">
+                    <img src={data.entry.image} alt="Product Image" class="max-w-xs" />
+                </div>
+            {/if}
 
             <!-- Toggle Status -->
             <div class="mt-6 flex gap-4">

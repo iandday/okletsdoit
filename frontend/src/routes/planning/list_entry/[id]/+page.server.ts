@@ -12,7 +12,6 @@ export const load: PageServerLoad = async ({ params, locals }) => {
         const list = await api.list.listApiGetList({
             listId: entry.listId,
         });
-
         let vendor = null;
         if (entry.vendorId) {
             try {
