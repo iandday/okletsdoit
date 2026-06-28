@@ -27,6 +27,7 @@ export * from "./DeadlineListSchema";
 export * from "./DeadlineListUpdateSchema";
 export * from "./DeadlineSchema";
 export * from "./DeadlineUpdateSchema";
+export * from "./DeleteImageResponseSchema";
 export * from "./EmailTaskSchema";
 export * from "./EstimatedAmount";
 export * from "./ExpenseCreateSchema";

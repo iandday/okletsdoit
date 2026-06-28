@@ -12,6 +12,7 @@
  * Do not edit the class manually.
  */
 import type {
+    DeleteImageResponseSchema,
     ListCreateSchema,
     ListEntryCreateSchema,
     ListEntrySchema,
@@ -22,6 +23,8 @@ import type {
     PagedListSchema,
 } from "../models/index";
 import {
+    DeleteImageResponseSchemaFromJSON,
+    DeleteImageResponseSchemaToJSON,
     ListCreateSchemaFromJSON,
     ListCreateSchemaToJSON,
     ListEntryCreateSchemaFromJSON,
@@ -47,6 +50,10 @@ export interface ListApiCreateListRequest {
 
 export interface ListApiCreateListEntryRequest {
     listEntryCreateSchema: ListEntryCreateSchema;
+}
+
+export interface ListApiDeleteImageRequest {
+    entryId: string;
 }
 
 export interface ListApiDeleteListRequest {
@@ -98,6 +105,11 @@ export interface ListApiUpdateListRequest {
 export interface ListApiUpdateListEntryRequest {
     entryId: string;
     listEntryUpdateSchema: ListEntryUpdateSchema;
+}
+
+export interface ListApiUploadImageRequest {
+    entryId: string;
+    image: Blob;
 }
 
 /**
@@ -215,6 +227,61 @@ export class ListApi extends runtime.BaseAPI {
         initOverrides?: RequestInit | runtime.InitOverrideFunction,
     ): Promise<ListEntrySchema> {
         const response = await this.listApiCreateListEntryRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Delete the image for a list entry
+     * Delete Image
+     */
+    async listApiDeleteImageRaw(
+        requestParameters: ListApiDeleteImageRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<DeleteImageResponseSchema>> {
+        if (requestParameters["entryId"] == null) {
+            throw new runtime.RequiredError(
+                "entryId",
+                'Required parameter "entryId" was null or undefined when calling listApiDeleteImage().',
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
+        let urlPath = `/api/lists/list-entries/{entry_id}/delete-image`;
+        urlPath = urlPath.replace(`{${"entry_id"}}`, encodeURIComponent(String(requestParameters["entryId"])));
+
+        const response = await this.request(
+            {
+                path: urlPath,
+                method: "DELETE",
+                headers: headerParameters,
+                query: queryParameters,
+            },
+            initOverrides,
+        );
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => DeleteImageResponseSchemaFromJSON(jsonValue));
+    }
+
+    /**
+     * Delete the image for a list entry
+     * Delete Image
+     */
+    async listApiDeleteImage(
+        requestParameters: ListApiDeleteImageRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<DeleteImageResponseSchema> {
+        const response = await this.listApiDeleteImageRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -811,6 +878,87 @@ export class ListApi extends runtime.BaseAPI {
         initOverrides?: RequestInit | runtime.InitOverrideFunction,
     ): Promise<ListEntrySchema> {
         const response = await this.listApiUpdateListEntryRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Upload an image for a list entry
+     * Upload Image
+     */
+    async listApiUploadImageRaw(
+        requestParameters: ListApiUploadImageRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<ListEntrySchema>> {
+        if (requestParameters["entryId"] == null) {
+            throw new runtime.RequiredError(
+                "entryId",
+                'Required parameter "entryId" was null or undefined when calling listApiUploadImage().',
+            );
+        }
+
+        if (requestParameters["image"] == null) {
+            throw new runtime.RequiredError(
+                "image",
+                'Required parameter "image" was null or undefined when calling listApiUploadImage().',
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
+        const consumes: runtime.Consume[] = [{ contentType: "multipart/form-data" }];
+        // @ts-ignore: canConsumeForm may be unused
+        const canConsumeForm = runtime.canConsumeForm(consumes);
+
+        let formParams: { append(param: string, value: any): any };
+        let useForm = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        useForm = canConsumeForm;
+        if (useForm) {
+            formParams = new FormData();
+        } else {
+            formParams = new URLSearchParams();
+        }
+
+        if (requestParameters["image"] != null) {
+            formParams.append("image", requestParameters["image"] as any);
+        }
+
+        let urlPath = `/api/lists/list-entries/{entry_id}/upload-image`;
+        urlPath = urlPath.replace(`{${"entry_id"}}`, encodeURIComponent(String(requestParameters["entryId"])));
+
+        const response = await this.request(
+            {
+                path: urlPath,
+                method: "POST",
+                headers: headerParameters,
+                query: queryParameters,
+                body: formParams,
+            },
+            initOverrides,
+        );
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ListEntrySchemaFromJSON(jsonValue));
+    }
+
+    /**
+     * Upload an image for a list entry
+     * Upload Image
+     */
+    async listApiUploadImage(
+        requestParameters: ListApiUploadImageRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<ListEntrySchema> {
+        const response = await this.listApiUploadImageRaw(requestParameters, initOverrides);
         return await response.value();
     }
 }

@@ -50,8 +50,6 @@ export const actions: Actions = {
                 inspirationId: params.id,
                 image: image,
             });
-
-            console.log(`[Upload] Success!`);
             return { success: true, imageUploaded: true };
         } catch (err: any) {
             console.error("[Upload] Error details:", {
