@@ -60,6 +60,8 @@
         }, 300);
     };
 
+    const selectedStatuses = new Set(data.filterStatuses || []);
+
     const table = createTable(deadlineData, {
         sort: addSortBy(),
         page: addPagination({ initialPageSize: 25 }),
@@ -167,17 +169,38 @@
                             <label class="table-filter-card-field-name" for="deadline-status-filter">
                                 <span>Status</span>
                             </label>
-                            <select
-                                id="deadline-status-filter"
-                                name="status"
-                                class="table-filter-card-field-value-select"
-                                value={data.filterStatus || "all"}
-                                onchange={handleFilterChange}>
-                                <option value="all">All statuses</option>
-                                <option value="pending">Pending</option>
-                                <option value="overdue">Overdue</option>
-                                <option value="completed">Completed</option>
-                            </select>
+                            <div id="deadline-status-filter" class="flex flex-wrap gap-4">
+                                <label class="table-filter-card-field-name cursor-pointer gap-2">
+                                    <input
+                                        type="checkbox"
+                                        name="status"
+                                        value="pending"
+                                        class="table-filter-card-field-checkbox"
+                                        checked={selectedStatuses.has("pending")}
+                                        onchange={handleFilterChange} />
+                                    <span>Pending</span>
+                                </label>
+                                <label class="table-filter-card-field-name cursor-pointer gap-2">
+                                    <input
+                                        type="checkbox"
+                                        name="status"
+                                        value="overdue"
+                                        class="table-filter-card-field-checkbox"
+                                        checked={selectedStatuses.has("overdue")}
+                                        onchange={handleFilterChange} />
+                                    <span>Overdue</span>
+                                </label>
+                                <label class="table-filter-card-field-name cursor-pointer gap-2">
+                                    <input
+                                        type="checkbox"
+                                        name="status"
+                                        value="completed"
+                                        class="table-filter-card-field-checkbox"
+                                        checked={selectedStatuses.has("completed")}
+                                        onchange={handleFilterChange} />
+                                    <span>Completed</span>
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -239,7 +262,10 @@
                                                     </a>
                                                     {#if deadline.description}
                                                         <span class="text-xs text-secondary-content/70 line-clamp-1">
-                                                            {deadline.description}
+                                                            {deadline.description.slice(0, 50)}{deadline.description
+                                                                .length > 50
+                                                                ? "..."
+                                                                : ""}
                                                         </span>
                                                     {/if}
                                                 </div>
@@ -298,7 +324,7 @@
                                 ></span>
                                 <p class="text-secondary-content/70">No deadlines found</p>
                                 <p class="text-sm text-secondary-content/50">
-                                    {#if data.filterListId || data.filterAssigneeId || data.filterStatus !== "all" || data.filterSearch}
+                                    {#if data.filterListId || data.filterAssigneeId || (data.filterStatuses && data.filterStatuses.length > 0) || data.filterSearch}
                                         Try adjusting your filters
                                     {:else}
                                         No deadlines available
