@@ -58,16 +58,16 @@ export const load: PageServerLoad = async ({ url, locals }) => {
 
     const filteredDeadlines = applyStatusFilter
         ? allDeadlines.filter((deadline) => {
-            if (deadline.completed) {
-                return statusFilters.includes("completed");
-            }
+              if (deadline.completed) {
+                  return statusFilters.includes("completed");
+              }
 
-            if (deadline.overdue) {
-                return statusFilters.includes("overdue");
-            }
+              if (deadline.overdue) {
+                  return statusFilters.includes("overdue");
+              }
 
-            return statusFilters.includes("pending");
-        })
+              return statusFilters.includes("pending");
+          })
         : allDeadlines;
 
     return {
