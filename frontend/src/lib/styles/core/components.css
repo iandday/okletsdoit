@@ -289,3 +289,7 @@ input:-webkit-autofill:active {
 .table-filter-card-field-value-select {
     @apply text-primary-content bg-base-100 border-base-300 select my-2 border p-2;
 }
+
+.table-filter-card-field-checkbox {
+    @apply checkbox border-neutral bg-base-100 checked:bg-base-300 checked:text-accent-content;
+}

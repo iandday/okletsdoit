@@ -8,8 +8,13 @@ export const load: PageServerLoad = async ({ url, locals }) => {
     const deadlineListId = url.searchParams.get("list");
     const assigneeId = url.searchParams.get("assignee");
     const search = url.searchParams.get("search")?.trim() || "";
-    const status = url.searchParams.get("status") || "all";
-    const statusFilter = ["all", "pending", "overdue", "completed"].includes(status) ? status : "all";
+    const validStatuses = new Set(["pending", "overdue", "completed"]);
+    const rawStatuses = url.searchParams.getAll("status");
+    const statusFilters = rawStatuses.filter((status) => validStatuses.has(status));
+
+    // Backward-compatible support for legacy ?status=all links.
+    const hasAllStatus = rawStatuses.includes("all");
+    const applyStatusFilter = statusFilters.length > 0 && !hasAllStatus;
 
     const deadlineLists = await api.deadlines.deadlineApiListDeadlineLists({ page: 1, pageSize: 500 });
 
@@ -24,18 +29,6 @@ export const load: PageServerLoad = async ({ url, locals }) => {
         .map(([id, name]) => ({ id, name }))
         .sort((a, b) => a.name.localeCompare(b.name));
 
-    let completed: boolean | undefined;
-    let overdue: boolean | undefined;
-
-    if (statusFilter === "completed") {
-        completed = true;
-    } else if (statusFilter === "overdue") {
-        overdue = true;
-    } else if (statusFilter === "pending") {
-        completed = false;
-        overdue = false;
-    }
-
     let allDeadlines: any[] = [];
     let page = 1;
     let totalCount = 0;
@@ -47,8 +40,6 @@ export const load: PageServerLoad = async ({ url, locals }) => {
             search: search || undefined,
             page,
             pageSize: 100,
-            overdue,
-            completed,
         });
 
         if (response.items && response.items.length > 0) {
@@ -65,14 +56,28 @@ export const load: PageServerLoad = async ({ url, locals }) => {
         }
     }
 
+    const filteredDeadlines = applyStatusFilter
+        ? allDeadlines.filter((deadline) => {
+              if (deadline.completed) {
+                  return statusFilters.includes("completed");
+              }
+
+              if (deadline.overdue) {
+                  return statusFilters.includes("overdue");
+              }
+
+              return statusFilters.includes("pending");
+          })
+        : allDeadlines;
+
     return {
-        deadlines: allDeadlines,
-        count: totalCount,
+        deadlines: filteredDeadlines,
+        count: filteredDeadlines.length,
         deadlineLists: deadlineLists.items,
         assigneeOptions,
         filterListId: deadlineListId,
         filterAssigneeId: assigneeId,
-        filterStatus: statusFilter,
+        filterStatuses: statusFilters,
         filterSearch: search,
     };
 };
