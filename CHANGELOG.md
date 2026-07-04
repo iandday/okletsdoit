@@ -1,6 +1,27 @@
 # CHANGELOG
 
 
+## v0.22.0 (2026-07-04)
+
+### Chores
+
+- :fire: package bump
+  ([`e1eb6f5`](https://github.com/iandday/okletsdoit/commit/e1eb6f5e10ea85a3eba953b717660be9e56fa60b))
+
+- Sync files from main (v0.21.0)
+  ([`7d35c40`](https://github.com/iandday/okletsdoit/commit/7d35c40ebc25bbab1f79c626fac73073f456e3a5))
+
+### Code Style
+
+- **Deadline**: :art: linting
+  ([`39a48cb`](https://github.com/iandday/okletsdoit/commit/39a48cb8a9c734c162c5280d7069888ed22d46db))
+
+### Features
+
+- **Deadline**: :art: allow mutliple filter selections
+  ([`c427aee`](https://github.com/iandday/okletsdoit/commit/c427aee847f68669258d48266765ab6dc3f2e0ae))
+
+
 ## v0.21.0 (2026-06-28)
 
 ### Bug Fixes
