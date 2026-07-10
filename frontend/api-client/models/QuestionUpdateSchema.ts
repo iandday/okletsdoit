@@ -12,6 +12,13 @@
  * Do not edit the class manually.
  */
 import { mapValues } from "../runtime";
+import type { QuestionURLSchema } from "./QuestionURLSchema";
+import {
+    QuestionURLSchemaFromJSON,
+    QuestionURLSchemaFromJSONTyped,
+    QuestionURLSchemaToJSON,
+    QuestionURLSchemaToJSONTyped,
+} from "./QuestionURLSchema";
 
 /**
  *
@@ -55,6 +62,12 @@ export interface QuestionUpdateSchema {
      * @memberof QuestionUpdateSchema
      */
     published?: boolean | null;
+    /**
+     *
+     * @type {Array<QuestionURLSchema>}
+     * @memberof QuestionUpdateSchema
+     */
+    urls?: Array<QuestionURLSchema> | null;
 }
 
 /**
@@ -79,6 +92,7 @@ export function QuestionUpdateSchemaFromJSONTyped(json: any, ignoreDiscriminator
         order: json["order"] == null ? undefined : json["order"],
         icon: json["icon"] == null ? undefined : json["icon"],
         published: json["published"] == null ? undefined : json["published"],
+        urls: json["urls"] == null ? undefined : (json["urls"] as Array<any>).map(QuestionURLSchemaFromJSON),
     };
 }
 
@@ -101,5 +115,6 @@ export function QuestionUpdateSchemaToJSONTyped(
         order: value["order"],
         icon: value["icon"],
         published: value["published"],
+        urls: value["urls"] == null ? undefined : (value["urls"] as Array<any>).map(QuestionURLSchemaToJSON),
     };
 }
