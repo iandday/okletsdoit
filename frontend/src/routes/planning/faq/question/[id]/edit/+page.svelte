@@ -1,9 +1,9 @@
 <script lang="ts">
+    import type { QuestionSchema } from "$api-client";
     import { enhance, applyAction } from "$app/forms";
     import { invalidateAll } from "$app/navigation";
     import ProtectedPageHeader from "$lib/components/layouts/ProtectedPageHeader.svelte";
     import ProtectedPageShell from "$lib/components/layouts/ProtectedPageShell.svelte";
-    import type { QuestionURLSchema } from "../../../api-client";
 
     const { data, form } = $props();
 
@@ -12,9 +12,9 @@
     let editingUrlId = $state<string | null>(null);
     let editingUrl = $state({ url: "", text: "" });
 
-    function startEdit(url: QuestionURLSchema) {
+    function startEdit(url: QuestionSchema) {
         editingUrlId = url.id;
-        editingUrl = { url: url.url, text: url.text || "" };
+        editingUrl = { url: url.urls[0]?.url || "", text: url.urls[0]?.text || "" };
     }
 
     function cancelEdit() {
@@ -22,11 +22,11 @@
         editingUrl = { url: "", text: "" };
     }
 
-    const relativeCrumbs = [{ title: "FAQ" }, { title: "Edit Question" }];
+    const relativeCrumbs = [{ title: "FAQ" }, { title: data.question.question }, { title: `Edit` }];
 </script>
 
 <ProtectedPageShell {relativeCrumbs}>
-    <ProtectedPageHeader title="Edit FAQ Question" description="Update this frequently asked question" />
+    <ProtectedPageHeader title="Edit FAQ Question" />
 
     {#if form?.error}
         <div class="alert alert-error mb-4">
@@ -47,7 +47,17 @@
 
     {#if form?.urlError}
         <div class="alert alert-error mb-4">
-            <span class="icon-[lucide--alert-circle] size-5"></span>
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="stroke-current shrink-0 h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24">
+                <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 9v2m0 4h.01M12 2a10 10 0 100 20 10 10 0 000-20z" />
+            </svg>
             <span>{form.urlError}</span>
         </div>
     {/if}
@@ -144,6 +154,10 @@
                     placeholder="0"
                     value={form?.order || data.question.order || 0}
                     min="0" />
+            </div>
+
+            <div>
+                View available icons at <a href="https://lucide.dev/icons" target="_blank" class="link">Lucide Icons</a>
             </div>
         </div>
 
