@@ -1,4 +1,6 @@
 <script lang="ts">
+    import SectionStatus from "$lib/components/SectionStatus.svelte";
+
     const { data } = $props();
 
     const formatValue = (value: null | boolean | Date | string | number | undefined): string => {
@@ -23,23 +25,47 @@
                 Edit General
             </a>
         </div>
+        <div class="divider divider-accent">Website Features</div>
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <div>
-                <div class="config-card-field-name">Allow Photos</div>
-                <div class="config-card-field-value">{formatValue(data.configData?.allowPhotos)}</div>
+                <div class="config-card-field-name">Our Story</div>
+                <SectionStatus enabled={data.configData?.enableOurStory} visible={data.configData?.showOurStory} />
             </div>
             <div>
-                <div class="config-card-field-name">Show FAQ</div>
-                <div class="config-card-field-value">{formatValue(data.configData?.showFaq)}</div>
+                <div class="config-card-field-name">Venue</div>
+                <div class="config-card-field-value">
+                    <SectionStatus enabled={data.configData?.enableVenue} visible={data.configData?.showVenue} />
+                </div>
             </div>
             <div>
-                <div class="config-card-field-name">Show Venue</div>
-                <div class="config-card-field-value">{formatValue(data.configData?.showVenue)}</div>
+                <div class="config-card-field-name">FAQ</div>
+                <div class="config-card-field-value">
+                    <SectionStatus enabled={data.configData?.enableFaq} visible={data.configData?.showFaq} />
+                </div>
             </div>
             <div>
-                <div class="config-card-field-name">Wedding Date</div>
-                <div class="config-card-field-value">{formatValue(data.configData?.weddingDate)}</div>
+                <div class="config-card-field-name">RSVP</div>
+                <div class="config-card-field-value">
+                    <SectionStatus
+                        enabled={data.configData?.enableRsvp}
+                        visible={data.configData?.allowRsvp}
+                        visibleTrueLabel="Active"
+                        visibleFalseLabel="Not Active" />
+                </div>
             </div>
+            <div>
+                <div class="config-card-field-name">Upload Photos</div>
+                <SectionStatus
+                    enabled={data.configData?.enableUploadPhotos}
+                    visible={data.configData?.allowPhotos}
+                    visibleTrueLabel="Active"
+                    visibleFalseLabel="Not Active" />
+            </div>
+        </div>
+        <div class="divider divider-accent">Wedding Details</div>
+        <div>
+            <div class="config-card-field-name">Wedding Date</div>
+            <div class="config-card-field-value">{formatValue(data.configData?.weddingDate)}</div>
         </div>
     </div>
 </div>
