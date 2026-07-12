@@ -3,7 +3,7 @@
     import type { IComingSoon } from "../../types";
     import Icon from "./Icon.svelte";
 
-    const { icon, alert, intro, expectations }: IComingSoon = $props();
+    const { icon, alert, intro = null, expectations = null }: IComingSoon = $props();
 </script>
 
 <div class="pb-8 lg:pb-12 xl:pb-16">
@@ -19,24 +19,28 @@
                         {alert}
                     </div>
 
-                    <p class="text-primary-content text-lg leading-relaxed mb-6 max-w-lg">
-                        {intro}
-                    </p>
+                    {#if intro}
+                        <p class="text-primary-content text-lg leading-relaxed mb-6 max-w-lg">
+                            {intro}
+                        </p>
+                    {/if}
 
-                    <div class="text-left w-full max-w-md">
-                        <h3 class="font-bold text-primary-content text-lg mb-3 flex items-center gap-2">
-                            <span class="icon-[lucide--sparkles] size-5 text-primary-content"></span>
-                            What to Expect:
-                        </h3>
-                        <ul class="space-y-3">
-                            {#each expectations as { text, icon }, index (index)}
-                                <li class="flex items-start gap-3">
-                                    <Icon name={icon} class="size-5 text-accent mt-0.5 flex-shrink-0" />
-                                    <span class="text-primary-content">{text}</span>
-                                </li>
-                            {/each}
-                        </ul>
-                    </div>
+                    {#if expectations}
+                        <div class="text-left w-full max-w-md">
+                            <h3 class="font-bold text-primary-content text-lg mb-3 flex items-center gap-2">
+                                <span class="icon-[lucide--sparkles] size-5 text-primary-content"></span>
+                                What to Expect:
+                            </h3>
+                            <ul class="space-y-3">
+                                {#each expectations as { text, icon }, index (index)}
+                                    <li class="flex items-start gap-3">
+                                        <Icon name={icon} class="size-5 text-accent mt-0.5 flex-shrink-0" />
+                                        <span class="text-primary-content">{text}</span>
+                                    </li>
+                                {/each}
+                            </ul>
+                        </div>
+                    {/if}
                 </div>
             </div>
         </div>
