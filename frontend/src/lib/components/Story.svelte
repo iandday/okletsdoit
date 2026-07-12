@@ -43,6 +43,9 @@
 </script>
 
 <div class="pb-8 lg:pb-16 xl:pb-24 2xl:pb-28">
+    <p class="text-base-content/70 text-xl italic max-w-2xl mx-auto">
+        How a swipe right and a hot take on a first date led to forever
+    </p>
     <div class="container mt-8 md:mt-12 lg:mt-16 2xl:mt-24">
         <!-- Timeline -->
         <div class="relative max-w-5xl mx-auto">
