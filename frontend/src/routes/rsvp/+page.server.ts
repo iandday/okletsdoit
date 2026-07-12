@@ -1,13 +1,17 @@
 import { createApiClient } from "$lib/server/api-client";
 import { fail, redirect } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types";
+import { getconfigData } from "$lib/server/config-data";
 
 export const load: PageServerLoad = async ({ locals }) => {
     const api = createApiClient(locals.sessionCookie);
-    const config_data = await api.core.coreApiGetWeddingSettings();
+    const configData = await getconfigData();
 
+    if (!configData?.enableRsvp) {
+        throw redirect(302, "/");
+    }
     return {
-        allowRsvp: config_data.allowRsvp,
+        allowRsvp: configData.allowRsvp,
     };
 };
 
