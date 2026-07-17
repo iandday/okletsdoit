@@ -1,7 +1,7 @@
 import { createApiClient } from "$lib/server/api-client";
+import { getconfigData } from "$lib/server/config-data";
 import { fail, redirect } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types";
-import { getconfigData } from "$lib/server/config-data";
 
 export const load: PageServerLoad = async ({ locals }) => {
     const api = createApiClient(locals.sessionCookie);

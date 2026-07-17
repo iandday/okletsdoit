@@ -30,31 +30,31 @@ export interface WeddingSettingsUpdateSchema {
      * @type {boolean}
      * @memberof WeddingSettingsUpdateSchema
      */
-    enableOurStory: boolean;
+    enableOurStory?: boolean | null;
     /**
      *
      * @type {boolean}
      * @memberof WeddingSettingsUpdateSchema
      */
-    enableVenue: boolean;
+    enableVenue?: boolean | null;
     /**
      *
      * @type {boolean}
      * @memberof WeddingSettingsUpdateSchema
      */
-    enableFaq: boolean;
+    enableFaq?: boolean | null;
     /**
      *
      * @type {boolean}
      * @memberof WeddingSettingsUpdateSchema
      */
-    enableRsvp: boolean;
+    enableRsvp?: boolean | null;
     /**
      *
      * @type {boolean}
      * @memberof WeddingSettingsUpdateSchema
      */
-    enableUploadPhotos: boolean;
+    enableUploadPhotos?: boolean | null;
     /**
      *
      * @type {boolean}
@@ -301,11 +301,6 @@ export interface WeddingSettingsUpdateSchema {
  * Check if a given object implements the WeddingSettingsUpdateSchema interface.
  */
 export function instanceOfWeddingSettingsUpdateSchema(value: object): value is WeddingSettingsUpdateSchema {
-    if (!("enableOurStory" in value) || value["enableOurStory"] === undefined) return false;
-    if (!("enableVenue" in value) || value["enableVenue"] === undefined) return false;
-    if (!("enableFaq" in value) || value["enableFaq"] === undefined) return false;
-    if (!("enableRsvp" in value) || value["enableRsvp"] === undefined) return false;
-    if (!("enableUploadPhotos" in value) || value["enableUploadPhotos"] === undefined) return false;
     return true;
 }
 
@@ -322,11 +317,11 @@ export function WeddingSettingsUpdateSchemaFromJSONTyped(
     }
     return {
         defaultDataLoaded: json["default_data_loaded"] == null ? undefined : json["default_data_loaded"],
-        enableOurStory: json["enable_our_story"],
-        enableVenue: json["enable_venue"],
-        enableFaq: json["enable_faq"],
-        enableRsvp: json["enable_rsvp"],
-        enableUploadPhotos: json["enable_upload_photos"],
+        enableOurStory: json["enable_our_story"] == null ? undefined : json["enable_our_story"],
+        enableVenue: json["enable_venue"] == null ? undefined : json["enable_venue"],
+        enableFaq: json["enable_faq"] == null ? undefined : json["enable_faq"],
+        enableRsvp: json["enable_rsvp"] == null ? undefined : json["enable_rsvp"],
+        enableUploadPhotos: json["enable_upload_photos"] == null ? undefined : json["enable_upload_photos"],
         allowRsvp: json["allow_rsvp"] == null ? undefined : json["allow_rsvp"],
         allowPhotos: json["allow_photos"] == null ? undefined : json["allow_photos"],
         weddingDate: json["wedding_date"] == null ? undefined : new Date(json["wedding_date"]),

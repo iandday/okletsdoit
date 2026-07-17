@@ -82,11 +82,11 @@ class WeddingSettingsSchema(Schema):
 
 class WeddingSettingsUpdateSchema(Schema):
     default_data_loaded: Optional[bool] = None
-    enable_our_story: bool
-    enable_venue: bool
-    enable_faq: bool
-    enable_rsvp: bool
-    enable_upload_photos: bool
+    enable_our_story: Optional[bool] = None
+    enable_venue: Optional[bool] = None
+    enable_faq: Optional[bool] = None
+    enable_rsvp: Optional[bool] = None
+    enable_upload_photos: Optional[bool] = None
     allow_rsvp: Optional[bool] = None
     allow_photos: Optional[bool] = None
     wedding_date: Optional[date] = None
@@ -438,6 +438,7 @@ def update_wedding_settings(request, payload: WeddingSettingsUpdateSchema):
     settings = WeddingSettings.load()
 
     for attr, value in payload.dict(exclude_unset=True).items():
+        print(f"Updating attribute {attr} to value {value}")
         setattr(settings, attr, value)
 
     # set show_ values to False if use_ value is False
