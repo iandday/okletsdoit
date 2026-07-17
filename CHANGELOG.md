@@ -1,6 +1,59 @@
 # CHANGELOG
 
 
+## v0.23.0 (2026-07-17)
+
+### Bug Fixes
+
+- Linting
+  ([`18875b0`](https://github.com/iandday/okletsdoit/commit/18875b04af35429fee923eaabdbd12e0017b7161))
+
+- **Core**: :bug: fix question endpoint
+  ([`726c6d9`](https://github.com/iandday/okletsdoit/commit/726c6d97f3fd7a56059099fb4b55984a2c91d965))
+
+### Chores
+
+- Sync files from main (v0.22.0)
+  ([`9692efe`](https://github.com/iandday/okletsdoit/commit/9692efe82b4593b2e4192fd94abfe6bd6722d383))
+
+### Features
+
+- **Core**: :art: update settings
+  ([`a15bd80`](https://github.com/iandday/okletsdoit/commit/a15bd80356a772a9c924c55c0f65acf4db675596))
+
+- **Core**: Enable/disable photo upload
+  ([`706d5f1`](https://github.com/iandday/okletsdoit/commit/706d5f1db8e40ad8a8b5f042e3cdebe0601cd78e))
+
+- **Core**: Enable/disable rsvp
+  ([`fadb9b9`](https://github.com/iandday/okletsdoit/commit/fadb9b93931f76c3fa500c80403e0a408f7b231f))
+
+- **Core**: :zap: add enable/disable
+  ([`07f2070`](https://github.com/iandday/okletsdoit/commit/07f2070ffd08ec624b4001ad946ece12f2d49327))
+
+- **Core**: :zap: anble/disable venue
+  ([`fa07a13`](https://github.com/iandday/okletsdoit/commit/fa07a13e3205a27aa6e2405310d22523eb3bd5c2))
+
+- **Core**: :sparkles: add coming soon
+  ([`63d5e6a`](https://github.com/iandday/okletsdoit/commit/63d5e6a6889e88c28c6cc9ba3f361b6b8b917f94))
+
+- **Core**: :sparkles: enable/disable each section
+  ([`74354fb`](https://github.com/iandday/okletsdoit/commit/74354fbdf798f4583625a4023069b7f99d19cac4))
+
+- **Core**: Add optional content
+  ([`568f5e1`](https://github.com/iandday/okletsdoit/commit/568f5e1923ea16a3aa42369e5a076aa070306483))
+
+- **Core**: :art: add link to lucide
+  ([`2cc8217`](https://github.com/iandday/okletsdoit/commit/2cc8217025bafe09a4e116ae6c0aba690377f1d0))
+
+### Refactoring
+
+- **Core**: :zap: add flex
+  ([`8c12077`](https://github.com/iandday/okletsdoit/commit/8c12077af884134f5186d7f0232a78768a85e561))
+
+- **Core**: :zap: remove unused import
+  ([`ae2d8f5`](https://github.com/iandday/okletsdoit/commit/ae2d8f5f26a9fb4569a4be305b314d4345c4f4b1))
+
+
 ## v0.22.0 (2026-07-04)
 
 ### Chores
