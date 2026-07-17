@@ -14,12 +14,12 @@ up:
 
 makemigrations:
     @echo "Running Django makemigrations..."
-    uv run python app/manage.py makemigrations
+    docker compose -f docker/docker-compose.yml exec django-server python manage.py makemigrations
 
 # Run migrations
 migrate:
     @echo "Running Django migrations..."
-    uv run python app/manage.py migrate
+    docker compose -f docker/docker-compose.yml exec django-server python manage.py migrate      
 
 docs:
     uv run --all-groups mkdocs serve

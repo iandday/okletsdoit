@@ -8,6 +8,12 @@
         allowRsvp: data.configData?.allowRsvp ?? false,
         showVenue: data.configData?.showVenue ?? false,
         showFaq: data.configData?.showFaq ?? false,
+        enableOurStory: data.configData?.enableOurStory ?? false,
+        enableVenue: data.configData?.enableVenue ?? false,
+        enableFaq: data.configData?.enableFaq ?? false,
+        enableRsvp: data.configData?.enableRsvp ?? false,
+        enableUploadPhotos: data.configData?.enableUploadPhotos ?? false,
+        showOurStory: data.configData?.showOurStory ?? false,
         rsvpStartDate: data.configData?.rsvpStartDate || null,
         rsvpEndDate: data.configData?.rsvpEndDate || null,
         rsvpAcceptButton: data.configData?.rsvpAcceptButton || "",
@@ -51,9 +57,20 @@
     };
 
     const generalFields = [
-        { name: "allowPhotos", displayName: "Allow Photos", type: "checkbox" },
-        { name: "showFaq", displayName: "Show Public FAQ Page", type: "checkbox" },
+        { name: "enableOurStory", displayName: "Enable Our Story Section", type: "checkbox" },
+        { name: "enableVenue", displayName: "Enable Venue Section", type: "checkbox" },
+        { name: "enableFaq", displayName: "Enable FAQ Section", type: "checkbox" },
+        { name: "enableRsvp", displayName: "Enable RSVP Section", type: "checkbox" },
+        { name: "enableUploadPhotos", displayName: "Enable Upload Photos Section", type: "checkbox" },
+        { name: "showOurStory", displayName: "Show Public Our Story Page", type: "checkbox" },
+
         { name: "showVenue", displayName: "Show Public Venue Page", type: "checkbox" },
+
+        { name: "showFaq", displayName: "Show Public FAQ Page", type: "checkbox" },
+
+        { name: "allowRsvp", displayName: "Allow RSVP", type: "checkbox" },
+
+        { name: "allowPhotos", displayName: "Allow Photo Upload", type: "checkbox" },
         { name: "weddingDate", displayName: "Wedding Date", type: "date" },
     ];
 </script>

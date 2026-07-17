@@ -5,11 +5,17 @@
 | Name                         | Type    |
 | ---------------------------- | ------- |
 | `defaultDataLoaded`          | boolean |
+| `enableOurStory`             | boolean |
+| `enableVenue`                | boolean |
+| `enableFaq`                  | boolean |
+| `enableRsvp`                 | boolean |
+| `enableUploadPhotos`         | boolean |
 | `allowRsvp`                  | boolean |
 | `allowPhotos`                | boolean |
 | `weddingDate`                | Date    |
 | `showFaq`                    | boolean |
 | `showVenue`                  | boolean |
+| `showOurStory`               | boolean |
 | `rsvpStartDate`              | Date    |
 | `rsvpEndDate`                | Date    |
 | `rsvpAcceptButton`           | string  |
@@ -53,11 +59,17 @@ import type { WeddingSettingsUpdateSchema } from "";
 // TODO: Update the object below with actual values
 const example = {
     defaultDataLoaded: null,
+    enableOurStory: null,
+    enableVenue: null,
+    enableFaq: null,
+    enableRsvp: null,
+    enableUploadPhotos: null,
     allowRsvp: null,
     allowPhotos: null,
     weddingDate: null,
     showFaq: null,
     showVenue: null,
+    showOurStory: null,
     rsvpStartDate: null,
     rsvpEndDate: null,
     rsvpAcceptButton: null,

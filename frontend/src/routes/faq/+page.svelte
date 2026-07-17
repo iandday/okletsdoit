@@ -3,6 +3,7 @@
     import ComingSoon from "$lib/components/ComingSoon.svelte";
     import Faq from "$lib/components/Faq.svelte";
     import PageShell from "$lib/components/layouts/PageShell.svelte";
+    import { redirect } from "@sveltejs/kit";
     import type { IComingSoon } from "../../types";
 
     const comingSoon: IComingSoon = {

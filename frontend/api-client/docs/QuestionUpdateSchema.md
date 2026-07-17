@@ -2,14 +2,15 @@
 
 ## Properties
 
-| Name         | Type    |
-| ------------ | ------- |
-| `categoryId` | string  |
-| `question`   | string  |
-| `answer`     | string  |
-| `order`      | number  |
-| `icon`       | string  |
-| `published`  | boolean |
+| Name         | Type                                                   |
+| ------------ | ------------------------------------------------------ |
+| `categoryId` | string                                                 |
+| `question`   | string                                                 |
+| `answer`     | string                                                 |
+| `order`      | number                                                 |
+| `icon`       | string                                                 |
+| `published`  | boolean                                                |
+| `urls`       | [Array&lt;QuestionURLSchema&gt;](QuestionURLSchema.md) |
 
 ## Example
 
@@ -24,6 +25,7 @@ const example = {
     order: null,
     icon: null,
     published: null,
+    urls: null,
 } satisfies QuestionUpdateSchema;
 
 console.log(example);

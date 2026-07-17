@@ -8,9 +8,9 @@
     * [ ] Enable RSVP during configured date ranges
     * [ ] Require Photo approval before display in the gallery
     * [ ] Data import/export
-    * [ ] Show hours and minutes in countdown on home page
     * [ ] Show date in timeline view on venue page
     * [ ] Toggle each functionality
+    * [ ] Extract story component to backend
 * [ ] Data Export
   * [X] Guest Group Details
   * [X] Guest Details

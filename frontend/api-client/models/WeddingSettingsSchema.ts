@@ -30,6 +30,36 @@ export interface WeddingSettingsSchema {
      * @type {boolean}
      * @memberof WeddingSettingsSchema
      */
+    enableOurStory: boolean;
+    /**
+     *
+     * @type {boolean}
+     * @memberof WeddingSettingsSchema
+     */
+    enableVenue: boolean;
+    /**
+     *
+     * @type {boolean}
+     * @memberof WeddingSettingsSchema
+     */
+    enableFaq: boolean;
+    /**
+     *
+     * @type {boolean}
+     * @memberof WeddingSettingsSchema
+     */
+    enableRsvp: boolean;
+    /**
+     *
+     * @type {boolean}
+     * @memberof WeddingSettingsSchema
+     */
+    enableUploadPhotos: boolean;
+    /**
+     *
+     * @type {boolean}
+     * @memberof WeddingSettingsSchema
+     */
     allowRsvp: boolean;
     /**
      *
@@ -37,6 +67,12 @@ export interface WeddingSettingsSchema {
      * @memberof WeddingSettingsSchema
      */
     allowPhotos: boolean;
+    /**
+     *
+     * @type {boolean}
+     * @memberof WeddingSettingsSchema
+     */
+    showOurStory: boolean;
     /**
      *
      * @type {boolean}
@@ -266,8 +302,14 @@ export interface WeddingSettingsSchema {
  */
 export function instanceOfWeddingSettingsSchema(value: object): value is WeddingSettingsSchema {
     if (!("defaultDataLoaded" in value) || value["defaultDataLoaded"] === undefined) return false;
+    if (!("enableOurStory" in value) || value["enableOurStory"] === undefined) return false;
+    if (!("enableVenue" in value) || value["enableVenue"] === undefined) return false;
+    if (!("enableFaq" in value) || value["enableFaq"] === undefined) return false;
+    if (!("enableRsvp" in value) || value["enableRsvp"] === undefined) return false;
+    if (!("enableUploadPhotos" in value) || value["enableUploadPhotos"] === undefined) return false;
     if (!("allowRsvp" in value) || value["allowRsvp"] === undefined) return false;
     if (!("allowPhotos" in value) || value["allowPhotos"] === undefined) return false;
+    if (!("showOurStory" in value) || value["showOurStory"] === undefined) return false;
     if (!("showFaq" in value) || value["showFaq"] === undefined) return false;
     if (!("showVenue" in value) || value["showVenue"] === undefined) return false;
     if (!("rsvpAcceptButton" in value) || value["rsvpAcceptButton"] === undefined) return false;
@@ -308,8 +350,14 @@ export function WeddingSettingsSchemaFromJSONTyped(json: any, ignoreDiscriminato
     }
     return {
         defaultDataLoaded: json["default_data_loaded"],
+        enableOurStory: json["enable_our_story"],
+        enableVenue: json["enable_venue"],
+        enableFaq: json["enable_faq"],
+        enableRsvp: json["enable_rsvp"],
+        enableUploadPhotos: json["enable_upload_photos"],
         allowRsvp: json["allow_rsvp"],
         allowPhotos: json["allow_photos"],
+        showOurStory: json["show_our_story"],
         showFaq: json["show_faq"],
         showVenue: json["show_venue"],
         weddingDate: json["wedding_date"] == null ? undefined : new Date(json["wedding_date"]),
@@ -364,8 +412,14 @@ export function WeddingSettingsSchemaToJSONTyped(
 
     return {
         default_data_loaded: value["defaultDataLoaded"],
+        enable_our_story: value["enableOurStory"],
+        enable_venue: value["enableVenue"],
+        enable_faq: value["enableFaq"],
+        enable_rsvp: value["enableRsvp"],
+        enable_upload_photos: value["enableUploadPhotos"],
         allow_rsvp: value["allowRsvp"],
         allow_photos: value["allowPhotos"],
+        show_our_story: value["showOurStory"],
         show_faq: value["showFaq"],
         show_venue: value["showVenue"],
         wedding_date:

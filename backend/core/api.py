@@ -33,8 +33,14 @@ router = Router(tags=["Core"], auth=multi_auth)
 # Schemas
 class WeddingSettingsSchema(Schema):
     default_data_loaded: bool
+    enable_our_story: bool
+    enable_venue: bool
+    enable_faq: bool
+    enable_rsvp: bool
+    enable_upload_photos: bool
     allow_rsvp: bool
     allow_photos: bool
+    show_our_story: bool
     show_faq: bool
     show_venue: bool
     wedding_date: Optional[date] = None
@@ -76,11 +82,17 @@ class WeddingSettingsSchema(Schema):
 
 class WeddingSettingsUpdateSchema(Schema):
     default_data_loaded: Optional[bool] = None
+    enable_our_story: Optional[bool] = None
+    enable_venue: Optional[bool] = None
+    enable_faq: Optional[bool] = None
+    enable_rsvp: Optional[bool] = None
+    enable_upload_photos: Optional[bool] = None
     allow_rsvp: Optional[bool] = None
     allow_photos: Optional[bool] = None
     wedding_date: Optional[date] = None
     show_faq: Optional[bool] = None
     show_venue: Optional[bool] = None
+    show_our_story: Optional[bool] = None
     rsvp_start_date: Optional[date] = None
     rsvp_end_date: Optional[date] = None
     rsvp_accept_button: Optional[str] = None
@@ -159,6 +171,7 @@ class QuestionUpdateSchema(Schema):
     order: Optional[int] = None
     icon: Optional[str] = None
     published: Optional[bool] = None
+    urls: Optional[List[QuestionURLSchema]] = None
 
 
 class QuestionURLCreateSchema(Schema):
@@ -425,7 +438,17 @@ def update_wedding_settings(request, payload: WeddingSettingsUpdateSchema):
     settings = WeddingSettings.load()
 
     for attr, value in payload.dict(exclude_unset=True).items():
+        print(f"Updating attribute {attr} to value {value}")
         setattr(settings, attr, value)
+
+    # set show_ values to False if use_ value is False
+    for feature in ["our_story", "venue", "faq"]:
+        if not getattr(settings, f"enable_{feature}"):
+            setattr(settings, f"show_{feature}", False)
+    if not settings.enable_rsvp:
+        settings.allow_rsvp = False
+    if not settings.enable_upload_photos:
+        settings.allow_photos = False
 
     settings.save()
     return settings
@@ -445,7 +468,6 @@ def list_questions(request, filters: QuestionFilterSchema = Query(...)):  # pyri
             "id": question.id,
             "category": question.category.name if question.category else "General",
             "question": question.question,
-            "question_type": question.question_type,
             "slug": question.slug,
             "answer": question.answer,
             "order": question.order,

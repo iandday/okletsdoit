@@ -9,7 +9,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
             api.core.coreApiGetQuestion({ questionId: params.id }),
             api.core.coreApiGetCategoriesContent({ publishedOnly: false }),
         ]);
-
+        console.log(question, categoriesData);
         return {
             question,
             categories: categoriesData,

@@ -6,8 +6,8 @@ export type IExpectations = {
 export type IComingSoon = {
     icon: string;
     alert: string;
-    intro: string;
-    expectations: IExpectations[];
+    intro?: string | null;
+    expectations?: IExpectations[] | null;
 };
 
 export type IBreadcrumb = {

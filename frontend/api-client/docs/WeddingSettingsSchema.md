@@ -5,8 +5,14 @@
 | Name                         | Type    |
 | ---------------------------- | ------- |
 | `defaultDataLoaded`          | boolean |
+| `enableOurStory`             | boolean |
+| `enableVenue`                | boolean |
+| `enableFaq`                  | boolean |
+| `enableRsvp`                 | boolean |
+| `enableUploadPhotos`         | boolean |
 | `allowRsvp`                  | boolean |
 | `allowPhotos`                | boolean |
+| `showOurStory`               | boolean |
 | `showFaq`                    | boolean |
 | `showVenue`                  | boolean |
 | `weddingDate`                | Date    |
@@ -53,8 +59,14 @@ import type { WeddingSettingsSchema } from "";
 // TODO: Update the object below with actual values
 const example = {
     defaultDataLoaded: null,
+    enableOurStory: null,
+    enableVenue: null,
+    enableFaq: null,
+    enableRsvp: null,
+    enableUploadPhotos: null,
     allowRsvp: null,
     allowPhotos: null,
+    showOurStory: null,
     showFaq: null,
     showVenue: null,
     weddingDate: null,
