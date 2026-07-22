@@ -1,6 +1,22 @@
 # CHANGELOG
 
 
+## v0.23.1 (2026-07-22)
+
+### Bug Fixes
+
+- Update question forms
+  ([`642f393`](https://github.com/iandday/okletsdoit/commit/642f393b959cd3f6969e8b0a30ea5774d6542418))
+
+- **Core**: :bug: fix faq enabled boolean
+  ([`5aa2a28`](https://github.com/iandday/okletsdoit/commit/5aa2a28c3e08577548ce8b41f577f078127c4e67))
+
+### Chores
+
+- Sync files from main (v0.23.0)
+  ([`202f51d`](https://github.com/iandday/okletsdoit/commit/202f51df4f480e35138d8157f7a64270da3602ff))
+
+
 ## v0.23.0 (2026-07-17)
 
 ### Bug Fixes
