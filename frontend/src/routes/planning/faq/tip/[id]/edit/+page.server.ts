@@ -27,6 +27,7 @@ export const actions = {
         const content = formData.get("content");
         const categoryId = formData.get("categoryId");
         const order = formData.get("order");
+        const published = formData.get("published") === "on";
 
         if (!content || !categoryId) {
             return fail(400, {
@@ -34,6 +35,7 @@ export const actions = {
                 content,
                 categoryId,
                 order,
+                published,
             });
         }
 
@@ -43,6 +45,7 @@ export const actions = {
                 tipsUpdateSchema: {
                     content: content.toString(),
                     categoryId: categoryId.toString(),
+                    published,
                     ...(order && { order: parseInt(order.toString()) }),
                 },
             });
@@ -57,6 +60,7 @@ export const actions = {
                 content,
                 categoryId,
                 order,
+                published,
             });
         }
     },
