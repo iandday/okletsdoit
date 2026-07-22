@@ -101,6 +101,22 @@
                     <span class="label-text-alt">Order within the category (0 = first)</span>
                 </span>
             </div>
+
+            <!-- Published -->
+            <div class="form-control w-full">
+                <label class="cursor-pointer justify-start gap-4" for="published">
+                    <input
+                        type="checkbox"
+                        name="published"
+                        id="published"
+                        class="edit-card-field-toggle"
+                        checked={(form?.published as boolean | undefined) ?? data.tip.published} />
+                    <div class="space-y-1">
+                        <span class="edit-card-field-name block">Published</span>
+                        <span class="edit-card-field-name">Unpublished tips are hidden from guests.</span>
+                    </div>
+                </label>
+            </div>
         </div>
 
         <div class="flex gap-4 mt-6 justify-end p-6 bg-base-200">

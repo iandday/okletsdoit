@@ -1,16 +1,26 @@
 <script lang="ts">
+    import type { QuestionSchema, TipsSchema } from "$api-client";
     import Icon from "$lib/components/Icon.svelte";
     import CreateObject from "$lib/components/buttons/CreateObject.svelte";
     import ProtectedPageHeader from "$lib/components/layouts/ProtectedPageHeader.svelte";
     import ProtectedPageShell from "$lib/components/layouts/ProtectedPageShell.svelte";
     import { SvelteMap } from "svelte/reactivity";
-    import type { QuestionSchema, TipsSchema } from "../../../api-client";
+    import type { PageData } from "./$types";
 
-    const { data } = $props();
+    const { data }: { data: PageData } = $props();
 
     // Create a map of categories by name for quick lookup
     const categoryMap = $derived.by(() => {
-        const map = new SvelteMap();
+        const map = new SvelteMap<
+            string,
+            {
+                categoryId: string;
+                categoryName: string;
+                categoryOrder: number;
+                questions: QuestionSchema[];
+                tips: TipsSchema[];
+            }
+        >();
         data.categories?.forEach((cat) => {
             map.set(cat.categoryName, cat);
         });
@@ -159,7 +169,8 @@
                                         </div>
                                         <div class="flex gap-2">
                                             <a
-                                                href="/planning/faq/question/{question.id}/edit"
+                                                href={`/planning/faq/question/${question.id}/edit`}
+                                                data-sveltekit-reload
                                                 class="btn btn-success btn-sm btn-square"
                                                 aria-label="Edit Question">
                                                 <span class="icon-[lucide--pencil] size-4"></span>
@@ -202,7 +213,8 @@
                                         </div>
                                         <div class="flex gap-2">
                                             <a
-                                                href="/planning/faq/tip/{tip.id}/edit"
+                                                href={`/planning/faq/tip/${tip.id}/edit`}
+                                                data-sveltekit-reload
                                                 class="btn btn-success btn-sm btn-square"
                                                 aria-label="Edit Tip">
                                                 <span class="icon-[lucide--pencil] size-4"></span>

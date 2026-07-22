@@ -56,7 +56,7 @@
                     class="edit-card-field-textarea"
                     rows="3"
                     placeholder="Don't forget to RSVP by the deadline to help us plan accordingly!"
-                    value={form?.content || ""}
+                    value={(form?.content as string) || ""}
                     required></textarea>
                 <span class="label">
                     <span class="edit-card-field-name">Keep tips concise and actionable</span>
@@ -78,7 +78,7 @@
                 </select>
                 <span class="label">
                     <span class="edit-card-field-name">
-                        >Tips are displayed in a "Helpful Tips" section within each category</span>
+                        Tips are displayed in a "Helpful Tips" section within each category</span>
                 </span>
             </div>
 
@@ -98,6 +98,22 @@
                 <span class="label">
                     <span class="edit-card-field-name">Order within the category (0 = first)</span>
                 </span>
+            </div>
+
+            <!-- Published -->
+            <div class="form-control w-full">
+                <label class="cursor-pointer justify-start gap-4" for="published">
+                    <input
+                        type="checkbox"
+                        name="published"
+                        id="published"
+                        class="edit-card-field-toggle"
+                        checked={Boolean(form?.published)} />
+                    <div class="space-y-1">
+                        <span class="edit-card-field-name block">Published</span>
+                        <span class="edit-card-field-name">Leave off to keep this tip hidden until ready.</span>
+                    </div>
+                </label>
             </div>
         </div>
 

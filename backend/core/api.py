@@ -747,7 +747,15 @@ def create_tip(request, payload: TipsCreateSchema):
         if admin_user:
             data["created_by"] = admin_user
     tip = Tips.objects.create(**data)
-    return tip
+    return {
+        "id": tip.id,
+        "category": tip.category.name if tip.category else "General",
+        "content": tip.content,
+        "order": tip.order,
+        "published": tip.published,
+        "created_at": tip.created_at,
+        "updated_at": tip.updated_at,
+    }
 
 
 @router.put("/tips/{tip_id}", response=TipsSchema)
@@ -771,7 +779,15 @@ def update_tip(request, tip_id: UUID, payload: TipsUpdateSchema):
         if admin_user:
             tip.updated_by = admin_user
     tip.save()
-    return tip
+    return {
+        "id": tip.id,
+        "category": tip.category.name if tip.category else "General",
+        "content": tip.content,
+        "order": tip.order,
+        "published": tip.published,
+        "created_at": tip.created_at,
+        "updated_at": tip.updated_at,
+    }
 
 
 @router.delete("/tips/{tip_id}")

@@ -21,6 +21,7 @@ export const actions = {
         const categoryId = formData.get("categoryId");
         const icon = formData.get("icon");
         const order = formData.get("order");
+        const published = formData.get("published") === "on";
 
         if (!question || !answer || !categoryId || !icon) {
             return fail(400, {
@@ -30,6 +31,7 @@ export const actions = {
                 categoryId,
                 icon,
                 order,
+                published,
             });
         }
 
@@ -40,6 +42,7 @@ export const actions = {
                     answer: answer.toString(),
                     categoryId: categoryId.toString(),
                     icon: icon.toString(),
+                    published,
                     ...(order && { order: parseInt(order.toString()) }),
                 },
             });
@@ -56,6 +59,7 @@ export const actions = {
                 categoryId,
                 icon,
                 order,
+                published,
             });
         }
     },

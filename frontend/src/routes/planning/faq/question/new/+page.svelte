@@ -137,6 +137,22 @@
                     <span class="edit-card-field-name">Order within the category (0 = first)</span>
                 </span>
             </div>
+
+            <!-- Published -->
+            <div class="form-control w-full">
+                <label class="cursor-pointer justify-start gap-4" for="published">
+                    <input
+                        type="checkbox"
+                        name="published"
+                        id="published"
+                        class="edit-card-field-toggle"
+                        checked={Boolean(form?.published)} />
+                    <div class="space-y-1">
+                        <span class="edit-card-field-name block">Published</span>
+                        <span class="edit-card-field-name">Leave off to keep this question hidden until ready.</span>
+                    </div>
+                </label>
+            </div>
         </div>
 
         <div class="flex gap-4 mt-6 justify-end p-6 bg-base-200">
