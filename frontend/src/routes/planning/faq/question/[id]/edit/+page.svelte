@@ -156,6 +156,22 @@
                     min="0" />
             </div>
 
+            <!-- Published -->
+            <div class="form-control w-full">
+                <label class="cursor-pointer justify-start gap-4" for="published">
+                    <input
+                        type="checkbox"
+                        name="published"
+                        id="published"
+                        class="edit-card-field-toggle"
+                        checked={(form?.published as boolean | undefined) ?? data.question.published} />
+                    <div class="space-y-1">
+                        <span class="edit-card-field-name block">Published</span>
+                        <span class="edit-card-field-name">Unpublished questions are hidden from guests.</span>
+                    </div>
+                </label>
+            </div>
+
             <div>
                 View available icons at <a href="https://lucide.dev/icons" target="_blank" class="link">Lucide Icons</a>
             </div>
