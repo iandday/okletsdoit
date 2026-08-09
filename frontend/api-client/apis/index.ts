@@ -7,3 +7,4 @@ export * from "./DeadlinesApi";
 export * from "./ExpensesApi";
 export * from "./GuestlistApi";
 export * from "./ListApi";
+export * from "./UploadedPhotosApi";

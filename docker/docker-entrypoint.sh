@@ -51,9 +51,9 @@ else:
     /app/.venv/bin/python manage.py load_default_data
 
     if [[ ${LOCAL_DEV} == "True" ]]; then
-        /app/.venv/bin/python manage.py runserver_plus 0.0.0.0:8000
+        /app/.venv/bin/uvicorn okletsdoit.asgi:application --host 0.0.0.0 --port 8000 --reload
     else
-        /app/.venv/bin/gunicorn --bind 0.0.0.0:8000 --workers 3 --timeout 60 okletsdoit.wsgi:application 
+        /app/.venv/bin/gunicorn --bind 0.0.0.0:8000 --workers 3 --timeout 60 --worker-class uvicorn.workers.UvicornWorker okletsdoit.asgi:application
     fi
 else
     echo "Unknown CONTAINER_ROLE: $CONTAINER_ROLE"

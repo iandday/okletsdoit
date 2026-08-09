@@ -11,6 +11,7 @@ import {
     AttachmentsApi,
     ListApi,
     ExpensesApi,
+    UploadedPhotosApi,
 } from "$api-client";
 import type { Middleware } from "$api-client/runtime";
 
@@ -100,6 +101,7 @@ export function createApiClient(sessionCookie?: string) {
         attachments: new AttachmentsApi(config),
         list: new ListApi(config),
         expenses: new ExpensesApi(config),
+        photos: new UploadedPhotosApi(config),
     };
 }
 

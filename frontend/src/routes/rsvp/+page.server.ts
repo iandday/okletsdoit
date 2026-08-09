@@ -3,9 +3,10 @@ import { getconfigData } from "$lib/server/config-data";
 import { fail, redirect } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types";
 
-export const load: PageServerLoad = async ({ locals }) => {
+export const load: PageServerLoad = async ({ parent, locals }) => {
     const api = createApiClient(locals.sessionCookie);
-    const configData = await getconfigData();
+    const layoutData = await parent();
+    const configData = layoutData.configData;
 
     if (!configData?.enableRsvp) {
         throw redirect(302, "/");

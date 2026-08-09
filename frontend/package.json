@@ -64,6 +64,7 @@
         "@tiptap/starter-kit": "^3.19.0",
         "chart.js": "^4.4.7",
         "motion": "^12.23.26",
+        "photoswipe": "^5.4.4",
         "simplebar": "^6.3.3",
         "svelte-dnd-action": "^0.9.69",
         "svelte-headless-table": "^0.18.3",

@@ -59,6 +59,7 @@ ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 ALLOWED_CIDR_NETS = env.list("ALLOWED_CIDR_NETS")
 PERSONALIZED_RSVP_BASE_URL = env("PERSONALIZED_RSVP_BASE_URL")
 RSVP_URL = env("RSVP_URL")
+REDIS_URL = env("REDIS_URL")
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -69,6 +70,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "channels",
     "corsheaders",
     "django_extensions",
     "constance",
@@ -98,6 +100,7 @@ INSTALLED_APPS = [
     "list",
     "deadline",
     "guestlist.apps.GuestlistConfig",
+    "photos.apps.PhotosConfig",
 ]
 
 if DEBUG:
@@ -145,6 +148,16 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "okletsdoit.wsgi.application"
+ASGI_APPLICATION = "okletsdoit.asgi.application"
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [REDIS_URL],
+        },
+    },
+}
 
 if LOCAL_DB:
     DATABASES = {
@@ -196,7 +209,7 @@ LOGGING = {
     },
 }
 
-REDIS_URL = env("REDIS_URL")
+
 CONSTANCE_REDIS_CONNECTION = f"{REDIS_URL}/3"
 CACHES = {
     "default": {
@@ -291,6 +304,7 @@ SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 SECURE_SSL_REDIRECT = True
 SECURE_REDIRECT_EXEMPT = [
     r"^api/",  # Exempt API endpoints from SSL redirect
+    r"^ws/",  # Exempt websocket endpoints from SSL redirect
     r"^_allauth/",  # Exempt allauth endpoints for internal container auth checks
 ]
 SESSION_COOKIE_SECURE = True
@@ -324,7 +338,14 @@ CONTENT_SECURITY_POLICY = {
             "fonts.gstatic.com",
         ],
         "img-src": [SELF, "data:", "https:"],
-        "connect-src": [SELF, "https://proxy-event.ckeditor.com"],
+        "connect-src": [
+            SELF,
+            "https://proxy-event.ckeditor.com",
+            f"ws://{env('SERVER_NAME')}",
+            f"wss://{env('SERVER_NAME')}",
+            "ws://localhost:8000",
+            "ws://localhost:5173",
+        ],
         "frame-src": [NONE],
         "object-src": [NONE],
         "base-uri": [SELF],
