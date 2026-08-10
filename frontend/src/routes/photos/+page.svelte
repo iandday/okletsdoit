@@ -204,7 +204,9 @@
                 <div class="space-y-3 py-4">
                     <div id="photo-gallery" class="mx-auto max-w-6xl bg-base-300 py-2 px-2 shadow-md">
                         {#if data.photos.length === 0}
-                            <div class="mt-6 text-center text-base-content">No photos yet. Upload the first one.</div>
+                            <div class="mt-6 text-center text-primary-content">
+                                No photos yet, yours can be the first!
+                            </div>
                         {:else}
                             <div id="photoswipe-gallery" class="mt-6 columns-3 gap-3 px-2 md:columns-4 lg:columns-5">
                                 {#each data.photos as photo (photo.id)}
