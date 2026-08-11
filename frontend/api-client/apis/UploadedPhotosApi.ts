@@ -30,6 +30,10 @@ export interface PhotosApiCompleteUploadedPhotoRequest {
     photoId: string;
 }
 
+export interface PhotosApiDownloadUploadedPhotoRequest {
+    photoId: string;
+}
+
 /**
  *
  */
@@ -119,6 +123,97 @@ export class UploadedPhotosApi extends runtime.BaseAPI {
         initOverrides?: RequestInit | runtime.InitOverrideFunction,
     ): Promise<CreateUploadedPhotoResponseSchema> {
         const response = await this.photosApiCreateUploadedPhotoRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Return a short-lived attachment URL for downloading a photo file.
+     * Download Uploaded Photo
+     */
+    async photosApiDownloadUploadedPhotoRaw(
+        requestParameters: PhotosApiDownloadUploadedPhotoRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters["photoId"] == null) {
+            throw new runtime.RequiredError(
+                "photoId",
+                'Required parameter "photoId" was null or undefined when calling photosApiDownloadUploadedPhoto().',
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        let urlPath = `/api/photos/uploaded/{photo_id}/download`;
+        urlPath = urlPath.replace(`{${"photo_id"}}`, encodeURIComponent(String(requestParameters["photoId"])));
+
+        const response = await this.request(
+            {
+                path: urlPath,
+                method: "GET",
+                headers: headerParameters,
+                query: queryParameters,
+            },
+            initOverrides,
+        );
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Return a short-lived attachment URL for downloading a photo file.
+     * Download Uploaded Photo
+     */
+    async photosApiDownloadUploadedPhoto(
+        requestParameters: PhotosApiDownloadUploadedPhotoRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<void> {
+        await this.photosApiDownloadUploadedPhotoRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * List all uploaded photos, including those not approved.
+     * List All Uploaded Photos
+     */
+    async photosApiListAllUploadedPhotosRaw(
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<Array<UploadedPhotoSchema>>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
+        let urlPath = `/api/photos/all`;
+
+        const response = await this.request(
+            {
+                path: urlPath,
+                method: "GET",
+                headers: headerParameters,
+                query: queryParameters,
+            },
+            initOverrides,
+        );
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(UploadedPhotoSchemaFromJSON));
+    }
+
+    /**
+     * List all uploaded photos, including those not approved.
+     * List All Uploaded Photos
+     */
+    async photosApiListAllUploadedPhotos(
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<Array<UploadedPhotoSchema>> {
+        const response = await this.photosApiListAllUploadedPhotosRaw(initOverrides);
         return await response.value();
     }
 

@@ -4,7 +4,7 @@ from typing import Optional
 from uuid import UUID
 import hashlib
 import io
-
+from core.auth import multi_auth
 import boto3
 from botocore.exceptions import ClientError
 from django.conf import settings
@@ -246,6 +246,17 @@ def complete_uploaded_photo(request, photo_id: UUID):
 def list_uploaded_photos(request):
     """
     List all uploaded photos.
+    """
+    photos = UploadedPhoto.objects.filter(
+        is_deleted=False, is_approved=True, status=UploadedPhoto.STATUS_CHOICES.READY
+    ).order_by("-uploaded_at")
+    return photos
+
+
+@router.get("/all", response=TypeList[UploadedPhotoSchema], auth=multi_auth)
+def list_all_uploaded_photos(request):
+    """
+    List all uploaded photos, including those not approved.
     """
     photos = UploadedPhoto.objects.filter(is_deleted=False, status=UploadedPhoto.STATUS_CHOICES.READY).order_by(
         "-uploaded_at"
