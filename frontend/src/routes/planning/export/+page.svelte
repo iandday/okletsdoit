@@ -72,7 +72,18 @@
                             </div>
                         </div>
                     </div>
-
+                    <div class="card bg-base-200 border border-base-300">
+                        <div class="card-body">
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="icon-[lucide--file-text] size-5 text-warning"></span>
+                                <h3 class="font-semibold text-lg">Export Photos</h3>
+                            </div>
+                            <p class="text-sm opacity-80 mb-4">
+                                Export a ZIP file containing all uploaded photos for backup or sharing purposes.
+                            </p>
+                            <ExportData resourceType="photos" label="Export All Photos" format="zip" size="md" />
+                        </div>
+                    </div>
                     <!-- Future Export Options -->
                     <div class="card bg-base-200 border border-base-300">
                         <div class="card-body">
@@ -84,22 +95,6 @@
                                 Export vendor and contact information including addresses and communication details.
                             </p>
                             <button class="btn btn-success btn-sm gap-2" disabled>
-                                <span class="icon-[lucide--download] size-4"></span>
-                                Coming Soon
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="card bg-base-200 border border-base-300">
-                        <div class="card-body">
-                            <div class="flex items-center gap-2 mb-2">
-                                <span class="icon-[lucide--file-text] size-5 text-warning"></span>
-                                <h3 class="font-semibold text-lg">Export Reports</h3>
-                            </div>
-                            <p class="text-sm opacity-80 mb-4">
-                                Generate comprehensive reports with custom fields and filtering options.
-                            </p>
-                            <button class="btn btn-warning btn-sm gap-2" disabled>
                                 <span class="icon-[lucide--download] size-4"></span>
                                 Coming Soon
                             </button>

@@ -11,7 +11,7 @@ export const GET: RequestHandler = async ({ url }) => {
         throw error(400, `Invalid resource type: ${resource}`);
     }
 
-    if (format !== "csv" && format !== "xlsx") {
+    if (format !== "csv" && format !== "xlsx" && format !== "zip") {
         throw error(400, `Invalid format: ${format}`);
     }
 

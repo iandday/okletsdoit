@@ -34,6 +34,11 @@ export interface PhotosApiDownloadUploadedPhotoRequest {
     photoId: string;
 }
 
+export interface PhotosApiUpdateUploadedPhotoRequest {
+    photoId: string;
+    uploadedPhotoSchema: UploadedPhotoSchema;
+}
+
 /**
  *
  */
@@ -173,7 +178,50 @@ export class UploadedPhotosApi extends runtime.BaseAPI {
     }
 
     /**
-     * List all uploaded photos, including those not approved.
+     * Export all uploaded photos as a zip file.
+     * Export All Uploaded Photos
+     */
+    async photosApiExportAllUploadedPhotosRaw(
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<Blob>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
+        let urlPath = `/api/photos/export_all`;
+
+        const response = await this.request(
+            {
+                path: urlPath,
+                method: "GET",
+                headers: headerParameters,
+                query: queryParameters,
+            },
+            initOverrides,
+        );
+
+        return new runtime.BlobApiResponse(response);
+    }
+
+    /**
+     * Export all uploaded photos as a zip file.
+     * Export All Uploaded Photos
+     */
+    async photosApiExportAllUploadedPhotos(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Blob> {
+        const response = await this.photosApiExportAllUploadedPhotosRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * List all uploaded photos for admin review, including soft-deleted records.
      * List All Uploaded Photos
      */
     async photosApiListAllUploadedPhotosRaw(
@@ -207,7 +255,7 @@ export class UploadedPhotosApi extends runtime.BaseAPI {
     }
 
     /**
-     * List all uploaded photos, including those not approved.
+     * List all uploaded photos for admin review, including soft-deleted records.
      * List All Uploaded Photos
      */
     async photosApiListAllUploadedPhotos(
@@ -251,6 +299,71 @@ export class UploadedPhotosApi extends runtime.BaseAPI {
         initOverrides?: RequestInit | runtime.InitOverrideFunction,
     ): Promise<Array<UploadedPhotoSchema>> {
         const response = await this.photosApiListUploadedPhotosRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Update an uploaded photo\'s metadata.
+     * Update Uploaded Photo
+     */
+    async photosApiUpdateUploadedPhotoRaw(
+        requestParameters: PhotosApiUpdateUploadedPhotoRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<UploadedPhotoSchema>> {
+        if (requestParameters["photoId"] == null) {
+            throw new runtime.RequiredError(
+                "photoId",
+                'Required parameter "photoId" was null or undefined when calling photosApiUpdateUploadedPhoto().',
+            );
+        }
+
+        if (requestParameters["uploadedPhotoSchema"] == null) {
+            throw new runtime.RequiredError(
+                "uploadedPhotoSchema",
+                'Required parameter "uploadedPhotoSchema" was null or undefined when calling photosApiUpdateUploadedPhoto().',
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters["Content-Type"] = "application/json";
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Service-Token"] = await this.configuration.apiKey("X-Service-Token"); // ServiceTokenAuth authentication
+        }
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-Session-Token"] = await this.configuration.apiKey("X-Session-Token"); // XSessionTokenAuth authentication
+        }
+
+        let urlPath = `/api/photos/uploaded/{photo_id}/update`;
+        urlPath = urlPath.replace(`{${"photo_id"}}`, encodeURIComponent(String(requestParameters["photoId"])));
+
+        const response = await this.request(
+            {
+                path: urlPath,
+                method: "POST",
+                headers: headerParameters,
+                query: queryParameters,
+                body: UploadedPhotoSchemaToJSON(requestParameters["uploadedPhotoSchema"]),
+            },
+            initOverrides,
+        );
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => UploadedPhotoSchemaFromJSON(jsonValue));
+    }
+
+    /**
+     * Update an uploaded photo\'s metadata.
+     * Update Uploaded Photo
+     */
+    async photosApiUpdateUploadedPhoto(
+        requestParameters: PhotosApiUpdateUploadedPhotoRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<UploadedPhotoSchema> {
+        const response = await this.photosApiUpdateUploadedPhotoRaw(requestParameters, initOverrides);
         return await response.value();
     }
 }

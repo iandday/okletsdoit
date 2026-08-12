@@ -1,19 +1,22 @@
+import hashlib
+import io
+import zipfile
 from datetime import datetime
 from typing import List as TypeList
 from typing import Optional
 from uuid import UUID
-import hashlib
-import io
-from core.auth import multi_auth
+
 import boto3
 from botocore.exceptions import ClientError
+from core.auth import multi_auth
 from django.conf import settings
 from django.core.files.base import ContentFile
 from django.http import HttpResponseRedirect
+from django.http import StreamingHttpResponse
 from django.shortcuts import get_object_or_404
-from ninja.errors import HttpError
 from ninja import Router
 from ninja import Schema
+from ninja.errors import HttpError
 from PIL import Image
 from PIL import ImageOps
 from PIL import UnidentifiedImageError
@@ -256,9 +259,80 @@ def list_uploaded_photos(request):
 @router.get("/all", response=TypeList[UploadedPhotoSchema], auth=multi_auth)
 def list_all_uploaded_photos(request):
     """
-    List all uploaded photos, including those not approved.
+    List all uploaded photos for admin review, including soft-deleted records.
     """
-    photos = UploadedPhoto.objects.filter(is_deleted=False, status=UploadedPhoto.STATUS_CHOICES.READY).order_by(
-        "-uploaded_at"
-    )
+    photos = UploadedPhoto.objects.filter(status=UploadedPhoto.STATUS_CHOICES.READY).order_by("-uploaded_at")
     return photos
+
+
+@router.post("/uploaded/{photo_id}/update", response=UploadedPhotoSchema, auth=multi_auth)
+def update_uploaded_photo(request, photo_id: UUID, data: UploadedPhotoSchema):
+    """
+    Update an uploaded photo's metadata.
+    """
+    photo = get_object_or_404(UploadedPhoto, id=photo_id)
+    for field in ["is_approved", "flagged", "is_deleted", "favorite_count"]:
+        if hasattr(data, field):
+            setattr(photo, field, getattr(data, field))
+    photo.save(update_fields=["is_approved", "flagged", "is_deleted", "favorite_count"])
+    publish_photo_update(
+        event="photo.updated",
+        photo_id=str(photo.id),
+        status=photo.status,
+        uploaded_at=photo.uploaded_at.isoformat() if photo.uploaded_at else None,
+    )
+    return photo
+
+
+# endpoint to download all uploaded photos as a zip file
+@router.get(
+    "/export_all",
+    auth=multi_auth,
+    response=None,
+    openapi_extra={
+        "responses": {
+            200: {
+                "description": "Zip file containing all uploaded photos",
+                "content": {
+                    "application/zip": {"schema": {"type": "string", "format": "binary"}},
+                },
+            }
+        }
+    },
+)
+def export_all_uploaded_photos(request):
+    """
+    Export all uploaded photos as a zip file.
+    """
+
+    photos = UploadedPhoto.objects.filter(
+        is_deleted=False, is_approved=True, status=UploadedPhoto.STATUS_CHOICES.READY
+    ).order_by("-uploaded_at")
+
+    bucket_name = settings.STORAGES["default"]["OPTIONS"]["bucket_name"]
+    s3_client = boto3.client(
+        "s3",
+        region_name=settings.STORAGES["default"]["OPTIONS"].get("region_name"),
+        aws_access_key_id=settings.STORAGES["default"]["OPTIONS"].get("access_key"),
+        aws_secret_access_key=settings.STORAGES["default"]["OPTIONS"].get("secret_key"),
+        endpoint_url=settings.STORAGES["default"]["OPTIONS"].get("endpoint_url"),
+    )
+
+    with io.BytesIO() as zip_buffer:
+        with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zip_file:
+            for photo in photos:
+                object_key = photo.get_storage_object_key()
+                mem_buffer = io.BytesIO()
+                s3_client.download_fileobj(Bucket=bucket_name, Key=object_key, Fileobj=mem_buffer)
+                mem_buffer.seek(0)
+                zip_file.writestr(f"{photo.id}.jpg", mem_buffer.read())
+        zip_bytes = zip_buffer.getvalue()
+
+    async def stream_zip():
+        chunk_size = 64 * 1024
+        for index in range(0, len(zip_bytes), chunk_size):
+            yield zip_bytes[index : index + chunk_size]
+
+    response = StreamingHttpResponse(stream_zip(), content_type="application/zip")
+    response["Content-Disposition"] = 'attachment; filename="uploaded_photos.zip"'
+    return response

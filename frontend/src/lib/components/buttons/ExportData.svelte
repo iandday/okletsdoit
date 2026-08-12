@@ -1,12 +1,11 @@
 <script lang="ts">
+    import type { ExportResourceType, ExportFormat } from "$lib/server/export-registry";
     import { SvelteURLSearchParams } from "svelte/reactivity";
-
-    type ExportResourceType = "guest" | "guest_group";
 
     type iExportDataProps = {
         resourceType: ExportResourceType;
         label: string;
-        format: "csv" | "xlsx";
+        format: ExportFormat;
         fileName?: string;
         size?: "sm" | "md" | "lg";
     };

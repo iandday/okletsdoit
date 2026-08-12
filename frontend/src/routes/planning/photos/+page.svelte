@@ -1,15 +1,14 @@
 <script lang="ts">
-    import { enhance } from "$app/forms";
-    import { goto } from "$app/navigation";
     import { invalidateAll } from "$app/navigation";
     import PhotoGallery from "$lib/components/PhotoGallery.svelte";
+    import ExportData from "$lib/components/buttons/ExportData.svelte";
     import ProtectedPageHeader from "$lib/components/layouts/ProtectedPageHeader.svelte";
     import ProtectedPageShell from "$lib/components/layouts/ProtectedPageShell.svelte";
     import "photoswipe/dist/photoswipe.css";
     import { onMount } from "svelte";
     import type { PageData, ActionData } from "./$types";
 
-    const { data }: { data: PageData } = $props();
+    const { data, form }: { data: PageData; form: ActionData } = $props();
     const relativeCrumbs = [{ title: "Photo Review" }];
     let socket: WebSocket | undefined;
     let reconnectTimer: ReturnType<typeof setTimeout> | undefined;
@@ -29,7 +28,11 @@
         socket.onmessage = async (event: MessageEvent<string>) => {
             try {
                 const payload = JSON.parse(event.data) as { event?: string };
-                if (payload.event === "photo.ready" || payload.event === "photo.failed") {
+                if (
+                    payload.event === "photo.ready" ||
+                    payload.event === "photo.failed" ||
+                    payload.event === "photo.updated"
+                ) {
                     await invalidateAll();
                 }
             } catch {
@@ -120,6 +123,23 @@
 </script>
 
 <ProtectedPageShell {relativeCrumbs}>
-    <ProtectedPageHeader title="Photo Review" description="Review and manage uploaded photos" />
-    <PhotoGallery photos={data.photos} />
+    <ProtectedPageHeader
+        title="Photo Review"
+        description="Photos can be hidden from the public gallery by deleting or unapproving them." />
+    {#if form?.error}
+        <div class="alert alert-error mb-4">
+            <span class="icon-[lucide--alert-circle] size-5"></span>
+            <span>{form.error}</span>
+        </div>
+    {/if}
+    <div class="mb-4">
+        <ExportData resourceType="photos" label="Export All Photos" format="zip" size="md" />
+    </div>
+    <PhotoGallery
+        photos={data.photos}
+        adminMode={true}
+        deleteAction="?/deletePhoto"
+        restoreAction="?/restorePhoto"
+        approveAction="?/approvePhoto"
+        unapproveAction="?/unapprovePhoto" />
 </ProtectedPageShell>
