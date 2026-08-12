@@ -1,6 +1,19 @@
 # CHANGELOG
 
 
+## v0.24.1 (2026-08-12)
+
+### Bug Fixes
+
+- **Core**: Fix timeline
+  ([`7b122d4`](https://github.com/iandday/okletsdoit/commit/7b122d4a61ba771dab87123fa39d5d3a43482e13))
+
+### Chores
+
+- Sync files from main (v0.24.0)
+  ([`dc8865e`](https://github.com/iandday/okletsdoit/commit/dc8865e25d281764a652fa4c2cfcfe3ec2e586f9))
+
+
 ## v0.24.0 (2026-08-12)
 
 ### Bug Fixes
