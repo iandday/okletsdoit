@@ -1,6 +1,45 @@
 # CHANGELOG
 
 
+## v0.24.0 (2026-08-12)
+
+### Bug Fixes
+
+- **Core**: :bug: pin redis
+  ([`a0262b4`](https://github.com/iandday/okletsdoit/commit/a0262b4fd663a305eaaf70480fad45b9f56e600e))
+
+- Rebuild entry point
+  ([`b87060a`](https://github.com/iandday/okletsdoit/commit/b87060aa4e2c5b7c4970b189f84d674914b99f61))
+
+- **Core**: :fire: remove blank tests
+  ([`de24dc2`](https://github.com/iandday/okletsdoit/commit/de24dc23aca54ff2eb4ab8409bbec05cb70ac71e))
+
+### Chores
+
+- Sync files from main (v0.23.1)
+  ([`96a69e2`](https://github.com/iandday/okletsdoit/commit/96a69e2313d8adecb3463209f002638dd0a90cb5))
+
+### Features
+
+- **Core**: :sparkles: add photo review function
+  ([`1392582`](https://github.com/iandday/okletsdoit/commit/1392582be8ec1d7bbda51f7c4314005de194948b))
+
+- **Core**: :sparkles: initial photo review
+  ([`f22e062`](https://github.com/iandday/okletsdoit/commit/f22e06250e50c423f82fc6218538409990c694a4))
+
+- **Core**: :zap: extract photo gallery
+  ([`2f1008b`](https://github.com/iandday/okletsdoit/commit/2f1008bc99c22b9e4f6fbcae695f304736910978))
+
+- **Core**: :art: fix photo page
+  ([`135167a`](https://github.com/iandday/okletsdoit/commit/135167ad17a98ed871ee37ac9e1b1db111ebd691))
+
+- **Core**: :sparkles: add photos
+  ([`cf3c8fc`](https://github.com/iandday/okletsdoit/commit/cf3c8fcb940d6108982448cf4ec675ae45a08449))
+
+- **Core**: :zap: update guest activity toggle
+  ([`eb27774`](https://github.com/iandday/okletsdoit/commit/eb277740386932094f5c460060a56f98601370d6))
+
+
 ## v0.23.1 (2026-07-22)
 
 ### Bug Fixes
