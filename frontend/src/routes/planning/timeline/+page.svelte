@@ -1,5 +1,4 @@
 <script lang="ts">
-    import CreateObject from "$lib/components/buttons/CreateObject.svelte";
     import ProtectedPageHeader from "$lib/components/layouts/ProtectedPageHeader.svelte";
     import ProtectedPageShell from "$lib/components/layouts/ProtectedPageShell.svelte";
     import { dndzone } from "svelte-dnd-action";
@@ -10,18 +9,22 @@
     const relativeCrumbs = [{ title: "Timeline", href: "/planning/timeline" }];
 
     // State for drag and drop
-    let items = $state(
-        data.timelines.map((t) => ({
-            id: t.id,
-            ...t,
-        })),
-    );
+    let items = $state(data.timelines.map((t) => ({ ...t })));
 
     // Modal state
+    let createModalOpen = $state(false);
     let editModalOpen = $state(false);
     let deleteModalOpen = $state(false);
     let selectedItem = $state<any>(null);
+    let errorToast = $state("");
+    let errorToastTimer: ReturnType<typeof setTimeout> | undefined;
     let editForm = $state({
+        name: "",
+        description: "",
+        start: "",
+        end: "",
+    });
+    let createForm = $state({
         name: "",
         description: "",
         start: "",
@@ -30,6 +33,14 @@
 
     const flipDurationMs = 200;
     let dragStartOrder: string[] = [];
+
+    function showErrorToast(message: string) {
+        errorToast = message;
+        if (errorToastTimer) clearTimeout(errorToastTimer);
+        errorToastTimer = setTimeout(() => {
+            errorToast = "";
+        }, 3500);
+    }
 
     function handleDndConsider(e: CustomEvent) {
         if (e.detail.info.trigger === "dragStarted") {
@@ -64,15 +75,18 @@
             }
         });
 
-        // Wait for all updates to complete
-        await Promise.all(updates);
+        // Wait for all updates to complete and surface any persistence failures.
+        const results = await Promise.all(updates);
+        if (results.some((result) => !result.ok)) {
+            showErrorToast("Failed to persist one or more timeline reorder updates.");
+        }
 
         items = newItems;
         dragStartOrder = [];
     }
 
-    function formatDateTime(dateStr: string) {
-        const date = new Date(dateStr);
+    function formatDateTime(dateValue: string | Date) {
+        const date = new Date(dateValue);
         return date.toLocaleString("en-US", {
             month: "short",
             day: "numeric",
@@ -83,13 +97,42 @@
         });
     }
 
-    function formatTime(dateStr: string) {
-        const date = new Date(dateStr);
+    function formatTime(dateValue: string | Date) {
+        const date = new Date(dateValue);
         return date.toLocaleTimeString("en-US", {
             hour: "numeric",
             minute: "2-digit",
             hour12: true,
         });
+    }
+
+    function formatForInput(dateValue: string | Date | null | undefined) {
+        if (!dateValue) return "";
+        const date = new Date(dateValue);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        const hours = String(date.getHours()).padStart(2, "0");
+        const minutes = String(date.getMinutes()).padStart(2, "0");
+        return `${year}-${month}-${day}T${hours}:${minutes}`;
+    }
+
+    async function reloadTimelineItems() {
+        try {
+            const response = await fetch("/api/core/timelines", {
+                cache: "no-store",
+            });
+            if (!response.ok) return;
+
+            const payload = await response.json();
+            const nextItems = Array.isArray(payload) ? payload : payload?.items;
+
+            if (Array.isArray(nextItems)) {
+                items = nextItems.map((item) => ({ ...item }));
+            }
+        } catch (error) {
+            console.error("Failed to reload timelines:", error);
+        }
     }
 
     async function toggleStatus(item: any, field: "published" | "confirmed") {
@@ -109,23 +152,23 @@
             if (idx !== -1) {
                 items[idx][field] = !items[idx][field];
             }
+        } else {
+            showErrorToast("Failed to update timeline status.");
         }
+    }
+
+    function openCreateModal() {
+        createForm = {
+            name: "",
+            description: "",
+            start: "",
+            end: "",
+        };
+        createModalOpen = true;
     }
 
     function openEditModal(item: any) {
         selectedItem = item;
-
-        // Convert ISO datetime to datetime-local format (YYYY-MM-DDTHH:mm)
-        const formatForInput = (dateStr: string) => {
-            if (!dateStr) return "";
-            const date = new Date(dateStr);
-            const year = date.getFullYear();
-            const month = String(date.getMonth() + 1).padStart(2, "0");
-            const day = String(date.getDate()).padStart(2, "0");
-            const hours = String(date.getHours()).padStart(2, "0");
-            const minutes = String(date.getMinutes()).padStart(2, "0");
-            return `${year}-${month}-${day}T${hours}:${minutes}`;
-        };
 
         editForm = {
             name: item.name || "",
@@ -139,6 +182,45 @@
     function openDeleteModal(item: any) {
         selectedItem = item;
         deleteModalOpen = true;
+    }
+
+    async function createEvent() {
+        if (!createForm.name || !createForm.start) {
+            showErrorToast("Name and start time are required.");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("name", createForm.name);
+        formData.append("description", createForm.description);
+        formData.append("start", createForm.start);
+        formData.append("end", createForm.end);
+
+        try {
+            const response = await fetch("?/create", {
+                method: "POST",
+                body: formData,
+            });
+
+            if (!response.ok) {
+                showErrorToast("Failed to create timeline event.");
+                return;
+            }
+
+            const result = await response.json();
+            const created = result?.data?.created ?? result?.created;
+
+            if (created) {
+                items = [created, ...items];
+            }
+
+            // Always sync from server so the list reflects the canonical persisted state.
+            await reloadTimelineItems();
+            createModalOpen = false;
+        } catch (error) {
+            console.error("Failed to create timeline event:", error);
+            showErrorToast("Failed to create timeline event.");
+        }
     }
 
     async function saveEdit() {
@@ -160,9 +242,20 @@
             // Update local state
             const idx = items.findIndex((i) => i.id === selectedItem.id);
             if (idx !== -1) {
-                items[idx] = { ...items[idx], ...editForm };
+                const nextStart = editForm.start ? new Date(editForm.start) : items[idx].start;
+                const nextEnd = editForm.end ? new Date(editForm.end) : null;
+
+                items[idx] = {
+                    ...items[idx],
+                    name: editForm.name,
+                    description: editForm.description,
+                    start: nextStart,
+                    end: nextEnd,
+                };
             }
             editModalOpen = false;
+        } else {
+            showErrorToast("Failed to save timeline changes.");
         }
     }
 
@@ -180,9 +273,20 @@
         if (response.ok) {
             items = items.filter((i) => i.id !== selectedItem.id);
             deleteModalOpen = false;
+        } else {
+            showErrorToast("Failed to delete timeline event.");
         }
     }
 </script>
+
+{#if errorToast}
+    <div class="toast toast-top toast-end z-50">
+        <div class="alert alert-error">
+            <span class="icon-[lucide--alert-circle] size-4"></span>
+            <span>{errorToast}</span>
+        </div>
+    </div>
+{/if}
 
 <ProtectedPageShell {relativeCrumbs}>
     <ProtectedPageHeader
@@ -193,7 +297,7 @@
                 Confirmed and Tentative status to keep track of which events are finalized and which are still in
                 planning.">
         <div class="flex flex-row sm:flex-col sm:flex-row items-center justify-center gap-4 mb-8">
-            <CreateObject href="/planning/timeline/new" label="New Event" />
+            <button class="btn btn-success" onclick={openCreateModal}>New Event</button>
             <a href="/planning/preview/venue" class="btn btn-accent" target="_blank">Preview Venue Page</a>
         </div>
     </ProtectedPageHeader>
@@ -207,10 +311,10 @@
                 <p class="text-base-content/70 mb-6 max-w-md">
                     Create your first timeline event to start planning your wedding day schedule.
                 </p>
-                <a href="/planning/timeline/new" class="btn btn-primary gap-2">
+                <button class="btn btn-success gap-2" onclick={openCreateModal}>
                     <span class="icon-[lucide--plus] size-5"></span>
                     Create First Event
-                </a>
+                </button>
             </div>
         </div>
     {:else}
@@ -321,6 +425,52 @@
         </div>
     {/if}
 </ProtectedPageShell>
+
+<!-- Create Modal -->
+{#if createModalOpen}
+    <dialog class="modal modal-open">
+        <div class="modal-box bg-base-200">
+            <div class="edit-card">
+                <div class="edit-card-title">Create Timeline Event</div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="edit-card-field-name">Event Name</label>
+                        <input
+                            type="text"
+                            bind:value={createForm.name}
+                            class="edit-card-field-input"
+                            placeholder="Event name..." />
+                    </div>
+
+                    <div>
+                        <label class="edit-card-field-name">Start Time</label>
+                        <input type="datetime-local" bind:value={createForm.start} class="edit-card-field-date" />
+                    </div>
+
+                    <div>
+                        <label class="edit-card-field-name">End Time</label>
+                        <input type="datetime-local" bind:value={createForm.end} class="edit-card-field-date" />
+                    </div>
+
+                    <div>
+                        <label class="edit-card-field-name">Description</label>
+                        <textarea
+                            bind:value={createForm.description}
+                            class="edit-card-field-textarea"
+                            placeholder="Event description..."></textarea>
+                    </div>
+                </div>
+
+                <div class="modal-action">
+                    <button onclick={() => (createModalOpen = false)} class="btn btn-ghost">Cancel</button>
+                    <button onclick={createEvent} class="btn btn-primary">Create Event</button>
+                </div>
+            </div>
+            <button onclick={() => (createModalOpen = false)} class="modal-backdrop" aria-label="Close modal"></button>
+        </div>
+    </dialog>
+{/if}
 
 <!-- Edit Modal -->
 {#if editModalOpen}
