@@ -2,10 +2,12 @@
     import ExportData from "$lib/components/buttons/ExportData.svelte";
     import ProtectedPageHeader from "$lib/components/layouts/ProtectedPageHeader.svelte";
     import ProtectedPageShell from "$lib/components/layouts/ProtectedPageShell.svelte";
+
+    const relativeCrumbs = [{ title: "Export" }];
 </script>
 
-<ProtectedPageShell section="admin" relativeCrumbs={[{ label: "Administration", href: "/admin" }]}>
-    <ProtectedPageHeader title="Data Export" description="Export your data for backup, analysis, or external use." />
+<ProtectedPageShell {relativeCrumbs}>
+    <ProtectedPageHeader title="Data Export" description="Export your data for whatever your heart desires" />
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div class="detail-card">

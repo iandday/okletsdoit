@@ -30,8 +30,8 @@
 - [ ] Guest List
   - [ ] Add seating assignments
 - [ ] Photo Upload
-    * [ ] Upload form (Public)
-    * [ ] Gallery (Public)
+    * [X] Upload form (Public)
+    * [X] Gallery (Public)
     * [ ] Photo approval (Private)
 - [X] Deadlines
     * [X] Notification of upcoming deadlines

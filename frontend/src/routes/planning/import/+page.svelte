@@ -1,12 +1,12 @@
 <script lang="ts">
     import ProtectedPageHeader from "$lib/components/layouts/ProtectedPageHeader.svelte";
     import ProtectedPageShell from "$lib/components/layouts/ProtectedPageShell.svelte";
+
+    const relativeCrumbs = [{ title: "Import" }];
 </script>
 
-<ProtectedPageShell section="admin" relativeCrumbs={[{ label: "Administration", href: "/admin" }]}>
-    <ProtectedPageHeader
-        title="Data Import"
-        description="Import guest lists, contacts, and other data from external sources." />
+<ProtectedPageShell {relativeCrumbs}>
+    <ProtectedPageHeader title="Data Import" description="Import guest lists, contacts, and other data." />
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div class="detail-card">

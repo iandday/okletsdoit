@@ -118,7 +118,7 @@
                             {/if}
                         </div>
                         <div class="config-card-actions">
-                            <button onclick={() => goto(item.href)} class="btn btn-accent btn-lg gap-2">
+                            <button onclick={() => goto(item.href ?? "#")} class="btn btn-accent btn-lg gap-2">
                                 <span class="{item.icon} size-5"></span>
                                 Open {item.title}
                                 <span class="icon-[lucide--arrow-right] size-5"></span>
@@ -161,34 +161,49 @@
                         <span class="icon-[lucide--bell] size-6"></span>
                         Actions
                     </div>
-                    <p></p>
-                    <form
-                        method="POST"
-                        action="?/sendUpdateEmail"
-                        use:enhance={() => {
-                            isSendingEmail = true;
-                            return async ({ update }) => {
-                                await update();
-                                isSendingEmail = false;
-                            };
-                        }}>
-                        <button type="submit" disabled={isSendingEmail} class="btn btn-accent gap-2">
-                            <span class="icon-[lucide--send] size-5"></span>
-                            {isSendingEmail ? "Sending..." : "Send Update Email"}
-                        </button>
-                    </form>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                        <div id="sendUpdateEmail">
+                            <form
+                                method="POST"
+                                action="?/sendUpdateEmail"
+                                use:enhance={() => {
+                                    isSendingEmail = true;
+                                    return async ({ update }) => {
+                                        await update();
+                                        isSendingEmail = false;
+                                    };
+                                }}>
+                                <button type="submit" disabled={isSendingEmail} class="btn btn-accent gap-2">
+                                    <span class="icon-[lucide--send] size-5"></span>
+                                    {isSendingEmail ? "Sending..." : "Send Update Email"}
+                                </button>
+                            </form>
 
-                    {#if form?.success}
-                        <div class="alert alert-success mt-4">
-                            <span class="icon-[lucide--check-circle] size-5"></span>
-                            <span>{form.message} (Task ID: {form.taskId})</span>
+                            {#if form?.success}
+                                <div class="alert alert-success mt-4">
+                                    <span class="icon-[lucide--check-circle] size-5"></span>
+                                    <span>{form.message} (Task ID: {form.taskId})</span>
+                                </div>
+                            {:else if form?.error}
+                                <div class="alert alert-error mt-4">
+                                    <span class="icon-[lucide--alert-circle] size-5"></span>
+                                    <span>{form.error}</span>
+                                </div>
+                            {/if}
                         </div>
-                    {:else if form?.error}
-                        <div class="alert alert-error mt-4">
-                            <span class="icon-[lucide--alert-circle] size-5"></span>
-                            <span>{form.error}</span>
-                        </div>
-                    {/if}
+                        <a href="/planning/photos" class="btn btn-accent gap-2">
+                            <span class="icon-[lucide--camera] size-5"></span>
+                            Review Photos
+                        </a>
+                        <a href="/planning/import" class="btn btn-accent gap-2">
+                            <span class="icon-[lucide--folder-up] size-5"></span>
+                            Import Data
+                        </a>
+                        <a href="/planning/export" class="btn btn-accent gap-2">
+                            <span class="icon-[lucide--folder-down] size-5"></span>
+                            Export Data
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
