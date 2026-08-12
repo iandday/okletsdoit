@@ -12,6 +12,47 @@ export const load: PageServerLoad = async ({ locals }) => {
 };
 
 export const actions = {
+    create: async ({ request, locals }) => {
+        const api = createApiClient(locals.sessionCookie);
+        const formData = await request.formData();
+
+        const name = (formData.get("name") as string | null)?.trim() || "";
+        const description = (formData.get("description") as string | null) ?? "";
+        const startRaw = (formData.get("start") as string | null) ?? "";
+        const endRaw = (formData.get("end") as string | null) ?? "";
+
+        const parseDateValue = (raw: string) => {
+            if (!raw) return null;
+            const parsed = new Date(raw);
+            return Number.isNaN(parsed.getTime()) ? null : parsed;
+        };
+
+        const start = parseDateValue(startRaw);
+        const end = parseDateValue(endRaw);
+
+        if (!name || !start) {
+            return fail(400, { error: "Name and start time are required" });
+        }
+
+        try {
+            const created = await api.core.coreApiCreateTimeline({
+                timelineCreateSchema: {
+                    name,
+                    description,
+                    start,
+                    end,
+                    published: false,
+                    confirmed: false,
+                },
+            });
+
+            return { success: true, created };
+        } catch (error) {
+            console.error("Failed to create timeline:", error);
+            return fail(500, { error: "Failed to create timeline event" });
+        }
+    },
+
     update: async ({ request, locals }) => {
         const api = createApiClient(locals.sessionCookie);
         const formData = await request.formData();
@@ -28,6 +69,12 @@ export const actions = {
         try {
             const updateData: any = {};
 
+            const parseDateValue = (raw: string) => {
+                if (!raw) return null;
+                const parsed = new Date(raw);
+                return Number.isNaN(parsed.getTime()) ? null : parsed;
+            };
+
             // Single field update (for toggles)
             if (field && value !== null) {
                 if (field === "published" || field === "confirmed") {
@@ -35,7 +82,7 @@ export const actions = {
                 } else if (field === "order") {
                     updateData[field] = parseInt(value, 10);
                 } else if (field === "start" || field === "end") {
-                    updateData[field] = value;
+                    updateData[field] = parseDateValue(value);
                 } else if (field === "name" || field === "description") {
                     updateData[field] = value;
                 }
@@ -48,8 +95,9 @@ export const actions = {
 
                 if (name) updateData.name = name;
                 if (description !== null) updateData.description = description;
-                if (start) updateData.start = start;
-                if (end) updateData.end = end;
+                if (start) updateData.start = parseDateValue(start);
+                // Allow clearing the end time by sending null when empty.
+                if (formData.has("end")) updateData.end = parseDateValue(end);
             }
 
             await api.core.coreApiUpdateTimeline({
