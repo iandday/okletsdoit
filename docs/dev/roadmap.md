@@ -11,9 +11,11 @@
     * [ ] Show date in timeline view on venue page
     * [ ] Toggle each functionality
     * [ ] Extract story component to backend
+    * [ ] Approve uploaded photos by default
 * [ ] Data Export
   * [X] Guest Group Details
   * [X] Guest Details
+  * [X] Uploaded Photos
   * [ ] Budget
   * [ ] Lists
   * [ ] Ideas
@@ -30,9 +32,9 @@
 - [ ] Guest List
   - [ ] Add seating assignments
 - [ ] Photo Upload
-    * [ ] Upload form (Public)
-    * [ ] Gallery (Public)
-    * [ ] Photo approval (Private)
+    * [X] Upload form (Public)
+    * [X] Gallery (Public)
+    * [X] Photo approval (Private)
 - [X] Deadlines
     * [X] Notification of upcoming deadlines
     * [X] Deletion of deadline list and all associated deadlines
@@ -55,6 +57,7 @@
     * [ ] Photo Gallery
 - [ ] User
   - [ ]  support setting social accounts to `is_staff` and `is_admin`
+- [ ] Move public photos to S3
 
 
 ## Future Enhancements

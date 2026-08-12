@@ -5,6 +5,7 @@ apis/DeadlinesApi.ts
 apis/ExpensesApi.ts
 apis/GuestlistApi.ts
 apis/ListApi.ts
+apis/UploadedPhotosApi.ts
 apis/index.ts
 docs/AccommodationCreateSchema.md
 docs/AccommodationFilterSchema.md
@@ -22,12 +23,14 @@ docs/CategoryCreateSchema.md
 docs/CategoryFilterSchema.md
 docs/CategorySchema.md
 docs/CategoryUpdateSchema.md
+docs/CompleteUploadedPhotoResponseSchema.md
 docs/ContactCreateSchema.md
 docs/ContactFilterSchema.md
 docs/ContactSchema.md
 docs/ContactUpdateSchema.md
 docs/ContactsApi.md
 docs/CoreApi.md
+docs/CreateUploadedPhotoResponseSchema.md
 docs/DeadLineStatsSchema.md
 docs/DeadlineCreateSchema.md
 docs/DeadlineFilterSchema.md
@@ -125,6 +128,8 @@ docs/TipsSchema.md
 docs/TipsUpdateSchema.md
 docs/UnitPrice.md
 docs/UnitPrice1.md
+docs/UploadedPhotoSchema.md
+docs/UploadedPhotosApi.md
 docs/WeddingSettingsSchema.md
 docs/WeddingSettingsUpdateSchema.md
 index.ts
@@ -143,10 +148,12 @@ models/CategoryCreateSchema.ts
 models/CategoryFilterSchema.ts
 models/CategorySchema.ts
 models/CategoryUpdateSchema.ts
+models/CompleteUploadedPhotoResponseSchema.ts
 models/ContactCreateSchema.ts
 models/ContactFilterSchema.ts
 models/ContactSchema.ts
 models/ContactUpdateSchema.ts
+models/CreateUploadedPhotoResponseSchema.ts
 models/DeadLineStatsSchema.ts
 models/DeadlineCreateSchema.ts
 models/DeadlineFilterSchema.ts
@@ -240,6 +247,7 @@ models/TipsSchema.ts
 models/TipsUpdateSchema.ts
 models/UnitPrice.ts
 models/UnitPrice1.ts
+models/UploadedPhotoSchema.ts
 models/WeddingSettingsSchema.ts
 models/WeddingSettingsUpdateSchema.ts
 models/index.ts

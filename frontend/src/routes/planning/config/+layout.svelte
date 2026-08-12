@@ -5,24 +5,24 @@
 
     const { children } = $props();
 
-    const relativeCrumbs = [{ title: "Configuration", href: "/admin/config/general" }];
+    const relativeCrumbs = [{ title: "Configuration" }];
 
     const sections = [
-        { title: "General", href: "/admin/config/general", icon: "icon-[lucide--settings]" },
-        { title: "Guest List", href: "/admin/config/guest-list", icon: "icon-[lucide--users]" },
-        { title: "RSVP", href: "/admin/config/rsvp", icon: "icon-[lucide--calendar-check]" },
+        { title: "General", href: "/planning/config/general", icon: "icon-[lucide--settings]" },
+        { title: "Guest List", href: "/planning/config/guest-list", icon: "icon-[lucide--users]" },
+        { title: "RSVP", href: "/planning/config/rsvp", icon: "icon-[lucide--calendar-check]" },
         {
             title: "RSVP Questions",
-            href: "/admin/config/rsvp-questions",
+            href: "/planning/config/rsvp-questions",
             icon: "icon-[lucide--circle-help]",
         },
-        { title: "Venue", href: "/admin/config/venue", icon: "icon-[lucide--map-pin]" },
-        { title: "Maintenance", href: "/admin/config/maintenance", icon: "icon-[lucide--wrench]" },
-        { title: "Edit All", href: "/admin/config/edit", icon: "icon-[lucide--square-pen]" },
+        { title: "Venue", href: "/planning/config/venue", icon: "icon-[lucide--map-pin]" },
+        { title: "Maintenance", href: "/planning/config/maintenance", icon: "icon-[lucide--wrench]" },
+        { title: "Edit All", href: "/planning/config/edit", icon: "icon-[lucide--square-pen]" },
     ];
 </script>
 
-<ProtectedPageShell {relativeCrumbs} section="admin">
+<ProtectedPageShell {relativeCrumbs}>
     <ProtectedPageHeader
         title="Configuration"
         description="Configure all settings for the wedding platform not found in the planning section" />

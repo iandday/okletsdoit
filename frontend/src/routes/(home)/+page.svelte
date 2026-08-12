@@ -68,11 +68,11 @@
         <div>
             <div class="flex md:flex-row flex-col items-center gap-8 px-10 py-4">
                 <img
-                    src="/images/core/cover-1-small.webp"
+                    src="/images/core/SI-63.jpeg"
                     alt="cover-1"
                     class="h-auto w-48 transition-all duration-1000 sm:w-64 md:w-72 lg:w-80 xl:w-96 2xl:w-[450px] starting:scale-125 starting:opacity-0 starting:blur-sm" />
                 <img
-                    src="/images/core/cover-2-small.webp"
+                    src="/images/core/SI-85.jpeg"
                     alt="cover-1"
                     class="h-auto w-48 transition-all duration-1000 sm:w-64 md:w-72 lg:w-80 xl:w-96 2xl:w-[450px] starting:scale-125 starting:opacity-0 starting:blur-sm" />
 

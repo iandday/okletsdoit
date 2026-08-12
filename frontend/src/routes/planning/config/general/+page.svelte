@@ -121,24 +121,57 @@
         <div class="divider divider-accent">What Guests Do</div>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <div>
-                <div class="config-card-field-name">RSVP</div>
-                <div class="config-card-field-value">
-                    <SectionStatus
-                        enabled={data.configData?.enableRsvp}
-                        visible={data.configData?.allowRsvp}
-                        visibleTrueLabel="Active"
-                        visibleFalseLabel="Not Active" />
+            {#each features.filter((f) => f.category === "do") as item (item.name)}
+                <div>
+                    <div class="config-card-field-name">{item.name}</div>
+                    <div class="flex items-center justify-around gap-3">
+                        <form
+                            method="POST"
+                            action="?/updateStatus"
+                            use:enhance={handleToggle(item.name, "enabled", item.enabledStatus)}
+                            class="flex items-center justify-center gap-3">
+                            <input type="hidden" name="name" value={item.name} />
+                            <input type="hidden" name="type" value="enabled" />
+                            <input type="hidden" name="value" value={String(!item.enabledStatus)} />
+                            <div class="flex items-center justify-center gap-3">
+                                {#if item.enabledStatus}
+                                    <span class="badge badge-success badge-lg">{item.enabledLabelTrue}</span>
+                                {:else}
+                                    <span class="badge badge-warning badge-lg">{item.enabledLabelFalse}</span>
+                                {/if}
+                                <input
+                                    type="checkbox"
+                                    class="toggle toggle-success toggle-sm"
+                                    checked={item.enabledStatus}
+                                    onchange={(e) => e.currentTarget.form?.requestSubmit()} />
+                            </div>
+                        </form>
+                        <form
+                            method="POST"
+                            action="?/updateStatus"
+                            use:enhance={handleToggle(item.name, "visible", item.visibleStatus)}
+                            class="flex items-center justify-center gap-3">
+                            <input type="hidden" name="name" value={item.name} />
+                            <input type="hidden" name="type" value="visible" />
+                            <input type="hidden" name="value" value={String(!item.visibleStatus)} />
+                            <div class="flex items-center justify-center gap-3">
+                                {#if item.visibleStatus}
+                                    <span class="badge badge-success badge-lg">{item.visibleLabelTrue}</span>
+                                {:else}
+                                    <span class="badge badge-warning badge-lg">
+                                        {item.visibleLabelFalse}
+                                    </span>
+                                {/if}
+                                <input
+                                    type="checkbox"
+                                    class="checkbox checkbox-info checkbox-sm rounded"
+                                    checked={item.visibleStatus}
+                                    onchange={(e) => e.currentTarget.form?.requestSubmit()} />
+                            </div>
+                        </form>
+                    </div>
                 </div>
-            </div>
-            <div>
-                <div class="config-card-field-name">Upload Photos</div>
-                <SectionStatus
-                    enabled={data.configData?.enableUploadPhotos}
-                    visible={data.configData?.allowPhotos}
-                    visibleTrueLabel="Active"
-                    visibleFalseLabel="Not Active" />
-            </div>
+            {/each}
         </div>
         <div class="divider divider-accent">Wedding Details</div>
         <div>

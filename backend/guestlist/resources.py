@@ -1,7 +1,13 @@
-from import_export import resources, fields
+import warnings
+
+from import_export import fields
+from import_export import resources
 from import_export.widgets import BooleanWidget
 
-from .models import Guest, GuestGroup
+from .models import Guest
+from .models import GuestGroup
+
+warnings.filterwarnings("ignore", message="ignoring field 'group_id' because not declared in 'fields' whitelist")
 
 
 class YesNoWidget(BooleanWidget):

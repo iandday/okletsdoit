@@ -2,10 +2,12 @@
     import ExportData from "$lib/components/buttons/ExportData.svelte";
     import ProtectedPageHeader from "$lib/components/layouts/ProtectedPageHeader.svelte";
     import ProtectedPageShell from "$lib/components/layouts/ProtectedPageShell.svelte";
+
+    const relativeCrumbs = [{ title: "Export" }];
 </script>
 
-<ProtectedPageShell section="admin" relativeCrumbs={[{ label: "Administration", href: "/admin" }]}>
-    <ProtectedPageHeader title="Data Export" description="Export your data for backup, analysis, or external use." />
+<ProtectedPageShell {relativeCrumbs}>
+    <ProtectedPageHeader title="Data Export" description="Export your data for whatever your heart desires" />
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div class="detail-card">
@@ -70,7 +72,18 @@
                             </div>
                         </div>
                     </div>
-
+                    <div class="card bg-base-200 border border-base-300">
+                        <div class="card-body">
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="icon-[lucide--file-text] size-5 text-warning"></span>
+                                <h3 class="font-semibold text-lg">Export Photos</h3>
+                            </div>
+                            <p class="text-sm opacity-80 mb-4">
+                                Export a ZIP file containing all uploaded photos for backup or sharing purposes.
+                            </p>
+                            <ExportData resourceType="photos" label="Export All Photos" format="zip" size="md" />
+                        </div>
+                    </div>
                     <!-- Future Export Options -->
                     <div class="card bg-base-200 border border-base-300">
                         <div class="card-body">
@@ -82,22 +95,6 @@
                                 Export vendor and contact information including addresses and communication details.
                             </p>
                             <button class="btn btn-success btn-sm gap-2" disabled>
-                                <span class="icon-[lucide--download] size-4"></span>
-                                Coming Soon
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="card bg-base-200 border border-base-300">
-                        <div class="card-body">
-                            <div class="flex items-center gap-2 mb-2">
-                                <span class="icon-[lucide--file-text] size-5 text-warning"></span>
-                                <h3 class="font-semibold text-lg">Export Reports</h3>
-                            </div>
-                            <p class="text-sm opacity-80 mb-4">
-                                Generate comprehensive reports with custom fields and filtering options.
-                            </p>
-                            <button class="btn btn-warning btn-sm gap-2" disabled>
                                 <span class="icon-[lucide--download] size-4"></span>
                                 Coming Soon
                             </button>

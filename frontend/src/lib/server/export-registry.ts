@@ -3,15 +3,16 @@
  */
 import { api } from "$lib/server/api-client";
 
-export type ExportFormat = "csv" | "xlsx";
-export type ExportResourceType = "guest" | "guest_group";
+export type ExportFormat = "csv" | "xlsx" | "zip";
+export type ExportResourceType = "guest" | "guest_group" | "photos";
 
 type ExportConfig = {
     exportFn: (format: ExportFormat) => Promise<Blob>;
     defaultFileName: string;
     contentType: {
-        csv: string;
-        xlsx: string;
+        csv?: string;
+        xlsx?: string;
+        zip?: string;
     };
 };
 
@@ -30,6 +31,13 @@ export const exportRegistry: Record<ExportResourceType, ExportConfig> = {
         contentType: {
             csv: "text/csv",
             xlsx: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        },
+    },
+    photos: {
+        exportFn: () => api.photos.photosApiExportAllUploadedPhotos(),
+        defaultFileName: "uploaded_photos_export",
+        contentType: {
+            zip: "application/zip",
         },
     },
 };

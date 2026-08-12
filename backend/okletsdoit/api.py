@@ -6,6 +6,7 @@ from attachments.api import router as attachments_router
 from contacts.api import router as contacts_router
 from list.api import router as lists_router
 from expenses.api import router as expenses_router
+from photos.api import router as photos_router
 
 api = NinjaAPI()
 
@@ -16,3 +17,4 @@ api.add_router("/attachments/", attachments_router)
 api.add_router("/contacts/", contacts_router)
 api.add_router("/lists/", lists_router)
 api.add_router("/expenses/", expenses_router)
+api.add_router("/photos/", photos_router)

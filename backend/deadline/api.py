@@ -48,6 +48,7 @@ class DeadlineListCreateSchema(Schema):
 class DeadlineListUpdateSchema(Schema):
     name: Optional[str] = None
 
+
 class DeadlineSchema(Schema):
     id: UUID
     name: str
@@ -97,11 +98,13 @@ class DeadlineUpdateSchema(Schema):
     completed: Optional[bool] = None
     completed_note: Optional[str] = None
 
+
 class DeadLineStatsSchema(Schema):
     overdue_deadlines: int
-    total_deadlines:  int
-    pending_deadlines:  int
-    completed_deadlines:  int
+    total_deadlines: int
+    pending_deadlines: int
+    completed_deadlines: int
+
 
 # DeadlineList CRUD Endpoints
 @router.get("/deadline-lists", response=List[DeadlineListSchema])

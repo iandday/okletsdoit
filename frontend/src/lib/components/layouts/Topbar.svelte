@@ -64,6 +64,12 @@
             icon: "icon-[lucide--timer]",
             description: "Create and visualize your wedding day timeline and schedule.",
         },
+        {
+            title: "Configuration",
+            href: "/planning/config/general",
+            icon: "icon-[lucide--settings]",
+            description: "Configure your wedding website settings and functionality",
+        },
     ];
 
     export const adminMenu: IMenuItem[] = [
