@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { enhance } from "$app/forms";
     import ObjectChildItems from "$lib/components/object/ObjectChildItems.svelte";
     import ObjectDetail from "$lib/components/object/ObjectDetail.svelte";
     import ObjectStatus from "$lib/components/object/ObjectStatus.svelte";
@@ -15,6 +16,8 @@
     ];
 
     const displayName = data.expense.item;
+    let showUploadForm = $state(false);
+    let uploadingFile = $state(false);
 
     function formatCurrency(amount: number): string {
         return new Intl.NumberFormat("en-US", {
@@ -27,6 +30,10 @@
         if (!dateString) return "N/A";
         const date = dateString instanceof Date ? dateString : new Date(dateString);
         return date.toLocaleDateString();
+    }
+
+    function getAttachmentDownloadUrl(attachment: { fileUrl?: string }) {
+        return (attachment as { downloadUrl?: string }).downloadUrl || attachment.fileUrl || "";
     }
 </script>
 
@@ -128,6 +135,139 @@
                             {formatDate(data.expense.date)}
                         </div>
                     </div>
+                {/if}
+            </div>
+
+            <!-- Attachments -->
+            <div>
+                <div class="flex items-center justify-between mb-4">
+                    <div class="detail-card-field-name">Attachments ({data.attachments.length})</div>
+                    <button
+                        type="button"
+                        onclick={() => (showUploadForm = !showUploadForm)}
+                        class="btn btn-sm btn-primary gap-2">
+                        <span class="icon-[lucide--plus] size-4"></span>
+                        {showUploadForm ? "Cancel" : "Add Attachment"}
+                    </button>
+                </div>
+
+                {#if showUploadForm}
+                    <form
+                        method="POST"
+                        action="?/uploadAttachment"
+                        enctype="multipart/form-data"
+                        class="edit-card p-6 mb-6"
+                        use:enhance={() => {
+                            uploadingFile = true;
+                            return async ({ update }) => {
+                                await update();
+                                uploadingFile = false;
+                                showUploadForm = false;
+                            };
+                        }}>
+                        <div class="space-y-4">
+                            <div class="form-control w-full">
+                                <label class="edit-card-field-name" for="file">
+                                    <span>File</span>
+                                </label>
+                                <input
+                                    type="file"
+                                    id="file"
+                                    name="file"
+                                    class="file-input file-input-bordered w-full"
+                                    required
+                                    disabled={uploadingFile} />
+                            </div>
+
+                            <div class="form-control w-full">
+                                <label class="edit-card-field-name" for="attachment-name">
+                                    <span>Name (optional)</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    id="attachment-name"
+                                    name="name"
+                                    class="edit-card-field-input"
+                                    placeholder="Custom name for the file"
+                                    disabled={uploadingFile} />
+                            </div>
+
+                            <div class="form-control w-full">
+                                <label class="edit-card-field-name" for="attachment-description">
+                                    <span>Description (optional)</span>
+                                </label>
+                                <textarea
+                                    id="attachment-description"
+                                    name="description"
+                                    class="edit-card-field-input"
+                                    rows="2"
+                                    placeholder="Add a description..."
+                                    disabled={uploadingFile}></textarea>
+                            </div>
+
+                            <div class="flex gap-2 justify-end">
+                                <button
+                                    type="button"
+                                    class="btn btn-error"
+                                    onclick={() => (showUploadForm = false)}
+                                    disabled={uploadingFile}>
+                                    Cancel
+                                </button>
+                                <button type="submit" class="btn btn-success gap-2" disabled={uploadingFile}>
+                                    {#if uploadingFile}
+                                        <span class="loading loading-spinner loading-sm"></span>
+                                        Uploading...
+                                    {:else}
+                                        <span class="icon-[lucide--upload] size-4"></span>
+                                        Upload
+                                    {/if}
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                {/if}
+
+                {#if data.attachments.length > 0}
+                    <div class="grid grid-cols-1 gap-3">
+                        {#each data.attachments as attachment (attachment.id)}
+                            <div class="flex items-center gap-3 p-3 bg-base-200 rounded-lg group">
+                                <span class="icon-[lucide--file-text] size-6"></span>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-sm font-medium">{attachment.name || attachment.filename}</p>
+                                    {#if attachment.description}
+                                        <p class="text-xs truncate">{attachment.description}</p>
+                                    {/if}
+                                </div>
+                                <div class="flex gap-1">
+                                    <a
+                                        href={getAttachmentDownloadUrl(attachment)}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="btn btn-xs btn-ghost"
+                                        title="Download">
+                                        <span class="icon-[lucide--download] size-4"></span>
+                                    </a>
+                                    <form
+                                        method="POST"
+                                        action="?/deleteAttachment"
+                                        use:enhance={() => {
+                                            return async ({ update }) => {
+                                                if (confirm("Are you sure you want to delete this attachment?")) {
+                                                    await update();
+                                                }
+                                            };
+                                        }}>
+                                        <input type="hidden" name="attachmentId" value={attachment.id} />
+                                        <button type="submit" class="btn btn-xs btn-error" title="Delete">
+                                            <span class="icon-[lucide--trash] size-4"></span>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        {/each}
+                    </div>
+                {:else if !showUploadForm}
+                    <p class="text-sm text-base-content/50 italic">No attachments yet</p>
                 {/if}
             </div>
         </div>
