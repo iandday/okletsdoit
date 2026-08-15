@@ -51,7 +51,8 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 };
 
 export const actions: Actions = {
-    delete: async ({ params }) => {
+    delete: async ({ params, locals }) => {
+        const api = createApiClient(locals.sessionCookie);
         await api.expenses.expensesApiDeleteExpense({ expenseId: params.id });
         throw redirect(303, "/planning/budget");
     },
