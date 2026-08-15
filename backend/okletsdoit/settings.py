@@ -94,6 +94,7 @@ INSTALLED_APPS = [
     "extra_views",  # https://django-extra-views.readthedocs.io/en/latest/pages/getting-started.html#installation
     "ninja",
     "core.apps.CoreConfig",
+    "slippers",
     "attachments",
     "users",
     "expenses",
