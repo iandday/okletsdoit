@@ -9,7 +9,7 @@ app_name = "okletsdoit"
 
 urlpatterns = [
     path("admin/doc/", include("django.contrib.admindocs.urls")),
-    path("be_admin/", admin.site.urls),
+    path("admin/", admin.site.urls),
     path("accounts/", include("allauth.urls")),
     path("_allauth/", include("allauth.headless.urls")),
     path("health/", HealthCheckView.as_view(), name="health_check"),
