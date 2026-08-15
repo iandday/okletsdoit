@@ -72,12 +72,15 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.django-server.entrypoints=web-secure"
-      - "traefik.http.routers.django-server.rule=Host(`dev.internal`) && (PathPrefix(`/be_admin`) || PathPrefix(`/static`) || PathPrefix(`/media`) || PathPrefix(`/api`) || PathPrefix(`/accounts`) || PathPrefix(`/_allauth`) || PathPrefix(`/health`) || PathPrefix(`/ws`))"
+      - "traefik.http.routers.django-server.rule=Host(`dev.internal`) && (PathPrefix(`/admin`) || PathPrefix(`/static`) || PathPrefix(`/media`) || PathPrefix(`/api`) || PathPrefix(`/accounts`) || PathPrefix(`/_allauth`) || PathPrefix(`/health`) || PathPrefix(`/ws`))"
       - "traefik.http.routers.django-server.tls=true"
       - "traefik.http.services.django-server.loadbalancer.server.port=8000"
       - "traefik.http.middlewares.file-upload.buffering.maxRequestBodyBytes=1073741824"
       - "traefik.http.middlewares.file-upload.buffering.memRequestBodyBytes=107374182"
+      - "traefik.http.middlewares.django-secure-headers.headers.customrequestheaders.X-Forwarded-Proto=https"
+      - "traefik.http.middlewares.django-secure-headers.headers.customrequestheaders.X-Forwarded-Host=dev.internal"
       - "traefik.http.routers.django-server.middlewares=file-upload"
+      - "traefik.http.routers.django-server.middlewares=django-secure-headers"
       - "traefik.http.routers.django-server.priority=35"
   beats:
     build:

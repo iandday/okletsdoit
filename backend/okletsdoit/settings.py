@@ -41,6 +41,7 @@ env = environ.Env(
         list,
         ["http://localhost:5173", "http://localhost:4173", "http://dev.internal", "https://dev.internal"],
     ),
+    DJANGO_CSRF_TRUSTED_ORIGINS=(list, ["http://localhost:5173", "http://localhost:4173", "https://dev.internal"]),
     PERSONALIZED_RSVP_BASE_URL=(str, "dev.internal"),
     RSVP_URL=(str, "dev.internal/rsvp"),
     EMAIL_BACKEND=(str, "django.core.mail.backends.smtp.EmailBackend"),
@@ -316,9 +317,8 @@ SECURE_REDIRECT_EXEMPT = [
 ]
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
-
-CSRF_TRUSTED_ORIGINS = env.list("DJANGO_CSRF_TRUSTED_ORIGINS")
-
+CSRF_TRUSTED_ORIGINS = env("DJANGO_CSRF_TRUSTED_ORIGINS")
+CSRF_FAILURE_VIEW = "core.views.clear_csrf_and_force_login"
 
 style_src = [
     SELF,
