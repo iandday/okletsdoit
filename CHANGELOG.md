@@ -1,6 +1,27 @@
 # CHANGELOG
 
 
+## v0.25.0 (2026-08-15)
+
+### Bug Fixes
+
+- **Expenses**: :bug: fix expsnse delete
+  ([`fffa5a4`](https://github.com/iandday/okletsdoit/commit/fffa5a4963628a60bebb73e763440dc1e1cf9b3c))
+
+- **Expenses**: :art: truncate description
+  ([`92db281`](https://github.com/iandday/okletsdoit/commit/92db281768873e7fff6da7e03b5a513bff5bf931))
+
+### Chores
+
+- Sync files from main (v0.24.3)
+  ([`5fb4fda`](https://github.com/iandday/okletsdoit/commit/5fb4fdaecb28082b4b6ffc14177f415eabc5e0da))
+
+### Features
+
+- **Core**: Add attachments
+  ([`67135b9`](https://github.com/iandday/okletsdoit/commit/67135b9ba8acc6fc411159f4a7d57a6f14eecb72))
+
+
 ## v0.24.3 (2026-08-15)
 
 ### Bug Fixes
