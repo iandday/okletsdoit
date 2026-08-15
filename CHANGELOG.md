@@ -1,6 +1,19 @@
 # CHANGELOG
 
 
+## v0.24.3 (2026-08-15)
+
+### Bug Fixes
+
+- :zap: add slippers
+  ([`538c27e`](https://github.com/iandday/okletsdoit/commit/538c27e39c53f1f5eb49f6cee03cb0721cfa1066))
+
+### Chores
+
+- Sync files from main (v0.24.2)
+  ([`f511d4c`](https://github.com/iandday/okletsdoit/commit/f511d4ccc9b4d1e784fce4723e59f068361699ee))
+
+
 ## v0.24.2 (2026-08-15)
 
 ### Bug Fixes
