@@ -268,7 +268,9 @@
                                                     </span>
                                                     {#if row.original.description}
                                                         <span class="text-xs text-secondary-content/70 line-clamp-1">
-                                                            {row.original.description}
+                                                            {row.original.description.length > 25
+                                                                ? row.original.description.slice(0, 25) + "..."
+                                                                : row.original.description}
                                                         </span>
                                                     {/if}
                                                     {#if row.original.url}
