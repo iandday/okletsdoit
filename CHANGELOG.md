@@ -1,6 +1,19 @@
 # CHANGELOG
 
 
+## v0.24.2 (2026-08-15)
+
+### Bug Fixes
+
+- **Core**: :bug: add 403 redirect
+  ([`296f83e`](https://github.com/iandday/okletsdoit/commit/296f83e6252a5eca2e943a023150f7068893aa99))
+
+### Chores
+
+- Sync files from main (v0.24.1)
+  ([`9d118e5`](https://github.com/iandday/okletsdoit/commit/9d118e55a174b9b0d45c61da934edbaff65d7c1f))
+
+
 ## v0.24.1 (2026-08-12)
 
 ### Bug Fixes
