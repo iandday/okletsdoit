@@ -16,6 +16,49 @@
 
     let activeTab = $state(0);
     let isSendingEmail = $state(false);
+    let showQrModal = $state(false);
+    let selectedQrCodeUrl = $state<string | null>(null);
+    let selectedQrCodeName = $state("");
+    let linkCopied = $state(false);
+
+    function openQrModal(url: string, name: string) {
+        selectedQrCodeUrl = url;
+        selectedQrCodeName = name;
+        showQrModal = true;
+    }
+
+    function closeQrModal() {
+        showQrModal = false;
+        selectedQrCodeUrl = null;
+        selectedQrCodeName = "";
+        linkCopied = false;
+    }
+
+    function downloadQrCode() {
+        if (!selectedQrCodeUrl) return;
+        const a = document.createElement("a");
+        a.href = selectedQrCodeUrl;
+        a.download = `qr_code_${selectedQrCodeName.replace(/[^a-z0-9]/gi, "_").toLowerCase()}.png`;
+        a.target = "_blank";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
+
+    async function copyQrLink() {
+        if (!selectedQrCodeUrl) return;
+
+        try {
+            await navigator.clipboard.writeText(selectedQrCodeUrl);
+            linkCopied = true;
+            setTimeout(() => {
+                linkCopied = false;
+            }, 3000);
+        } catch (error) {
+            console.error("Error copying link:", error);
+            alert("Failed to copy link");
+        }
+    }
 </script>
 
 <ProtectedPageShell relativeCrumbs={[]}>
@@ -162,6 +205,31 @@
                         Actions
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                        <a href="/planning/photos" class="btn btn-accent gap-2">
+                            <span class="icon-[lucide--camera] size-5"></span>
+                            Review Photos
+                        </a>
+                        <button
+                            onclick={() => openQrModal(data.configData.rsvpQrCodeUrl as string, "General RSVP")}
+                            class="btn btn-accent gap-2">
+                            <span class="icon-[lucide--qr-code] size-5"></span>
+                            View RSVP QR Code
+                        </button>
+                        <button
+                            onclick={() => openQrModal(data.configData.photoQrCodeUrl as string, "Photo Upload")}
+                            class="btn btn-accent gap-2">
+                            <span class="icon-[lucide--qr-code] size-5"></span>
+                            View Photo Upload QR Code
+                        </button>
+
+                        <a href="/planning/import" class="btn btn-accent gap-2">
+                            <span class="icon-[lucide--folder-up] size-5"></span>
+                            Import Data
+                        </a>
+                        <a href="/planning/export" class="btn btn-accent gap-2">
+                            <span class="icon-[lucide--folder-down] size-5"></span>
+                            Export Data
+                        </a>
                         <div id="sendUpdateEmail">
                             <form
                                 method="POST"
@@ -191,21 +259,54 @@
                                 </div>
                             {/if}
                         </div>
-                        <a href="/planning/photos" class="btn btn-accent gap-2">
-                            <span class="icon-[lucide--camera] size-5"></span>
-                            Review Photos
-                        </a>
-                        <a href="/planning/import" class="btn btn-accent gap-2">
-                            <span class="icon-[lucide--folder-up] size-5"></span>
-                            Import Data
-                        </a>
-                        <a href="/planning/export" class="btn btn-accent gap-2">
-                            <span class="icon-[lucide--folder-down] size-5"></span>
-                            Export Data
-                        </a>
                     </div>
                 </div>
             </div>
         </div>
+
+        {#if showQrModal}
+            <div class="modal modal-open">
+                <div class="modal-box max-w-md">
+                    <h3 class="font-bold text-lg mb-4 text-accent">QR Code - {selectedQrCodeName}</h3>
+
+                    {#if selectedQrCodeUrl}
+                        <div class="flex justify-center mb-6 p-4 rounded-lg">
+                            <img
+                                src={selectedQrCodeUrl}
+                                alt="QR Code for {selectedQrCodeName}"
+                                class="w-64 h-64 object-contain" />
+                        </div>
+
+                        <div class="flex gap-2 justify-center">
+                            <button onclick={downloadQrCode} class="btn btn-accent gap-2">
+                                <span class="icon-[lucide--download] size-5"></span>
+                                Download
+                            </button>
+                            <button onclick={copyQrLink} class="btn btn-secondary gap-2">
+                                <span class="icon-[lucide--copy] size-5"></span>
+                                Copy Link
+                            </button>
+                        </div>
+
+                        {#if linkCopied}
+                            <div class="flex justify-center mt-4">
+                                <div class="badge badge-success gap-2">
+                                    <span class="icon-[lucide--check] size-4"></span>
+                                    Link copied to clipboard!
+                                </div>
+                            </div>
+                        {/if}
+                    {/if}
+
+                    <div class="modal-action">
+                        <button onclick={closeQrModal} class="btn btn-error">Close</button>
+                    </div>
+                </div>
+                <div class="modal-backdrop" onclick={closeQrModal}></div>
+            </div>
+        {/if}
+        {data.configData.photoQrCodeUrl}
+        ---
+        {data.configData.rsvpQrCodeUrl}
     </div>
 </ProtectedPageShell>

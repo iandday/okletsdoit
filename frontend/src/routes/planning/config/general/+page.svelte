@@ -21,6 +21,8 @@
 
     // reflect local changes
     let features = $derived(data.features);
+    let requirePhotoApproval = $derived(data.configData?.requirePhotoApproval ?? false);
+
     // The factory function returns the standard SvelteKit SubmitFunction type
     const handleToggle = (name: string, field: "enabled" | "visible", currentValue: boolean): SubmitFunction => {
         // 1. This block runs IMMEDIATELY when the user clicks the checkbox (On Submit)
@@ -51,13 +53,28 @@
             };
         };
     };
+
+    const handleRequirePhotoApprovalToggle = (currentValue: boolean): SubmitFunction => {
+        return () => {
+            requirePhotoApproval = !currentValue;
+
+            return async ({ result, update }) => {
+                if (result.type === "success") {
+                    await update({ invalidateAll: true });
+                } else {
+                    console.error("Backend write failed. Rolling back photo approval toggle.");
+                    requirePhotoApproval = currentValue;
+                }
+            };
+        };
+    };
 </script>
 
 <div class="config-card">
     <div class="config-card-body">
         <div class="flex items-center justify-between gap-2 mb-4">
             <h2 class="config-card-title text-xl">General</h2>
-            <a href="/admin/config/edit#general-section" class="btn btn-sm btn-accent">
+            <a href="/planning/config/edit#general-section" class="btn btn-sm btn-accent">
                 <span class="icon-[lucide--square-pen] size-4"></span>
                 Edit General
             </a>
@@ -177,6 +194,35 @@
         <div>
             <div class="config-card-field-name">Wedding Date</div>
             <div class="config-card-field-value">{formatValue(data.configData?.weddingDate)}</div>
+        </div>
+        <div class="divider divider-accent">Upload Photos</div>
+        <div class="config-card-field-name">Require Admin Approval for Uploaded Photos</div>
+        <div class="flex items-center justify-around gap-3">
+            <form
+                method="POST"
+                action="?/updateStatus"
+                use:enhance={handleRequirePhotoApprovalToggle(requirePhotoApproval)}
+                class="flex items-center justify-center gap-3">
+                <input type="hidden" name="name" value="require_photo_approval" />
+                <input type="hidden" name="type" value="enabled" />
+                <input type="hidden" name="value" value={String(!requirePhotoApproval)} />
+                <div class="flex items-center justify-center gap-3">
+                    {#if requirePhotoApproval}
+                        <span class="badge badge-success badge-lg">Yes</span>
+                    {:else}
+                        <span class="badge badge-warning badge-lg">No</span>
+                    {/if}
+                    <input
+                        type="checkbox"
+                        class="toggle toggle-success toggle-sm"
+                        checked={requirePhotoApproval}
+                        onchange={(e) => e.currentTarget.form?.requestSubmit()} />
+                </div>
+            </form>
+            <div>
+                <div class="config-card-field-name">Photo Upload URL</div>
+                <div class="config-card-field-value">{formatValue(data.configData?.photoUploadUrl)}</div>
+            </div>
         </div>
     </div>
 </div>

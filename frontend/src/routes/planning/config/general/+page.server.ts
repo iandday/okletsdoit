@@ -157,6 +157,12 @@ export const actions: Actions = {
                         weddingSettingsUpdateSchema: { allowPhotos: value },
                     });
                 }
+            } else if (serviceName == "require_photo_approval") {
+                if (fieldName == "enabled") {
+                    await api.core.coreApiUpdateWeddingSettings({
+                        weddingSettingsUpdateSchema: { requirePhotoApproval: value },
+                    });
+                }
             } else {
                 throw new Error(`Unknown service name: ${serviceName}`);
             }

@@ -1,6 +1,7 @@
 import datetime
 import uuid
 
+from attachments.models import Attachment
 from django.db import models
 from django.db import transaction
 from django.utils.text import slugify
@@ -305,6 +306,22 @@ class WeddingSettings(models.Model):
     wedding_date = models.DateField(null=True, blank=True)
     allow_rsvp = models.BooleanField(default=False, help_text="Enable or disable RSVP functionality")
     allow_photos = models.BooleanField(default=False, help_text="Enable or disable Photo Sharing functionality")
+    photo_qr_code = models.ForeignKey(
+        "attachments.Attachment",
+        related_name="qr_code_photo_upload",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        help_text="QR code for photo upload page",
+    )
+    photo_upload_url = models.URLField(
+        max_length=500,
+        default=f"{settings.BASE_URL}photos",
+        help_text="Default URL for photo upload page",
+    )
+    require_photo_approval = models.BooleanField(
+        default=False, help_text="Require admin approval for uploaded photos before they are visible"
+    )
     rsvp_default_url = models.URLField(
         max_length=500,
         default=settings.RSVP_URL,
@@ -372,6 +389,12 @@ class WeddingSettings(models.Model):
             return self.rsvp_qr_code.attachment_file.url
         return None
 
+    @property
+    def photo_qr_code_url(self):
+        if self.photo_qr_code and self.photo_qr_code.attachment_file:
+            return self.photo_qr_code.attachment_file.url
+        return None
+
     def __str__(self):
         return "Wedding Settings"
 
@@ -384,24 +407,57 @@ class WeddingSettings(models.Model):
             raise ValueError("No admin user found. Please create an admin user before saving WeddingSettings.")
 
         with transaction.atomic():
+            old_qr_code_ids = []
+            if self.pk and self.__class__.objects.filter(pk=self.pk).exists():
+                existing = self.__class__.objects.only("rsvp_qr_code_id", "photo_qr_code_id").get(pk=self.pk)
+                old_qr_code_ids = [
+                    qr_code_id
+                    for qr_code_id in (
+                        getattr(existing, "rsvp_qr_code_id", None),
+                        getattr(existing, "photo_qr_code_id", None),
+                    )
+                    if qr_code_id
+                ]
+
             super().save(*args, **kwargs)
+
             self.__class__.objects.exclude(id=self.id).delete()
+            self.__class__.objects.filter(pk=self.pk).update(rsvp_qr_code=None, photo_qr_code=None)
 
-            attachment = self.rsvp_qr_code
-            if not attachment:
-                attachment = generate_qr_code_attachment(
-                    url=settings.RSVP_URL,
-                    name="RSVP QR Code",
-                    model_instance=self,
-                    uploaded_by=admin_user,
-                    filename="qr_code_base_rsvp.png",
-                    heart_logo=False,
-                )
-                self.rsvp_qr_code = attachment
+            self.rsvp_qr_code = None
+            self.photo_qr_code = None
 
-            self.__class__.objects.filter(pk=self.pk).update(
-                rsvp_qr_code=self.rsvp_qr_code,
+            if old_qr_code_ids:
+                Attachment.objects.filter(id__in=old_qr_code_ids).delete()
+
+            update_fields: dict[str, object] = {}
+
+            attachment = generate_qr_code_attachment(
+                url=settings.RSVP_URL,
+                name="RSVP QR Code",
+                model_instance=self,
+                uploaded_by=admin_user,
+                filename="qr_code_base_rsvp.png",
+                heart_logo=False,
+                delete_existing=False,
             )
+            update_fields["rsvp_qr_code"] = attachment
+            self.rsvp_qr_code = attachment
+
+            photo_attachment = generate_qr_code_attachment(
+                url=settings.BASE_URL + "photos",
+                name="Photo Upload QR Code",
+                model_instance=self,
+                uploaded_by=admin_user,
+                filename="qr_code_photo_upload.png",
+                heart_logo=False,
+                delete_existing=False,
+            )
+            update_fields["photo_qr_code"] = photo_attachment
+            self.photo_qr_code = photo_attachment
+
+            if update_fields:
+                self.__class__.objects.filter(pk=self.pk).update(**update_fields)
 
     @classmethod
     def load(cls) -> Any:

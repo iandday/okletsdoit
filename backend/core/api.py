@@ -40,6 +40,8 @@ class WeddingSettingsSchema(Schema):
     enable_upload_photos: bool
     allow_rsvp: bool
     allow_photos: bool
+    require_photo_approval: bool
+    photo_upload_url: Optional[str] = None
     show_our_story: bool
     show_faq: bool
     show_venue: bool
@@ -78,6 +80,7 @@ class WeddingSettingsSchema(Schema):
     venue_gallery_title: str
     venue_gallery_description: str
     rsvp_qr_code_url: Optional[str] = None
+    photo_qr_code_url: Optional[str] = None
 
 
 class WeddingSettingsUpdateSchema(Schema):
@@ -89,6 +92,8 @@ class WeddingSettingsUpdateSchema(Schema):
     enable_upload_photos: Optional[bool] = None
     allow_rsvp: Optional[bool] = None
     allow_photos: Optional[bool] = None
+    require_photo_approval: Optional[bool] = None
+    photo_upload_url: Optional[str] = None
     wedding_date: Optional[date] = None
     show_faq: Optional[bool] = None
     show_venue: Optional[bool] = None
@@ -111,7 +116,7 @@ class WeddingSettingsUpdateSchema(Schema):
     rsvp_email_update_label: Optional[str] = None
     rsvp_success_headline: Optional[str] = None
     rsvp_default_url: Optional[str] = None
-    rsvp_qr_code_url: Optional[str] = None
+    photo_upload_url: Optional[str] = None
     standard_group_label: Optional[str] = None
     vip_group_label: Optional[str] = None
     accommodation_group_label: Optional[str] = None

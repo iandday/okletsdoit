@@ -12,6 +12,8 @@
 | `enableUploadPhotos`         | boolean |
 | `allowRsvp`                  | boolean |
 | `allowPhotos`                | boolean |
+| `requirePhotoApproval`       | boolean |
+| `photoUploadUrl`             | string  |
 | `weddingDate`                | Date    |
 | `showFaq`                    | boolean |
 | `showVenue`                  | boolean |
@@ -34,7 +36,6 @@
 | `rsvpEmailUpdateLabel`       | string  |
 | `rsvpSuccessHeadline`        | string  |
 | `rsvpDefaultUrl`             | string  |
-| `rsvpQrCodeUrl`              | string  |
 | `standardGroupLabel`         | string  |
 | `vipGroupLabel`              | string  |
 | `accommodationGroupLabel`    | string  |
@@ -66,6 +67,8 @@ const example = {
     enableUploadPhotos: null,
     allowRsvp: null,
     allowPhotos: null,
+    requirePhotoApproval: null,
+    photoUploadUrl: null,
     weddingDate: null,
     showFaq: null,
     showVenue: null,
@@ -88,7 +91,6 @@ const example = {
     rsvpEmailUpdateLabel: null,
     rsvpSuccessHeadline: null,
     rsvpDefaultUrl: null,
-    rsvpQrCodeUrl: null,
     standardGroupLabel: null,
     vipGroupLabel: null,
     accommodationGroupLabel: null,

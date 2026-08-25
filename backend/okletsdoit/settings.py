@@ -48,6 +48,7 @@ env = environ.Env(
     EMAIL_HOST=(str, "smtp.gmail.com"),
     EMAIL_USE_TLS=(bool, True),
     EMAIL_PORT=(int, 587),
+    BASE_URL=(str, "https://dev.internal/"),
 )
 env.read_env(BASE_DIR / ".env", overwrite=True)
 
@@ -61,6 +62,7 @@ ALLOWED_CIDR_NETS = env.list("ALLOWED_CIDR_NETS")
 PERSONALIZED_RSVP_BASE_URL = env("PERSONALIZED_RSVP_BASE_URL")
 RSVP_URL = env("RSVP_URL")
 REDIS_URL = env("REDIS_URL")
+BASE_URL = env("BASE_URL")
 
 INSTALLED_APPS = [
     "django.contrib.admin",

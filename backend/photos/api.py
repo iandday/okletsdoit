@@ -23,6 +23,7 @@ from PIL import UnidentifiedImageError
 
 from .models import UploadedPhoto
 from .realtime import publish_photo_update
+from core.models import WeddingSettings
 
 router = Router(tags=["Uploaded Photos"])
 
@@ -100,9 +101,13 @@ def create_uploaded_photo(request):
     """
     Create a pending uploaded-photo record and return a presigned upload URL.
     """
+    # load wedding settings to determine if approval is require
+    settings = WeddingSettings.load()
+
     photo = UploadedPhoto.objects.create(
         photo_file="photos/original",
         status=UploadedPhoto.STATUS_CHOICES.PENDING,
+        is_approved=not settings.require_photo_approval,
     )
 
     bucket_name = settings.STORAGES["default"]["OPTIONS"]["bucket_name"]

@@ -46,6 +46,7 @@ export const actions = {
             enableFaq: formData.get("enableFaq") === "on",
             enableRsvp: formData.get("enableRsvp") === "on",
             enableUploadPhotos: formData.get("enableUploadPhotos") === "on",
+            photoUploadUrl: formData.get("photoUploadUrl") as string,
             showFaq: formData.get("showFaq") === "on",
             showVenue: formData.get("showVenue") === "on",
             showOurStory: formData.get("showOurStory") === "on",
@@ -92,6 +93,6 @@ export const actions = {
             });
         }
 
-        throw redirect(303, "/admin/config/general");
+        throw redirect(303, "/planning/config/general");
     },
 } satisfies Actions;
