@@ -202,6 +202,12 @@
                         {/if}
                     </div>
                 </form>
+                {#if data.configData.requirePhotoApproval}
+                    <p class="p-4 text-center text-sm text-base-content">
+                        All uploaded photos will be reviewed by the couple before they are visible in the gallery.
+                        Please be patient while we review your submission.
+                    </p>
+                {/if}
                 <div class="space-y-3 py-4"></div>
                 <PhotoGallery photos={data.photos} />
             </div>

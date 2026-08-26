@@ -102,12 +102,14 @@ def create_uploaded_photo(request):
     Create a pending uploaded-photo record and return a presigned upload URL.
     """
     # load wedding settings to determine if approval is require
-    settings = WeddingSettings.load()
+    wedding_settings = WeddingSettings.load()
+    if wedding_settings.allow_photos is False:
+        raise HttpError(403, "Photo uploads are not allowed at this time.")
 
     photo = UploadedPhoto.objects.create(
         photo_file="photos/original",
         status=UploadedPhoto.STATUS_CHOICES.PENDING,
-        is_approved=not settings.require_photo_approval,
+        is_approved=not wedding_settings.require_photo_approval,
     )
 
     bucket_name = settings.STORAGES["default"]["OPTIONS"]["bucket_name"]
