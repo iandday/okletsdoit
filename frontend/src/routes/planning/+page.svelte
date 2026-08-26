@@ -305,8 +305,5 @@
                 <div class="modal-backdrop" onclick={closeQrModal}></div>
             </div>
         {/if}
-        {data.configData.photoQrCodeUrl}
-        ---
-        {data.configData.rsvpQrCodeUrl}
     </div>
 </ProtectedPageShell>

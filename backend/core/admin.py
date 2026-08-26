@@ -191,7 +191,7 @@ class TimelineAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
                 obj.end.strftime("%I:%M %p"),
             )
         else:
-            return format_html('<span class="badge badge-ghost">No end</span>')
+            return '<span class="badge badge-ghost">No end</span>'
 
     def get_queryset(self, request):
         """Optimize queryset and exclude deleted timeline events by default"""

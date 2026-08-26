@@ -33,6 +33,9 @@
 
     const flipDurationMs = 200;
     let dragStartOrder: string[] = [];
+    const browserTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+    type TimelineDateValue = string | Date;
 
     function showErrorToast(message: string) {
         errorToast = message;
@@ -85,36 +88,52 @@
         dragStartOrder = [];
     }
 
-    function formatDateTime(dateValue: string | Date) {
-        const date = new Date(dateValue);
-        return date.toLocaleString("en-US", {
-            month: "short",
-            day: "numeric",
-            year: "numeric",
-            hour: "numeric",
-            minute: "2-digit",
-            hour12: true,
-        });
+    function asDate(dateValue: TimelineDateValue): Date {
+        return dateValue instanceof Date ? dateValue : new Date(dateValue);
     }
 
-    function formatTime(dateValue: string | Date) {
-        const date = new Date(dateValue);
-        return date.toLocaleTimeString("en-US", {
-            hour: "numeric",
-            minute: "2-digit",
-            hour12: true,
-        });
+    function localDateTimeToUtcIso(dateTimeLocalValue: string): string {
+        if (!dateTimeLocalValue) return "";
+        const localDate = new Date(dateTimeLocalValue);
+
+        if (Number.isNaN(localDate.getTime())) {
+            return "";
+        }
+
+        return localDate.toISOString();
     }
 
-    function formatForInput(dateValue: string | Date | null | undefined) {
+    function utcToDateTimeLocalInput(dateValue: string | Date | null | undefined): string {
         if (!dateValue) return "";
-        const date = new Date(dateValue);
+
+        const date = asDate(dateValue);
+        if (Number.isNaN(date.getTime())) {
+            return "";
+        }
+
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, "0");
         const day = String(date.getDate()).padStart(2, "0");
         const hours = String(date.getHours()).padStart(2, "0");
         const minutes = String(date.getMinutes()).padStart(2, "0");
         return `${year}-${month}-${day}T${hours}:${minutes}`;
+    }
+
+    function formatDisplayDateTime(dateValue: string | Date | null | undefined): string {
+        if (!dateValue) return "";
+
+        const date = asDate(dateValue);
+        if (Number.isNaN(date.getTime())) {
+            return "";
+        }
+
+        const time = date.toLocaleTimeString("en-US", {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true,
+        });
+
+        return `${date.toDateString()} ${time}`;
     }
 
     async function reloadTimelineItems() {
@@ -173,8 +192,8 @@
         editForm = {
             name: item.name || "",
             description: item.description || "",
-            start: formatForInput(item.start),
-            end: formatForInput(item.end),
+            start: utcToDateTimeLocalInput(item.start),
+            end: utcToDateTimeLocalInput(item.end),
         };
         editModalOpen = true;
     }
@@ -190,11 +209,19 @@
             return;
         }
 
+        const startUtc = localDateTimeToUtcIso(createForm.start);
+        const endUtc = localDateTimeToUtcIso(createForm.end);
+
+        if (!startUtc) {
+            showErrorToast(`Invalid start time for browser timezone: ${browserTimeZone}`);
+            return;
+        }
+
         const formData = new FormData();
         formData.append("name", createForm.name);
         formData.append("description", createForm.description);
-        formData.append("start", createForm.start);
-        formData.append("end", createForm.end);
+        formData.append("start", startUtc);
+        formData.append("end", endUtc);
 
         try {
             const response = await fetch("?/create", {
@@ -226,12 +253,20 @@
     async function saveEdit() {
         if (!selectedItem) return;
 
+        const startUtc = localDateTimeToUtcIso(editForm.start);
+        const endUtc = localDateTimeToUtcIso(editForm.end);
+
+        if (!startUtc) {
+            showErrorToast(`Invalid start time for browser timezone: ${browserTimeZone}`);
+            return;
+        }
+
         const formData = new FormData();
         formData.append("id", selectedItem.id);
         formData.append("name", editForm.name);
         formData.append("description", editForm.description);
-        formData.append("start", editForm.start);
-        formData.append("end", editForm.end);
+        formData.append("start", startUtc);
+        formData.append("end", endUtc);
 
         const response = await fetch("?/update", {
             method: "POST",
@@ -239,20 +274,8 @@
         });
 
         if (response.ok) {
-            // Update local state
-            const idx = items.findIndex((i) => i.id === selectedItem.id);
-            if (idx !== -1) {
-                const nextStart = editForm.start ? new Date(editForm.start) : items[idx].start;
-                const nextEnd = editForm.end ? new Date(editForm.end) : null;
-
-                items[idx] = {
-                    ...items[idx],
-                    name: editForm.name,
-                    description: editForm.description,
-                    start: nextStart,
-                    end: nextEnd,
-                };
-            }
+            // Pull canonical values from server to avoid any local timezone interpretation drift.
+            await reloadTimelineItems();
             editModalOpen = false;
         } else {
             showErrorToast("Failed to save timeline changes.");
@@ -384,7 +407,7 @@
                                         onclick={() => openEditModal(item)}
                                         class="flex items-center gap-1 hover:text-accent transition-colors">
                                         <span class="icon-[lucide--clock] size-4"></span>
-                                        <span>{formatDateTime(item.start)}</span>
+                                        <span>{formatDisplayDateTime(item.start)}</span>
                                     </button>
 
                                     {#if item.end}
@@ -392,7 +415,7 @@
                                         <button
                                             onclick={() => openEditModal(item)}
                                             class="flex items-center gap-1 hover:text-accent transition-colors">
-                                            <span>{formatTime(item.end)}</span>
+                                            <span>{formatDisplayDateTime(item.end)}</span>
                                         </button>
                                     {:else}
                                         <button
