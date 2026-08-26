@@ -129,7 +129,12 @@
                                 <div class="mt-8 w-full flex justify-center">
                                     <div class="alert bg-primary border-accent/30 shadow-md w-fit">
                                         <span class="icon-[lucide--calendar-check] size-6 text-accent"></span>
-                                        <h3 class="font-bold text-primary-content">RSVP Coming Soon!</h3>
+                                        {#if !data.configData.allowRsvp}
+                                            <h3 class="font-bold text-primary-content">RSVP Coming Soon!</h3>
+                                        {:else}
+                                            <a class="btn-primary text-primary-content" href="/rsvp"
+                                                >It's time to RSVP</a>
+                                        {/if}
                                     </div>
                                 </div>
                             </div>

@@ -45,6 +45,7 @@
         venueParking: data.configData?.venueParking || "",
         venueGalleryTitle: data.configData?.venueGalleryTitle || "",
         venueGalleryDescription: data.configData?.venueGalleryDescription || "",
+        photoUploadUrl: data.configData?.photoUploadUrl || "",
     });
 
     let submitting = $state(false);
@@ -71,6 +72,7 @@
         { name: "allowRsvp", displayName: "Allow RSVP", type: "checkbox" },
 
         { name: "allowPhotos", displayName: "Allow Photo Upload", type: "checkbox" },
+        { name: "photoUploadUrl", displayName: "Photo Upload URL", type: "text" },
         { name: "weddingDate", displayName: "Wedding Date", type: "date" },
     ];
 </script>

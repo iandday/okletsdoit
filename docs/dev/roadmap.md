@@ -12,6 +12,7 @@
     * [ ] Toggle each functionality
     * [ ] Extract story component to backend
     * [ ] Approve uploaded photos by default
+    * [ ] Venue components
 * [ ] Data Export
   * [X] Guest Group Details
   * [X] Guest Details

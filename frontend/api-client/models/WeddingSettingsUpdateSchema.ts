@@ -69,6 +69,18 @@ export interface WeddingSettingsUpdateSchema {
     allowPhotos?: boolean | null;
     /**
      *
+     * @type {boolean}
+     * @memberof WeddingSettingsUpdateSchema
+     */
+    requirePhotoApproval?: boolean | null;
+    /**
+     *
+     * @type {string}
+     * @memberof WeddingSettingsUpdateSchema
+     */
+    photoUploadUrl?: string | null;
+    /**
+     *
      * @type {Date}
      * @memberof WeddingSettingsUpdateSchema
      */
@@ -204,12 +216,6 @@ export interface WeddingSettingsUpdateSchema {
      * @type {string}
      * @memberof WeddingSettingsUpdateSchema
      */
-    rsvpQrCodeUrl?: string | null;
-    /**
-     *
-     * @type {string}
-     * @memberof WeddingSettingsUpdateSchema
-     */
     standardGroupLabel?: string | null;
     /**
      *
@@ -324,6 +330,8 @@ export function WeddingSettingsUpdateSchemaFromJSONTyped(
         enableUploadPhotos: json["enable_upload_photos"] == null ? undefined : json["enable_upload_photos"],
         allowRsvp: json["allow_rsvp"] == null ? undefined : json["allow_rsvp"],
         allowPhotos: json["allow_photos"] == null ? undefined : json["allow_photos"],
+        requirePhotoApproval: json["require_photo_approval"] == null ? undefined : json["require_photo_approval"],
+        photoUploadUrl: json["photo_upload_url"] == null ? undefined : json["photo_upload_url"],
         weddingDate: json["wedding_date"] == null ? undefined : new Date(json["wedding_date"]),
         showFaq: json["show_faq"] == null ? undefined : json["show_faq"],
         showVenue: json["show_venue"] == null ? undefined : json["show_venue"],
@@ -350,7 +358,6 @@ export function WeddingSettingsUpdateSchemaFromJSONTyped(
         rsvpEmailUpdateLabel: json["rsvp_email_update_label"] == null ? undefined : json["rsvp_email_update_label"],
         rsvpSuccessHeadline: json["rsvp_success_headline"] == null ? undefined : json["rsvp_success_headline"],
         rsvpDefaultUrl: json["rsvp_default_url"] == null ? undefined : json["rsvp_default_url"],
-        rsvpQrCodeUrl: json["rsvp_qr_code_url"] == null ? undefined : json["rsvp_qr_code_url"],
         standardGroupLabel: json["standard_group_label"] == null ? undefined : json["standard_group_label"],
         vipGroupLabel: json["vip_group_label"] == null ? undefined : json["vip_group_label"],
         accommodationGroupLabel:
@@ -392,6 +399,8 @@ export function WeddingSettingsUpdateSchemaToJSONTyped(
         enable_upload_photos: value["enableUploadPhotos"],
         allow_rsvp: value["allowRsvp"],
         allow_photos: value["allowPhotos"],
+        require_photo_approval: value["requirePhotoApproval"],
+        photo_upload_url: value["photoUploadUrl"],
         wedding_date:
             value["weddingDate"] == null ? value["weddingDate"] : value["weddingDate"].toISOString().substring(0, 10),
         show_faq: value["showFaq"],
@@ -419,7 +428,6 @@ export function WeddingSettingsUpdateSchemaToJSONTyped(
         rsvp_email_update_label: value["rsvpEmailUpdateLabel"],
         rsvp_success_headline: value["rsvpSuccessHeadline"],
         rsvp_default_url: value["rsvpDefaultUrl"],
-        rsvp_qr_code_url: value["rsvpQrCodeUrl"],
         standard_group_label: value["standardGroupLabel"],
         vip_group_label: value["vipGroupLabel"],
         accommodation_group_label: value["accommodationGroupLabel"],

@@ -12,6 +12,8 @@
 | `enableUploadPhotos`         | boolean |
 | `allowRsvp`                  | boolean |
 | `allowPhotos`                | boolean |
+| `requirePhotoApproval`       | boolean |
+| `photoUploadUrl`             | string  |
 | `showOurStory`               | boolean |
 | `showFaq`                    | boolean |
 | `showVenue`                  | boolean |
@@ -50,6 +52,7 @@
 | `venueGalleryTitle`          | string  |
 | `venueGalleryDescription`    | string  |
 | `rsvpQrCodeUrl`              | string  |
+| `photoQrCodeUrl`             | string  |
 
 ## Example
 
@@ -66,6 +69,8 @@ const example = {
     enableUploadPhotos: null,
     allowRsvp: null,
     allowPhotos: null,
+    requirePhotoApproval: null,
+    photoUploadUrl: null,
     showOurStory: null,
     showFaq: null,
     showVenue: null,
@@ -104,6 +109,7 @@ const example = {
     venueGalleryTitle: null,
     venueGalleryDescription: null,
     rsvpQrCodeUrl: null,
+    photoQrCodeUrl: null,
 } satisfies WeddingSettingsSchema;
 
 console.log(example);

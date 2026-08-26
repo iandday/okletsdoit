@@ -32,6 +32,8 @@
                                                     {new Date(entry.start).toLocaleTimeString([], {
                                                         hour: "2-digit",
                                                         minute: "2-digit",
+                                                        timeZone: "America/New_York",
+                                                        timeZoneName: "shortOffset",
                                                     })}
                                                 {/if}
                                                 {#if entry.start && entry.end}
@@ -41,6 +43,8 @@
                                                     {new Date(entry.end).toLocaleTimeString([], {
                                                         hour: "2-digit",
                                                         minute: "2-digit",
+                                                        timeZone: "America/New_York",
+                                                        timeZoneName: "shortOffset",
                                                     })}
                                                 {/if}
                                             {/if}

@@ -89,7 +89,7 @@
 
             <CallToAction
                 title="Join Us on Our Big Day!"
-                content={`The ${venueName} provides the perfect backdrop for our special day. We're excited to share this beautiful venue with our family and friends as we begin our journey together.`} />
+                content={`${venueName} provides the perfect backdrop for our special day. We're excited to share this beautiful venue with our family and friends as we begin our journey together.`} />
         </PageShell>
     {/if}
 </div>

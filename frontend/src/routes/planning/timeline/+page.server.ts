@@ -5,7 +5,7 @@ import type { Actions, PageServerLoad } from "./$types";
 export const load: PageServerLoad = async ({ locals }) => {
     const api = createApiClient(locals.sessionCookie);
     const timelines = await api.core.coreApiListTimelines({});
-
+    console.log("Loaded timelines:", timelines.items);
     return {
         timelines: timelines.items || [],
     };

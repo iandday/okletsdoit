@@ -58,6 +58,7 @@ def generate_qr_code_attachment(
     uploaded_by: User,
     filename: str,
     heart_logo: bool = False,
+    delete_existing: bool = True,
 ) -> Attachment:
     """
     Generate a QR code for the given URL and save it as an Attachment.
@@ -73,9 +74,10 @@ def generate_qr_code_attachment(
     Returns:
         The created Attachment instance
     """
-    # delete any existing QR code attachment for this instance
+    # delete any existing QR code attachment for this instance when replacing the QR image
     content_type = ContentType.objects.get_for_model(model_instance)
-    Attachment.objects.filter(content_type=content_type, object_id=model_instance.pk).delete()
+    if delete_existing:
+        Attachment.objects.filter(content_type=content_type, object_id=model_instance.pk).delete()
 
     # Generate QR code with high error correction for logo
     error_level = "H" if heart_logo else "L"

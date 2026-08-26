@@ -52,7 +52,7 @@
                 "An immersive entertainment complex featuring arcade games, virtual reality experiences, and more.",
         },
         {
-            img: "https://fairfieldcountyparks.org/wp-content/uploads/2018/09/rock-mill-covered-bridge-2017.jpg",
+            img: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Rock_Mill_Covered_Bridge.JPG/3840px-Rock_Mill_Covered_Bridge.JPG",
             alt: "Historic Rock Mill Covered Bridge",
             url: "https://fairfieldcountyparks.org/bridges/",
             name: "Historic Rock Mill Covered Bridge",

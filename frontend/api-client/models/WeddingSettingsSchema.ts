@@ -72,6 +72,18 @@ export interface WeddingSettingsSchema {
      * @type {boolean}
      * @memberof WeddingSettingsSchema
      */
+    requirePhotoApproval: boolean;
+    /**
+     *
+     * @type {string}
+     * @memberof WeddingSettingsSchema
+     */
+    photoUploadUrl?: string | null;
+    /**
+     *
+     * @type {boolean}
+     * @memberof WeddingSettingsSchema
+     */
     showOurStory: boolean;
     /**
      *
@@ -295,6 +307,12 @@ export interface WeddingSettingsSchema {
      * @memberof WeddingSettingsSchema
      */
     rsvpQrCodeUrl?: string | null;
+    /**
+     *
+     * @type {string}
+     * @memberof WeddingSettingsSchema
+     */
+    photoQrCodeUrl?: string | null;
 }
 
 /**
@@ -309,6 +327,7 @@ export function instanceOfWeddingSettingsSchema(value: object): value is Wedding
     if (!("enableUploadPhotos" in value) || value["enableUploadPhotos"] === undefined) return false;
     if (!("allowRsvp" in value) || value["allowRsvp"] === undefined) return false;
     if (!("allowPhotos" in value) || value["allowPhotos"] === undefined) return false;
+    if (!("requirePhotoApproval" in value) || value["requirePhotoApproval"] === undefined) return false;
     if (!("showOurStory" in value) || value["showOurStory"] === undefined) return false;
     if (!("showFaq" in value) || value["showFaq"] === undefined) return false;
     if (!("showVenue" in value) || value["showVenue"] === undefined) return false;
@@ -357,6 +376,8 @@ export function WeddingSettingsSchemaFromJSONTyped(json: any, ignoreDiscriminato
         enableUploadPhotos: json["enable_upload_photos"],
         allowRsvp: json["allow_rsvp"],
         allowPhotos: json["allow_photos"],
+        requirePhotoApproval: json["require_photo_approval"],
+        photoUploadUrl: json["photo_upload_url"] == null ? undefined : json["photo_upload_url"],
         showOurStory: json["show_our_story"],
         showFaq: json["show_faq"],
         showVenue: json["show_venue"],
@@ -395,6 +416,7 @@ export function WeddingSettingsSchemaFromJSONTyped(json: any, ignoreDiscriminato
         venueGalleryTitle: json["venue_gallery_title"],
         venueGalleryDescription: json["venue_gallery_description"],
         rsvpQrCodeUrl: json["rsvp_qr_code_url"] == null ? undefined : json["rsvp_qr_code_url"],
+        photoQrCodeUrl: json["photo_qr_code_url"] == null ? undefined : json["photo_qr_code_url"],
     };
 }
 
@@ -419,6 +441,8 @@ export function WeddingSettingsSchemaToJSONTyped(
         enable_upload_photos: value["enableUploadPhotos"],
         allow_rsvp: value["allowRsvp"],
         allow_photos: value["allowPhotos"],
+        require_photo_approval: value["requirePhotoApproval"],
+        photo_upload_url: value["photoUploadUrl"],
         show_our_story: value["showOurStory"],
         show_faq: value["showFaq"],
         show_venue: value["showVenue"],
@@ -462,5 +486,6 @@ export function WeddingSettingsSchemaToJSONTyped(
         venue_gallery_title: value["venueGalleryTitle"],
         venue_gallery_description: value["venueGalleryDescription"],
         rsvp_qr_code_url: value["rsvpQrCodeUrl"],
+        photo_qr_code_url: value["photoQrCodeUrl"],
     };
 }
