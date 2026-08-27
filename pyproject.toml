@@ -161,7 +161,7 @@ tag_format = "v{version}"
 match = "main"
 prerelease = false
 
-[tool.semantic_release.changelog]
+[tool.semantic_release.changelog.default_templates]
 template_dir = "templates"
 changelog_file = "CHANGELOG.md"
 exclude_commit_patterns = []
