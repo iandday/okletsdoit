@@ -28,7 +28,7 @@ jobs:
     outputs:
       released: ${{ steps.release.outputs.released }}
       version: ${{ steps.release.outputs.version }}
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
@@ -36,16 +36,28 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - name: Install Python Semantic Release
+        run: |
+          python -m pip install \
+            "python-semantic-release==10.6.1" \
+            "GitPython==3.1.59"
+
       - name: Python Semantic Release
         id: release
-        uses: python-semantic-release/python-semantic-release@v10.6.1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          semantic-release -v version
 
       - name: Install uv
         if: steps.release.outputs.released == 'true'
         uses: astral-sh/setup-uv@v5
-        with: 
+        with:
           version: "latest"
 
       - name: Update uv.lock with new version
@@ -63,8 +75,9 @@ jobs:
 
   update-dev-branch:
     runs-on: ubuntu-latest
-    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') && needs.release.outputs.released == 'true' }} 
+    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') && needs.release.outputs.released == 'true' }}
     needs: release
+
     steps:
       - name: Checkout develop branch
         uses: actions/checkout@v5
@@ -79,7 +92,7 @@ jobs:
 
       - name: Install uv
         uses: astral-sh/setup-uv@v5
-        with: 
+        with:
           version: "latest"
 
       - name: Update uv.lock
@@ -97,16 +110,16 @@ jobs:
             git push origin HEAD:develop
           fi
 
-
   update-docs:
     runs-on: ubuntu-latest
-    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') && needs.release.outputs.released == 'true' }} 
+    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') && needs.release.outputs.released == 'true' }}
     needs: release
+
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5   
+        uses: actions/checkout@v5
 
-      - name: "Set up Python"
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version-file: 'pyproject.toml'
@@ -114,7 +127,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v6
         with:
-            enable-cache: true
+          enable-cache: true
 
       - name: Build docs
         run: |
@@ -131,15 +144,16 @@ jobs:
 
       - name: Minimize uv cache
         run: uv cache prune --ci
-  
+
   backend-build-and-push:
     runs-on: ubuntu-latest
     needs: release
-    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') && needs.release.outputs.released == 'true' }} 
+    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') && needs.release.outputs.released == 'true' }}
     permissions:
-        contents: write
-        packages: write
-        id-token: write
+      contents: write
+      packages: write
+      id-token: write
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -204,34 +218,36 @@ jobs:
     permissions:
       contents: read
       security-events: write
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
-      
+
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@57a97c7e7821a5776cebc9bb87c984fa69cba8f1
         with:
           image-ref: ${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}:${{ github.sha }}
           trivy-config: trivy.yaml
-      
+
       - name: Show Trivy results
         if: always()
         run: cat trivy-results.sarif
-      
+
       - name: Upload Trivy scan results to GitHub Security tab
         if: always()
         uses: github/codeql-action/upload-sarif@v4
         with:
           sarif_file: 'trivy-results.sarif'
-  
+
   frontend-build-and-push:
     runs-on: ubuntu-latest
     needs: release
-    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') && needs.release.outputs.released == 'true' }} 
+    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') && needs.release.outputs.released == 'true' }}
     permissions:
-        contents: write
-        packages: write
-        id-token: write
+      contents: write
+      packages: write
+      id-token: write
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -286,10 +302,11 @@ jobs:
     permissions:
       contents: read
       security-events: write
+
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
-      
+        uses: actions/checkout@v4
+
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@57a97c7e7821a5776cebc9bb87c984fa69cba8f1
         with:
@@ -308,13 +325,13 @@ jobs:
 
   deploy:
     runs-on: self-hosted
-    needs: 
+    needs:
       - backend-build-and-push
       - frontend-build-and-push
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: update container
         run: /home/ansible/deliver-prod.sh
-
