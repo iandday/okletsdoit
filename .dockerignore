@@ -45,6 +45,7 @@ docs/
 # CI/CD
 .github
 .dockerignore
+workspace
 
 # Local env files
 .env*

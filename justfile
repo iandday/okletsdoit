@@ -37,21 +37,27 @@ pre-commit:
 
 local-scan:
     @echo "Scanning local Docker image for vulnerabilities..."
+    mkdir -p workspace
     docker build -f docker/Dockerfile --target production -t okletsdoit:test .
     docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+        -v $HOME/.cache/trivy:/root/.cache/ \
         -v "$(pwd)/trivy.yaml:/work/trivy.yaml" \
         -v "$(pwd)/.trivyignore:/work/.trivyignore" \
-        -w /work \
-        aquasec/trivy image okletsdoit:test --config /work/trivy.yaml
+        -v "$(pwd)/workspace:/workspace" \
+        -w /workspace \
+        aquasec/trivy image -vvv --ignore-unfixed -f json -o /workspace/results.json okletsdoit:test
 
 local-scan-frontend:
     @echo "Scanning local Docker image for vulnerabilities..."
+    mkdir -p workspace
     docker build -f docker/Dockerfile-Frontend --target production -t okletsdoit-frontend:test .
     docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+        -v $HOME/.cache/trivy:/root/.cache/ \
         -v "$(pwd)/trivy.yaml:/work/trivy.yaml" \
         -v "$(pwd)/.trivyignore:/work/.trivyignore" \
-        -w /work \
-        aquasec/trivy image okletsdoit-frontend:test --config /work/trivy.yaml
+        -v "$(pwd)/workspace:/workspace" \
+        -w /workspace \
+        aquasec/trivy image --ignore-unfixed -f json -o /workspace/results.json okletsdoit-frontend:test
 
 #----Build commands----#
 
