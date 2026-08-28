@@ -1,4 +1,4 @@
-FROM python:3.14-slim-trixie AS development
+FROM python:3.14.7-slim-trixie AS development
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
@@ -56,7 +56,7 @@ WORKDIR /app/app
 ENTRYPOINT ["../docker-entrypoint.sh"]
 
 # Build stage
-FROM python:3.14-slim-trixie AS prod-builder
+FROM python:3.14.7-slim-trixie AS prod-builder
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
@@ -91,7 +91,7 @@ RUN uv sync --frozen --no-cache
 # Copy source code
 COPY backend/ .
 
-FROM python:3.14-slim-trixie AS production
+FROM python:3.14.7-slim-trixie AS production
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \

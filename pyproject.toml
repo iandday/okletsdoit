@@ -55,6 +55,8 @@ dependencies = [
     "urllib3>=2.6.3",
     "cryptography>=49.0.0",
     "pyjwt>=2.13.0",
+    "msgpack>=1.2.1",
+    "setuptools>=78.1.1",
 ]
 
 [dependency-groups]
