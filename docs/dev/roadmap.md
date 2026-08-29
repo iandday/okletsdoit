@@ -14,6 +14,7 @@
     * [ ] Approve uploaded photos by default
     * [ ] Venue components
     * [ ] My story components
+    * [ ] Show date and time or only date on schedule in the venue page
 * [ ] Data Export
   * [X] Guest Group Details
   * [X] Guest Details

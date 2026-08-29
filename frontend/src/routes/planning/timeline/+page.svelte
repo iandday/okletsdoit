@@ -1,6 +1,7 @@
 <script lang="ts">
     import ProtectedPageHeader from "$lib/components/layouts/ProtectedPageHeader.svelte";
     import ProtectedPageShell from "$lib/components/layouts/ProtectedPageShell.svelte";
+    import { formatDisplayDateTime } from "$lib/utils/formatters";
     import { dndzone } from "svelte-dnd-action";
     import { flip } from "svelte/animate";
     import type { PageData } from "./$types";
@@ -88,10 +89,6 @@
         dragStartOrder = [];
     }
 
-    function asDate(dateValue: TimelineDateValue): Date {
-        return dateValue instanceof Date ? dateValue : new Date(dateValue);
-    }
-
     function localDateTimeToUtcIso(dateTimeLocalValue: string): string {
         if (!dateTimeLocalValue) return "";
         const localDate = new Date(dateTimeLocalValue);
@@ -106,7 +103,7 @@
     function utcToDateTimeLocalInput(dateValue: string | Date | null | undefined): string {
         if (!dateValue) return "";
 
-        const date = asDate(dateValue);
+        const date = dateValue instanceof Date ? dateValue : new Date(dateValue);
         if (Number.isNaN(date.getTime())) {
             return "";
         }
@@ -117,23 +114,6 @@
         const hours = String(date.getHours()).padStart(2, "0");
         const minutes = String(date.getMinutes()).padStart(2, "0");
         return `${year}-${month}-${day}T${hours}:${minutes}`;
-    }
-
-    function formatDisplayDateTime(dateValue: string | Date | null | undefined): string {
-        if (!dateValue) return "";
-
-        const date = asDate(dateValue);
-        if (Number.isNaN(date.getTime())) {
-            return "";
-        }
-
-        const time = date.toLocaleTimeString("en-US", {
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: true,
-        });
-
-        return `${date.toDateString()} ${time}`;
     }
 
     async function reloadTimelineItems() {
