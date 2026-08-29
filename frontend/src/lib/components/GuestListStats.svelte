@@ -25,6 +25,6 @@
     ]);
 </script>
 
-<div class={`flex ${layout === "vertical" ? "flex-col" : "flex-row"} gap-6 justify-center`}>
-    <Stats objects={guestStats} />
+<div class="flex {layout === 'horizontal' ? 'flex-row' : 'flex-col'} gap-6 justify-center">
+    <Stats objects={guestStats} {layout} />
 </div>
