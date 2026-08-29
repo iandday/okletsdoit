@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { formatDisplayTime } from "$lib/utils/formatters";
     import type { TimelineSchema } from "../../../../api-client";
 
     interface venueProps {
@@ -29,23 +30,13 @@
                                         <div>
                                             {#if entry.start || entry.end}
                                                 {#if entry.start}
-                                                    {new Date(entry.start).toLocaleTimeString([], {
-                                                        hour: "2-digit",
-                                                        minute: "2-digit",
-                                                        timeZone: "America/New_York",
-                                                        timeZoneName: "shortOffset",
-                                                    })}
+                                                    {formatDisplayTime(entry.start)}
                                                 {/if}
                                                 {#if entry.start && entry.end}
                                                     -
                                                 {/if}
                                                 {#if entry.end}
-                                                    {new Date(entry.end).toLocaleTimeString([], {
-                                                        hour: "2-digit",
-                                                        minute: "2-digit",
-                                                        timeZone: "America/New_York",
-                                                        timeZoneName: "shortOffset",
-                                                    })}
+                                                    {formatDisplayTime(entry.end)}
                                                 {/if}
                                             {/if}
                                         </div>

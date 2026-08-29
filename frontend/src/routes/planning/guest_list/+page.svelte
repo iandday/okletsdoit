@@ -211,78 +211,75 @@
                     </div>
                 </div>
                 <div class="flex flex-col gap-6" id="stats">
-                    <div class="justify-center items-center" id="stats-overview-top">
-                        <GuestListStats guestGroups={data.guestGroups} layout="vertical" />
-                    </div>
-
                     <div class="flex flex-col lg:flex-row gap-6 w-full justify-center">
+                        <GuestListStats guestGroups={data.guestGroups} layout="vertical" />
                         <InviteStats rsvpStats={data.stats} layout="vertical" />
                         <RsvpStats rsvpStats={data.stats} layout="vertical" />
-                        <div class="flex flex-col justify-center items-center w-full gap-4" id="action-buttons">
-                            <CreateObject href="/planning/guest_list/new" label="New Guest Group" />
-                            <div class="dropdown" id="view-buttons">
-                                <div tabindex="0" role="button" class="btn btn-secondary text-secondary-content gap-2">
-                                    <span class="icon-[lucide--eye] size-5"></span>
-                                    View
-                                    <span class="icon-[lucide--chevron-down] size-4"></span>
-                                </div>
-                                <div
-                                    tabindex="0"
-                                    class="dropdown-content bg-base-100 rounded-box z-[1] w-72 p-3 shadow-lg border border-base-300">
-                                    <div class="flex flex-col gap-2">
-                                        <a href="/planning/guest_list/rsvp" class="btn btn-accent gap-2">
-                                            <span class="icon-[lucide--mail-open] size-5"></span>
-                                            RSVP Responses
-                                        </a>
-                                        <a href="/planning/guest/all" class="btn btn-accent gap-2">
-                                            <span class="icon-[lucide--users] size-5"></span>
-                                            All Guests
-                                        </a>
-                                        <button
-                                            onclick={() =>
-                                                openQrModal(data.configData.rsvpQrCodeUrl as string, "General RSVP")}
-                                            class="btn btn-accent gap-2">
-                                            <span class="icon-[lucide--qr-code] size-5"></span>
-                                            Universal RSVP QR
-                                        </button>
-                                    </div>
+                    </div>
+                    <div class="flex flex-row justify-center items-center w-full gap-4" id="action-buttons">
+                        <CreateObject href="/planning/guest_list/new" label="New Guest Group" />
+                        <div class="dropdown" id="view-buttons">
+                            <div tabindex="0" role="button" class="btn btn-secondary text-secondary-content gap-2">
+                                <span class="icon-[lucide--eye] size-5"></span>
+                                View
+                                <span class="icon-[lucide--chevron-down] size-4"></span>
+                            </div>
+                            <div
+                                tabindex="0"
+                                class="dropdown-content bg-base-100 rounded-box z-[1] w-72 p-3 shadow-lg border border-base-300">
+                                <div class="flex flex-col gap-2">
+                                    <a href="/planning/guest_list/rsvp" class="btn btn-accent gap-2">
+                                        <span class="icon-[lucide--mail-open] size-5"></span>
+                                        RSVP Responses
+                                    </a>
+                                    <a href="/planning/guest/all" class="btn btn-accent gap-2">
+                                        <span class="icon-[lucide--users] size-5"></span>
+                                        All Guests
+                                    </a>
+                                    <button
+                                        onclick={() =>
+                                            openQrModal(data.configData.rsvpQrCodeUrl as string, "General RSVP")}
+                                        class="btn btn-accent gap-2">
+                                        <span class="icon-[lucide--qr-code] size-5"></span>
+                                        Universal RSVP QR
+                                    </button>
                                 </div>
                             </div>
-                            <div class="dropdown" id="export-buttons">
-                                <div tabindex="0" role="button" class="btn btn-secondary text-secondary-content gap-2">
-                                    <span class="icon-[lucide--download] size-5"></span>
-                                    Export
-                                    <span class="icon-[lucide--chevron-down] size-4"></span>
-                                </div>
-                                <div
-                                    tabindex="0"
-                                    class="dropdown-content bg-base-100 rounded-box z-[1] w-72 p-3 shadow-lg border border-base-300">
-                                    <div class="flex flex-col gap-2">
-                                        <ExportData
-                                            resourceType="guest_group"
-                                            label="Export Guest Group (CSV)"
-                                            format="csv"
-                                            fileName="guest_groups.csv"
-                                            size="sm" />
-                                        <ExportData
-                                            resourceType="guest_group"
-                                            label="Export Guest Group (Excel)"
-                                            format="xlsx"
-                                            fileName="guest_groups.xlsx"
-                                            size="sm" />
-                                        <ExportData
-                                            resourceType="guest"
-                                            label="Export Guest (CSV)"
-                                            format="csv"
-                                            fileName="guests.csv"
-                                            size="sm" />
-                                        <ExportData
-                                            resourceType="guest"
-                                            label="Export Guest (Excel)"
-                                            format="xlsx"
-                                            fileName="guests.xlsx"
-                                            size="sm" />
-                                    </div>
+                        </div>
+                        <div class="dropdown" id="export-buttons">
+                            <div tabindex="0" role="button" class="btn btn-secondary text-secondary-content gap-2">
+                                <span class="icon-[lucide--download] size-5"></span>
+                                Export
+                                <span class="icon-[lucide--chevron-down] size-4"></span>
+                            </div>
+                            <div
+                                tabindex="0"
+                                class="dropdown-content bg-base-100 rounded-box z-[1] w-72 p-3 shadow-lg border border-base-300">
+                                <div class="flex flex-col gap-2">
+                                    <ExportData
+                                        resourceType="guest_group"
+                                        label="Export Guest Group (CSV)"
+                                        format="csv"
+                                        fileName="guest_groups.csv"
+                                        size="sm" />
+                                    <ExportData
+                                        resourceType="guest_group"
+                                        label="Export Guest Group (Excel)"
+                                        format="xlsx"
+                                        fileName="guest_groups.xlsx"
+                                        size="sm" />
+                                    <ExportData
+                                        resourceType="guest"
+                                        label="Export Guest (CSV)"
+                                        format="csv"
+                                        fileName="guests.csv"
+                                        size="sm" />
+                                    <ExportData
+                                        resourceType="guest"
+                                        label="Export Guest (Excel)"
+                                        format="xlsx"
+                                        fileName="guests.xlsx"
+                                        size="sm" />
                                 </div>
                             </div>
                         </div>
