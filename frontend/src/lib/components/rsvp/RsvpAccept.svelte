@@ -181,7 +181,7 @@
                                     </div>
                                 {/if}
 
-                                {#if guest.showVip && configData.rsvpShowVipIntro}
+                                {#if showVip && configData.rsvpShowVipIntro}
                                     <div class="form-control">
                                         <label
                                             class="label justify-start gap-3 {preview
