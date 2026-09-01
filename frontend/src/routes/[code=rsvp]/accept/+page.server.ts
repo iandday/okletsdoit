@@ -29,7 +29,13 @@ export const load: PageServerLoad = async ({ params, locals }) => {
             return a.plusOne ? 1 : -1;
         });
         const rsvpQuestions = await api.guestlist.guestlistApiGetRsvpAcceptanceQuestions({ rsvpCode: code });
-        console.log(guestGroup, guests, rsvpQuestions, guests.items.some((guest) => guest.vip), configData.rsvpShowVipIntro);
+        console.log(
+            guestGroup,
+            guests,
+            rsvpQuestions,
+            guests.items.some((guest) => guest.vip),
+            configData.rsvpShowVipIntro,
+        );
         return {
             guestData: guestGroup,
             guests: guests.items,
