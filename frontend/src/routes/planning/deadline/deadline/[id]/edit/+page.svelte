@@ -95,6 +95,22 @@
                         </div>
 
                         <div class="form-control w-full">
+                            <label class="edit-card-field-name" for="assignedToId">
+                                <span>Assignee</span>
+                            </label>
+                            <select
+                                id="assignedToId"
+                                name="assignedToId"
+                                class="edit-card-field-input"
+                                value={data.deadline.assignedToId || ""}>
+                                <option value="">Unassigned</option>
+                                {#each data.assigneeOptions as assignee (assignee.id)}
+                                    <option value={assignee.id}>{assignee.name}</option>
+                                {/each}
+                            </select>
+                        </div>
+
+                        <div class="form-control w-full">
                             <label class="edit-card-field-name" for="completed">
                                 <span>Mark as completed</span>
                             </label>
