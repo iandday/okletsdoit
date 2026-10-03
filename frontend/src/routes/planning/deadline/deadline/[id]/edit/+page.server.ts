@@ -9,9 +9,31 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 
     try {
         const deadline = await api.deadlines.deadlineApiGetDeadline({ deadlineId });
+        const assigneeMap = new Map<string, string>();
+        if (deadline.assignedToId && deadline.assignedToName) {
+            assigneeMap.set(deadline.assignedToId, deadline.assignedToName);
+        }
+
+        let page = 1;
+        while (true) {
+            const response = await api.deadlines.deadlineApiListDeadlines({ page, pageSize: 100 });
+            for (const item of response.items ?? []) {
+                if (item.assignedToId && item.assignedToName) {
+                    assigneeMap.set(item.assignedToId, item.assignedToName);
+                }
+            }
+
+            if (!response.items?.length || page * 100 >= response.count) {
+                break;
+            }
+            page++;
+        }
 
         return {
             deadline,
+            assigneeOptions: Array.from(assigneeMap.entries())
+                .map(([id, name]) => ({ id, name }))
+                .sort((a, b) => a.name.localeCompare(b.name)),
         };
     } catch (err) {
         console.error("Failed to load deadline:", err);
@@ -27,6 +49,7 @@ export const actions = {
         const name = formData.get("name");
         const description = formData.get("description");
         const dueDate = formData.get("dueDate");
+        const assignedToId = formData.get("assignedToId");
         const completed = formData.get("completed") === "on";
         const completedNote = formData.get("completedNote");
 
@@ -42,6 +65,7 @@ export const actions = {
                     name,
                     description: description && typeof description === "string" ? description : undefined,
                     dueDate: dueDate && typeof dueDate === "string" ? new Date(dueDate) : undefined,
+                    assignedToId: typeof assignedToId === "string" && assignedToId ? assignedToId : null,
                     completed,
                     completedNote: completedNote && typeof completedNote === "string" ? completedNote : undefined,
                 },

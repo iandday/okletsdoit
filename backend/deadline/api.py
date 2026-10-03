@@ -431,6 +431,7 @@ def update_deadline(request, deadline_id: UUID, payload: DeadlineUpdateSchema):
     deadline = get_object_or_404(Deadline, id=deadline_id, is_deleted=False)
     data = payload.dict(exclude_unset=True)
     deadline_list_id = data.pop("deadline_list_id", None)
+    assigned_to_provided = "assigned_to_id" in data
     assigned_to_id = data.pop("assigned_to_id", None)
 
     for attr, value in data.items():
@@ -440,9 +441,8 @@ def update_deadline(request, deadline_id: UUID, payload: DeadlineUpdateSchema):
         deadline_list = get_object_or_404(DeadlineList, id=deadline_list_id, is_deleted=False)
         deadline.deadline_list = deadline_list
 
-    if assigned_to_id:
-        assigned_to = get_object_or_404(User, id=assigned_to_id)
-        deadline.assigned_to = assigned_to
+    if assigned_to_provided:
+        deadline.assigned_to = get_object_or_404(User, id=assigned_to_id) if assigned_to_id else None
 
     if request.user.is_authenticated:
         deadline.updated_by = request.user
