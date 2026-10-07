@@ -22,10 +22,11 @@ async function fetchAllPages<T>(
 export const load: PageServerLoad = async ({ locals }) => {
     const api = createApiClient(locals.sessionCookie);
     try {
-        const [guestGroups, submissions, responses] = await Promise.all([
+        const [guestGroups, submissions, responses, guests] = await Promise.all([
             fetchAllPages((page) => api.guestlist.guestlistApiListGuestGroups({ page, pageSize: 100 })),
             fetchAllPages((page) => api.guestlist.guestlistApiListRsvpSubmissions({ page, pageSize: 100 })),
             fetchAllPages((page) => api.guestlist.guestlistApiListRsvpResponses({ page, pageSize: 100 })),
+            fetchAllPages((page) => api.guestlist.guestlistApiListGuests({ page, pageSize: 100 })),
         ]);
         const stats = await api.guestlist.guestlistApiGetRsvpStats();
         console.log(stats);
@@ -33,6 +34,7 @@ export const load: PageServerLoad = async ({ locals }) => {
             guestGroups,
             submissions,
             responses,
+            guests,
             stats,
         };
     } catch (error) {
@@ -41,6 +43,7 @@ export const load: PageServerLoad = async ({ locals }) => {
             guestGroups: [],
             submissions: [],
             responses: [],
+            guests: [],
             stats: {
                 totalSubmissions: 0,
                 totalWithEmail: 0,

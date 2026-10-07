@@ -134,6 +134,49 @@
         {#if questionGroups.length === 0}
             <p class="text-accent bg-base-300 text-sm text-center py-8">No question responses recorded yet.</p>
         {:else}
+            <div class="flex flex-col gap-6">
+                <div class="collapse collapse-arrow bg-base-300 text-accent border border-base-300">
+                    <input type="checkbox" />
+                    <div class="collapse-title font-semibold flex items-center gap-3">Pending Guests</div>
+                    <div class="collapse-content">
+                        <ul>
+                            {#each data.guests as guest, index (guest.id)}
+                                {#if !guest.responded}
+                                    <li>{guest.firstName} {guest.lastName}</li>
+                                {/if}
+                            {/each}
+                        </ul>
+                    </div>
+                </div>
+                <div class="collapse collapse-arrow bg-base-300 text-accent border border-base-300">
+                    <input type="checkbox" />
+                    <div class="collapse-title font-semibold flex items-center gap-3">Attending Guests</div>
+                    <div class="collapse-content">
+                        <ul>
+                            {#each data.guests as guest, index (guest.id)}
+                                {#if guest.isAttending}
+                                    <li>{guest.firstName} {guest.lastName}</li>
+                                {/if}
+                            {/each}
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="collapse collapse-arrow bg-base-300 text-accent border border-base-300">
+                    <input type="checkbox" />
+                    <div class="collapse-title font-semibold flex items-center gap-3">Declined Guests</div>
+                    <div class="collapse-content">
+                        <ul>
+                            {#each data.guests as guest, index (guest.id)}
+                                {#if !guest.isAttending}
+                                    <li>{guest.firstName} {guest.lastName}</li>
+                                {/if}
+                            {/each}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <h2 class="text-xl font-bold">Question responses.</h2>
             <div class="flex flex-col gap-2">
                 {#each questionGroups as question (question.questionId)}
                     <div class="collapse collapse-arrow bg-base-300 text-accent border border-base-300">
