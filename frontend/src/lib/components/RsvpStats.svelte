@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { RsvpStatsSchema } from "../../../api-client";
+    import type { RsvpStatsSchema, GuestSchema } from "../../../api-client";
     import Stats from "./Stats.svelte";
 
     interface RsvpStatsProps {
@@ -7,7 +7,7 @@
         layout?: "horizontal" | "vertical";
     }
 
-    const { rsvpStats, layout = "vertical" }: RsvpStatsProps = $props();
+    const { rsvpStats, layout = "vertical", guests }: RsvpStatsProps = $props();
     const responseStats = $derived([
         {
             title: "Attending",
