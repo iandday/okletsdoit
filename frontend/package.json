@@ -21,7 +21,7 @@
         "openapi:generate:prod": "openapi-typescript $BACKEND_API_URL/api/openapi.json -o src/lib/api/schema.d.ts"
     },
     "engines": {
-        "node": ">=20.9.0"
+        "node": ">=26.12.1"
     },
     "devDependencies": {
         "@eslint/compat": "^1.4.1",
