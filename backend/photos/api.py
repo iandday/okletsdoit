@@ -1,5 +1,6 @@
 import hashlib
 import io
+import logging
 import zipfile
 from datetime import datetime
 from typing import List as TypeList
@@ -9,6 +10,7 @@ from uuid import UUID
 import boto3
 from botocore.exceptions import ClientError
 from core.auth import multi_auth
+from core.models import WeddingSettings
 from django.conf import settings
 from django.core.files.base import ContentFile
 from django.http import HttpResponseRedirect
@@ -23,9 +25,9 @@ from PIL import UnidentifiedImageError
 
 from .models import UploadedPhoto
 from .realtime import publish_photo_update
-from core.models import WeddingSettings
 
 router = Router(tags=["Uploaded Photos"])
+logger = logging.getLogger(__name__)
 
 THUMBNAIL_MAX_DIMENSION = 256
 
@@ -36,6 +38,7 @@ try:
     HEIF_ENABLED = True
 except Exception:
     HEIF_ENABLED = False
+    logger.exception("Failed to register the HEIF image opener; HEIC/HEIF support is unavailable")
 
 
 class UploadedPhotoSchema(Schema):
@@ -117,26 +120,30 @@ def create_uploaded_photo(request):
 
     photo.photo_file.name = photo.get_photo_storage_path()
     photo.save(update_fields=["photo_file"])
+    logger.info("Created uploaded photo with ID %s", photo.id)
+    try:
+        s3_client = boto3.client(
+            "s3",
+            region_name=settings.STORAGES["default"]["OPTIONS"].get("region_name"),
+            aws_access_key_id=settings.STORAGES["default"]["OPTIONS"].get("access_key"),
+            aws_secret_access_key=settings.STORAGES["default"]["OPTIONS"].get("secret_key"),
+            endpoint_url=settings.STORAGES["default"]["OPTIONS"].get("endpoint_url"),
+        )
 
-    s3_client = boto3.client(
-        "s3",
-        region_name=settings.STORAGES["default"]["OPTIONS"].get("region_name"),
-        aws_access_key_id=settings.STORAGES["default"]["OPTIONS"].get("access_key"),
-        aws_secret_access_key=settings.STORAGES["default"]["OPTIONS"].get("secret_key"),
-        endpoint_url=settings.STORAGES["default"]["OPTIONS"].get("endpoint_url"),
-    )
+        params = {
+            "Bucket": bucket_name,
+            "Key": object_key,
+        }
 
-    params = {
-        "Bucket": bucket_name,
-        "Key": object_key,
-    }
-
-    upload_url = s3_client.generate_presigned_url(
-        "put_object",
-        Params=params,
-        ExpiresIn=3600,
-    )
-
+        upload_url = s3_client.generate_presigned_url(
+            "put_object",
+            Params=params,
+            ExpiresIn=3600,
+        )
+    except Exception:
+        logger.exception("Failed to generate upload URL for photo %s", photo.id)
+        raise
+    logger.info("Generated upload URL for photo %s", photo.id)
     return {
         "id": photo.id,
         "upload_url": upload_url,
@@ -151,25 +158,41 @@ def complete_uploaded_photo(request, photo_id: UUID):
     photo = get_object_or_404(UploadedPhoto, id=photo_id, is_deleted=False)
     photo.status = UploadedPhoto.STATUS_CHOICES.PROCESSING
     photo.save(update_fields=["status"])
+    logger.info("Processing uploaded photo with ID %s (HEIF enabled: %s)", photo.id, HEIF_ENABLED)
 
-    bucket_name = settings.STORAGES["default"]["OPTIONS"]["bucket_name"]
-    object_key = photo.get_storage_object_key()
-    s3_client = boto3.client(
-        "s3",
-        region_name=settings.STORAGES["default"]["OPTIONS"].get("region_name"),
-        aws_access_key_id=settings.STORAGES["default"]["OPTIONS"].get("access_key"),
-        aws_secret_access_key=settings.STORAGES["default"]["OPTIONS"].get("secret_key"),
-        endpoint_url=settings.STORAGES["default"]["OPTIONS"].get("endpoint_url"),
-    )
+    try:
+        bucket_name = settings.STORAGES["default"]["OPTIONS"]["bucket_name"]
+        object_key = photo.get_storage_object_key()
+        s3_client = boto3.client(
+            "s3",
+            region_name=settings.STORAGES["default"]["OPTIONS"].get("region_name"),
+            aws_access_key_id=settings.STORAGES["default"]["OPTIONS"].get("access_key"),
+            aws_secret_access_key=settings.STORAGES["default"]["OPTIONS"].get("secret_key"),
+            endpoint_url=settings.STORAGES["default"]["OPTIONS"].get("endpoint_url"),
+        )
+    except Exception:
+        logger.exception("Failed to initialize storage for photo %s", photo.id)
+        raise
 
     raw_bytes = b""
+    stage = "download"
     try:
         mem_buffer = io.BytesIO()
         s3_client.download_fileobj(Bucket=bucket_name, Key=object_key, Fileobj=mem_buffer)
         raw_bytes = mem_buffer.getvalue()
+        logger.info("Downloaded photo %s: %s bytes", photo.id, len(raw_bytes))
         checksum = hashlib.sha256(raw_bytes).hexdigest()
 
+        stage = "decode"
         with Image.open(io.BytesIO(raw_bytes)) as img:
+            logger.info(
+                "Opened photo %s: format=%s mode=%s dimensions=%sx%s",
+                photo.id,
+                img.format,
+                img.mode,
+                img.width,
+                img.height,
+            )
             exif = img.getexif() or {}
             make = (exif.get(271) or "").strip()
             model = (exif.get(272) or "").strip()
@@ -184,6 +207,7 @@ def complete_uploaded_photo(request, photo_id: UUID):
             processed = img.copy()
             processed.thumbnail((2048, 2048), Image.Resampling.LANCZOS)
 
+            stage = "encode"
             processed_buffer = io.BytesIO()
             processed.save(processed_buffer, format="JPEG", quality=90, optimize=True)
             processed_bytes = processed_buffer.getvalue()
@@ -196,10 +220,13 @@ def complete_uploaded_photo(request, photo_id: UUID):
 
             width, height = processed.size
 
+        stage = "store photo"
         photo.photo_file.save(photo.get_photo_storage_path(), ContentFile(processed_bytes), save=False)
         thumbnail_name = f"photos/thumbnails/{photo.id}.jpg"
+        stage = "store thumbnail"
         photo.thumbnail_file.save(thumbnail_name, ContentFile(thumb_bytes), save=False)
 
+        stage = "save record"
         photo.content_type = "image/jpeg"
         photo.file_size = len(processed_bytes)
         photo.width = width
@@ -221,6 +248,7 @@ def complete_uploaded_photo(request, photo_id: UUID):
             ]
         )
 
+        stage = "publish update"
         publish_photo_update(
             event="photo.ready",
             photo_id=str(photo.id),
@@ -228,11 +256,15 @@ def complete_uploaded_photo(request, photo_id: UUID):
             uploaded_at=photo.uploaded_at.isoformat() if photo.uploaded_at else None,
         )
 
+        logger.info("Processed photo %s: dimensions=%sx%s bytes=%s", photo.id, width, height, len(processed_bytes))
         return {
             "id": photo.id,
             "status": photo.status,
         }
     except (ClientError, UnidentifiedImageError, OSError) as exc:
+        logger.exception(
+            "Photo %s failed during %s (bytes=%s, HEIF enabled=%s)", photo.id, stage, len(raw_bytes), HEIF_ENABLED
+        )
         photo.status = UploadedPhoto.STATUS_CHOICES.FAILED
         photo.save(update_fields=["status"])
         publish_photo_update(event="photo.failed", photo_id=str(photo.id), status=photo.status)
@@ -246,6 +278,9 @@ def complete_uploaded_photo(request, photo_id: UUID):
             raise HttpError(400, "HEIC/HEIF image support is not available on the server.")
         raise HttpError(400, f"Unable to process uploaded photo: {exc}")
     except Exception as exc:
+        logger.exception(
+            "Photo %s failed during %s (bytes=%s, HEIF enabled=%s)", photo.id, stage, len(raw_bytes), HEIF_ENABLED
+        )
         photo.status = UploadedPhoto.STATUS_CHOICES.FAILED
         photo.save(update_fields=["status"])
         publish_photo_update(event="photo.failed", photo_id=str(photo.id), status=photo.status)
